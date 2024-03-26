@@ -21,3 +21,5 @@ or
 ```
 
 The reset command deletes the database data and re-migrates it so that it is completely fresh.
+
+Snapsmaps.com was discovered by Seth Welch and purchased by Shane Israel.
