@@ -1,0 +1,5 @@
+.vscode/
+server/node_modules/
+server/db-data/
+server/.env
+client/node_modules/
