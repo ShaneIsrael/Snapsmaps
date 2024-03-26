@@ -1,4 +1,4 @@
-# word-game-site
+# Snapmapz
 
 You will need Docker and Docker Compose installed to run this app locally.
 
