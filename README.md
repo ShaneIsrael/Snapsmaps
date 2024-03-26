@@ -1,4 +1,4 @@
-# Snapmapz
+# Snapsmaps
 
 You will need Docker and Docker Compose installed to run this app locally.
 
