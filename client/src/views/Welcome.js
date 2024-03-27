@@ -4,6 +4,7 @@ import TestService from '../services/TestService'
 import Post from '../components/Post/Post'
 import Appbar from '../components/Layout/Appbar'
 import { Image, Modal, ModalContent, useDisclosure } from '@nextui-org/react'
+import Footer from '../components/Layout/Footer'
 
 const Welcome = ({ mode }) => {
   const [post, setPost] = React.useState()
@@ -113,6 +114,7 @@ const Welcome = ({ mode }) => {
           )}
         </div>
       </div>
+      <Footer />
     </>
   )
 }
