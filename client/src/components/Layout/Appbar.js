@@ -16,7 +16,7 @@ import {
 import { AcmeLogo } from './AcmeLogo.js'
 import ArrowLeft from '../../assets/icons/ArrowLeft.js'
 
-export default function Appbar({ noProfile, backButton, pageName }) {
+export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
   const navigate = useNavigate()
   return (
     <Navbar isBordered>
@@ -33,23 +33,7 @@ export default function Appbar({ noProfile, backButton, pageName }) {
             <h2 className="font-bold text-lg">{pageName}</h2>
           </NavbarBrand>
         )}
-        <NavbarContent className="hidden sm:flex gap-3">
-          {/* <NavbarItem>
-            <Link color="foreground" href="#">
-              Features
-            </Link>
-          </NavbarItem>
-          <NavbarItem isActive>
-            <Link href="#" aria-current="page" color="secondary">
-              Customers
-            </Link>
-          </NavbarItem>
-          <NavbarItem>
-            <Link color="foreground" href="#">
-              Integrations
-            </Link>
-          </NavbarItem> */}
-        </NavbarContent>
+        <NavbarContent className="hidden sm:flex gap-3"></NavbarContent>
       </NavbarContent>
 
       {!noProfile && (
