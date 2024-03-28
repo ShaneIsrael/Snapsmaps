@@ -18,8 +18,10 @@ import { MapPinIcon } from '../../assets/icons/MapPinIcon'
 import GoogleMapReact from 'google-map-react'
 import { GoogleMapDarkMode } from '../../common/themes'
 import clsx from 'clsx'
+import CloseIcon from '../../assets/icons/CloseIcon'
+import SendIcon from '../../assets/icons/SendIcon'
 
-function CreatePost({ imageData, onCancel }) {
+function CreatePost({ imageData, onOpen, onCancel }) {
   const newPostModal = useDisclosure()
   const [selectedTab, setSelectedTab] = useState('photo')
   const [description, setDescription] = useState('')
@@ -33,9 +35,9 @@ function CreatePost({ imageData, onCancel }) {
 
   const getMapOptions = (maps) => {
     return {
-      streetViewControl: true,
-      scaleControl: true,
-      fullscreenControl: true,
+      streetViewControl: false,
+      scaleControl: false,
+      fullscreenControl: false,
       styles: [
         ...GoogleMapDarkMode,
         {
@@ -50,8 +52,8 @@ function CreatePost({ imageData, onCancel }) {
       ],
       gestureHandling: 'greedy',
       disableDoubleClickZoom: true,
-      minZoom: 0,
-      maxZoom: 25,
+      minZoom: 16,
+      maxZoom: 16,
 
       mapTypeControl: false,
       mapTypeId: maps.MapTypeId.ROADMAP,
@@ -68,6 +70,7 @@ function CreatePost({ imageData, onCancel }) {
   useEffect(() => {
     if (imageData) {
       newPostModal.onOpen()
+      onOpen()
     } else {
       newPostModal.onClose()
     }
@@ -87,16 +90,18 @@ function CreatePost({ imageData, onCancel }) {
       <ModalContent className="">
         {(onClose) => (
           <Card className="h-full w-full rounded-none">
-            <CardHeader className="flex flex-col items-start gap-2">
-              <h2 className="font-bold text-2xl">New post</h2>
+            <CardHeader className="flex flex-col items-center gap-2">
+              <h2 className="font-bold text-2xl">New Post</h2>
               <Textarea
                 variant="bordered"
                 placeholder="Write something interesting..."
                 value={description}
                 onValueChange={setDescription}
-                rows={3}
-                maxRows={3}
+                maxRows={2}
                 className="w-full"
+                classNames={{
+                  input: 'text-md',
+                }}
               />
             </CardHeader>
             <CardBody className="px-3 py-0 ">
@@ -143,7 +148,7 @@ function CreatePost({ imageData, onCancel }) {
                     <GoogleMapReact
                       bootstrapURLKeys={{ key: 'AIzaSyA_PPhb-5jcZsLPcTdjoBBvF8CzvIbg4RE' }}
                       defaultCenter={{ lat: imageData?.gps.latitude, lng: imageData?.gps.longitude }}
-                      defaultZoom={14}
+                      defaultZoom={16}
                       yesIWantToUseGoogleMapApiInternals
                       onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
                       options={getMapOptions}
@@ -153,12 +158,12 @@ function CreatePost({ imageData, onCancel }) {
               </Tabs>
             </CardBody>
             <CardFooter className="p-6">
-              <div className="w-full flex flex-row align-middle items-center justify-center gap-2">
+              <div className="w-full flex flex-row align-middle items-center justify-center gap-4">
                 <Button color="danger" variant="flat" fullWidth onClick={handleCancel}>
-                  Cancel
+                  <CloseIcon />
                 </Button>
-                <Button color="primary" fullWidth>
-                  Submit
+                <Button color="primary" variant="solid" fullWidth>
+                  <SendIcon />
                 </Button>
               </div>
             </CardFooter>

@@ -1,17 +1,49 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import UploadImage from '../Post/UploadImage'
 import CreatePost from '../Post/CreatePost'
+import { Button, Modal, ModalContent, useDisclosure } from '@nextui-org/react'
+import PlusIcon from '../../assets/icons/PlusIcon'
 
 function Footer() {
   const [uploadedImageData, setUploadedImageData] = useState()
+  const captureDeviceSelect = useDisclosure()
+
   return (
     <>
-      <CreatePost imageData={uploadedImageData} onCancel={() => setUploadedImageData(null)} />
+      <Modal
+        className="dark transform-gpu p-0 m-0 rounded-b-none"
+        isOpen={captureDeviceSelect.isOpen}
+        onClose={captureDeviceSelect.onClose}
+        placement="bottom"
+        backdrop="blur"
+        hideCloseButton
+      >
+        <ModalContent className="flex flex-row justify-center items-center pt-8 pb-8 gap-4">
+          <UploadImage onImageUploaded={setUploadedImageData} mode="camera" />
+          <UploadImage onImageUploaded={setUploadedImageData} />
+        </ModalContent>
+      </Modal>
+
+      <CreatePost
+        imageData={uploadedImageData}
+        onOpen={captureDeviceSelect.onClose}
+        onCancel={() => setUploadedImageData(null)}
+      />
       <footer
         onClick={(e) => e.stopPropagation()}
-        className="sticky bottom-0 p-2 flex z-40 w-full h-auto items-center justify-center  inset-x-0 border-t border-divider backdrop-blur-lg backdrop-saturate-150 bg-background/70"
+        className="sticky bottom-0 pt-3 pb-3 flex z-40 w-full h-auto items-center justify-center  inset-x-0 border-t border-divider backdrop-blur-lg backdrop-saturate-150 bg-background/70"
       >
-        <UploadImage onImageUploaded={setUploadedImageData} />
+        <Button
+          isIconOnly
+          size="md"
+          color="default"
+          variant="ghost"
+          className="border-medium border-neutral-200 "
+          aria-label="new post"
+          onClick={() => captureDeviceSelect.onOpen()}
+        >
+          <PlusIcon />
+        </Button>
       </footer>
     </>
   )

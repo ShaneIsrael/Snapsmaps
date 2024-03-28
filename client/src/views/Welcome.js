@@ -54,60 +54,64 @@ const Welcome = ({ mode }) => {
       <div className="h-full flex justify-center pt-8 pb-8">
         <div className="flex flex-col items-center gap-4">
           {post && (
-            <Post post={post} user={{ name: 'Shane Israel', mention: '@disshaneyo' }} onOpenModal={handleOpenModal} />
-          )}
-          {post && (
             <Post
-              post={{ ...post, id: 2, image: 'https://i.imgur.com/uWFF1XM.jpg', body: 'Yes this is a cat.' }}
+              post={{ ...post, id: 2, image: 'https://picsum.photos/seed/qt/400/550' }}
               user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
               onOpenModal={handleOpenModal}
             />
           )}
           {post && (
             <Post
-              post={{ ...post, id: 3, image: 'https://i.imgur.com/XeddZEE.jpeg', body: 'A 16:9 image' }}
+              post={{ ...post, id: 2, image: 'https://picsum.photos/seed/adfsf/400/550', body: 'Yes this is a cat.' }}
               user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
               onOpenModal={handleOpenModal}
             />
           )}
           {post && (
             <Post
-              post={{ ...post, id: 4 }}
+              post={{ ...post, id: 3, image: 'https://picsum.photos/seed/adsf/400/550', body: 'A 16:9 image' }}
               user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
               onOpenModal={handleOpenModal}
             />
           )}
           {post && (
             <Post
-              post={{ ...post, id: 5, image: 'https://i.imgur.com/uWFF1XM.jpg', body: 'Yes this is a cat.' }}
+              post={{ ...post, id: 4, image: 'https://picsum.photos/seed/oooiu/400/550' }}
               user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
               onOpenModal={handleOpenModal}
             />
           )}
           {post && (
             <Post
-              post={{ ...post, id: 6, image: 'https://i.imgur.com/XeddZEE.jpeg', body: 'A 16:9 image' }}
+              post={{ ...post, id: 5, image: 'https://picsum.photos/seed/a234sdf/400/550', body: 'Yes this is a cat.' }}
               user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
               onOpenModal={handleOpenModal}
             />
           )}
           {post && (
             <Post
-              post={{ ...post, id: 7 }}
+              post={{ ...post, id: 6, image: 'https://picsum.photos/seed/lk8kf/400/550', body: 'A 16:9 image' }}
               user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
               onOpenModal={handleOpenModal}
             />
           )}
           {post && (
             <Post
-              post={{ ...post, id: 9, image: 'https://i.imgur.com/uWFF1XM.jpg', body: 'Yes this is a cat.' }}
+              post={{ ...post, id: 7, image: 'https://picsum.photos/seed/ttwer/400/550' }}
               user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
               onOpenModal={handleOpenModal}
             />
           )}
           {post && (
             <Post
-              post={{ ...post, id: 10, image: 'https://i.imgur.com/XeddZEE.jpeg', body: 'A 16:9 image' }}
+              post={{ ...post, id: 9, image: 'https://picsum.photos/seed/pplfa/400/550', body: 'Yes this is a cat.' }}
+              user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
+              onOpenModal={handleOpenModal}
+            />
+          )}
+          {post && (
+            <Post
+              post={{ ...post, id: 10, image: 'https://picsum.photos/seed/uhuih/400/550', body: 'A 16:9 image' }}
               user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
               onOpenModal={handleOpenModal}
             />

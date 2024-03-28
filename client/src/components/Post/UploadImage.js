@@ -1,10 +1,11 @@
 import { Button } from '@nextui-org/react'
 import React, { useRef } from 'react'
-import PlusIcon from '../../assets/icons/PlusIcon'
 import exifr from 'exifr'
 import { toast } from 'sonner'
+import CameraIcon from '../../assets/icons/CameraIcon'
+import FolderIcon from '../../assets/icons/FolderIcon'
 
-function UploadImage({ onImageUploaded }) {
+function UploadImage({ onImageUploaded, mode }) {
   const fileInput = useRef(null)
 
   const handleFileChange = async (e) => {
@@ -32,31 +33,80 @@ function UploadImage({ onImageUploaded }) {
       return toast.error('Unknown or invalid image.')
     }
     if (!gps?.latitude || !gps?.longitude) {
-      return toast.error(
-        'No location data detected in the image. Check your camera settings and verify that location data is enabled.',
-        { duration: 7500 },
+      if (!navigator.geolocation) {
+        toast.warning('Geolocation is not supported by your browser.')
+      }
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          if (position?.coords) {
+            return onImageUploaded({
+              buffer: file,
+              base64: base64file,
+              gps: {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              },
+              gpsOriginExif: false,
+            })
+          }
+          return toast.error('Unable to capture location data.', { duration: 7500 })
+        },
+        (error) => toast.error(error.message),
       )
+    } else {
+      return onImageUploaded({
+        buffer: file,
+        base64: base64file,
+        gps,
+        gpsOriginExif: true,
+      })
     }
-    return onImageUploaded({
-      buffer: file,
-      base64: base64file,
-      gps,
-    })
+  }
+  if (mode === 'camera') {
+    return (
+      <>
+        <Button
+          size="lg"
+          color="success"
+          variant="faded"
+          className="border-green-400 bg-green-950 text-green-400 "
+          aria-label="new post"
+          onClick={() => fileInput.current.click()}
+        >
+          <CameraIcon />
+        </Button>
+        <input
+          id="image-input"
+          type="file"
+          accept="image/*"
+          capture="environment"
+          ref={fileInput}
+          onChange={handleFileChange}
+          className="hidden"
+        />
+      </>
+    )
   }
   return (
     <>
       <Button
-        isIconOnly
-        size="md"
+        size="lg"
         color="default"
-        variant="ghost"
-        className="border-medium border-neutral-200 "
+        variant="flat"
+        className="text-neutral-400"
         aria-label="new post"
         onClick={() => fileInput.current.click()}
       >
-        <PlusIcon />
+        <FolderIcon />
       </Button>
-      <input id="image-input" type="file" accept="*" ref={fileInput} onChange={handleFileChange} className="hidden" />
+      <input
+        id="image-input"
+        type="file"
+        accept={!!window.chrome ? 'image/*' : '*'}
+        ref={fileInput}
+        onChange={handleFileChange}
+        className="hidden"
+      />
     </>
   )
 }

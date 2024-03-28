@@ -1,10 +1,18 @@
 const express = require('express')
+const https = require('https')
+const fs = require('fs')
+const path = require('path')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const helmet = require('helmet')
 const morgan = require('morgan')
 require('dotenv').config()
+
+const httpsOptions = {
+  key: fs.readFileSync(path.join(process.cwd(), '/config/localdev/cert.key')),
+  cert: fs.readFileSync(path.join(process.cwd(), '/config/localdev/cert.crt')),
+}
 
 const app = express()
 const logger = require('./utils/logger')
@@ -59,6 +67,13 @@ app.use((err, req, res, next) => {
   next()
 })
 
-app.listen(PORT, () => logger.info(`Server listening on port ${PORT}`))
+if (isProduction) {
+  app.listen(PORT, () => logger.info(`Server listening on port ${PORT}`))
+} else {
+  logger.info(
+    `HTTPS Dev server running. Make sure you manually navigate to https://localhost:3001 and 'accept the risk' so that the frontend can talk over https to the server`,
+  )
+  https.createServer(httpsOptions, app).listen(PORT)
+}
 
 module.exports = app
