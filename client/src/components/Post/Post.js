@@ -32,15 +32,12 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
   const [intPost, setIntPost] = React.useState(post)
   const [isFollowed, setIsFollowed] = React.useState(defaultFollowed)
   const [selectedTab, setSelectedTab] = React.useState('photo')
-  const [tabHeight, setTabHeight] = React.useState(300)
   const [liked, setLiked] = React.useState(false)
   const [comment, setComment] = React.useState('')
 
   const user = getSessionUser()
 
   const postImage = `${getUrl()}/${intPost?.image?.reference}`
-
-  const imageRef = useRef(null)
 
   async function checkIfLiked() {
     const isLiked = (await LikeService.hasLikePost(intPost?.id)).data
@@ -62,12 +59,6 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
       checkIfLiked()
     }
   }, [])
-
-  useEffect(() => {
-    if (imageRef.current && imageRef.current.height >= tabHeight) {
-      setTabHeight(imageRef.current.height)
-    }
-  }, [imageRef.current])
 
   const handleLike = async () => {
     try {
@@ -142,7 +133,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
 
   return (
     <>
-      <Card className="w-full h-min-[300px] h-max-[600px]">
+      <Card className="w-full">
         <CardHeader className="justify-between">
           <div className="flex gap-3">
             <Avatar
@@ -188,9 +179,8 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
                 </div>
               }
             >
-              <div className="flex justify-center max-h-[450px] overflow-hidden rounded-2xl">
+              <div className="flex justify-center max-h-[350px] rounded-2xl">
                 <img
-                  ref={imageRef}
                   className="object-contain cursor-pointer"
                   src={postImage}
                   onClick={() => onOpenModal(postImage)}
@@ -207,7 +197,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
                 </div>
               }
             >
-              <div className="overflow-hidden rounded-2xl" style={{ height: tabHeight }}>
+              <div className="overflow-hidden rounded-2xl h-[350px]">
                 <GoogleMapReact
                   bootstrapURLKeys={{ key: 'AIzaSyA_PPhb-5jcZsLPcTdjoBBvF8CzvIbg4RE' }}
                   defaultCenter={{ lat: intPost?.image?.latitude, lng: intPost?.image?.longitude }}
@@ -227,7 +217,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
                 </div>
               }
             >
-              <div className="max-h-[430px] h-full flex flex-col" style={{ height: tabHeight }}>
+              <div className="h-[350px] flex flex-col">
                 <div className="overflow-y-scroll">
                   <div className="flex flex-col gap-2 scroll-">
                     {intPost.postComments.map((comment) => (
