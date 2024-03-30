@@ -44,7 +44,10 @@ function Footer({ refreshFeed }) {
           variant="ghost"
           className="border-medium border-neutral-200 "
           aria-label="new post"
-          onClick={() => captureDeviceSelect.onOpen()}
+          onClick={(e) => {
+            e.stopPropagation()
+            captureDeviceSelect.onOpen()
+          }}
         >
           <PlusIcon />
         </Button>
