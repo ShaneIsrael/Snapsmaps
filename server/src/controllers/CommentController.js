@@ -9,7 +9,6 @@ controller.create = async (req, res, next) => {
     const { postId, body } = req.body
     if (!postId) return res.status(400).send('a post id is required')
 
-    console.log(req.user)
     const comment = await Models.postComment.create({
       userId: req.user.id,
       postId,
