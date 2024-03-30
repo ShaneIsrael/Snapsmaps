@@ -17,7 +17,6 @@ controller.public = async (req, res, next) => {
         { model: Models.postComment, include: [{ model: Models.user, include: [Models.image] }] },
       ],
     })
-    console.log(posts[0].postComments)
     res.status(200).send(posts)
   } catch (err) {
     next(err)
