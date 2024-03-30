@@ -16,6 +16,11 @@ import Appbar from '../components/Layout/Appbar'
 import Post from '../components/Post/Post'
 import TestService from '../services/TestService'
 import { useParams } from 'react-router-dom'
+import { getSessionUser, getUrl } from '../common/utils'
+import { CameraAltIcon } from '../assets/icons/CameraAltIcon'
+import { ProfileService } from '../services'
+import ImageCropProvider from '../providers/ImageCropProvider'
+import ImageCrop from '../components/Cropper/ImageCrop'
 /**
  * Show Avatar / name / mention / brif bio
  * Show post history
@@ -32,13 +37,24 @@ function Profile({ isSelf }) {
   const [post, setPost] = React.useState()
   const [modalImage, setModalImage] = React.useState()
   const [editMode, setEditMode] = React.useState(false)
+  const [saving, setSaving] = React.useState(false)
 
   const { mention } = useParams()
 
   const [profileDetails, setProfileDetails] = React.useState({
-    name: 'Shane Israel',
-    mention: 'dissahenyo',
-    bio: "This is just a short bio about me and it really shouldn't be that long but I'm making it long to test what a long bio might look like.",
+    displayName: '',
+    email: '',
+    mention: '',
+    bio: '',
+    image: '',
+  })
+
+  const [updatedProfileDetails, setUpdatedProfileDetails] = React.useState({
+    displayName: '',
+    email: '',
+    mention: '',
+    bio: '',
+    image: '',
   })
 
   const handleOpenModal = () => {
@@ -49,21 +65,39 @@ function Profile({ isSelf }) {
     imageModal.onOpen()
   }
 
-  React.useEffect(() => {
-    async function fetch() {
-      try {
-        const res = await TestService.test()
-        setPost({
-          ...res.data,
-          body: 'This cat sleeps super weird. Why is she sleeping half on the pillow and half off?',
-          id: 1,
-        })
-      } catch (err) {
-        console.error(err)
+  async function fetch() {
+    try {
+      let profile
+      if (!mention) {
+        profile = getSessionUser()
+      } else {
+        // lookup profile
       }
+
+      setProfileDetails(profile)
+      setUpdatedProfileDetails(profile)
+    } catch (err) {
+      console.error(err)
     }
+  }
+
+  const handleUpdateProfile = async () => {
+    try {
+      setSaving(true)
+      const updatedProfile = (await ProfileService.update(updatedProfileDetails)).data
+      fetch()
+    } catch (err) {
+      console.error(err)
+    }
+    setSaving(false)
+    setEditMode(false)
+  }
+
+  React.useEffect(() => {
     fetch()
-  }, [])
+  }, [mention])
+
+  console.log(profileDetails)
 
   return (
     <>
@@ -102,11 +136,28 @@ function Profile({ isSelf }) {
           )}
         </ModalContent>
       </Modal>
-      <Appbar noProfile backButton="/" pageName="disshaneyo" />
+      <Appbar noProfile backButton="/" pageName={profileDetails.mention} />
       <div className="mt-8 mx-6">
         <div className="flex gap-5 max-w-[500px] justify-start items-start">
           <div className="flex flex-col gap-4">
-            <Avatar src="https://i.imgur.com/YHaDQot.png" isBordered className="w-20 h-20 text-large" />
+            {editMode ? (
+              <ImageCropProvider>
+                <ImageCrop
+                  onDone={(image) => setUpdatedProfileDetails((prev) => ({ ...prev, image, includesImage: true }))}
+                />
+              </ImageCropProvider>
+            ) : (
+              <Avatar
+                src={profileDetails.image ? `${getUrl()}/${profileDetails.image}` : ''}
+                isBordered
+                className="w-20 h-20 text-large"
+                classNames={{
+                  base: 'bg-gradient-to-br from-[#00b31b] to-[#a6ffb3]',
+                  icon: 'text-black/80',
+                }}
+              />
+            )}
+
             {!isSelf && (
               <Button
                 className={isFollowed ? 'bg-transparent text-foreground border-default-200 w-[80px]' : 'w-[80px]'}
@@ -126,9 +177,10 @@ function Profile({ isSelf }) {
                 radius="sm"
                 size="sm"
                 variant={editMode ? 'bordered' : 'solid'}
-                onPress={() => setEditMode((prev) => !prev)}
+                onPress={editMode ? handleUpdateProfile : () => setEditMode(true)}
+                disabled={saving}
               >
-                {editMode ? 'Save' : 'Edit'}
+                {editMode ? (saving ? 'Saving...' : 'Save') : 'Edit'}
               </Button>
             )}
           </div>
@@ -136,7 +188,7 @@ function Profile({ isSelf }) {
             <div className="h-[125px] w-full">
               {!editMode ? (
                 <>
-                  <h4 className="text-2xl font-semibold leading-none text-default-600">{profileDetails.name}</h4>
+                  <h4 className="text-2xl font-semibold leading-none text-default-600">{profileDetails.displayName}</h4>
                   <h5 className="text-md tracking-tight text-blue-400">@{profileDetails.mention}</h5>
                   <p className="text-small tracking-tight text-default-500 mt-2">{profileDetails.bio}</p>
                 </>
@@ -147,8 +199,8 @@ function Profile({ isSelf }) {
                     size="md"
                     variant="bordered"
                     placeholder="Name"
-                    value={profileDetails.name}
-                    onValueChange={(value) => setProfileDetails((prev) => ({ ...prev, name: value }))}
+                    value={updatedProfileDetails.displayName}
+                    onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, displayName: value }))}
                     className="w-full"
                   />
                   <Input
@@ -156,15 +208,15 @@ function Profile({ isSelf }) {
                     size="sm"
                     variant="bordered"
                     placeholder="@mention"
-                    value={profileDetails.mention}
-                    onValueChange={(value) => setProfileDetails((prev) => ({ ...prev, mention: value }))}
+                    value={updatedProfileDetails.mention}
+                    onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, mention: value }))}
                     className="w-full"
                   />
                   <Textarea
                     variant="bordered"
                     placeholder="Bio"
-                    value={profileDetails.bio}
-                    onValueChange={(value) => setProfileDetails((prev) => ({ ...prev, bio: value }))}
+                    value={updatedProfileDetails.bio}
+                    onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, bio: value }))}
                     rows={2}
                     maxRows={2}
                     className="w-full"

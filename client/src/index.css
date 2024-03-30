@@ -8,3 +8,8 @@ body,
   height: 100%;
   background-color: #000000;
 }
+
+.reactEasyCrop_CropArea {
+  color: rgba(0, 0, 0, 0.8) !important;
+  border: 2px solid rgba(255, 255, 255, 0.5) !important;
+}

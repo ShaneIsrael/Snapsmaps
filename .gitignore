@@ -2,4 +2,5 @@
 server/node_modules/
 server/db-data/
 server/.env
+server/images
 client/node_modules/

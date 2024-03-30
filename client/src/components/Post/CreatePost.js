@@ -7,6 +7,7 @@ import {
   Image,
   Modal,
   ModalContent,
+  Spinner,
   Tab,
   Tabs,
   Textarea,
@@ -20,11 +21,14 @@ import { GoogleMapDarkMode } from '../../common/themes'
 import clsx from 'clsx'
 import CloseIcon from '../../assets/icons/CloseIcon'
 import SendIcon from '../../assets/icons/SendIcon'
+import { PostService } from '../../services'
+import { toast } from 'sonner'
 
-function CreatePost({ imageData, onOpen, onCancel }) {
+function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
   const newPostModal = useDisclosure()
   const [selectedTab, setSelectedTab] = useState('photo')
   const [description, setDescription] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
   const renderMarkers = (map, maps) => {
     new maps.Marker({
@@ -68,6 +72,10 @@ function CreatePost({ imageData, onOpen, onCancel }) {
   }
 
   useEffect(() => {
+    setDescription('')
+    setSelectedTab('photo')
+    setSubmitting(false)
+
     if (imageData) {
       newPostModal.onOpen()
       onOpen()
@@ -78,6 +86,22 @@ function CreatePost({ imageData, onOpen, onCancel }) {
 
   const handleCancel = () => {
     onCancel()
+  }
+
+  const submit = async () => {
+    try {
+      setSubmitting(true)
+      await PostService.create(description, imageData.gps, imageData.file)
+      onSubmitted()
+    } catch (err) {
+      if (err.response?.status === 413) {
+        return toast.error(err.response.data)
+      }
+      if (err.response?.data) {
+        return toast.error(err.response.data)
+      }
+    }
+    setSubmitting(false)
   }
 
   return (
@@ -162,8 +186,8 @@ function CreatePost({ imageData, onOpen, onCancel }) {
                 <Button color="danger" variant="flat" fullWidth onClick={handleCancel}>
                   <CloseIcon />
                 </Button>
-                <Button color="primary" variant="solid" fullWidth>
-                  <SendIcon />
+                <Button color="primary" variant="solid" fullWidth onClick={submit} disabled={submitting}>
+                  {submitting ? 'Submitting...' : <SendIcon />}
                 </Button>
               </div>
             </CardFooter>

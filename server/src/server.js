@@ -1,4 +1,5 @@
 const express = require('express')
+const fileUpload = require('express-fileupload')
 const https = require('https')
 const fs = require('fs')
 const path = require('path')
@@ -22,6 +23,11 @@ const { NODE_ENV } = process.env
 const isProduction = NODE_ENV === 'production'
 
 const PORT = isProduction ? 8080 : 3001
+
+if (!isProduction) {
+  const imagesDir = path.join(process.cwd(), '/images')
+  app.use(express.static(imagesDir))
+}
 
 app.set('trust proxy', true)
 
@@ -51,8 +57,22 @@ app.use(
   }),
 )
 
+app.use(
+  fileUpload({
+    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+    responseOnLimit: 'Images must be under 10MB in size.',
+    abortOnLimit: true,
+    logger: logger,
+  }),
+)
+
 // API Routes
 require('./routes/auth')(app)
+require('./routes/post')(app)
+require('./routes/feed')(app)
+require('./routes/like')(app)
+require('./routes/profile')(app)
+require('./routes/comment')(app)
 require('./routes/test')(app)
 require('./routes')(app)
 

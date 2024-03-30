@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { getUrl } from '../common/utils'
+import { toast } from 'sonner'
 
 const URL = getUrl()
 
@@ -22,7 +23,7 @@ instance.interceptors.response.use(
   (error) => {
     if (!axios.isCancel(error)) {
       if (error.response?.status === 403) {
-        window.location.href = '/#/login'
+        window.location.href = '/login'
       }
       return Promise.reject(error)
     }

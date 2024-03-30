@@ -40,6 +40,7 @@ function UploadImage({ onImageUploaded, mode }) {
         (position) => {
           if (position?.coords) {
             return onImageUploaded({
+              file: e.target.files[0],
               buffer: file,
               base64: base64file,
               gps: {
@@ -55,6 +56,7 @@ function UploadImage({ onImageUploaded, mode }) {
       )
     } else {
       return onImageUploaded({
+        file: e.target.files[0],
         buffer: file,
         base64: base64file,
         gps,

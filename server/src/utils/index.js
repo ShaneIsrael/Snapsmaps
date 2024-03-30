@@ -1,6 +1,7 @@
 const validator = require('email-validator')
 const fs = require('fs')
 const path = require('path')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
   isValidEmail: (email) => validator.validate(email),
@@ -16,4 +17,6 @@ module.exports = {
     }
     return dd
   },
+  signUserJwt: (id, email, displayName, mention, bio, image) =>
+    jwt.sign({ id, email, displayName, mention, bio, image }, process.env.SECRET_KEY),
 }

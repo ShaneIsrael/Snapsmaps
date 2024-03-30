@@ -8,6 +8,7 @@ const Login = (props) => {
   const navigate = useNavigate()
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const { login } = useAuth()
   const [error, setError] = React.useState()
 
   const handleLogin = async () => {
@@ -46,6 +47,7 @@ const Login = (props) => {
                   variant="flat"
                   value={email}
                   onValueChange={setEmail}
+                  onKeyDown={handleKeyDown}
                   className="w-full"
                 />
 
@@ -55,9 +57,15 @@ const Login = (props) => {
                   variant="flat"
                   value={password}
                   onValueChange={setPassword}
+                  onKeyDown={handleKeyDown}
                   className="w-full"
                 />
               </div>
+              {error && (
+                <div className="flex justify-center w-full mt-2 p-2 rounded-lg bg-red-600 bg-opacity-40 text-neutral-50 font-bold border-large border-red-600">
+                  {error}
+                </div>
+              )}
             </CardBody>
             <Divider />
             <CardFooter>
@@ -67,7 +75,7 @@ const Login = (props) => {
                   variant="solid"
                   className="w-full"
                   isDisabled={!email || !password}
-                  onClick={() => navigate('/')}
+                  onClick={handleLogin}
                 >
                   Sign in
                 </Button>

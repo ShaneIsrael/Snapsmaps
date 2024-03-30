@@ -5,25 +5,33 @@ import Post from '../components/Post/Post'
 import Appbar from '../components/Layout/Appbar'
 import { Image, Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 import Footer from '../components/Layout/Footer'
+import { useAuthed } from '../hooks/useAuthed'
+import { FeedService } from '../services'
 
 const Welcome = ({ mode }) => {
-  const [post, setPost] = React.useState()
+  const { loading, isAuthenticated } = useAuthed()
+
+  const [posts, setPosts] = React.useState()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [modalImage, setModalImage] = React.useState()
 
-  React.useEffect(() => {
-    async function fetch() {
-      try {
-        const res = await TestService.test()
-        setPost({
-          ...res.data,
-          body: 'This cat sleeps super weird. Why is she sleeping half on the pillow and half off?',
-          id: 1,
-        })
-      } catch (err) {
-        console.error(err)
-      }
+  async function fetch() {
+    try {
+      const feed = (await FeedService.getPublicFeed()).data
+      setPosts(feed)
+      console.log(feed)
+      // const res = await TestService.test()
+      // setPost({
+      //   ...res.data,
+      //   body: 'This cat sleeps super weird. Why is she sleeping half on the pillow and half off?',
+      //   id: 1,
+      // })
+    } catch (err) {
+      console.error(err)
     }
+  }
+
+  React.useEffect(() => {
     fetch()
   }, [])
 
@@ -50,75 +58,15 @@ const Welcome = ({ mode }) => {
           )}
         </ModalContent>
       </Modal>
-      <Appbar />
-      <div className="h-full flex justify-center pt-8 pb-8">
-        <div className="flex flex-col items-center gap-4">
-          {post && (
-            <Post
-              post={{ ...post, id: 2, image: 'https://picsum.photos/seed/qt/400/550' }}
-              user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
-              onOpenModal={handleOpenModal}
-            />
-          )}
-          {post && (
-            <Post
-              post={{ ...post, id: 2, image: 'https://picsum.photos/seed/adfsf/400/550', body: 'Yes this is a cat.' }}
-              user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
-              onOpenModal={handleOpenModal}
-            />
-          )}
-          {post && (
-            <Post
-              post={{ ...post, id: 3, image: 'https://picsum.photos/seed/adsf/400/550', body: 'A 16:9 image' }}
-              user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
-              onOpenModal={handleOpenModal}
-            />
-          )}
-          {post && (
-            <Post
-              post={{ ...post, id: 4, image: 'https://picsum.photos/seed/oooiu/400/550' }}
-              user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
-              onOpenModal={handleOpenModal}
-            />
-          )}
-          {post && (
-            <Post
-              post={{ ...post, id: 5, image: 'https://picsum.photos/seed/a234sdf/400/550', body: 'Yes this is a cat.' }}
-              user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
-              onOpenModal={handleOpenModal}
-            />
-          )}
-          {post && (
-            <Post
-              post={{ ...post, id: 6, image: 'https://picsum.photos/seed/lk8kf/400/550', body: 'A 16:9 image' }}
-              user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
-              onOpenModal={handleOpenModal}
-            />
-          )}
-          {post && (
-            <Post
-              post={{ ...post, id: 7, image: 'https://picsum.photos/seed/ttwer/400/550' }}
-              user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
-              onOpenModal={handleOpenModal}
-            />
-          )}
-          {post && (
-            <Post
-              post={{ ...post, id: 9, image: 'https://picsum.photos/seed/pplfa/400/550', body: 'Yes this is a cat.' }}
-              user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
-              onOpenModal={handleOpenModal}
-            />
-          )}
-          {post && (
-            <Post
-              post={{ ...post, id: 10, image: 'https://picsum.photos/seed/uhuih/400/550', body: 'A 16:9 image' }}
-              user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
-              onOpenModal={handleOpenModal}
-            />
-          )}
+      <Appbar noProfile={!isAuthenticated} />
+      <div className="h-full flex justify-center flex-grow pt-8 pb-8">
+        <div className="flex flex-col max-w-[375px] w-full p-2 items-center gap-4">
+          {posts?.map((post) => (
+            <Post key={`post-${post.id}`} post={post} onOpenModal={handleOpenModal} />
+          ))}
         </div>
       </div>
-      <Footer />
+      <Footer refreshFeed={fetch} />
     </>
   )
 }

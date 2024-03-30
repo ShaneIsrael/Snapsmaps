@@ -15,9 +15,16 @@ import {
 } from '@nextui-org/react'
 import { AcmeLogo } from './AcmeLogo.js'
 import ArrowLeft from '../../assets/icons/ArrowLeft.js'
+import { getSessionUser, getUrl } from '../../common/utils.js'
+import { useAuth } from '../../hooks/useAuth.js'
 
 export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
   const navigate = useNavigate()
+
+  const profile = getSessionUser()
+
+  const { logout } = useAuth()
+
   return (
     <Navbar isBordered>
       <NavbarContent justify="start">
@@ -45,15 +52,15 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
                 as="button"
                 className="transition-transform"
                 color="primary"
-                name="Shane Israel"
+                name={profile.displayName}
                 size="md"
-                src="https://i.imgur.com/YHaDQot.png"
+                src={profile.image ? `${getUrl()}/${profile.image}` : ''}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="signin-info" className="h-14 gap-2">
                 <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">shanemisrael@gmail.com</p>
+                <p className="font-semibold">{profile.email}</p>
               </DropdownItem>
               <DropdownItem key="profile" onClick={() => navigate('/profile')}>
                 My Profile
@@ -62,7 +69,7 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
                 Settings
               </DropdownItem>
               <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-              <DropdownItem key="logout" color="danger">
+              <DropdownItem key="logout" color="danger" onClick={logout}>
                 Log Out
               </DropdownItem>
             </DropdownMenu>

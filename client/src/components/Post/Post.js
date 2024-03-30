@@ -23,12 +23,20 @@ import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
 import ChatIcon from '../../assets/icons/ChatIcon'
 import Comment from '../Comment/Comment'
+import { getSessionUser, getUrl } from '../../common/utils'
+import { CommentService, LikeService, PostService } from '../../services'
 
-function Post({ post, user, defaultFollowed, defaultLiked, onOpenModal, width = '90%' }) {
+function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width = '90%' }) {
+  const [intPost, setIntPost] = React.useState(post)
   const [isFollowed, setIsFollowed] = React.useState(defaultFollowed)
-  const [isLiked, setIsLiked] = React.useState(defaultLiked)
   const [selectedTab, setSelectedTab] = React.useState('photo')
   const [tabHeight, setTabHeight] = React.useState(250)
+  const [liked, setLiked] = React.useState(false)
+  const [comment, setComment] = React.useState('')
+
+  const user = getSessionUser()
+
+  const postImage = `${getUrl()}/${intPost?.image?.reference}`
 
   const handleImageContainerSize = useCallback((node) => {
     if (node !== null && tabHeight) {
@@ -36,9 +44,57 @@ function Post({ post, user, defaultFollowed, defaultLiked, onOpenModal, width = 
     }
   }, [])
 
+  async function checkIfLiked() {
+    const isLiked = (await LikeService.hasLikePost(intPost?.id)).data
+    setLiked(isLiked)
+  }
+
+  async function reload() {
+    try {
+      setComment('')
+      const postData = (await PostService.get(post.id)).data
+      setIntPost(postData)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  useEffect(() => {
+    if (user) {
+      checkIfLiked()
+    }
+  }, [])
+
+  const handleLike = async () => {
+    try {
+      const isLiked = (await LikeService.likePost(post.id)).data
+      setLiked(isLiked)
+      reload()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const submitComment = async () => {
+    try {
+      await CommentService.createPostComment(post.id, comment)
+      reload()
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const handleCommentKeydown = (e) => {
+    if (e.key === 'Enter') {
+      if (comment) {
+        submitComment()
+      }
+    }
+  }
+
   const renderMarkers = (map, maps) => {
     new maps.Marker({
-      position: post.gps,
+      position: { lat: intPost?.image.latitude, lng: intPost?.image.longitude },
       map,
     })
   }
@@ -77,15 +133,22 @@ function Post({ post, user, defaultFollowed, defaultLiked, onOpenModal, width = 
     }
   }
 
+  const hasProfileImage = !!intPost?.user?.image
+
   return (
     <>
-      <Card className="sm:max-w-[500px]" style={{ width }}>
+      <Card className="w-full h-max-[600px]">
         <CardHeader className="justify-between">
           <div className="flex gap-3">
-            <Avatar isBordered radius="full" size="md" src="https://i.imgur.com/YHaDQot.png" />
+            <Avatar
+              isBordered
+              radius="full"
+              size="md"
+              src={hasProfileImage ? `${getUrl()}/${intPost?.user?.image?.reference}` : ''}
+            />
             <div className="flex flex-col gap-1 items-start justify-center">
-              <h4 className="text-small font-semibold leading-none text-default-600">{user.name}</h4>
-              <h5 className="text-small tracking-tight text-default-400">{user.mention}</h5>
+              <h4 className="text-small font-semibold leading-none text-default-600">{intPost?.user?.displayName}</h4>
+              <h5 className="text-small tracking-tight text-default-400">@{intPost?.user?.mention}</h5>
             </div>
           </div>
           <Button
@@ -100,7 +163,7 @@ function Post({ post, user, defaultFollowed, defaultLiked, onOpenModal, width = 
           </Button>
         </CardHeader>
         <CardBody className="px-3 py-0 text-small text-default-500 font-semibold overflow-y-hidden rounded-b-2xl">
-          <p className="mb-2">{post.body}</p>
+          <p className="mb-2">{intPost?.title}</p>
           <div className={`sm:max-h-[700px] pb-0`}>
             <Tabs
               aria-label="post tabs"
@@ -122,11 +185,10 @@ function Post({ post, user, defaultFollowed, defaultLiked, onOpenModal, width = 
               >
                 <div style={{ height: tabHeight }} className="overflow-hidden rounded-2xl">
                   <Image
-                    onClick={() => onOpenModal(post.image)}
-                    ref={handleImageContainerSize}
+                    onClick={() => onOpenModal(postImage)}
                     width="100%"
                     alt="a post image"
-                    src={post.image}
+                    src={postImage}
                     className="object-cover cursor-pointer"
                   />
                 </div>
@@ -140,10 +202,10 @@ function Post({ post, user, defaultFollowed, defaultLiked, onOpenModal, width = 
                   </div>
                 }
               >
-                <div style={{ height: tabHeight }} className="overflow-hidden rounded-2xl">
+                <div className="overflow-hidden rounded-2xl" style={{ height: tabHeight }}>
                   <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyA_PPhb-5jcZsLPcTdjoBBvF8CzvIbg4RE' }}
-                    defaultCenter={post.gps}
+                    defaultCenter={{ lat: intPost?.image?.latitude, lng: intPost?.image?.longitude }}
                     defaultZoom={14}
                     yesIWantToUseGoogleMapApiInternals
                     onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
@@ -160,74 +222,22 @@ function Post({ post, user, defaultFollowed, defaultLiked, onOpenModal, width = 
                   </div>
                 }
               >
-                <div style={{ minHeight: tabHeight }} className="max-h-[489px] h-max flex flex-col">
+                <div className="max-h-[400px] h-full flex flex-col">
                   <div className="overflow-y-scroll">
                     <div className="flex flex-col gap-2 scroll-">
-                      <Comment
-                        comment={{
-                          body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Blandit cursus risus at ultrices mi tempus imperdiet nulla.',
-                          user: { avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026024d', name: 'Billy Jane' },
-                        }}
-                      />
-                      <Comment
-                        comment={{
-                          body: 'Yep, that is definitely a picture. Please post more :)',
-                          user: { avatar: 'https://i.pravatar.cc/150?u=a042581f4e29026704d', name: 'Jessica Jones' },
-                        }}
-                      />
-                      <Comment
-                        comment={{
-                          body: 'this is a comment on a post',
-                          user: { avatar: 'https://i.pravatar.cc/150?u=a04258a2462d826712d', name: 'Dude Bro' },
-                        }}
-                      />
-                      <Comment
-                        comment={{
-                          body: 'Let me tell you. This might be the best picture the world has ever seen.',
-                          user: {
-                            avatar:
-                              'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Barack_Obama_profile_picture.jpg/600px-Barack_Obama_profile_picture.jpg',
-                            name: 'Barack Obama',
-                          },
-                        }}
-                      />
-                      <Comment
-                        comment={{
-                          body: 'Let me tell you. This might be the best picture the world has ever seen.',
-                          user: {
-                            avatar:
-                              'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Barack_Obama_profile_picture.jpg/600px-Barack_Obama_profile_picture.jpg',
-                            name: 'Barack Obama',
-                          },
-                        }}
-                      />
-                      <Comment
-                        comment={{
-                          body: 'Let me tell you. This might be the best picture the world has ever seen.',
-                          user: {
-                            avatar:
-                              'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Barack_Obama_profile_picture.jpg/600px-Barack_Obama_profile_picture.jpg',
-                            name: 'Barack Obama',
-                          },
-                        }}
-                      />
-                      <Comment
-                        comment={{
-                          body: 'Let me tell you. This might be the best picture the world has ever seen.',
-                          user: {
-                            avatar:
-                              'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Barack_Obama_profile_picture.jpg/600px-Barack_Obama_profile_picture.jpg',
-                            name: 'Barack Obama',
-                          },
-                        }}
-                      />
+                      {intPost.postComments.map((comment) => (
+                        <Comment key={`post-${post.id}-comment-${comment.id}`} comment={comment} />
+                      ))}
                     </div>
                   </div>
                   <Textarea
                     variant="faded"
                     labelPlacement="outside"
                     placeholder="Write..."
+                    value={comment}
+                    onChange={(event) => setComment(event.target.value)}
                     maxRows={2}
+                    onKeyDown={handleCommentKeydown}
                     className="max-w mt-2"
                     classNames={{
                       inputWrapper: 'rounded-lg',
@@ -240,13 +250,13 @@ function Post({ post, user, defaultFollowed, defaultLiked, onOpenModal, width = 
         </CardBody>
         <CardFooter className="gap-3 pt-0">
           <div className="flex gap-1 ">
-            <p className="font-semibold text-default-400 text-small">4</p>
-            <p className=" text-default-400 text-small cursor-pointer" onClick={() => setIsLiked((prev) => !prev)}>
-              <Heart className={clsx('w-5 h-5 stroke-red-500', { 'fill-red-500': isLiked })} />
+            <p className="font-semibold text-default-400 text-small">{intPost?.likeCount}</p>
+            <p className=" text-default-400 text-small cursor-pointer" onClick={handleLike}>
+              <Heart className={clsx('w-5 h-5 stroke-red-500', { 'fill-red-500': liked })} />
             </p>
           </div>
           <div className="flex gap-1">
-            <p className="font-semibold text-default-400 text-small">97.1K</p>
+            <p className="font-semibold text-default-400 text-small">{intPost?.commentCount}</p>
             <p className="text-default-400 text-small">Comments</p>
           </div>
         </CardFooter>

@@ -8,7 +8,6 @@ const useAuth = () => {
       await AuthService.logout()
       navigate('/login')
     } catch (err) {
-      console.log(err)
       throw err
     }
   }
@@ -17,7 +16,6 @@ const useAuth = () => {
     try {
       await AuthService.login(email, password)
     } catch (err) {
-      console.log(err)
       throw err
     }
   }

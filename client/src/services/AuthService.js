@@ -1,12 +1,11 @@
-import Cookies from 'js-cookie'
 import Api from './Api'
 
 class AuthService {
   login(email, password) {
     return Api().post('/auth/login', { email, password })
   }
-  register(email, password, displayName) {
-    return Api().post('/auth/register', { email, password, displayName })
+  register(email, displayName, mention, password) {
+    return Api().post('/auth/register', { email, displayName, mention, password, displayName })
   }
   logout() {
     return Api().post('/auth/logout')

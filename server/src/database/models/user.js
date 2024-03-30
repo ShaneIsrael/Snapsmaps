@@ -9,11 +9,28 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      const { post, image, postComment, postLike, follow } = models
+      this.hasMany(post)
+      this.hasMany(postComment)
+      this.hasMany(postLike)
+      this.hasMany(follow)
+      this.belongsTo(image)
     }
   }
   User.init(
     {
-      dn: {
+      imageId: {
+        type: DataTypes.INTEGER,
+        references: { model: sequelize.models.image, key: 'id' },
+      },
+      displayName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      mention: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
@@ -26,8 +43,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           notEmpty: true,
+          isEmail: true,
         },
         unique: true,
+      },
+      bio: {
+        type: DataTypes.STRING,
       },
       password: {
         type: DataTypes.STRING,
@@ -38,13 +59,29 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true,
         },
       },
+      verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       token: {
         type: DataTypes.STRING,
       },
     },
     {
       sequelize,
-      modelName: 'User',
+      modelName: 'user',
+      defaultScope: {
+        attributes: {
+          exclude: ['password', 'token', 'verified'],
+        },
+      },
+      scopes: {
+        withPassword: {
+          attributes: {
+            include: ['password'],
+          },
+        },
+      },
     },
   )
   return User
