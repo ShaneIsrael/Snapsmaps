@@ -18,16 +18,14 @@ import TestService from '../services/TestService'
 import { useParams } from 'react-router-dom'
 import { getSessionUser, getUrl } from '../common/utils'
 import { CameraAltIcon } from '../assets/icons/CameraAltIcon'
-import { ProfileService } from '../services'
+import { PostService, ProfileService } from '../services'
 import ImageCropProvider from '../providers/ImageCropProvider'
 import ImageCrop from '../components/Cropper/ImageCrop'
+
 /**
- * Show Avatar / name / mention / brif bio
+ * TODO
  * Show post history
  * Show stats on number of posts, followers, and following
- * Option to switch to settings view
- * Allow editing of details / upload profile photo
- *
  */
 
 function Profile({ isSelf }) {
@@ -36,6 +34,7 @@ function Profile({ isSelf }) {
 
   const [isFollowed, setIsFollowed] = React.useState(false)
   const [post, setPost] = React.useState()
+  const [postHistory, setPostHistory] = React.useState([])
   const [modalImage, setModalImage] = React.useState()
   const [editMode, setEditMode] = React.useState(false)
   const [saving, setSaving] = React.useState(false)
@@ -58,8 +57,14 @@ function Profile({ isSelf }) {
     image: '',
   })
 
-  const handleOpenModal = () => {
-    postModal.onOpen()
+  const handleOpenModal = async (id) => {
+    try {
+      const post = (await PostService.get(id)).data
+      setPost(post)
+      postModal.onOpen()
+    } catch (err) {
+      console.error(err)
+    }
   }
   const handleOpenImageModal = (image) => {
     setModalImage(image)
@@ -81,6 +86,14 @@ function Profile({ isSelf }) {
       console.error(err)
     }
   }
+  async function fetchHistory() {
+    try {
+      const history = (await ProfileService.getPostHistory()).data
+      setPostHistory(history)
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   const handleUpdateProfile = async () => {
     try {
@@ -96,9 +109,8 @@ function Profile({ isSelf }) {
 
   React.useEffect(() => {
     fetch()
+    fetchHistory()
   }, [mention])
-
-  console.log(profileDetails)
 
   return (
     <>
@@ -127,15 +139,8 @@ function Profile({ isSelf }) {
         backdrop="blur"
         hideCloseButton
       >
-        <ModalContent className="">
-          {(onClose) => (
-            <Post
-              post={post}
-              user={{ name: 'Shane Israel', mention: '@disshaneyo' }}
-              onOpenModal={handleOpenImageModal}
-              width="300px"
-            />
-          )}
+        <ModalContent className="max-w-[375px] w-full ">
+          {(onClose) => <Post isSelf post={post} onOpenModal={handleOpenImageModal} />}
         </ModalContent>
       </Modal>
       <Appbar noProfile backButton="/" pageName={profileDetails.mention} />
@@ -164,7 +169,7 @@ function Profile({ isSelf }) {
                 radius="sm"
                 size="sm"
                 variant={isFollowed ? 'bordered' : 'solid'}
-                onPress={() => setIsFollowed(!isFollowed)}
+                onClick={() => setIsFollowed(!isFollowed)}
               >
                 {isFollowed ? 'Unfollow' : 'Follow'}
               </Button>
@@ -176,7 +181,7 @@ function Profile({ isSelf }) {
                 radius="sm"
                 size="sm"
                 variant={editMode ? 'bordered' : 'solid'}
-                onPress={editMode ? handleUpdateProfile : () => setEditMode(true)}
+                onClick={editMode ? handleUpdateProfile : () => setEditMode(true)}
                 disabled={saving}
               >
                 {editMode ? (saving ? 'Saving...' : 'Save') : 'Edit'}
@@ -210,6 +215,7 @@ function Profile({ isSelf }) {
                     value={updatedProfileDetails.mention}
                     onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, mention: value }))}
                     className="w-full"
+                    disabled
                   />
                   <Textarea
                     variant="bordered"
@@ -243,72 +249,15 @@ function Profile({ isSelf }) {
         </div>
         <Divider className="my-5" />
         <div className="grid grid-cols-[repeat(auto-fill,100px)] gap-1 justify-center">
-          <Image
-            onClick={() => handleOpenModal()}
-            alt="a history image"
-            src="https://picsum.photos/seed/a/200/300"
-            className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
-          />
-          <Image
-            onClick={() => handleOpenModal()}
-            alt="a history image"
-            src="https://picsum.photos/seed/b/200/300"
-            className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
-          />
-          <Image
-            onClick={() => handleOpenModal()}
-            alt="a history image"
-            src="https://picsum.photos/seed/c/200/300"
-            className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
-          />
-          <Image
-            onClick={() => handleOpenModal()}
-            alt="a history image"
-            src="https://picsum.photos/seed/d/200/300"
-            className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
-          />
-          <Image
-            onClick={() => handleOpenModal()}
-            alt="a history image"
-            src="https://picsum.photos/seed/e/200/300"
-            className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
-          />
-          <Image
-            onClick={() => handleOpenModal()}
-            alt="a history image"
-            src="https://picsum.photos/seed/f/200/300"
-            className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
-          />
-          <Image
-            onClick={() => handleOpenModal()}
-            alt="a history image"
-            src="https://picsum.photos/seed/g/200/300"
-            className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
-          />
-          <Image
-            onClick={() => handleOpenModal()}
-            alt="a history image"
-            src="https://picsum.photos/seed/h/200/300"
-            className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
-          />
-          <Image
-            onClick={() => handleOpenModal()}
-            alt="a history image"
-            src="https://picsum.photos/seed/i/200/300"
-            className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
-          />
-          <Image
-            onClick={() => handleOpenModal()}
-            alt="a history image"
-            src="https://picsum.photos/seed/j/200/300"
-            className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
-          />
-          <Image
-            onClick={() => handleOpenModal()}
-            alt="a history image"
-            src="https://picsum.photos/seed/k/200/300"
-            className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
-          />
+          {postHistory.map((post) => (
+            <Image
+              key={`post-history-${post.id}`}
+              onClick={() => handleOpenModal(post.id)}
+              alt="a history image"
+              src={`${getUrl()}/${post.image.reference}`}
+              className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
+            />
+          ))}
         </div>
       </div>
     </>

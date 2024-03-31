@@ -143,9 +143,15 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
               src={hasProfileImage ? `${getUrl()}/${intPost?.user?.image?.reference}` : ''}
             />
             <div className="flex flex-col gap-1 items-start justify-center">
-              <h4 className="text-small font-semibold leading-none text-default-600">{intPost?.user?.displayName}</h4>
+              <h4
+                className={clsx('text-md font-semibold leading-none text-default-600', {
+                  'text-primary-500': isSelf,
+                })}
+              >
+                {intPost?.user?.displayName}
+              </h4>
 
-              <h5 className="text-small tracking-tight text-default-400">@{intPost?.user?.mention}</h5>
+              <h5 className="text-small font-semibold tracking-tight text-default-400">@{intPost?.user?.mention}</h5>
             </div>
           </div>
           <Button
@@ -154,7 +160,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
             radius="full"
             size="sm"
             variant={isFollowed ? 'bordered' : 'solid'}
-            onPress={() => setIsFollowed(!isFollowed)}
+            onClick={() => setIsFollowed(!isFollowed)}
           >
             {isFollowed ? 'Unfollow' : 'Follow'}
           </Button>

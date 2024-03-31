@@ -14,11 +14,15 @@ const COOKIE_PARAMS = {
 
 const controller = {}
 
+/**
+ * Updates users profile information. (image, displayName, bio)
+ * @returns
+ */
 controller.update = async (req, res, next) => {
   try {
-    const { displayName, mention, bio, includesImage } = req.body
+    const { displayName, bio, includesImage } = req.body
 
-    if (!displayName && !mention && !bio) {
+    if (!displayName && !bio) {
       return res.status(400).send('no profile data provided')
     }
 
@@ -27,7 +31,6 @@ controller.update = async (req, res, next) => {
       include: [Models.image],
     })
     if (displayName) userRow.displayName = displayName
-    if (mention) userRow.mention = mention
     if (bio) userRow.bio = bio
 
     if (includesImage) {
@@ -73,6 +76,23 @@ controller.update = async (req, res, next) => {
     )
 
     res.status(200).send(userRow)
+  } catch (err) {
+    next(err)
+  }
+}
+
+/**
+ * Gets the current sessions users post history
+ */
+controller.postHistory = async (req, res, next) => {
+  try {
+    const history = await Models.post.findAll({
+      where: { userId: req.user.id },
+      order: [['createdAt', 'desc']],
+      attributes: ['id'],
+      include: [{ model: Models.image, attributes: ['reference'] }],
+    })
+    res.status(200).send(history)
   } catch (err) {
     next(err)
   }

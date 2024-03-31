@@ -43,7 +43,7 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
         <NavbarContent className="hidden sm:flex gap-3"></NavbarContent>
       </NavbarContent>
 
-      {!noProfile && (
+      {!noProfile && profile && (
         <NavbarContent as="div" className="items-center" justify="end">
           <Dropdown backdrop="blur" placement="bottom-end" className="dark bg-neutral-900 text-foreground">
             <DropdownTrigger>
