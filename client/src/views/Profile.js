@@ -31,9 +31,10 @@ import ImageCrop from '../components/Cropper/ImageCrop'
  */
 
 function Profile({ isSelf }) {
-  const [isFollowed, setIsFollowed] = React.useState(false)
   const postModal = useDisclosure()
   const imageModal = useDisclosure()
+
+  const [isFollowed, setIsFollowed] = React.useState(false)
   const [post, setPost] = React.useState()
   const [modalImage, setModalImage] = React.useState()
   const [editMode, setEditMode] = React.useState(false)
@@ -117,6 +118,7 @@ function Profile({ isSelf }) {
           )}
         </ModalContent>
       </Modal>
+
       <Modal
         className="dark transform-gpu w-fit h-fit"
         isOpen={postModal.isOpen}
@@ -151,10 +153,7 @@ function Profile({ isSelf }) {
                 src={profileDetails.image ? `${getUrl()}/${profileDetails.image}` : ''}
                 isBordered
                 className="w-20 h-20 text-large"
-                classNames={{
-                  base: 'bg-gradient-to-br from-[#00b31b] to-[#a6ffb3]',
-                  icon: 'text-black/80',
-                }}
+                color="primary"
               />
             )}
 

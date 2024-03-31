@@ -52,7 +52,6 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
                 as="button"
                 className="transition-transform"
                 color="primary"
-                name={profile.displayName}
                 size="md"
                 src={profile.image ? `${getUrl()}/${profile.image}` : ''}
               />
