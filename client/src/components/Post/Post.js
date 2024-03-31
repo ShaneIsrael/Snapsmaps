@@ -28,7 +28,7 @@ import { getSessionUser, getUrl } from '../../common/utils'
 import { CommentService, LikeService, PostService } from '../../services'
 import { formatDistanceStrict } from 'date-fns'
 
-function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width = '90%' }) {
+function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width = '90%', isAuthenticated }) {
   const [intPost, setIntPost] = React.useState(post)
   const [isFollowed, setIsFollowed] = React.useState(defaultFollowed)
   const [selectedTab, setSelectedTab] = React.useState('photo')
@@ -40,8 +40,10 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
   const postImage = `${getUrl()}/${intPost?.image?.reference}`
 
   async function checkIfLiked() {
-    const isLiked = (await LikeService.hasLikePost(intPost?.id)).data
-    setLiked(isLiked)
+    if (isAuthenticated) {
+      const isLiked = (await LikeService.hasLikePost(intPost?.id)).data
+      setLiked(isLiked)
+    }
   }
 
   async function reload() {
@@ -61,21 +63,25 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
   }, [])
 
   const handleLike = async () => {
-    try {
-      const isLiked = (await LikeService.likePost(post.id)).data
-      setLiked(isLiked)
-      reload()
-    } catch (err) {
-      console.log(err)
+    if (isAuthenticated) {
+      try {
+        const isLiked = (await LikeService.likePost(post.id)).data
+        setLiked(isLiked)
+        reload()
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 
   const submitComment = async () => {
-    try {
-      await CommentService.createPostComment(post.id, comment)
-      reload()
-    } catch (err) {
-      console.error(err)
+    if (isAuthenticated) {
+      try {
+        await CommentService.createPostComment(post.id, comment)
+        reload()
+      } catch (err) {
+        console.error(err)
+      }
     }
   }
 
@@ -154,16 +160,18 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
               <h5 className="text-small font-semibold tracking-tight text-default-400">@{intPost?.user?.mention}</h5>
             </div>
           </div>
-          <Button
-            className={isFollowed ? 'bg-transparent text-foreground border-default-200' : ''}
-            color="primary"
-            radius="full"
-            size="sm"
-            variant={isFollowed ? 'bordered' : 'solid'}
-            onClick={() => setIsFollowed(!isFollowed)}
-          >
-            {isFollowed ? 'Unfollow' : 'Follow'}
-          </Button>
+          {isAuthenticated && (
+            <Button
+              className={isFollowed ? 'bg-transparent text-foreground border-default-200' : ''}
+              color="primary"
+              radius="full"
+              size="sm"
+              variant={isFollowed ? 'bordered' : 'solid'}
+              onClick={() => setIsFollowed(!isFollowed)}
+            >
+              {isFollowed ? 'Unfollow' : 'Follow'}
+            </Button>
+          )}
         </CardHeader>
         <CardBody className="px-3 py-0 text-small text-default-500 font-semibold overflow-y-hidden rounded-b-2xl">
           <p className="mb-2">{intPost?.title}</p>
@@ -232,19 +240,21 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
                   </div>
                 </div>
 
-                <Textarea
-                  variant="faded"
-                  labelPlacement="outside"
-                  placeholder="Write..."
-                  value={comment}
-                  onChange={(event) => setComment(event.target.value)}
-                  maxRows={2}
-                  onKeyDown={handleCommentKeydown}
-                  className="max-w mt-2"
-                  classNames={{
-                    inputWrapper: 'rounded-lg',
-                  }}
-                />
+                {isAuthenticated && (
+                  <Textarea
+                    variant="faded"
+                    labelPlacement="outside"
+                    placeholder="Write..."
+                    value={comment}
+                    onChange={(event) => setComment(event.target.value)}
+                    maxRows={2}
+                    onKeyDown={handleCommentKeydown}
+                    className="max-w mt-2"
+                    classNames={{
+                      inputWrapper: 'rounded-lg',
+                    }}
+                  />
+                )}
               </div>
             </Tab>
           </Tabs>

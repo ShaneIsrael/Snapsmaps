@@ -12,11 +12,13 @@ import {
   Dropdown,
   DropdownMenu,
   Avatar,
+  Tooltip,
 } from '@nextui-org/react'
 import { AcmeLogo } from './AcmeLogo.js'
 import ArrowLeft from '../../assets/icons/ArrowLeft.js'
 import { getSessionUser, getUrl } from '../../common/utils.js'
 import { useAuth } from '../../hooks/useAuth.js'
+import { ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/solid'
 
 export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
   const navigate = useNavigate()
@@ -31,7 +33,7 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
         {!backButton && (
           <NavbarBrand className="mr-4">
             <AcmeLogo />
-            <p className="hidden sm:block font-bold text-2xl">Snapmapz</p>
+            <p className="hidden sm:block font-bold text-2xl">SnapsMaps</p>
           </NavbarBrand>
         )}
         {backButton && (
@@ -43,7 +45,7 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
         <NavbarContent className="hidden sm:flex gap-3"></NavbarContent>
       </NavbarContent>
 
-      {!noProfile && profile && (
+      {!noProfile ? (
         <NavbarContent as="div" className="items-center" justify="end">
           <Dropdown backdrop="blur" placement="bottom-end" className="dark bg-neutral-900 text-foreground">
             <DropdownTrigger>
@@ -53,19 +55,16 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
                 className="transition-transform"
                 color="primary"
                 size="md"
-                src={profile.image ? `${getUrl()}/${profile.image}` : ''}
+                src={profile?.image ? `${getUrl()}/${profile.image}` : ''}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="signin-info" className="h-14 gap-2">
                 <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">{profile.email}</p>
+                <p className="font-semibold">{profile?.email}</p>
               </DropdownItem>
               <DropdownItem key="profile" onClick={() => navigate('/profile')}>
                 My Profile
-              </DropdownItem>
-              <DropdownItem key="settings" onClick={() => navigate('/profile')}>
-                Settings
               </DropdownItem>
               <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
               <DropdownItem key="logout" color="danger" onClick={logout}>
@@ -73,6 +72,14 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
+        </NavbarContent>
+      ) : (
+        <NavbarContent as="div" className="items-center" justify="end">
+          <Tooltip color="primary" content="Login" className="capitalize">
+            <div className="cursor-pointer" onClick={() => navigate('/login')}>
+              <ArrowRightEndOnRectangleIcon width="32" height="32" />
+            </div>
+          </Tooltip>
         </NavbarContent>
       )}
     </Navbar>

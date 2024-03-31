@@ -62,7 +62,7 @@ const Welcome = ({ mode }) => {
       <div className="h-full flex justify-center flex-grow pt-8 pb-8">
         <div className="flex flex-col max-w-[375px] w-full p-2 items-center gap-4">
           {posts?.map((post) => (
-            <Post key={`post-${post.id}`} post={post} onOpenModal={handleOpenModal} />
+            <Post key={`post-${post.id}`} post={post} onOpenModal={handleOpenModal} isAuthenticated={isAuthenticated} />
           ))}
         </div>
       </div>
