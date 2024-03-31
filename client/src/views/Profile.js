@@ -194,7 +194,9 @@ function Profile({ isSelf }) {
                 <>
                   <h4 className="text-2xl font-semibold leading-none text-default-600">{profileDetails.displayName}</h4>
                   <h5 className="text-md tracking-tight text-blue-400">@{profileDetails.mention}</h5>
-                  <p className="text-small tracking-tight text-default-500 mt-2">{profileDetails.bio}</p>
+                  <p className="text-small tracking-tight text-default-500 mt-2 whitespace-pre-line">
+                    {profileDetails.bio}
+                  </p>
                 </>
               ) : (
                 <div className="flex flex-col gap-1">
@@ -215,7 +217,7 @@ function Profile({ isSelf }) {
                     value={updatedProfileDetails.mention}
                     onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, mention: value }))}
                     className="w-full"
-                    disabled
+                    isDisabled
                   />
                   <Textarea
                     variant="bordered"
@@ -232,7 +234,7 @@ function Profile({ isSelf }) {
             <div className="flex gap-5 items-end">
               <div className="flex gap-5 justify-center">
                 <div className="flex flex-col items-center">
-                  <h2 className="text-xl font-extrabold text-default-600">117</h2>
+                  <h2 className="text-xl font-extrabold text-default-600">{postHistory.length}</h2>
                   <span className="text-md font-semibold text-default-600">posts</span>
                 </div>
                 <div className="flex flex-col items-center">
