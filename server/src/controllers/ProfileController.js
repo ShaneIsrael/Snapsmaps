@@ -16,6 +16,28 @@ const COOKIE_PARAMS = {
 const controller = {}
 
 /**
+ * Gets a users profile by their mention name
+ */
+controller.getByMention = async (req, res, next) => {
+  try {
+    const { mention } = req.query
+
+    if (!mention) return res.status(400).send('a mention is required')
+
+    const userRow = await Models.user.findOne({
+      where: { mention },
+      include: [{ model: Models.image, attributes: ['reference'] }],
+    })
+
+    const mutatedUser = { ...userRow.toJSON(), image: userRow.toJSON().image?.reference }
+
+    res.status(200).send(mutatedUser)
+  } catch (err) {
+    next(err)
+  }
+}
+
+/**
  * Updates users profile information. (image, displayName, bio)
  * @returns
  */
@@ -88,7 +110,7 @@ controller.update = async (req, res, next) => {
 /**
  * Gets the current sessions users post history
  */
-controller.postHistory = async (req, res, next) => {
+controller.getPostHistory = async (req, res, next) => {
   try {
     const history = await Models.post.findAll({
       where: { userId: req.user.id },
@@ -97,6 +119,27 @@ controller.postHistory = async (req, res, next) => {
       include: [{ model: Models.image, attributes: ['reference'] }],
     })
     res.status(200).send(history)
+  } catch (err) {
+    next(err)
+  }
+}
+
+/**
+ * Gets the mention referenced users post history
+ */
+controller.getMentionPostHistory = async (req, res, next) => {
+  try {
+    const { mention } = req.query
+    if (!mention) return res.status(400).send('a mention is required')
+
+    const userRow = await Models.user.findOne({
+      where: { mention },
+      order: [[Models.post, 'createdAt', 'desc']],
+      include: [
+        { model: Models.post, attributes: ['id'], include: [{ model: Models.image, attributes: ['reference'] }] },
+      ],
+    })
+    res.status(200).send(userRow.posts)
   } catch (err) {
     next(err)
   }

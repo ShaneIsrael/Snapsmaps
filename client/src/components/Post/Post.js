@@ -27,15 +27,17 @@ import Comment from '../Comment/Comment'
 import { getAssetUrl, getSessionUser, getUrl } from '../../common/utils'
 import { CommentService, LikeService, PostService } from '../../services'
 import { formatDistanceStrict } from 'date-fns'
+import { useNavigate } from 'react-router-dom'
+import { useAuthed } from '../../hooks/useAuthed'
 
-function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width = '90%', isAuthenticated }) {
+function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width = '90%' }) {
   const [intPost, setIntPost] = React.useState(post)
   const [isFollowed, setIsFollowed] = React.useState(defaultFollowed)
   const [selectedTab, setSelectedTab] = React.useState('photo')
   const [liked, setLiked] = React.useState(false)
   const [comment, setComment] = React.useState('')
-
-  const user = getSessionUser()
+  const navigate = useNavigate()
+  const { user, isAuthenticated } = useAuthed()
 
   const postImage = `${getAssetUrl('post')}/${intPost?.image?.reference}`
 
@@ -144,15 +146,22 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
           <div className="flex gap-3">
             <Avatar
               isBordered
+              color={isSelf ? 'primary' : 'default'}
               radius="full"
               size="md"
+              className="cursor-pointer"
+              onClick={() => navigate(`/user/${intPost?.user?.mention}`)}
               src={hasProfileImage ? `${getAssetUrl('profile')}/${intPost?.user?.image?.reference}` : ''}
             />
             <div className="flex flex-col gap-1 items-start justify-center">
               <h4
-                className={clsx('text-md font-semibold leading-none text-default-600', {
-                  'text-primary-500': isSelf,
-                })}
+                className={clsx(
+                  'text-md font-semibold leading-none text-default-600 cursor-pointer hover:text-neutral-50',
+                  {
+                    'text-primary-500': isSelf,
+                  },
+                )}
+                onClick={() => navigate(`/user/${intPost?.user?.mention}`)}
               >
                 {intPost?.user?.displayName}
               </h4>
@@ -160,7 +169,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
               <h5 className="text-small font-semibold tracking-tight text-default-400">@{intPost?.user?.mention}</h5>
             </div>
           </div>
-          {isAuthenticated && (
+          {isAuthenticated && !isSelf && (
             <Button
               className={isFollowed ? 'bg-transparent text-foreground border-default-200' : ''}
               color="primary"

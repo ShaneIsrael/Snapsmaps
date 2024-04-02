@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react'
 import AuthService from '../services/AuthService'
+import { getSessionUser } from '../common/utils'
 
 const useAuthed = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const authed = (await AuthService.hasSession()).data
-        setIsAuthenticated(authed)
+        const session = getSessionUser()
+        setIsAuthenticated(!!session)
+        setUser(session)
       } catch (err) {
         console.error(err)
       }
-      setLoading(false)
     }
-    setLoading(true)
     checkAuthStatus()
   }, [])
 
-  return { loading, isAuthenticated }
+  return { user, isAuthenticated }
 }
 
 export { useAuthed }

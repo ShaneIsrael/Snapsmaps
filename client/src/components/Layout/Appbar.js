@@ -18,12 +18,13 @@ import { AcmeLogo } from './AcmeLogo.js'
 import ArrowLeft from '../../assets/icons/ArrowLeft.js'
 import { getAssetUrl, getSessionUser } from '../../common/utils.js'
 import { useAuth } from '../../hooks/useAuth.js'
-import { ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/solid'
+import { ArrowLeftEndOnRectangleIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/solid'
+import { useAuthed } from '../../hooks/useAuthed.js'
 
 export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
   const navigate = useNavigate()
 
-  const profile = getSessionUser()
+  const { user, isAuthenticated } = useAuthed()
 
   const { logout } = useAuth()
 
@@ -55,13 +56,13 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
                 className="transition-transform"
                 color="primary"
                 size="md"
-                src={profile?.image ? `${getAssetUrl('profile')}/${profile.image}` : ''}
+                src={user?.image ? `${getAssetUrl('profile')}/${user.image}` : ''}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="signin-info" className="h-14 gap-2">
                 <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">{profile?.email}</p>
+                <p className="font-semibold">{user?.email}</p>
               </DropdownItem>
               <DropdownItem key="profile" onClick={() => navigate('/profile')}>
                 My Profile
@@ -75,10 +76,20 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
         </NavbarContent>
       ) : (
         <NavbarContent as="div" className="items-center" justify="end">
-          <Tooltip color="primary" content="Login" className="capitalize">
-            <div className="cursor-pointer" onClick={() => navigate('/login')}>
-              <ArrowRightEndOnRectangleIcon width="32" height="32" />
-            </div>
+          <Tooltip
+            color={isAuthenticated ? 'danger' : 'primary'}
+            content={isAuthenticated ? 'Logout' : 'Login'}
+            className="capitalize"
+          >
+            {isAuthenticated ? (
+              <div className="cursor-pointer" onClick={logout}>
+                <ArrowLeftEndOnRectangleIcon className="fill-red-600" width="32" height="32" />
+              </div>
+            ) : (
+              <div className="cursor-pointer" onClick={() => navigate('/login')}>
+                <ArrowRightEndOnRectangleIcon width="32" height="32" />
+              </div>
+            )}
           </Tooltip>
         </NavbarContent>
       )}

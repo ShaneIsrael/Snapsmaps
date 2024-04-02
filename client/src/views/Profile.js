@@ -1,26 +1,13 @@
-import {
-  Button,
-  Card,
-  Image,
-  Avatar,
-  Divider,
-  useDisclosure,
-  Modal,
-  ModalContent,
-  ModalBody,
-  Input,
-  Textarea,
-} from '@nextui-org/react'
+import { Button, Image, Avatar, Divider, useDisclosure, Modal, ModalContent, Input, Textarea } from '@nextui-org/react'
 import React from 'react'
 import Appbar from '../components/Layout/Appbar'
 import Post from '../components/Post/Post'
-import TestService from '../services/TestService'
 import { useParams } from 'react-router-dom'
-import { getAssetUrl, getSessionUser, getUrl } from '../common/utils'
-import { CameraAltIcon } from '../assets/icons/CameraAltIcon'
+import { getAssetUrl, getSessionUser } from '../common/utils'
 import { PostService, ProfileService } from '../services'
 import ImageCropProvider from '../providers/ImageCropProvider'
 import ImageCrop from '../components/Cropper/ImageCrop'
+import { useAuthed } from '../hooks/useAuthed'
 
 /**
  * TODO
@@ -71,25 +58,30 @@ function Profile({ isSelf }) {
     imageModal.onOpen()
   }
 
+  async function fetchHistory(mention) {
+    try {
+      const history = mention
+        ? (await ProfileService.getMentionPostHistory(mention)).data
+        : (await ProfileService.getPostHistory()).data
+
+      setPostHistory(history)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   async function fetch() {
     try {
       let profile
       if (!mention) {
         profile = getSessionUser()
+        await fetchHistory()
+        setUpdatedProfileDetails(profile)
       } else {
-        // lookup profile
+        profile = (await ProfileService.getProfileByMention(mention)).data
+        await fetchHistory(mention)
       }
-
       setProfileDetails(profile)
-      setUpdatedProfileDetails(profile)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-  async function fetchHistory() {
-    try {
-      const history = (await ProfileService.getPostHistory()).data
-      setPostHistory(history)
     } catch (err) {
       console.error(err)
     }
@@ -98,7 +90,7 @@ function Profile({ isSelf }) {
   const handleUpdateProfile = async () => {
     try {
       setSaving(true)
-      const updatedProfile = (await ProfileService.update(updatedProfileDetails)).data
+      await ProfileService.update(updatedProfileDetails)
       fetch()
     } catch (err) {
       console.error(err)
@@ -109,7 +101,6 @@ function Profile({ isSelf }) {
 
   React.useEffect(() => {
     fetch()
-    fetchHistory()
   }, [mention])
 
   return (
@@ -140,7 +131,7 @@ function Profile({ isSelf }) {
         hideCloseButton
       >
         <ModalContent className="max-w-[375px] w-full ">
-          {(onClose) => <Post isSelf post={post} onOpenModal={handleOpenImageModal} />}
+          {(onClose) => <Post isSelf={isSelf} post={post} onOpenModal={handleOpenImageModal} />}
         </ModalContent>
       </Modal>
       <Appbar noProfile backButton="/" pageName={profileDetails.mention} />

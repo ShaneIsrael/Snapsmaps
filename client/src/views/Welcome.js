@@ -9,7 +9,7 @@ import { useAuthed } from '../hooks/useAuthed'
 import { FeedService } from '../services'
 
 const Welcome = ({ mode }) => {
-  const { loading, isAuthenticated } = useAuthed()
+  const { user, isAuthenticated } = useAuthed()
 
   const [posts, setPosts] = React.useState()
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -19,13 +19,6 @@ const Welcome = ({ mode }) => {
     try {
       const feed = (await FeedService.getPublicFeed()).data
       setPosts(feed)
-      console.log(feed)
-      // const res = await TestService.test()
-      // setPost({
-      //   ...res.data,
-      //   body: 'This cat sleeps super weird. Why is she sleeping half on the pillow and half off?',
-      //   id: 1,
-      // })
     } catch (err) {
       console.error(err)
     }
@@ -40,6 +33,7 @@ const Welcome = ({ mode }) => {
     onOpen()
   }
 
+  console.log(posts)
   return (
     <>
       <Modal
@@ -62,7 +56,12 @@ const Welcome = ({ mode }) => {
       <div className="h-full flex justify-center flex-grow pt-8 pb-8">
         <div className="flex flex-col max-w-[375px] w-full p-2 items-center gap-4">
           {posts?.map((post) => (
-            <Post key={`post-${post.id}`} post={post} onOpenModal={handleOpenModal} isAuthenticated={isAuthenticated} />
+            <Post
+              key={`post-${post.id}`}
+              isSelf={user?.mention === post.user.mention}
+              post={post}
+              onOpenModal={handleOpenModal}
+            />
           ))}
         </div>
       </div>

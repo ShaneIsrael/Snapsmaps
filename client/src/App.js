@@ -11,9 +11,9 @@ import Profile from './views/Profile'
 const router = createBrowserRouter([{ path: '*', Component: Root }])
 
 function RequireAuth({ children, redirectTo }) {
-  const { loading, isAuthenticated } = useAuthed()
+  const { isAuthenticated } = useAuthed()
 
-  return loading ? <div>loading animation goes here</div> : isAuthenticated ? children : <Navigate to={redirectTo} />
+  return isAuthenticated ? children : <Navigate to={redirectTo} />
 }
 
 function Root() {
@@ -28,7 +28,14 @@ function Root() {
       <Route path="/" element={<Welcome modeToggle={toggle} />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/profile" element={<Profile isSelf />} />
+      <Route
+        path="/profile"
+        element={
+          <RequireAuth redirectTo={'/login'}>
+            <Profile isSelf />{' '}
+          </RequireAuth>
+        }
+      />
       <Route path="/user/:mention/" element={<Profile />} />
       <Route path="*" element={<div>not found</div>} />
     </Routes>

@@ -3,5 +3,5 @@ const { authorize } = require('../middleware/authorize')
 
 module.exports = (app) => {
   app.post('/api/post', authorize, create)
-  app.get('/api/post', authorize, getById)
+  app.get('/api/post', getById)
 }

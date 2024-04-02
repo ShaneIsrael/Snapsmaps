@@ -26,8 +26,6 @@ service.uploadImage = async (fileContent, name, savePath, contentType) => {
     ContentType: contentType,
   }
 
-  console.log(params)
-
   const resp = await s3.upload(params).promise()
   return resp
 }

@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Link } from '@nextui-org/react'
 
 import { useAuth } from '../hooks/useAuth'
+import { useAuthed } from '../hooks/useAuthed'
 
 const Login = (props) => {
   const navigate = useNavigate()
@@ -10,6 +11,13 @@ const Login = (props) => {
   const [password, setPassword] = React.useState('')
   const { login } = useAuth()
   const [error, setError] = React.useState()
+  const { isAuthenticated } = useAuthed()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/')
+    }
+  }, [isAuthenticated])
 
   const handleLogin = async () => {
     try {
