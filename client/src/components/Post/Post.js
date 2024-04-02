@@ -30,7 +30,8 @@ import { CommentService, LikeService, PostService } from '../../services'
 import { formatDistanceStrict } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 import { useAuthed } from '../../hooks/useAuthed'
-import { HandThumbUpIcon } from '@heroicons/react/24/solid'
+import { HandThumbUpIcon, ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid } from '@heroicons/react/24/solid'
+import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
 
 function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width = '90%' }) {
   const [intPost, setIntPost] = React.useState(post)
@@ -196,10 +197,10 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
             autoFocus={false}
           >
             <Tab
-              key="photo"
+              key={`${post.id}-photo`}
               title={
                 <div className="flex items-center space-x-2">
-                  <PhotoIcon className={clsx({ 'fill-green-500': selectedTab !== 'photo' })} />
+                  <PhotoIcon className={clsx({ 'fill-green-500': selectedTab !== `${post.id}-photo` })} />
                   <span></span>
                 </div>
               }
@@ -214,10 +215,10 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
               </div>
             </Tab>
             <Tab
-              key="map"
+              key={`${post.id}-map`}
               title={
                 <div className="flex items-center space-x-2">
-                  <MapPinIcon className={clsx({ 'fill-red-500': selectedTab !== 'map' })} />
+                  <MapPinIcon className={clsx({ 'fill-red-500': selectedTab !== `${post.id}-map` })} />
                   <span></span>
                 </div>
               }
@@ -234,10 +235,15 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
               </div>
             </Tab>
             <Tab
-              key="discuss"
+              key={`${post.id}-comments`}
               title={
                 <div className="flex items-center space-x-2">
-                  <ChatIcon className={clsx({ 'fill-blue-500': selectedTab !== 'discuss' })} />
+                  {selectedTab !== `${post.id}-comments` ? (
+                    <ChatBubbleLeftRightIcon className="w-6 h-6 stroke-neutral-200" />
+                  ) : (
+                    <ChatBubbleLeftRightIconSolid className="w-6 h-6" />
+                  )}
+
                   <span></span>
                   {intPost.commentCount > 0 && (
                     <Chip size="sm" variant="faded">
