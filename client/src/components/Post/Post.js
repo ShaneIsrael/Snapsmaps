@@ -17,6 +17,7 @@ import {
   useDisclosure,
   Divider,
   Badge,
+  Chip,
 } from '@nextui-org/react'
 import Heart from '../../assets/icons/Heart'
 import { GoogleMapDarkMode } from '../../common/themes'
@@ -29,6 +30,7 @@ import { CommentService, LikeService, PostService } from '../../services'
 import { formatDistanceStrict } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 import { useAuthed } from '../../hooks/useAuthed'
+import { HandThumbUpIcon } from '@heroicons/react/24/solid'
 
 function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width = '90%' }) {
   const [intPost, setIntPost] = React.useState(post)
@@ -237,6 +239,11 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
                 <div className="flex items-center space-x-2">
                   <ChatIcon className={clsx({ 'fill-blue-500': selectedTab !== 'discuss' })} />
                   <span></span>
+                  {intPost.commentCount > 0 && (
+                    <Chip size="sm" variant="faded">
+                      {intPost.commentCount}
+                    </Chip>
+                  )}
                 </div>
               }
             >
@@ -269,19 +276,16 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
           </Tabs>
         </CardBody>
         <CardFooter className="gap-3 pt-0">
-          <div className="flex w-full flex-row justify-center items-center gap-4">
+          <div className="flex w-full flex-row justify-center items-center gap-4 px-2">
             <div className="flex gap-1 ">
-              <p className="font-semibold text-default-400 text-small">{intPost?.likeCount}</p>
+              {intPost?.likeCount > 0 && (
+                <p className="font-semibold text-default-400 text-small">{intPost?.likeCount}</p>
+              )}
               <p className=" text-default-400 text-small cursor-pointer" onClick={handleLike}>
-                <Heart className={clsx('w-5 h-5 stroke-red-500', { 'fill-red-500': liked })} />
+                <HandThumbUpIcon className={clsx('w-5 h-', { 'fill-blue-500': liked, 'fill-neutral-500': !liked })} />
               </p>
             </div>
-            <p className="text-sm font-semibold leading-none text-blue-400">•</p>
-            <div className="flex gap-1 cursor-pointer" onClick={() => setSelectedTab('discuss')}>
-              <p className="font-semibold text-default-400 text-small">{intPost?.commentCount}</p>
-              <p className="font-semibold text-default-400 text-small">comments</p>
-            </div>
-            <p className="text-sm font-semibold leading-none text-blue-400">•</p>
+            <div className="flex-grow" />
             <div className="flex">
               <p className="text-small font-semibold leading-none text-default-400">{timeAgo}</p>
             </div>
