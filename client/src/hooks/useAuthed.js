@@ -5,6 +5,7 @@ import { getSessionUser } from '../common/utils'
 const useAuthed = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null)
   const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -15,11 +16,12 @@ const useAuthed = () => {
       } catch (err) {
         console.error(err)
       }
+      setLoading(false)
     }
     checkAuthStatus()
   }, [])
 
-  return { user, isAuthenticated }
+  return { loading, user, isAuthenticated }
 }
 
 export { useAuthed }

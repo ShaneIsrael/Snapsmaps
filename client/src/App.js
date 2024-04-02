@@ -11,8 +11,8 @@ import Profile from './views/Profile'
 const router = createBrowserRouter([{ path: '*', Component: Root }])
 
 function RequireAuth({ children, redirectTo }) {
-  const { isAuthenticated } = useAuthed()
-
+  const { loading, isAuthenticated } = useAuthed()
+  if (loading) return <div />
   return isAuthenticated ? children : <Navigate to={redirectTo} />
 }
 
@@ -32,7 +32,7 @@ function Root() {
         path="/profile"
         element={
           <RequireAuth redirectTo={'/login'}>
-            <Profile isSelf />{' '}
+            <Profile isSelf />
           </RequireAuth>
         }
       />
