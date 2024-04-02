@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
           sequelize.models.post.increment('likeCount', { by: 1, where: { id: postLike.postId } })
         },
         afterDestroy: (postLike) => {
-          sequelize.models.post.decrement('likeCount', { by: 1, where: { id: postLike.postId } })
+          sequelize.models.post.increment('likeCount', { by: -1, where: { id: postLike.postId } })
         },
       },
       modelName: 'postLike',
