@@ -19,7 +19,7 @@ const service = {}
 
 service.uploadImage = async (fileContent, name, bucket, contentType) => {
   const params = {
-    BucketName: bucket,
+    Bucket: bucket,
     Key: name,
     Body: fileContent,
     ACL: 'public-read',
