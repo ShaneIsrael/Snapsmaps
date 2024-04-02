@@ -25,7 +25,10 @@ function UploadImage({ onImageUploaded, mode }) {
 
     const file = new Uint8Array(fileBuffer)
     const base64file = btoa(new Uint8Array(file).reduce((data, byte) => data + String.fromCharCode(byte), ''))
-    const gps = await exifr.gps(file)
+    let gps
+    try {
+      gps = await exifr.gps(file)
+    } catch (err) {}
     if (!gps?.latitude || !gps?.longitude) {
       if (!navigator.geolocation) {
         toast.warning('Geolocation is not supported by your browser.')
