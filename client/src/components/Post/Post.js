@@ -24,7 +24,7 @@ import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
 import ChatIcon from '../../assets/icons/ChatIcon'
 import Comment from '../Comment/Comment'
-import { getSessionUser, getUrl } from '../../common/utils'
+import { getAssetUrl, getSessionUser, getUrl } from '../../common/utils'
 import { CommentService, LikeService, PostService } from '../../services'
 import { formatDistanceStrict } from 'date-fns'
 
@@ -37,7 +37,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
 
   const user = getSessionUser()
 
-  const postImage = `${getUrl()}/${intPost?.image?.reference}`
+  const postImage = `${getAssetUrl('post')}/${intPost?.image?.reference}`
 
   async function checkIfLiked() {
     if (isAuthenticated) {
@@ -146,7 +146,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
               isBordered
               radius="full"
               size="md"
-              src={hasProfileImage ? `${getUrl()}/${intPost?.user?.image?.reference}` : ''}
+              src={hasProfileImage ? `${getAssetUrl('profile')}/${intPost?.user?.image?.reference}` : ''}
             />
             <div className="flex flex-col gap-1 items-start justify-center">
               <h4

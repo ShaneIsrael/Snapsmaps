@@ -9,6 +9,16 @@ export const getUrl = () => {
     : `${window.location.protocol}//${window.location.hostname}:${3001}`
 }
 
+export const getAssetUrl = (type) => {
+  if (window.location.hostname.indexOf('snapsmaps') === -1) return getUrl()
+  switch (type) {
+    case 'profile':
+      return 'https://cdn.snapsmaps.com/profile'
+    default:
+      return 'https://cdn.snapsmaps.com/post'
+  }
+}
+
 export const getSessionUser = () => {
   const cookie = Cookies.get('user')
   if (!cookie) return null

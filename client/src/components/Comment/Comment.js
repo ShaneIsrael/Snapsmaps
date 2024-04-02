@@ -1,6 +1,6 @@
 import { Avatar, Card, CardBody, CardHeader } from '@nextui-org/react'
 import React from 'react'
-import { getSessionUser, getUrl } from '../../common/utils'
+import { getAssetUrl, getSessionUser } from '../../common/utils'
 import clsx from 'clsx'
 import { formatDistanceStrict, subDays } from 'date-fns'
 
@@ -18,7 +18,7 @@ function Comment({ comment }) {
             radius="full"
             size="md"
             className="min-w-[40px]"
-            src={profileImage ? `${getUrl()}/${profileImage.reference}` : ''}
+            src={profileImage ? `${getAssetUrl('profile')}/${profileImage.reference}` : ''}
           />
           <div className="flex flex-col gap-1 items-start ">
             <div className="flex flex-row items-start gap-1">

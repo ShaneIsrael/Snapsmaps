@@ -2,6 +2,7 @@ const path = require('path')
 const { v4: uuidv4 } = require('uuid')
 
 const Models = require('../database/models')
+const { uploadImage } = require('../services/UploadService')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -43,8 +44,12 @@ controller.create = async (req, res, next) => {
 
     const reference = `${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
 
+    console.log(image)
     if (!isProduction) {
       image.mv(path.join(process.cwd(), '/images', reference))
+    } else {
+      const fileContent = Buffer.from(image.data)
+      await uploadImage(fileContent, reference, 'post', image.mimetype)
     }
 
     const imageRow = await Models.image.create(

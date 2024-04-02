@@ -16,7 +16,7 @@ import {
 } from '@nextui-org/react'
 import { AcmeLogo } from './AcmeLogo.js'
 import ArrowLeft from '../../assets/icons/ArrowLeft.js'
-import { getSessionUser, getUrl } from '../../common/utils.js'
+import { getAssetUrl, getSessionUser } from '../../common/utils.js'
 import { useAuth } from '../../hooks/useAuth.js'
 import { ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/solid'
 
@@ -55,7 +55,7 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
                 className="transition-transform"
                 color="primary"
                 size="md"
-                src={profile?.image ? `${getUrl()}/${profile.image}` : ''}
+                src={profile?.image ? `${getAssetUrl('profile')}/${profile.image}` : ''}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
