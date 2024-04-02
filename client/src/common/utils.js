@@ -2,11 +2,11 @@ import Cookies from 'js-cookie'
 import _ from 'lodash'
 
 export const getUrl = () => {
-  const portWithColon = window.location.port ? `:${window.location.port}` : ''
-  return window.location.port === 3000 ||
-    (window.location.hostname.indexOf('localhost') >= 0 && window.location.port !== '')
-    ? `${window.location.protocol}//localhost:3001`
-    : `${window.location.protocol}//${window.location.hostname}:${3001}`
+  if (window.location.hostname.indexOf('localhost') >= 0) return `${window.location.protocol}//localhost:3001`
+  if (window.location.hostname.indexOf('snapsmaps') >= 0)
+    return `${window.location.protocol}//${window.location.hostname}`
+
+  return `${window.location.protocol}//${window.location.hostname}:${3001}`
 }
 
 export const getAssetUrl = (type) => {
