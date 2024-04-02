@@ -44,7 +44,6 @@ controller.create = async (req, res, next) => {
 
     const reference = `${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
 
-    console.log(image)
     if (!isProduction) {
       image.mv(path.join(process.cwd(), '/images', reference))
     } else {
