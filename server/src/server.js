@@ -10,11 +10,6 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 require('dotenv').config()
 
-const httpsOptions = {
-  key: fs.readFileSync(path.join(process.cwd(), '/config/localdev/cert.key')),
-  cert: fs.readFileSync(path.join(process.cwd(), '/config/localdev/cert.crt')),
-}
-
 const app = express()
 const logger = require('./utils/logger')
 const db = require('./database/models')
@@ -93,6 +88,10 @@ if (isProduction) {
   logger.info(
     `HTTPS Dev server running. Make sure you manually navigate to https://localhost:3001 and 'accept the risk' so that the frontend can talk over https to the server`,
   )
+  const httpsOptions = {
+    key: fs.readFileSync(path.join(process.cwd(), '/config/localdev/cert.key')),
+    cert: fs.readFileSync(path.join(process.cwd(), '/config/localdev/cert.crt')),
+  }
   https.createServer(httpsOptions, app).listen(PORT)
 }
 
