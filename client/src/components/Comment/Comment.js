@@ -18,7 +18,7 @@ function Comment({ comment }) {
             radius="full"
             size="md"
             className="min-w-[40px]"
-            src={profileImage ? `${getAssetUrl('profile')}/${profileImage.reference}` : ''}
+            src={profileImage ? getAssetUrl() + profileImage.reference : ''}
           />
           <div className="flex flex-col gap-1 items-start ">
             <div className="flex flex-row items-start gap-1">

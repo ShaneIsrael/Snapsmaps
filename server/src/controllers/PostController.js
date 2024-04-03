@@ -42,13 +42,13 @@ controller.create = async (req, res, next) => {
     if (!image || !title || !latitude || !longitude || !/^image/.test(image.mimetype))
       return res.status(400).send('A post requires an image and a gps location.')
 
-    const reference = `${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
+    const reference = `/post/${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
 
     if (!isProduction) {
       image.mv(path.join(process.cwd(), '/images', reference))
     } else {
       const fileContent = Buffer.from(image.data)
-      await uploadImage(fileContent, reference, 'post', image.mimetype)
+      await uploadImage(fileContent, reference, image.mimetype)
     }
 
     const imageRow = await Models.image.create(

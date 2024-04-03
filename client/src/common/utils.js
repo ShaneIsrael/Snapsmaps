@@ -9,14 +9,10 @@ export const getUrl = () => {
   return `${window.location.protocol}//${window.location.hostname}:${3001}`
 }
 
-export const getAssetUrl = (type) => {
+export const getAssetUrl = () => {
   if (window.location.hostname.indexOf('snapsmaps') === -1) return getUrl()
-  switch (type) {
-    case 'profile':
-      return 'https://cdn.snapsmaps.com/profile'
-    default:
-      return 'https://cdn.snapsmaps.com/post'
-  }
+
+  return 'https://cdn.snapsmaps.com/profile'
 }
 
 export const getSessionUser = () => {

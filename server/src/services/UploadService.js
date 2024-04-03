@@ -17,10 +17,10 @@ if (environment === 'production') {
 
 const service = {}
 
-service.uploadImage = async (fileContent, name, savePath, contentType) => {
+service.uploadImage = async (fileContent, path, contentType) => {
   const params = {
     Bucket: 'snapsmaps',
-    Key: `${savePath}/${name}`,
+    Key: path,
     Body: fileContent,
     ACL: 'public-read',
     ContentType: contentType,

@@ -60,13 +60,13 @@ controller.update = async (req, res, next) => {
       const { image } = req.files
 
       if (image) {
-        const reference = `${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
+        const reference = `/profile/${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
 
         if (!isProduction) {
           image.mv(path.join(process.cwd(), '/images', reference))
         } else {
           const fileContent = Buffer.from(image.data)
-          await uploadImage(fileContent, reference, 'profile', image.mimetype)
+          await uploadImage(fileContent, reference, image.mimetype)
         }
 
         const imageRow = await Models.image.create({

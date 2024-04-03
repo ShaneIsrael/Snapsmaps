@@ -146,7 +146,7 @@ function Profile({ isSelf }) {
               </ImageCropProvider>
             ) : (
               <Avatar
-                src={profileDetails.image ? `${getAssetUrl('profile')}/${profileDetails.image}` : ''}
+                src={profileDetails.image ? getAssetUrl() + profileDetails.image : ''}
                 isBordered
                 className="w-20 h-20 text-large"
                 color="primary"
@@ -247,7 +247,7 @@ function Profile({ isSelf }) {
               key={`post-history-${post.id}`}
               onClick={() => handleOpenModal(post.id)}
               alt="a history image"
-              src={`${getAssetUrl('post')}/${post.image.reference}`}
+              src={getAssetUrl() + post.image.reference}
               className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
             />
           ))}

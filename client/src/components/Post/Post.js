@@ -42,7 +42,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
   const navigate = useNavigate()
   const { user, isAuthenticated } = useAuthed()
 
-  const postImage = `${getAssetUrl('post')}/${intPost?.image?.reference}`
+  const postImage = getAssetUrl() + intPost?.image?.reference
 
   async function checkIfLiked() {
     if (isAuthenticated) {
@@ -154,7 +154,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
               size="md"
               className="cursor-pointer"
               onClick={() => navigate(`/user/${intPost?.user?.mention}`)}
-              src={hasProfileImage ? `${getAssetUrl('profile')}/${intPost?.user?.image?.reference}` : ''}
+              src={hasProfileImage ? getAssetUrl() + intPost?.user?.image?.reference : ''}
             />
             <div className="flex flex-col gap-1 items-start justify-center">
               <h4

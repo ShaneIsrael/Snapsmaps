@@ -56,7 +56,7 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
                 className="transition-transform"
                 color="primary"
                 size="md"
-                src={user?.image ? `${getAssetUrl('profile')}/${user.image}` : ''}
+                src={user?.image ? getAssetUrl() + user.image : ''}
               />
             </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
