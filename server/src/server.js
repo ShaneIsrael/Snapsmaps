@@ -41,13 +41,14 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cookieParser())
 
-const whitelist = [process.env.DOMAIN, 'http://192.168.50.26:3001']
 // CORS middleware
 app.use(
   cors({
-    origin: function (origin, callback) {
-      callback(null, true)
-    },
+    origin: isProduction
+      ? process.env.DOMAIN
+      : function (origin, callback) {
+          callback(null, true)
+        },
     credentials: true,
   }),
 )
