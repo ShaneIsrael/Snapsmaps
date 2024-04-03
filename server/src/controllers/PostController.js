@@ -42,10 +42,7 @@ controller.create = async (req, res, next) => {
     if (!image || !title || !latitude || !longitude || !/^image/.test(image.mimetype))
       return res.status(400).send('A post requires an image and a gps location.')
 
-    // dont start with a forward slash i.e (/post/...) or it
-    // will try to store the image in a root folder in the s3
-    // storage which is problematic when trying to access
-    const reference = `post/${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
+    const reference = `/post/${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
 
     if (!isProduction) {
       image.mv(path.join(process.cwd(), '/images', reference))

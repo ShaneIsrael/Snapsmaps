@@ -60,10 +60,7 @@ controller.update = async (req, res, next) => {
       const { image } = req.files
 
       if (image) {
-        // dont start with a forward slash i.e (/profile/...) or it
-        // will try to store the image in a root folder in the s3
-        // storage which is problematic when trying to access
-        const reference = `profile/${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
+        const reference = `/profile/${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
 
         if (!isProduction) {
           image.mv(path.join(process.cwd(), '/images', reference))

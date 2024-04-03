@@ -18,9 +18,12 @@ if (environment === 'production') {
 const service = {}
 
 service.uploadImage = async (fileContent, path, contentType) => {
+  // remove any forward slash from the beginning of the path to prevent
+  // a root directory being created in the S3 storage.
+  const mutatedPath = path.replace(/^\//, '')
   const params = {
     Bucket: 'snapsmaps',
-    Key: path,
+    Key: mutatedPath,
     Body: fileContent,
     ACL: 'public-read',
     ContentType: contentType,
