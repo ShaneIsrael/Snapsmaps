@@ -12,7 +12,7 @@ export const getUrl = () => {
 export const getAssetUrl = () => {
   if (window.location.hostname.indexOf('snapsmaps') === -1) return getUrl()
 
-  return 'https://cdn.snapsmaps.com/profile'
+  return 'https://cdn.snapsmaps.com'
 }
 
 export const getSessionUser = () => {
