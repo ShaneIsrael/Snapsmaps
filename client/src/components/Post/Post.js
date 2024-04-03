@@ -44,13 +44,6 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
 
   const postImage = getAssetUrl() + intPost?.image?.reference
 
-  async function checkIfLiked() {
-    if (isAuthenticated) {
-      const isLiked = (await LikeService.hasLikePost(intPost?.id)).data
-      setLiked(isLiked)
-    }
-  }
-
   async function reload() {
     try {
       setComment('')
@@ -62,17 +55,23 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
   }
 
   useEffect(() => {
+    async function checkIfLiked() {
+      if (isAuthenticated) {
+        const isLiked = (await LikeService.hasLikedPost(post?.id)).data
+        setLiked(isLiked)
+      }
+    }
     if (user) {
       checkIfLiked()
     }
-  }, [])
+  }, [user])
 
   const handleLike = async () => {
     if (isAuthenticated) {
       try {
-        const isLiked = (await LikeService.likePost(post.id)).data
-        setLiked(isLiked)
+        await LikeService.likePost(post.id)
         reload()
+        setLiked((prev) => !prev)
       } catch (err) {
         console.log(err)
       }
@@ -288,7 +287,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
                 <p className="font-semibold text-default-400 text-small">{intPost?.likeCount}</p>
               )}
               <p className=" text-default-400 text-small cursor-pointer" onClick={handleLike}>
-                <HandThumbUpIcon className={clsx('w-5 h-', { 'fill-blue-500': liked, 'fill-neutral-500': !liked })} />
+                <HandThumbUpIcon className={clsx('w-5 h-5', { 'fill-blue-500': liked, 'fill-neutral-500': !liked })} />
               </p>
             </div>
             <div className="flex-grow" />

@@ -1,7 +1,7 @@
 import Api from './Api'
 
 class LikeService {
-  hasLikePost(id) {
+  hasLikedPost(id) {
     return Api().get('/likedPost', { params: { id } })
   }
   likePost(id) {
