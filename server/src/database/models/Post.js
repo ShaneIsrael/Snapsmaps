@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       const { user, image, postComment, postLike } = models
       this.belongsTo(user)
       this.belongsTo(image)
-      this.hasMany(postComment)
-      this.hasMany(postLike)
+      this.hasMany(postComment, { onDelete: 'CASCADE', hooks: true })
+      this.hasMany(postLike, { onDelete: 'CASCADE', hooks: true })
     }
   }
   Post.init(
@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
+      paranoid: true,
       modelName: 'post',
       defaultScope: {
         attributes: {

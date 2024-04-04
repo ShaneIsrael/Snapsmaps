@@ -12,7 +12,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
   host: config.host,
   port: config.port,
   dialectOptions: config.dialectOptions,
-  ...config.options
+  ...config.options,
 })
 
 fs.readdirSync(__dirname)

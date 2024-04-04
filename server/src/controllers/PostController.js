@@ -78,6 +78,25 @@ controller.create = async (req, res, next) => {
   }
 }
 
+controller.deletePost = async (req, res, next) => {
+  try {
+    const { id } = req.query
+    if (!id) return res.status(400).send('an id is required')
+
+    const post = await Models.post.findOne({ where: { id }, attributes: ['id', 'userId'] })
+
+    if (post.userId !== req.user.id) {
+      return res.status(400).send('only the owner of a post can delete a post')
+    }
+
+    await post.destroy({ force: true })
+
+    return res.sendStatus(200)
+  } catch (err) {
+    next(err)
+  }
+}
+
 controller.test = async (req, res, next) => {
   try {
     Models.postLike.create({

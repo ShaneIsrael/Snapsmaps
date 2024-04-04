@@ -8,29 +8,29 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Image,
-  Modal,
-  ModalContent,
   Tab,
   Tabs,
   Textarea,
-  useDisclosure,
-  Divider,
-  Badge,
   Chip,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from '@nextui-org/react'
-import Heart from '../../assets/icons/Heart'
 import { GoogleMapDarkMode } from '../../common/themes'
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
-import ChatIcon from '../../assets/icons/ChatIcon'
 import Comment from '../Comment/Comment'
-import { getAssetUrl, getSessionUser, getUrl } from '../../common/utils'
+import { getAssetUrl } from '../../common/utils'
 import { CommentService, LikeService, PostService } from '../../services'
 import { formatDistanceStrict } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 import { useAuthed } from '../../hooks/useAuthed'
-import { HandThumbUpIcon, ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid } from '@heroicons/react/24/solid'
+import {
+  HandThumbUpIcon,
+  ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid,
+  EllipsisVerticalIcon,
+} from '@heroicons/react/24/solid'
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
 
 function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width = '90%' }) {
@@ -39,6 +39,8 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
   const [selectedTab, setSelectedTab] = React.useState('photo')
   const [liked, setLiked] = React.useState(false)
   const [comment, setComment] = React.useState('')
+  const [deleted, setDeleted] = React.useState(false)
+
   const navigate = useNavigate()
   const { user, isAuthenticated } = useAuthed()
 
@@ -89,6 +91,14 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
     }
   }
 
+  const handleDelete = async () => {
+    try {
+      await PostService.delete(post.id)
+      setDeleted(true)
+    } catch (err) {
+      console.error(err)
+    }
+  }
   const handleCommentKeydown = (e) => {
     if (e.key === 'Enter') {
       if (comment) {
@@ -141,11 +151,14 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
   const hasProfileImage = !!intPost?.user?.image
   const timeAgo = formatDistanceStrict(new Date(intPost.createdAt), new Date(), { addSuffix: true })
 
+  // don't show the post on the feed anymore.
+  if (deleted) return false
+
   return (
     <>
       <Card className="w-full">
-        <CardHeader className="justify-between">
-          <div className="flex gap-3">
+        <CardHeader className="justify-between p-0">
+          <div className="flex m-4 gap-3">
             <Avatar
               isBordered
               color={isSelf ? 'primary' : 'default'}
@@ -173,7 +186,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
           </div>
           {isAuthenticated && !isSelf && (
             <Button
-              className={isFollowed ? 'bg-transparent text-foreground border-default-200' : ''}
+              className={isFollowed ? 'bg-transparent text-foreground border-default-200 mr-3' : 'mr-3'}
               color="primary"
               radius="full"
               size="sm"
@@ -182,6 +195,20 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
             >
               {isFollowed ? 'Unfollow' : 'Follow'}
             </Button>
+          )}
+          {isAuthenticated && isSelf && (
+            <Dropdown className="dark p-0">
+              <DropdownTrigger>
+                <Button variant="light" size="sm" className="mr-2 mt-[-24px]" isIconOnly>
+                  <EllipsisVerticalIcon className="w-5 h-5" />
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu>
+                <DropdownItem key="delete" className="text-danger" color="danger" onClick={handleDelete}>
+                  Delete post
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           )}
         </CardHeader>
         <CardBody className="px-3 py-0 text-small text-default-500 font-semibold overflow-y-hidden rounded-b-2xl">

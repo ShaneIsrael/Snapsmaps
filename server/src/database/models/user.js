@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       const { post, image, postComment, postLike, follow } = models
-      this.hasMany(post)
-      this.hasMany(postComment)
-      this.hasMany(postLike)
-      this.hasMany(follow)
-      this.belongsTo(image)
+      this.hasMany(post, { onDelete: 'CASCADE', hooks: true })
+      this.hasMany(postComment, { onDelete: 'CASCADE', hooks: true })
+      this.hasMany(postLike, { onDelete: 'CASCADE', hooks: true })
+      this.hasMany(follow, { onDelete: 'CASCADE', hooks: true })
+      this.belongsTo(image, { onDelete: 'CASCADE', hooks: true })
     }
   }
   User.init(
@@ -69,6 +69,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
+      paranoid: true,
       modelName: 'user',
       defaultScope: {
         attributes: {

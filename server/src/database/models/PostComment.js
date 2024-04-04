@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       sequelize,
+      paranoid: true,
       modelName: 'postComment',
       defaultScope: {
         attributes: {
