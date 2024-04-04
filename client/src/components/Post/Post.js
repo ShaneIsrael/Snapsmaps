@@ -204,7 +204,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem key="delete" className="text-danger" color="danger" onClick={handleDelete}>
+                <DropdownItem key="delete" className="text-danger text-center" color="danger" onClick={handleDelete}>
                   Delete post
                 </DropdownItem>
               </DropdownMenu>
