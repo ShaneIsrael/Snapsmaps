@@ -89,7 +89,7 @@ controller.deletePost = async (req, res, next) => {
       return res.status(400).send('only the owner of a post can delete a post')
     }
 
-    await post.destroy({ force: true })
+    await post.destroy()
 
     return res.sendStatus(200)
   } catch (err) {
