@@ -1,5 +1,5 @@
 # build environment
-FROM node:18.18-alpine3.18 as build
+FROM node:20.12-alpine3.18 as build
 WORKDIR .
 ENV PATH node_modules/.bin:$PATH
 COPY client/package.json ./
@@ -13,7 +13,7 @@ ENV REACT_APP_ENVIRONMENT=production
 RUN npm run build
 
 # production environment
-FROM node:18.18-alpine3.18
+FROM node:20.12-alpine3.18
 RUN apk add --update nginx bash
 RUN mkdir /var/cache/nginx
 COPY --from=build /build /app/build

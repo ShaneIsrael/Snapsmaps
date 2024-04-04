@@ -1,4 +1,5 @@
 const path = require('path')
+const sharp = require('sharp')
 const { v4: uuidv4 } = require('uuid')
 
 const Models = require('../database/models')
@@ -39,16 +40,17 @@ controller.create = async (req, res, next) => {
     const { image } = req.files
     const { title, latitude, longitude } = req.body
 
-    if (!image || !title || !latitude || !longitude || !/^image/.test(image.mimetype))
+    if (!title) return res.status(400).send('A post requires a title.')
+    if (!image || !latitude || !longitude || !/^image/.test(image.mimetype))
       return res.status(400).send('A post requires an image and a gps location.')
 
     const reference = `/post/${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
-
+    const fileContent = Buffer.from(image.data)
     if (!isProduction) {
-      image.mv(path.join(process.cwd(), '/images', reference))
+      await sharp(fileContent).jpeg({ quality: 60 }).toFile(path.join(process.cwd(), '/images', reference))
     } else {
-      const fileContent = Buffer.from(image.data)
-      await uploadImage(fileContent, reference, image.mimetype)
+      const compressed = await sharp(fileContent).jpeg({ quality: 60 }).toBuffer()
+      await uploadImage(compressed, reference, image.mimetype)
     }
 
     const imageRow = await Models.image.create(
