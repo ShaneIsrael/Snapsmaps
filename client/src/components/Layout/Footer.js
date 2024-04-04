@@ -35,7 +35,7 @@ function Footer({ refreshFeed }) {
       />
       <footer
         onClick={(e) => e.stopPropagation()}
-        className="sticky bottom-0 pt-3 pb-3 flex z-40 mt-auto w-full h-auto items-center justify-center  inset-x-0 border-t border-divider backdrop-blur-lg backdrop-saturate-150 bg-background/70"
+        className="fixed bottom-0 pt-3 pb-3 flex z-40 mt-auto w-full h-auto items-center justify-center  inset-x-0 border-t border-divider backdrop-blur-lg backdrop-saturate-150 bg-background/70"
       >
         <Button
           isIconOnly

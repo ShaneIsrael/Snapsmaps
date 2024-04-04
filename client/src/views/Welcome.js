@@ -53,7 +53,7 @@ const Welcome = ({ mode }) => {
         </ModalContent>
       </Modal>
       <Appbar noProfile={!isAuthenticated} />
-      <div className="h-full flex justify-center flex-grow pt-8 pb-8" style={{ minHeight: 'calc(100vh - 130px)' }}>
+      <div className="min-h-screen h-full flex justify-center flex-grow pt-2 pb-[73px]">
         <div className="flex flex-col max-w-[375px] w-full p-2 items-center gap-4">
           {posts?.map((post) => (
             <Post
