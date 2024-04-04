@@ -21,9 +21,9 @@ const ImageCrop = ({ onDone }) => {
   const handleDone = async () => {
     const avatar = await getProcessedImage()
     const blob = window.URL.createObjectURL(avatar)
+    setOpenModal(false)
     setPreview(blob)
     resetStates()
-    setOpenModal(false)
     onDone(avatar)
   }
 
@@ -75,7 +75,10 @@ const ImageCrop = ({ onDone }) => {
             variant="faded"
             className="border-green-400 bg-green-950 text-green-400 "
             aria-label="new post"
-            onClick={() => cameraInput.current.click()}
+            onClick={() => {
+              cameraInput.current.click()
+              captureDeviceSelect.onClose()
+            }}
           >
             <CameraIcon />
           </Button>
@@ -85,7 +88,10 @@ const ImageCrop = ({ onDone }) => {
             variant="flat"
             className="text-neutral-400"
             aria-label="new post"
-            onClick={() => fileInput.current.click()}
+            onClick={() => {
+              fileInput.current.click()
+              captureDeviceSelect.onClose()
+            }}
           >
             <FolderIcon />
           </Button>

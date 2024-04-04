@@ -1,4 +1,15 @@
-import { Button, Image, Avatar, Divider, useDisclosure, Modal, ModalContent, Input, Textarea } from '@nextui-org/react'
+import {
+  Button,
+  Image,
+  Avatar,
+  Divider,
+  useDisclosure,
+  Modal,
+  ModalContent,
+  Input,
+  Textarea,
+  Spinner,
+} from '@nextui-org/react'
 import React from 'react'
 import Appbar from '../components/Layout/Appbar'
 import Post from '../components/Post/Post'
@@ -8,6 +19,7 @@ import { PostService, ProfileService } from '../services'
 import ImageCropProvider from '../providers/ImageCropProvider'
 import ImageCrop from '../components/Cropper/ImageCrop'
 import { useAuthed } from '../hooks/useAuthed'
+import { ArrowPathIcon } from '@heroicons/react/24/solid'
 
 /**
  * TODO
@@ -175,6 +187,7 @@ function Profile({ isSelf }) {
                 onClick={editMode ? handleUpdateProfile : () => setEditMode(true)}
                 disabled={saving}
               >
+                {saving && <ArrowPathIcon className="animate-spin w-4 h-4" />}
                 {editMode ? (saving ? 'Saving...' : 'Save') : 'Edit'}
               </Button>
             )}

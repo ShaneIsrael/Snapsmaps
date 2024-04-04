@@ -10,7 +10,7 @@ const root = createRoot(rootElement)
 
 root.render(
   <NextUIProvider>
-    <main className="dark text-foreground bg-background h-full">
+    <main className="dark text-foreground bg-background">
       <Toaster position="top-center" richColors />
       <App />
     </main>
