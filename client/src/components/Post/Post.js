@@ -158,24 +158,20 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
     <>
       <Card className="w-full">
         <CardHeader className="justify-between p-0">
-          <div className="flex m-4 gap-3">
+          <div className="flex m-4 gap-3 cursor-pointer">
             <Avatar
               isBordered
               color={isSelf ? 'primary' : 'default'}
               radius="full"
               size="md"
-              className="cursor-pointer"
               onClick={() => navigate(`/user/${intPost?.user?.mention}`)}
               src={hasProfileImage ? getAssetUrl() + intPost?.user?.image?.reference : ''}
             />
             <div className="flex flex-col gap-1 items-start justify-center">
               <h4
-                className={clsx(
-                  'text-md font-semibold leading-none text-default-600 cursor-pointer hover:text-neutral-50',
-                  {
-                    'text-primary-500': isSelf,
-                  },
-                )}
+                className={clsx('text-md font-semibold leading-none text-default-600 hover:text-neutral-50', {
+                  'text-primary-500': isSelf,
+                })}
                 onClick={() => navigate(`/user/${intPost?.user?.mention}`)}
               >
                 {intPost?.user?.displayName}
@@ -197,7 +193,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
             </Button>
           )}
           {isAuthenticated && isSelf && (
-            <Dropdown className="dark p-0">
+            <Dropdown className="dark min-w-0 p-[1px] w-fit">
               <DropdownTrigger>
                 <Button variant="light" size="sm" className="mr-2 mt-[-24px]" isIconOnly>
                   <EllipsisVerticalIcon className="w-5 h-5" />
@@ -205,7 +201,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem key="delete" className="text-danger text-center" color="danger" onClick={handleDelete}>
-                  Delete post
+                  Delete Post
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
