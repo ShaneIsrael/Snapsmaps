@@ -47,9 +47,12 @@ controller.create = async (req, res, next) => {
     const reference = `/post/${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
     const fileContent = Buffer.from(image.data)
     if (!isProduction) {
-      await sharp(fileContent).jpeg({ quality: 60 }).toFile(path.join(process.cwd(), '/images', reference))
+      await sharp(fileContent)
+        .jpeg({ quality: 60 })
+        .withMetadata()
+        .toFile(path.join(process.cwd(), '/images', reference))
     } else {
-      const compressed = await sharp(fileContent).jpeg({ quality: 60 }).toBuffer()
+      const compressed = await sharp(fileContent).jpeg({ quality: 60 }).withMetadata().toBuffer()
       await uploadImage(compressed, reference, image.mimetype)
     }
 
