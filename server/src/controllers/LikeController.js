@@ -12,6 +12,7 @@ controller.likedPost = async (req, res, next) => {
     const liked = await Models.postLike.findOne({
       where: { userId: req.user.id, postId: id },
     })
+
     res.status(200).send(!!liked)
   } catch (err) {
     next(err)

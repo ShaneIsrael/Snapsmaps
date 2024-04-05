@@ -35,7 +35,7 @@ controller.getById = async (req, res, next) => {
 
 controller.create = async (req, res, next) => {
   const t = await Models.sequelize.transaction()
-
+  req.setTimeout(300 * 1000)
   try {
     const { image } = req.files
     const { title, latitude, longitude } = req.body

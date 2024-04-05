@@ -12,8 +12,9 @@ import {
   Tabs,
   Textarea,
   useDisclosure,
+  Progress,
 } from '@nextui-org/react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
 import GoogleMapReact from 'google-map-react'
@@ -25,10 +26,12 @@ import { PostService } from '../../services'
 import { toast } from 'sonner'
 
 function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
+  const abortControllerRef = useRef(new AbortController())
   const newPostModal = useDisclosure()
   const [selectedTab, setSelectedTab] = useState('photo')
   const [description, setDescription] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   const renderMarkers = (map, maps) => {
     new maps.Marker({
@@ -71,10 +74,17 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
     }
   }
 
+  // abort the post upload if unmounted
+  useEffect(() => {
+    const controller = abortControllerRef.current
+    return () => controller.abort()
+  }, [])
+
   useEffect(() => {
     setDescription('')
     setSelectedTab('photo')
     setSubmitting(false)
+    setUploadProgress(0)
 
     if (imageData) {
       newPostModal.onOpen()
@@ -91,7 +101,13 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
   const submit = async () => {
     try {
       setSubmitting(true)
-      await PostService.create(description, imageData.gps, imageData.file)
+      await PostService.create(
+        description,
+        imageData.gps,
+        imageData.file,
+        (progress) => setUploadProgress(progress),
+        abortControllerRef.current.signal,
+      )
       onSubmitted()
     } catch (err) {
       if (err.response?.status === 413) {
@@ -102,6 +118,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
       }
     }
     setSubmitting(false)
+    setUploadProgress(0)
   }
 
   return (
@@ -126,6 +143,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                 classNames={{
                   input: 'text-md',
                 }}
+                isDisabled={submitting}
               />
             </CardHeader>
             <CardBody className="px-3 py-0 ">
@@ -181,13 +199,28 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                 </Tab>
               </Tabs>
             </CardBody>
-            <CardFooter className="p-6">
+            <CardFooter className="flex flex-col px-3 pt-2 pb-6 gap-2">
+              {submitting && (
+                <div className="relative align-middle justify-center w-full">
+                  <p className="absolute bottom-0 text-center text-sm font-extrabold tracking-widest  w-full z-10">
+                    {uploadProgress}%...
+                  </p>
+                  <Progress
+                    isStriped
+                    size="lg"
+                    aria-label="Uploading..."
+                    color="primary"
+                    value={uploadProgress}
+                    className="max-w-md"
+                  />
+                </div>
+              )}
               <div className="w-full flex flex-row align-middle items-center justify-center gap-4">
                 <Button color="danger" variant="flat" fullWidth onClick={handleCancel}>
                   <CloseIcon />
                 </Button>
-                <Button color="primary" variant="solid" fullWidth onClick={submit} disabled={submitting}>
-                  {submitting ? 'Submitting...' : <SendIcon />}
+                <Button color="primary" variant="solid" fullWidth onClick={submit} isDisabled={submitting}>
+                  {submitting ? 'Posting...' : <SendIcon />}
                 </Button>
               </div>
             </CardFooter>

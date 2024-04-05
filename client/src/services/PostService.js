@@ -1,8 +1,20 @@
 import Api from './Api'
 
 class PostService {
-  create(title, gps, image) {
-    return Api().postForm('/post', { title, ...gps, image })
+  create(title, gps, image, onUploadProgress, signal) {
+    return Api().postForm(
+      '/post',
+      { title, ...gps, image },
+      {
+        timeout: 300 * 1000,
+        signal,
+        onUploadProgress: (event) => {
+          const { loaded, total } = event
+          let percent = Math.floor((loaded * 100) / total)
+          onUploadProgress(percent, loaded / 1024 / 1024, total / 1024 / 1024)
+        },
+      },
+    )
   }
   get(id) {
     return Api().get('/post', { params: { id } })

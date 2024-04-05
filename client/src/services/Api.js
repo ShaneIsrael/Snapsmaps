@@ -8,7 +8,6 @@ const cancelToken = axios.CancelToken.source()
 
 const instance = axios.create({
   baseURL: `${URL}/api`,
-  timeout: 10000,
 })
 
 instance.interceptors.request.use(async (config) => {
