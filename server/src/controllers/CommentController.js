@@ -15,7 +15,26 @@ controller.create = async (req, res, next) => {
       body,
     })
 
-    res.status(200).send(comment)
+    res.status(201).send(comment)
+  } catch (err) {
+    next(err)
+  }
+}
+
+controller.deleteComment = async (req, res, next) => {
+  try {
+    const { id } = req.query
+    if (!id) return res.status(400).send('an id is required')
+
+    const comment = await Models.postComment.findOne({ where: { id }, attributes: ['id', 'userId', 'postId'] })
+
+    if (comment.userId !== req.user.id) {
+      return res.status(400).send('only the owner can delete a comment')
+    }
+
+    await comment.destroy()
+
+    return res.sendStatus(200)
   } catch (err) {
     next(err)
   }

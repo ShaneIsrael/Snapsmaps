@@ -205,7 +205,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
             <CardFooter className="flex flex-col px-3 pt-2 pb-6 gap-2">
               {submitting && (
                 <div className="relative align-middle justify-center w-full">
-                  <p className="absolute bottom-0 text-center text-sm font-extrabold tracking-widest  w-full z-10">
+                  <p className="absolute bottom-0 text-center text-sm font-extrabold tracking-widest w-full z-10">
                     {uploadProgress}%...
                   </p>
                   <Progress

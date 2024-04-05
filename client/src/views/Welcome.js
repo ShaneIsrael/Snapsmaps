@@ -33,7 +33,6 @@ const Welcome = ({ mode }) => {
     onOpen()
   }
 
-  console.log(posts)
   return (
     <>
       <Modal

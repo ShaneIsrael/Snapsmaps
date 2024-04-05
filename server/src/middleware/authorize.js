@@ -3,13 +3,19 @@ const jwt = require('jsonwebtoken')
 const authorize = (req, res, next) => {
   const token = req.cookies.session
 
-  if (!token) return res.sendStatus(403)
+  if (!token) {
+    res.clearCookie('session')
+    res.clearCookie('user')
+    return res.sendStatus(403)
+  }
 
   try {
     const data = jwt.verify(token, process.env.SECRET_KEY)
     req.user = data
     return next()
   } catch (err) {
+    res.clearCookie('session')
+    res.clearCookie('user')
     return res.sendStatus(403)
   }
 }

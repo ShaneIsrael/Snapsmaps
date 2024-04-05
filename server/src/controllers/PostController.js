@@ -76,7 +76,7 @@ controller.create = async (req, res, next) => {
 
     await t.commit()
 
-    return res.sendStatus(200)
+    return res.sendStatus(201)
   } catch (err) {
     await t.rollback()
     next(err)
