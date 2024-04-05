@@ -95,6 +95,9 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
   }, [imageData])
 
   const handleCancel = () => {
+    if (submitting) {
+      abortControllerRef.current.abort()
+    }
     onCancel()
   }
 
