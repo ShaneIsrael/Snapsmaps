@@ -11,7 +11,7 @@ function Footer({ refreshFeed }) {
   return (
     <>
       <Modal
-        className="dark transform-gpu p-0 m-0 rounded-b-none"
+        className="dark p-0 m-0 rounded-b-none"
         isOpen={captureDeviceSelect.isOpen}
         onClose={captureDeviceSelect.onClose}
         placement="bottom"

@@ -16,6 +16,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Divider,
 } from '@nextui-org/react'
 import { GoogleMapDarkMode } from '../../common/themes'
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
@@ -156,7 +157,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
 
   return (
     <>
-      <Card className="w-full">
+      <Card className="w-full rounded-none bg-background border-none">
         <CardHeader className="justify-between p-0">
           <div className="flex m-4 gap-3 cursor-pointer">
             <Avatar
@@ -216,7 +217,11 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
             selectedKey={selectedTab}
             onSelectionChange={setSelectedTab}
             className="block"
+            variant="solid"
             autoFocus={false}
+            classNames={{
+              tabList: 'bg-slate-900',
+            }}
           >
             <Tab
               key={`${post.id}-photo`}
@@ -276,14 +281,22 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
               }
             >
               <div className="h-[350px] flex flex-col">
-                <div className="overflow-y-scroll">
-                  <div className="flex flex-col gap-2 scroll-">
-                    {intPost.postComments.map((comment) => (
-                      <Comment key={`post-${post.id}-comment-${comment.id}`} comment={comment} />
-                    ))}
+                {intPost.postComments.length > 0 && (
+                  <div className="h-full overflow-y-scroll">
+                    <div className="flex flex-col gap-2">
+                      {intPost.postComments.map((comment) => (
+                        <Comment key={`post-${post.id}-comment-${comment.id}`} comment={comment} />
+                      ))}
+                    </div>
                   </div>
-                </div>
-
+                )}
+                {intPost.postComments.length === 0 && (
+                  <div className="flex flex-col h-full justify-center align-middle">
+                    <h2 className="text-center text-lg font-bold text-blue-600">
+                      {isAuthenticated ? 'Be the first to comment on this post' : 'no comments'}
+                    </h2>
+                  </div>
+                )}
                 {isAuthenticated && (
                   <Textarea
                     variant="faded"
@@ -320,6 +333,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
           </div>
         </CardFooter>
       </Card>
+      <Divider />
     </>
   )
 }

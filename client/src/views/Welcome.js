@@ -36,7 +36,7 @@ const Welcome = ({ mode }) => {
   return (
     <>
       <Modal
-        className="rounded-none transform-gpu w-fit h-fit"
+        className="rounded-none w-fit h-fit"
         isOpen={isOpen}
         onClose={onClose}
         size="full"
@@ -52,8 +52,8 @@ const Welcome = ({ mode }) => {
         </ModalContent>
       </Modal>
       <Appbar noProfile={!isAuthenticated} />
-      <div className="min-h-screen h-full flex justify-center flex-grow pt-2 pb-[73px]">
-        <div className="flex flex-col max-w-[375px] w-full p-2 items-center gap-4">
+      <div className="min-h-screen h-full flex justify-center flex-grow  pb-[73px]">
+        <div className="flex flex-col scroll-smooth sm:max-w-[400px] w-full items-center gap-2">
           {posts?.map((post) => (
             <Post
               key={`post-${post.id}`}

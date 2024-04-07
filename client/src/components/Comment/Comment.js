@@ -35,7 +35,7 @@ function Comment({ comment }) {
   if (deleted) return false
 
   return (
-    <Card className="w-full rounded-md">
+    <Card className="w-full rounded-md bg-background border-small border-neutral-800">
       <CardBody className="justify-between p-3">
         <div className="flex gap-2">
           <Avatar
@@ -49,7 +49,7 @@ function Comment({ comment }) {
               <p
                 className={clsx('text-xs font-semibold leading-none', {
                   'text-blue-400': currentUser?.mention === comment.user.mention,
-                  'text-orange-400': currentUser?.mention !== comment.user.mention,
+                  'text-neutral-200': currentUser?.mention !== comment.user.mention,
                 })}
               >
                 {comment.user.mention}
@@ -60,7 +60,7 @@ function Comment({ comment }) {
             <p className="text-tiny text-default-600 ">{comment.body}</p>
           </div>
         </div>
-        {currentUser.mention === comment.user.mention && (
+        {currentUser?.mention === comment.user.mention && (
           <Dropdown className="dark min-w-0 p-[1px] w-fit">
             <DropdownTrigger>
               <Button variant="light" size="sm" className="mr-1 mt-1 w-4 h-6 absolute top-0 right-0 min-w-0" isIconOnly>
