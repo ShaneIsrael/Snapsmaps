@@ -4,10 +4,10 @@ import MapComponent from './MapComponent'
 
 const API_KEY = 'AIzaSyA_PPhb-5jcZsLPcTdjoBBvF8CzvIbg4RE'
 
-function SnapMap({ markers }) {
+function SnapMap({ ...rest }) {
   return (
     <APIProvider apiKey={API_KEY}>
-      <MapComponent markers={markers} />
+      <MapComponent {...rest} />
     </APIProvider>
   )
 }

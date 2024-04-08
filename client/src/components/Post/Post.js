@@ -33,6 +33,7 @@ import {
   EllipsisVerticalIcon,
 } from '@heroicons/react/24/solid'
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
+import SnapMap from '../Map/SnapMap'
 
 function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSingle }) {
   const [intPost, setIntPost] = React.useState(post)
@@ -251,13 +252,10 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
               }
             >
               <div className="overflow-hidden rounded-2xl h-[350px]">
-                <GoogleMapReact
-                  bootstrapURLKeys={{ key: 'AIzaSyA_PPhb-5jcZsLPcTdjoBBvF8CzvIbg4RE' }}
-                  defaultCenter={{ lat: intPost?.image?.latitude, lng: intPost?.image?.longitude }}
+                <SnapMap
+                  markers={[{ lat: intPost?.image?.latitude, lng: intPost?.image?.longitude }]}
                   defaultZoom={14}
-                  yesIWantToUseGoogleMapApiInternals
-                  onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
-                  options={getMapOptions}
+                  streetViewControl
                 />
               </div>
             </Tab>

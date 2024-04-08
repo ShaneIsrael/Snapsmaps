@@ -1,12 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
-import GoogleMapReact from 'google-map-react'
+import React, { useEffect, useState } from 'react'
 import { GoogleMapDarkMode } from '../../common/themes'
-import MapMarker from './MapMarker'
-import { APIProvider, Map, Marker, useMap } from '@vis.gl/react-google-maps'
+import { Map, Marker, useMap } from '@vis.gl/react-google-maps'
 
-const API_KEY = 'AIzaSyA_PPhb-5jcZsLPcTdjoBBvF8CzvIbg4RE'
-
-function MapComponent({ markers }) {
+function MapComponent({ markers, defaultZoom, streetViewControl }) {
   const map = useMap()
   const [mapOptions, setMapOptions] = useState()
 
@@ -44,21 +40,15 @@ function MapComponent({ markers }) {
     }
   }
 
-  // const onMapLoad = (map, maps) => {
-  //   const bounds = new window.google.maps.LatLngBounds()
-  //   positions.forEach((position) => {
-  //     bounds.extend({ lat: parseFloat(position.lat), lng: parseFloat(position.lng) })
-  //   })
-  //   window.google.map.fitBounds(bounds)
-  // }
-
   useEffect(() => {
     if (map) {
-      const bounds = new google.maps.LatLngBounds()
-      markers.forEach((position) => {
-        bounds.extend({ lat: parseFloat(position.lat), lng: parseFloat(position.lng) })
-      })
-      map.fitBounds(bounds)
+      if (!defaultZoom) {
+        const bounds = new google.maps.LatLngBounds()
+        markers.forEach((position) => {
+          bounds.extend({ lat: parseFloat(position.lat), lng: parseFloat(position.lng) })
+        })
+        map.fitBounds(bounds)
+      }
 
       setMapOptions({
         mapControlOptions: {
@@ -73,6 +63,9 @@ function MapComponent({ markers }) {
     <Map
       gestureHandling={'greedy'}
       disableDefaultUI={true}
+      defaultZoom={defaultZoom}
+      streetViewControl={streetViewControl}
+      {...(defaultZoom ? { defaultCenter: markers[0] } : {})}
       mapTypeControl
       mapTypeControlOptions={mapOptions?.mapControlOptions}
       styles={[
