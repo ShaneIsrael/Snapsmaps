@@ -172,15 +172,9 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                   }
                   className="overflow-y-scroll"
                 >
-                  {/* <Image
-                    width="100%"
-                    src={`data:image/png;base64,${imageData?.base64}`}
-                    className="object-cover rounded-none"
-                    alt="preview image upload"
-                  /> */}
-                  <div className="flex align-middle h-[350px] justify-center ">
+                  <div className="flex align-middle h-[365px] justify-center ">
                     <Image
-                      className="object-cover max-h-[350px] cursor-pointer"
+                      className="object-cover max-h-[365px] cursor-pointer"
                       src={`data:image/png;base64,${imageData?.base64}`}
                       alt="preview image upload"
                     />
