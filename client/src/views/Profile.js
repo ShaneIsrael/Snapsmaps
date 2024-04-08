@@ -20,6 +20,7 @@ import ImageCropProvider from '../providers/ImageCropProvider'
 import ImageCrop from '../components/Cropper/ImageCrop'
 import { useAuthed } from '../hooks/useAuthed'
 import { ArrowPathIcon } from '@heroicons/react/24/solid'
+import SnapMap from '../components/Map/SnapMap'
 
 /**
  * TODO
@@ -142,8 +143,8 @@ function Profile({ isSelf }) {
         backdrop="blur"
         hideCloseButton
       >
-        <ModalContent className="max-w-[375px] w-full ">
-          {(onClose) => <Post isSelf={isSelf} post={post} onOpenModal={handleOpenImageModal} />}
+        <ModalContent className="sm:max-w-[375px] w-full ">
+          {(onClose) => <Post isSelf={isSelf} post={post} onOpenModal={handleOpenImageModal} isSingle />}
         </ModalContent>
       </Modal>
       <Appbar noProfile backButton="/" pageName={profileDetails.mention} />
@@ -252,6 +253,18 @@ function Profile({ isSelf }) {
               </div>
             </div>
           </div>
+        </div>
+        <Divider className="my-5" />
+        <div className="flex flex-row h-64">
+          {postHistory.length > 0 && (
+            <SnapMap
+              markers={postHistory.map((post) => ({
+                onClick: () => handleOpenModal(post.id),
+                lat: post.image.latitude,
+                lng: post.image.longitude,
+              }))}
+            />
+          )}
         </div>
         <Divider className="my-5" />
         <div className="grid grid-cols-[repeat(auto-fill,100px)] gap-1 justify-center">

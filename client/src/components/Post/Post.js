@@ -34,7 +34,7 @@ import {
 } from '@heroicons/react/24/solid'
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
 
-function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width = '90%' }) {
+function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSingle }) {
   const [intPost, setIntPost] = React.useState(post)
   const [isFollowed, setIsFollowed] = React.useState(defaultFollowed)
   const [selectedTab, setSelectedTab] = React.useState('photo')
@@ -333,7 +333,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, width 
           </div>
         </CardFooter>
       </Card>
-      <Divider />
+      {!isSingle && <Divider />}
     </>
   )
 }

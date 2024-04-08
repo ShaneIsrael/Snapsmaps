@@ -116,7 +116,7 @@ controller.getPostHistory = async (req, res, next) => {
       where: { userId: req.user.id },
       order: [['createdAt', 'desc']],
       attributes: ['id'],
-      include: [{ model: Models.image, attributes: ['reference'] }],
+      include: [{ model: Models.image, attributes: ['reference', 'latitude', 'longitude'] }],
     })
     res.status(200).send(history)
   } catch (err) {
@@ -136,7 +136,11 @@ controller.getMentionPostHistory = async (req, res, next) => {
       where: { mention },
       order: [[Models.post, 'createdAt', 'desc']],
       include: [
-        { model: Models.post, attributes: ['id'], include: [{ model: Models.image, attributes: ['reference'] }] },
+        {
+          model: Models.post,
+          attributes: ['id'],
+          include: [{ model: Models.image, attributes: ['reference', 'latitude', 'longitude'] }],
+        },
       ],
     })
     res.status(200).send(userRow.posts)
