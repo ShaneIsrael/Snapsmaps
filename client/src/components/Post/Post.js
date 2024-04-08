@@ -17,6 +17,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Divider,
+  Image,
 } from '@nextui-org/react'
 import { GoogleMapDarkMode } from '../../common/themes'
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
@@ -158,7 +159,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
 
   return (
     <>
-      <Card className="w-full rounded-none bg-background border-none">
+      <Card className="w-full h-[560px] rounded-none bg-background border-none">
         <CardHeader className="justify-between p-0">
           <div className="flex m-4 gap-3 cursor-pointer">
             <Avatar
@@ -233,9 +234,12 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                 </div>
               }
             >
-              <div className="flex justify-center max-h-[350px] rounded-2xl">
-                <img
-                  className="object-contain cursor-pointer"
+              <div className="w-full h-[350px] flex justify-center">
+                <Image
+                  className="object-cover max-h-[350px] cursor-pointer"
+                  classNames={{
+                    wrapper: 'flex align-middle justify-center',
+                  }}
                   src={postImage}
                   onClick={() => onOpenModal(postImage)}
                   alt="a post image"
