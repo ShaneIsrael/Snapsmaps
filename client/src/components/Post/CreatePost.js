@@ -24,6 +24,7 @@ import CloseIcon from '../../assets/icons/CloseIcon'
 import SendIcon from '../../assets/icons/SendIcon'
 import { PostService } from '../../services'
 import { toast } from 'sonner'
+import SnapMap from '../Map/SnapMap'
 
 function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
   const abortControllerRef = useRef(new AbortController())
@@ -190,14 +191,10 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                   }
                   className="h-full"
                 >
-                  <div className="h-full">
-                    <GoogleMapReact
-                      bootstrapURLKeys={{ key: 'AIzaSyA_PPhb-5jcZsLPcTdjoBBvF8CzvIbg4RE' }}
-                      defaultCenter={{ lat: imageData?.gps.latitude, lng: imageData?.gps.longitude }}
+                  <div className="overflow-hidden rounded-2xl h-[365px]">
+                    <SnapMap
+                      markers={[{ lat: imageData?.gps.latitude, lng: imageData?.gps.longitude }]}
                       defaultZoom={16}
-                      yesIWantToUseGoogleMapApiInternals
-                      onGoogleApiLoaded={({ map, maps }) => renderMarkers(map, maps)}
-                      options={getMapOptions}
                     />
                   </div>
                 </Tab>

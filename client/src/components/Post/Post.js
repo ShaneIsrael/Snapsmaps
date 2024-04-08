@@ -255,7 +255,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                 </div>
               }
             >
-              <div className="overflow-hidden rounded-2xl h-[350px]">
+              <div className="overflow-hidden rounded-2xl h-[365px]">
                 <SnapMap
                   markers={[{ lat: intPost?.image?.latitude, lng: intPost?.image?.longitude }]}
                   defaultZoom={14}
@@ -282,7 +282,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                 </div>
               }
             >
-              <div className="h-[350px] flex flex-col">
+              <div className="h-[365px] flex flex-col">
                 {intPost.postComments.length > 0 && (
                   <div className="h-full overflow-y-scroll">
                     <div className="flex flex-col gap-2">
