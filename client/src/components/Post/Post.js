@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react'
-import GoogleMapReact from 'google-map-react'
+import React, { useEffect } from 'react'
 import clsx from 'clsx'
 import {
   Avatar,
@@ -19,11 +18,10 @@ import {
   Divider,
   Image,
 } from '@nextui-org/react'
-import { GoogleMapDarkMode } from '../../common/themes'
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
 import Comment from '../Comment/Comment'
-import { getAssetUrl } from '../../common/utils'
+import { downloadFile, getAssetUrl } from '../../common/utils'
 import { CommentService, LikeService, PostService } from '../../services'
 import { formatDistanceStrict } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
@@ -110,47 +108,6 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
     }
   }
 
-  const renderMarkers = (map, maps) => {
-    new maps.Marker({
-      position: { lat: intPost?.image.latitude, lng: intPost?.image.longitude },
-      map,
-    })
-  }
-
-  const getMapOptions = (maps) => {
-    return {
-      streetViewControl: true,
-      scaleControl: true,
-      fullscreenControl: true,
-      styles: [
-        ...GoogleMapDarkMode,
-        {
-          featureType: 'poi.business',
-          elementType: 'labels',
-          stylers: [
-            {
-              visibility: 'off',
-            },
-          ],
-        },
-      ],
-      gestureHandling: 'greedy',
-      disableDoubleClickZoom: true,
-      minZoom: 0,
-      maxZoom: 25,
-
-      mapTypeControl: false,
-      mapTypeId: maps.MapTypeId.ROADMAP,
-      mapTypeControlOptions: {
-        style: maps.MapTypeControlStyle.DROPDOWN_MENU,
-        position: maps.ControlPosition.TOP_LEFT,
-        mapTypeIds: [maps.MapTypeId.ROADMAP, maps.MapTypeId.SATELLITE],
-      },
-      zoomControl: false,
-      clickableIcons: false,
-    }
-  }
-
   const hasProfileImage = !!intPost?.user?.image
   const timeAgo = formatDistanceStrict(new Date(intPost.createdAt), new Date(), { addSuffix: true })
 
@@ -195,7 +152,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
               {isFollowed ? 'Unfollow' : 'Follow'}
             </Button>
           )}
-          {isAuthenticated && isSelf && (
+          {isAuthenticated && (
             <Dropdown className="dark min-w-0 p-[1px] w-fit">
               <DropdownTrigger>
                 <Button variant="light" size="sm" className="mr-2 mt-[-24px]" isIconOnly>
@@ -203,9 +160,19 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem key="delete" className="text-danger text-center" color="danger" onClick={handleDelete}>
-                  Delete Post
+                <DropdownItem
+                  showDivider
+                  key="download"
+                  className="text-neutral-100"
+                  onClick={() => downloadFile(post?.image?.reference)}
+                >
+                  Download image
                 </DropdownItem>
+                {isSelf && (
+                  <DropdownItem key="delete" className="text-danger" color="danger" onClick={handleDelete}>
+                    Delete Post
+                  </DropdownItem>
+                )}
               </DropdownMenu>
             </Dropdown>
           )}
@@ -272,7 +239,6 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                   ) : (
                     <ChatBubbleLeftRightIconSolid className="w-6 h-6" />
                   )}
-
                   <span></span>
                   {intPost.commentCount > 0 && (
                     <Chip size="sm" variant="faded">

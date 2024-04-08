@@ -36,19 +36,15 @@ const Welcome = ({ mode }) => {
   return (
     <>
       <Modal
-        className="rounded-none w-fit h-fit"
+        className="rounded-none h-fit w-fit "
         isOpen={isOpen}
         onClose={onClose}
         size="full"
         placement="center"
         backdrop="blur"
       >
-        <ModalContent className="w-fit h-fit">
-          {(onClose) => (
-            <>
-              <Image className="rounded-none" onClick={onClose} alt="a post image" src={modalImage} />
-            </>
-          )}
+        <ModalContent className="h-fit w-fit">
+          {(onClose) => <Image className="rounded-none" onClick={onClose} alt="a post image" src={modalImage} />}
         </ModalContent>
       </Modal>
       <Appbar noProfile={!isAuthenticated} />

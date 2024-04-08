@@ -1,3 +1,4 @@
+import FileSaver from 'file-saver'
 import Cookies from 'js-cookie'
 import _ from 'lodash'
 
@@ -108,6 +109,13 @@ const getCroppedImg = async (
       resolve({ file, url: URL.createObjectURL(file) })
     }, 'image/jpeg')
   })
+}
+
+export const downloadFile = (reference) => {
+  ;(async () => {
+    let blob = await fetch(getAssetUrl() + reference, { mode: 'no-cors' }).then((r) => r.blob())
+    FileSaver.saveAs(blob, reference)
+  })()
 }
 
 export default getCroppedImg
