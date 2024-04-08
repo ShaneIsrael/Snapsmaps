@@ -234,9 +234,9 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                 </div>
               }
             >
-              <div className="w-full h-[350px] flex justify-center">
+              <div className="w-full h-[365px] flex align-middle justify-center">
                 <Image
-                  className="object-cover max-h-[350px] cursor-pointer"
+                  className="object-cover max-h-[365px] cursor-pointer"
                   classNames={{
                     wrapper: 'flex align-middle justify-center',
                   }}
