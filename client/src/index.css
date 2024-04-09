@@ -22,8 +22,8 @@ body,
 }
 
 #header-shape-gradient {
-  --color-stop: #2596ff;
-  --color-bot: #ff178b;
+  --color-stop: #9350ff;
+  --color-bot: #0787ff;
 }
 
 .gradient-bg {

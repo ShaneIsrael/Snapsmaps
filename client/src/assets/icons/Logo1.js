@@ -6,7 +6,7 @@ function Logo1(props) {
       <defs>
         <linearGradient id="header-shape-gradient" x2="0.35" y2="1">
           <stop offset="0%" stopColor="var(--color-stop)" />
-          <stop offset="30%" stopColor="var(--color-stop)" />
+          <stop offset="40%" stopColor="var(--color-stop)" />
           <stop offset="100%" stopColor="var(--color-bot)" />
         </linearGradient>
       </defs>
