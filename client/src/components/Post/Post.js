@@ -140,7 +140,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
               <h5 className="text-small font-semibold tracking-tight text-default-400">@{intPost?.user?.mention}</h5>
             </div>
           </div>
-          {isAuthenticated && !isSelf && (
+          {/* {isAuthenticated && !isSelf && (
             <Button
               className={isFollowed ? 'bg-transparent text-foreground border-default-200 mr-3' : 'mr-3'}
               color="primary"
@@ -151,7 +151,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
             >
               {isFollowed ? 'Unfollow' : 'Follow'}
             </Button>
-          )}
+          )} */}
           {isAuthenticated && (
             <Dropdown className="dark min-w-0 p-[1px] w-fit">
               <DropdownTrigger>
