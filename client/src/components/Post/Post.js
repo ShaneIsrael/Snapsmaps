@@ -161,7 +161,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem
-                  showDivider
+                  showDivider={isSelf}
                   key="download"
                   className="text-neutral-100"
                   onClick={() => downloadFile(post?.image?.reference)}

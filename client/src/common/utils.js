@@ -112,10 +112,17 @@ const getCroppedImg = async (
 }
 
 export const downloadFile = (reference) => {
-  ;(async () => {
-    let blob = await fetch(getAssetUrl() + reference, { mode: 'no-cors' }).then((r) => r.blob())
-    FileSaver.saveAs(blob, reference)
-  })()
+  fetch(getAssetUrl() + reference, { mode: 'no-cors' })
+    .then((r) => r.blob())
+    .then((blob) => {
+      const blobURL = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = blobURL
+      a.style = 'display: none'
+      a.download = reference.substring(reference.lastIndexOf('/') + 1)
+      document.body.appendChild(a)
+      a.click()
+    })
 }
 
 export default getCroppedImg
