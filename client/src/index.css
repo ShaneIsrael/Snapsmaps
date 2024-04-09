@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'GreatVibes';
+  src: local('GreatVibes'), url(./assets/fonts/GreatVibes.otf) format('opentype');
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+
 html,
 body,
 #root {
@@ -12,4 +19,13 @@ body,
 .reactEasyCrop_CropArea {
   color: rgba(0, 0, 0, 0.8) !important;
   border: 2px solid rgba(255, 255, 255, 0.5) !important;
+}
+
+#header-shape-gradient {
+  --color-stop: #2596ff;
+  --color-bot: #ff178b;
+}
+
+.gradient-bg {
+  fill: url(#header-shape-gradient) #fff;
 }

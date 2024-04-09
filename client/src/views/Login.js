@@ -61,9 +61,10 @@ const Login = (props) => {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-tr from-sky-900 to-purple-900">
-      <div className="flex fixed w-full px-4 justify-center">
-        <Card className="mt-5 w-full bg-background/50">
+    <div className="h-screen bg-gradient-to-tr from-sky-900 to-purple-900 pt-10">
+      <div className="flex flex-col items-center justify-center w-full px-4">
+        <h1 className="text-center text-neutral-200 tracking-wider text-7xl font-semibold font-vibes">Snapsmaps</h1>
+        <Card className="mt-5 w-full sm:w-96 bg-background/50">
           <CardHeader className="p-4">
             <h2 className="font-bold text-3xl">Sign in</h2>
           </CardHeader>

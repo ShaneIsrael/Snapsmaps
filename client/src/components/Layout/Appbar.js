@@ -20,6 +20,7 @@ import { getAssetUrl, getSessionUser } from '../../common/utils.js'
 import { useAuth } from '../../hooks/useAuth.js'
 import { ArrowLeftEndOnRectangleIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/solid'
 import { useAuthed } from '../../hooks/useAuthed.js'
+import Logo1 from '../../assets/icons/Logo1.js'
 
 export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
   const navigate = useNavigate()
@@ -32,9 +33,9 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost }) {
     <Navbar isBordered>
       <NavbarContent justify="start">
         {!backButton && (
-          <NavbarBrand className="mr-4">
-            <AcmeLogo />
-            <p className="hidden sm:block font-bold text-2xl">SnapsMaps</p>
+          <NavbarBrand className="mr-4 cursor-pointer" onClick={() => navigate('/')}>
+            <Logo1 className="w-9 h-9 mr-2 mb-2" />
+            <p className="text-center text-neutral-200 tracking-wider text-3xl font-bold font-vibes">Snapsmaps</p>
           </NavbarBrand>
         )}
         {backButton && (
