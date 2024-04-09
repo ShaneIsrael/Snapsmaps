@@ -111,18 +111,17 @@ const getCroppedImg = async (
   })
 }
 
-export const downloadFile = (reference) => {
-  fetch(getAssetUrl() + reference, { mode: 'no-cors' })
-    .then((r) => r.blob())
-    .then((blob) => {
-      const blobURL = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = blobURL
-      a.style = 'display: none'
-      a.download = reference.substring(reference.lastIndexOf('/') + 1)
-      document.body.appendChild(a)
-      a.click()
-    })
+export const downloadFile = async (reference) => {
+  const image = await fetch(getAssetUrl() + reference)
+  const imageBlob = await image.blob()
+  const imageURL = URL.createObjectURL(imageBlob)
+
+  const link = document.createElement('a')
+  link.href = imageURL
+  link.download = reference.substring(reference.lastIndexOf('/') + 1)
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
 }
 
 export default getCroppedImg
