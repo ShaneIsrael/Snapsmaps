@@ -21,6 +21,7 @@ import ImageCrop from '../components/Cropper/ImageCrop'
 import { useAuthed } from '../hooks/useAuthed'
 import { ArrowPathIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../components/Map/SnapMap'
+import Footer from '../components/Layout/Footer'
 
 /**
  * TODO
@@ -40,6 +41,8 @@ function Profile({ isSelf }) {
   const [saving, setSaving] = React.useState(false)
 
   const { mention } = useParams()
+
+  const { isAuthenticated } = useAuthed()
 
   const [profileDetails, setProfileDetails] = React.useState({
     displayName: '',
@@ -148,7 +151,7 @@ function Profile({ isSelf }) {
         </ModalContent>
       </Modal>
       <Appbar noProfile backButton="/" pageName={profileDetails.mention} />
-      <div className="mt-8 mx-6">
+      <div className="mt-8 mx-6 pb-[50px]">
         <div className="flex gap-5 max-w-[500px] justify-start items-start">
           <div className="flex flex-col gap-4">
             {editMode ? (
@@ -267,18 +270,19 @@ function Profile({ isSelf }) {
           )}
         </div>
         <Divider className="my-5" />
-        <div className="grid grid-cols-[repeat(auto-fill,100px)] gap-1 justify-center">
+        <div className="grid grid-cols-[repeat(auto-fill,100px)] justify-center">
           {postHistory.map((post) => (
             <Image
               key={`post-history-${post.id}`}
               onClick={() => handleOpenModal(post.id)}
               alt="a history image"
               src={getAssetUrl() + post.image.reference}
-              className="w-[100px] h-[100px] rounded-md object-cover cursor-pointer"
+              className="w-[100px] h-[100px] rounded-none border-1 border-black object-cover cursor-pointer"
             />
           ))}
         </div>
       </div>
+      <Footer refreshFeed={fetch} noProfile={!isAuthenticated} />
     </>
   )
 }

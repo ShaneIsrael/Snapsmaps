@@ -47,8 +47,8 @@ const Welcome = ({ mode }) => {
           {(onClose) => <Image className="rounded-none" onClick={onClose} alt="a post image" src={modalImage} />}
         </ModalContent>
       </Modal>
-      <Appbar noProfile={!isAuthenticated} />
-      <div className="min-h-screen h-full flex justify-center flex-grow  pb-[73px]">
+      <Appbar noProfile={!isAuthenticated} hidden />
+      <div className="min-h-screen h-full flex justify-center flex-grow  pb-[44px] pt-4">
         <div className="flex flex-col scroll-smooth sm:max-w-[400px] w-full items-center gap-2">
           {posts?.map((post) => (
             <Post
@@ -60,7 +60,7 @@ const Welcome = ({ mode }) => {
           ))}
         </div>
       </div>
-      <Footer refreshFeed={fetch} />
+      <Footer refreshFeed={fetch} noProfile={!isAuthenticated} />
     </>
   )
 }
