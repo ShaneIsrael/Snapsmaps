@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Navbar,
@@ -23,15 +23,13 @@ import { useAuthed } from '../../hooks/useAuthed.js'
 import Logo1 from '../../assets/icons/Logo1.js'
 import clsx from 'clsx'
 
-export default function Appbar({ noProfile, backButton, pageName, allowPost, hidden }) {
+export default function Appbar({ noProfile, backButton, pageName, allowPost, hidden, styles }) {
   const navigate = useNavigate()
-
   const { user, isAuthenticated } = useAuthed()
-
   const { logout } = useAuth()
 
   return (
-    <Navbar isBordered className={clsx({ hidden })}>
+    <Navbar isBordered className={clsx({ hidden })} style={{ ...styles }}>
       <NavbarContent justify="start">
         {!backButton && (
           <NavbarBrand className="mr-4 cursor-pointer" onClick={() => navigate('/')}>

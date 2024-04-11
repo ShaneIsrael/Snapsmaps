@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import TestService from '../services/TestService'
 import Post from '../components/Post/Post'
@@ -8,12 +8,16 @@ import Footer from '../components/Layout/Footer'
 import { useAuthed } from '../hooks/useAuthed'
 import { FeedService } from '../services'
 
+const SCROLL_DELTA = 5
+const NAVBAR_HEIGHT = 64
+
 const Welcome = ({ mode }) => {
   const { user, isAuthenticated } = useAuthed()
-
-  const [posts, setPosts] = React.useState()
+  const [posts, setPosts] = useState()
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const [modalImage, setModalImage] = React.useState()
+  const [modalImage, setModalImage] = useState()
+  const [lastScrollY, setLastScrollY] = useState(window.scrollY)
+  const [showNav, setShowNav] = useState(true)
 
   async function fetch() {
     try {
@@ -33,6 +37,28 @@ const Welcome = ({ mode }) => {
     onOpen()
   }
 
+  const handleScrolling = useCallback(
+    (e) => {
+      const window = e.currentTarget
+      if (lastScrollY > window.scrollY + SCROLL_DELTA) {
+        setShowNav(true)
+      } else if (lastScrollY < window.scrollY - SCROLL_DELTA) {
+        setShowNav(false)
+      }
+      setLastScrollY(window.scrollY)
+    },
+    [lastScrollY],
+  )
+
+  useEffect(() => {
+    setLastScrollY(window.scrollY)
+    window.addEventListener('scroll', handleScrolling)
+
+    return () => {
+      window.removeEventListener('scroll', handleScrolling)
+    }
+  }, [handleScrolling])
+
   return (
     <>
       <Modal
@@ -47,7 +73,13 @@ const Welcome = ({ mode }) => {
           {(onClose) => <Image className="rounded-none" onClick={onClose} alt="a post image" src={modalImage} />}
         </ModalContent>
       </Modal>
-      <Appbar noProfile={!isAuthenticated} hidden />
+      <Appbar
+        noProfile={!isAuthenticated}
+        styles={{
+          transition: 'top 0.3s ease-in-out',
+          top: showNav ? 0 : -NAVBAR_HEIGHT,
+        }}
+      />
       <div className="min-h-screen h-full flex justify-center flex-grow  pb-[44px] pt-4">
         <div className="flex flex-col scroll-smooth sm:max-w-[400px] w-full items-center gap-2">
           {posts?.map((post) => (
