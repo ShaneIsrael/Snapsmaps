@@ -151,8 +151,8 @@ function Profile({ isSelf }) {
         </ModalContent>
       </Modal>
       <Appbar noProfile backButton="/" pageName={profileDetails.mention} />
-      <div className="mt-8 mx-6 pb-[50px]">
-        <div className="flex gap-5 max-w-[500px] justify-start items-start">
+      <div className="mt-8 mx-0 pb-[50px]">
+        <div className="flex px-4 gap-5 max-w-[500px] justify-start items-start">
           <div className="flex flex-col gap-4">
             {editMode ? (
               <ImageCropProvider>
@@ -270,14 +270,14 @@ function Profile({ isSelf }) {
           )}
         </div>
         <Divider className="my-5" />
-        <div className="grid grid-cols-[repeat(auto-fill,100px)] justify-center">
+        <div className="grid grid-cols-[repeat(auto-fill,120px)] justify-center">
           {postHistory.map((post) => (
             <Image
               key={`post-history-${post.id}`}
               onClick={() => handleOpenModal(post.id)}
               alt="a history image"
               src={getAssetUrl() + post.image.reference}
-              className="w-[100px] h-[100px] rounded-none border-1 border-black object-cover cursor-pointer"
+              className="w-[120px] h-[120px] rounded-none border-1 border-black object-cover cursor-pointer"
             />
           ))}
         </div>
