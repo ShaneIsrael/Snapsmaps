@@ -29,3 +29,14 @@ body,
 .gradient-bg {
   fill: url(#header-shape-gradient) #fff;
 }
+
+@keyframes navbarShow {
+  from {
+    transform: translateY(-64px);
+  }
+}
+@keyframes navbarHide {
+  to {
+    transform: translateY(-64px);
+  }
+}

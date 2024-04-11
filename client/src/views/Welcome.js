@@ -77,8 +77,7 @@ const Welcome = ({ mode }) => {
       <Appbar
         noProfile={!isAuthenticated}
         styles={{
-          transition: 'top 0.4s ease-in-out',
-          top: showNav ? 0 : -NAVBAR_HEIGHT,
+          animation: `${showNav ? 'navbarShow' : 'navbarHide'} 0.3s ease forwards`,
         }}
       />
       <div className="min-h-screen h-full flex justify-center flex-grow  pb-[44px] pt-4">
