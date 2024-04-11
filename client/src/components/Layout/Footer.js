@@ -124,13 +124,19 @@ function Footer({ refreshFeed, noProfile }) {
               className="capitalize"
             >
               {isAuthenticated ? (
-                <div className="cursor-pointer" onClick={logout}>
+                <Button isIconOnly size="sm" variant="light" className="cursor-pointer" onClick={logout}>
                   <ArrowLeftEndOnRectangleIcon className="fill-red-600" width="32" height="32" />
-                </div>
+                </Button>
               ) : (
-                <div className="cursor-pointer" onClick={() => navigate('/login')}>
+                <Button
+                  isIconOnly
+                  size="sm"
+                  variant="light"
+                  className="cursor-pointer"
+                  onClick={() => navigate('/login')}
+                >
                   <ArrowRightEndOnRectangleIcon width="32" height="32" />
-                </div>
+                </Button>
               )}
             </Tooltip>
           )}
