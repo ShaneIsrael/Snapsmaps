@@ -76,7 +76,7 @@ const Welcome = ({ mode }) => {
       <Appbar
         noProfile={!isAuthenticated}
         styles={{
-          transition: 'top 0.3s ease-in-out',
+          transition: 'top 0.2s ease-in-out',
           top: showNav ? 0 : -NAVBAR_HEIGHT,
         }}
       />
