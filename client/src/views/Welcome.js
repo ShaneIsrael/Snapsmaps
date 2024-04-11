@@ -7,6 +7,7 @@ import { Image, Modal, ModalContent, useDisclosure } from '@nextui-org/react'
 import Footer from '../components/Layout/Footer'
 import { useAuthed } from '../hooks/useAuthed'
 import { FeedService } from '../services'
+import { animate } from 'framer-motion'
 
 const SCROLL_DELTA = 5
 const NAVBAR_HEIGHT = 64
@@ -76,7 +77,7 @@ const Welcome = ({ mode }) => {
       <Appbar
         noProfile={!isAuthenticated}
         styles={{
-          transition: 'top 0.2s ease-in-out',
+          transition: 'top 0.4s ease-in-out',
           top: showNav ? 0 : -NAVBAR_HEIGHT,
         }}
       />
