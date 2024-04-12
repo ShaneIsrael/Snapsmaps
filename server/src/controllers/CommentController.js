@@ -1,5 +1,5 @@
 const Models = require('../database/models')
-
+const { PostComment } = Models
 const isProduction = process.env.NODE_ENV === 'production'
 
 const controller = {}
@@ -9,7 +9,7 @@ controller.create = async (req, res, next) => {
     const { postId, body } = req.body
     if (!postId) return res.status(400).send('a post id is required')
 
-    const comment = await Models.postComment.create({
+    const comment = await PostComment.create({
       userId: req.user.id,
       postId,
       body,
@@ -26,7 +26,7 @@ controller.deleteComment = async (req, res, next) => {
     const { id } = req.query
     if (!id) return res.status(400).send('an id is required')
 
-    const comment = await Models.postComment.findOne({ where: { id }, attributes: ['id', 'userId', 'postId'] })
+    const comment = await PostComment.findOne({ where: { id }, attributes: ['id', 'userId', 'postId'] })
 
     if (comment.userId !== req.user.id) {
       return res.status(400).send('only the owner can delete a comment')

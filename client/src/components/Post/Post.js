@@ -116,7 +116,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
 
   return (
     <>
-      <Card className="w-full h-[560px] rounded-none bg-background border-none">
+      <Card className="w-full min-h-[560px] max-h-[580px] rounded-none bg-background border-none">
         <CardHeader className="justify-between p-0">
           <div className="flex m-4 gap-3 cursor-pointer">
             <Avatar
@@ -124,7 +124,13 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
               color={isSelf ? 'primary' : 'default'}
               radius="full"
               size="md"
-              onClick={() => navigate(`/user/${intPost?.user?.mention}`)}
+              onClick={() => {
+                if (user?.mention === intPost?.user?.mention) {
+                  navigate('/profile')
+                } else {
+                  navigate(`/user/${intPost?.user?.mention}`)
+                }
+              }}
               src={hasProfileImage ? getAssetUrl() + intPost?.user?.image?.reference : ''}
             />
             <div className="flex flex-col gap-1 items-start justify-center">
@@ -140,18 +146,6 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
               <h5 className="text-small font-semibold tracking-tight text-default-400">@{intPost?.user?.mention}</h5>
             </div>
           </div>
-          {/* {isAuthenticated && !isSelf && (
-            <Button
-              className={isFollowed ? 'bg-transparent text-foreground border-default-200 mr-3' : 'mr-3'}
-              color="primary"
-              radius="full"
-              size="sm"
-              variant={isFollowed ? 'bordered' : 'solid'}
-              onClick={() => setIsFollowed(!isFollowed)}
-            >
-              {isFollowed ? 'Unfollow' : 'Follow'}
-            </Button>
-          )} */}
           {isAuthenticated && (
             <Dropdown className="dark min-w-0 p-[1px] w-fit">
               <DropdownTrigger>
@@ -177,8 +171,10 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
             </Dropdown>
           )}
         </CardHeader>
-        <CardBody className="px-3 py-0 text-small text-default-500 font-semibold overflow-y-hidden rounded-b-2xl">
-          <p className="mb-2">{intPost?.title}</p>
+        <CardBody className="px-3 py-0 text-small text-default-500 font-semibold rounded-b-2xl">
+          <div className="overflow-y-scroll mb-1">
+            <p>{intPost?.title}</p>
+          </div>
           <Tabs
             aria-label="post tabs"
             color="primary"

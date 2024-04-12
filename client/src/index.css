@@ -26,17 +26,22 @@ body,
   --color-bot: #0787ff;
 }
 
+/* #header-shape-gradient {
+  --color-stop: #ff0800;
+  --color-bot: #300505;
+} */
+
 .gradient-bg {
   fill: url(#header-shape-gradient) #fff;
 }
 
 @keyframes navbarShow {
   from {
-    transform: translateY(-64px);
+    transform: translateY(-65px);
   }
 }
 @keyframes navbarHide {
   to {
-    transform: translateY(-64px);
+    transform: translateY(-65px);
   }
 }

@@ -9,8 +9,7 @@ import { useAuthed } from '../hooks/useAuthed'
 import { FeedService } from '../services'
 import { animate } from 'framer-motion'
 
-const SCROLL_DELTA = 5
-const NAVBAR_HEIGHT = 64
+const SCROLL_DELTA = 15
 
 const Welcome = ({ mode }) => {
   const { user, isAuthenticated } = useAuthed()
@@ -77,7 +76,7 @@ const Welcome = ({ mode }) => {
       <Appbar
         noProfile={!isAuthenticated}
         styles={{
-          animation: `${showNav ? 'navbarShow' : 'navbarHide'} 0.3s ease forwards`,
+          animation: `${showNav ? 'navbarShow' : 'navbarHide'} 0.2s ease forwards`,
         }}
       />
       <div className="min-h-screen h-full flex justify-center flex-grow  pb-[44px] pt-4">

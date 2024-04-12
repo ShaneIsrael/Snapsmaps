@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      const { user, post } = models
-      this.belongsTo(user)
-      this.hasOne(post)
+      const { User, Post } = models
+      this.belongsTo(User)
+      this.hasOne(Post)
     }
   }
   Image.init(

@@ -21,7 +21,8 @@ fs.readdirSync(__dirname)
   })
   .forEach((file) => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes)
-    db[model.name] = model
+    const name = model.name.charAt(0).toUpperCase() + model.name.slice(1)
+    db[name] = model
   })
 
 Object.keys(db).forEach((modelName) => {

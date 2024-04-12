@@ -30,9 +30,9 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost, hid
 
   return (
     <Navbar isBordered className={clsx({ hidden })} style={{ ...styles }}>
-      <NavbarContent justify="start">
+      <NavbarContent justify="start" className="align-middle items-center">
         {!backButton && (
-          <NavbarBrand className="mr-4 cursor-pointer" onClick={() => navigate('/')}>
+          <NavbarBrand className="mr-4 mt-1 cursor-pointer" onClick={() => navigate('/')}>
             <Logo1 className="w-9 h-9 mr-2 mb-2" />
             <p className="text-center text-neutral-200 tracking-wider text-3xl font-bold font-vibes">Snapsmaps</p>
           </NavbarBrand>

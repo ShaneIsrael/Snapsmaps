@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const Models = require('../database/models')
+const { User, Image } = Models
 const { isValidEmail, signUserJwt } = require('../utils')
 const { Op } = require('sequelize')
 const logger = require('../utils/logger')
@@ -46,7 +47,7 @@ controller.register = async (req, res, next) => {
     if (password.length < 5)
       return res.status(400).send({ field: 'password', message: 'Password must be at least 5 characters.' })
 
-    const userLookup = await Models.user.findOne({ where: { [Op.or]: { email, mention } } })
+    const userLookup = await User.findOne({ where: { [Op.or]: { email, mention } } })
 
     if (userLookup && userLookup.email === email.toLowerCase())
       return res.status(409).send({ field: 'email', message: 'An account with that e-mail already exists.' })
@@ -58,7 +59,7 @@ controller.register = async (req, res, next) => {
     logger.info(`registering user with email: ${email.toLowerCase()}`)
 
     try {
-      await Models.user.create({
+      await User.create({
         email: email.toLowerCase(),
         mention,
         displayName,
@@ -81,7 +82,7 @@ controller.login = async (req, res, next) => {
 
     if (!(email && password)) return res.status(400).send('Email & Password required.')
 
-    const user = await Models.user.scope('withPassword').findOne({ where: { email }, include: [Models.image] })
+    const user = await User.scope('withPassword').findOne({ where: { email }, include: [Image] })
 
     if (user) {
       if (await bcrypt.compare(password, user.password)) {

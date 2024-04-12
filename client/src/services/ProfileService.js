@@ -13,6 +13,12 @@ class ProfileService {
   getMentionPostHistory(mention) {
     return Api().get('/profile/history/mention', { params: { mention } })
   }
+  follow(mention) {
+    return Api().post('/profile/follow', { mention })
+  }
+  unfollow(mention) {
+    return Api().delete('/profile/follow', { params: { mention } })
+  }
 }
 
 const service = new ProfileService()

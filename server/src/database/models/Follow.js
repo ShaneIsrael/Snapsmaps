@@ -9,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      const { user } = models
-      this.belongsTo(user, {
+      const { User } = models
+      this.belongsTo(User, {
         foreignKey: 'followingUserId',
       })
-      this.belongsTo(user, {
+      this.belongsTo(User, {
         foreignKey: 'followedUserId',
       })
     }

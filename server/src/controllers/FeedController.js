@@ -1,4 +1,5 @@
 const Models = require('../database/models')
+const { Post, PostComment, User, Image } = Models
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -6,15 +7,15 @@ const controller = {}
 
 controller.public = async (req, res, next) => {
   try {
-    const posts = await Models.post.findAll({
+    const posts = await Post.findAll({
       order: [
         ['createdAt', 'desc'],
-        [Models.postComment, 'createdAt', 'asc'],
+        [PostComment, 'createdAt', 'asc'],
       ],
       include: [
-        { model: Models.user, attributes: ['displayName', 'mention'], include: [Models.image] },
-        Models.image,
-        { model: Models.postComment, include: [{ model: Models.user, include: [Models.image] }] },
+        { model: User, attributes: ['displayName', 'mention'], include: [Image] },
+        Image,
+        { model: PostComment, include: [{ model: User, include: [Image] }] },
       ],
     })
     res.status(200).send(posts)

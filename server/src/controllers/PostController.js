@@ -3,6 +3,7 @@ const sharp = require('sharp')
 const { v4: uuidv4 } = require('uuid')
 
 const Models = require('../database/models')
+const { Post, User, PostComment, Image } = Models
 const { uploadImage } = require('../services/UploadService')
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -14,15 +15,15 @@ controller.getById = async (req, res, next) => {
     const { id } = req.query
     if (!id) return res.status(400).send('id of post is required')
 
-    const post = await Models.post.findOne({
+    const post = await Post.findOne({
       where: { id },
-      order: [[Models.postComment, 'createdAt', 'asc']],
+      order: [[PostComment, 'createdAt', 'asc']],
       include: [
-        { model: Models.user, attributes: ['displayName', 'mention'], include: [Models.image] },
-        Models.image,
+        { model: User, attributes: ['displayName', 'mention'], include: [Image] },
+        Image,
         {
-          model: Models.postComment,
-          include: [{ model: Models.user, include: [Models.image] }],
+          model: PostComment,
+          include: [{ model: User, include: [Image] }],
         },
       ],
     })
@@ -56,7 +57,7 @@ controller.create = async (req, res, next) => {
       await uploadImage(compressed, reference, image.mimetype)
     }
 
-    const imageRow = await Models.image.create(
+    const imageRow = await Image.create(
       {
         userId: req.user.id,
         reference,
@@ -65,7 +66,7 @@ controller.create = async (req, res, next) => {
       },
       { transaction: t },
     )
-    const postRow = await Models.post.create(
+    const postRow = await Post.create(
       {
         title,
         userId: req.user.id,
@@ -88,7 +89,7 @@ controller.deletePost = async (req, res, next) => {
     const { id } = req.query
     if (!id) return res.status(400).send('an id is required')
 
-    const post = await Models.post.findOne({ where: { id }, attributes: ['id', 'userId'] })
+    const post = await Post.findOne({ where: { id }, attributes: ['id', 'userId'] })
 
     if (post.userId !== req.user.id) {
       return res.status(400).send('only the owner of a post can delete a post')
@@ -104,7 +105,7 @@ controller.deletePost = async (req, res, next) => {
 
 controller.test = async (req, res, next) => {
   try {
-    Models.postLike.create({
+    PostLike.create({
       userId: 1,
       postId: 1,
     })

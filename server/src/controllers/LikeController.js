@@ -1,5 +1,5 @@
 const Models = require('../database/models')
-
+const { PostLike } = Models
 const isProduction = process.env.NODE_ENV === 'production'
 
 const controller = {}
@@ -9,7 +9,7 @@ controller.likedPost = async (req, res, next) => {
     const { id } = req.query
     if (!id) return res.status(400).send('id of post is required')
 
-    const liked = await Models.postLike.findOne({
+    const liked = await PostLike.findOne({
       where: { userId: req.user.id, postId: id },
     })
 
@@ -24,7 +24,7 @@ controller.likePost = async (req, res, next) => {
     const { id } = req.body
     if (!id) return res.status(400).send('id of post is required')
 
-    const [postLike, created] = await Models.postLike.findOrCreate({
+    const [postLike, created] = await PostLike.findOrCreate({
       where: { userId: req.user.id, postId: id },
       defaults: {
         userId: req.user.id,

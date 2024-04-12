@@ -1,5 +1,6 @@
 const path = require('path')
 const Models = require('../database/models')
+const { User, Image, Post, Follow } = Models
 const { v4: uuidv4 } = require('uuid')
 const { signUserJwt } = require('../utils')
 const { uploadImage } = require('../services/UploadService')
@@ -24,9 +25,9 @@ controller.getByMention = async (req, res, next) => {
 
     if (!mention) return res.status(400).send('a mention is required')
 
-    const userRow = await Models.user.findOne({
+    const userRow = await User.findOne({
       where: { mention },
-      include: [{ model: Models.image, attributes: ['reference'] }],
+      include: [{ model: Image, attributes: ['reference'] }],
     })
 
     const mutatedUser = { ...userRow.toJSON(), image: userRow.toJSON().image?.reference }
@@ -49,9 +50,9 @@ controller.update = async (req, res, next) => {
       return res.status(400).send('no profile data provided')
     }
 
-    const userRow = await Models.user.findOne({
+    const userRow = await User.findOne({
       where: { id: req.user.id },
-      include: [Models.image],
+      include: [Image],
     })
     if (displayName) userRow.displayName = displayName
     if (bio) userRow.bio = bio
@@ -69,7 +70,7 @@ controller.update = async (req, res, next) => {
           await uploadImage(fileContent, reference, image.mimetype)
         }
 
-        const imageRow = await Models.image.create({
+        const imageRow = await Image.create({
           userId: req.user.id,
           reference,
         })
@@ -112,11 +113,11 @@ controller.update = async (req, res, next) => {
  */
 controller.getPostHistory = async (req, res, next) => {
   try {
-    const history = await Models.post.findAll({
+    const history = await Post.findAll({
       where: { userId: req.user.id },
       order: [['createdAt', 'desc']],
       attributes: ['id'],
-      include: [{ model: Models.image, attributes: ['reference', 'latitude', 'longitude'] }],
+      include: [{ model: Image, attributes: ['reference', 'latitude', 'longitude'] }],
     })
     res.status(200).send(history)
   } catch (err) {
@@ -132,18 +133,79 @@ controller.getMentionPostHistory = async (req, res, next) => {
     const { mention } = req.query
     if (!mention) return res.status(400).send('a mention is required')
 
-    const userRow = await Models.user.findOne({
+    const userRow = await User.findOne({
       where: { mention },
-      order: [[Models.post, 'createdAt', 'desc']],
+      order: [[Post, 'createdAt', 'desc']],
       include: [
         {
-          model: Models.post,
+          model: Post,
           attributes: ['id'],
-          include: [{ model: Models.image, attributes: ['reference', 'latitude', 'longitude'] }],
+          include: [{ model: Image, attributes: ['reference', 'latitude', 'longitude'] }],
         },
       ],
     })
     res.status(200).send(userRow.posts)
+  } catch (err) {
+    next(err)
+  }
+}
+
+controller.followProfile = async (req, res, next) => {
+  try {
+    const { mention } = req.body
+    if (!mention) return res.status(400).send('a mention is required')
+    if (mention === req.user.mention) return res.status(400).send('you cant follow yourself')
+
+    const mentionUser = await User.findOne({
+      attributes: ['id'],
+      where: { mention },
+    })
+
+    if (!mentionUser) {
+      return res.status(404).send('no such user exists')
+    }
+
+    const [follow, created] = await Follow.findOrCreate({
+      where: { followingUserId: req.user.id, followedUserId: mentionUser.id },
+      defaults: {
+        followingUserId: req.user.id,
+        followedUserId: mentionUser.id,
+      },
+    })
+
+    if (created) {
+      return res.status(201).send(created)
+    }
+    return res.status(200).send(follow)
+  } catch (err) {
+    next(err)
+  }
+}
+
+controller.unfollowProfile = async (req, res, next) => {
+  try {
+    const { mention } = req.query
+    if (!mention) return res.status(400).send('a mention is required')
+    if (mention === req.user.mention)
+      return res.status(400).send('you must first follow yourself before you can unfollow yourself')
+
+    const mentionUser = await User.findOne({
+      attributes: ['id'],
+      where: { mention },
+    })
+
+    if (!mentionUser) {
+      return res.status(404).send('no such user exists')
+    }
+
+    const follow = await Follow.findOne({
+      where: { followingUserId: req.user.id, followedUserId: mentionUser.id },
+    })
+    if (follow) {
+      follow.destroy()
+      return res.sendStatus(200)
+    }
+    return res.sendStatus(404)
   } catch (err) {
     next(err)
   }

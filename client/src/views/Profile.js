@@ -115,6 +115,23 @@ function Profile({ isSelf }) {
     setEditMode(false)
   }
 
+  const handleFollow = async () => {
+    try {
+      await ProfileService.follow(mention)
+      setIsFollowed(true)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  const handleUnfollow = async () => {
+    try {
+      await ProfileService.unfollow(mention)
+      setIsFollowed(false)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   React.useEffect(() => {
     fetch()
   }, [mention])
@@ -176,7 +193,7 @@ function Profile({ isSelf }) {
                 radius="sm"
                 size="sm"
                 variant={isFollowed ? 'bordered' : 'solid'}
-                onClick={() => setIsFollowed(!isFollowed)}
+                onClick={isFollowed ? handleUnfollow : handleFollow}
               >
                 {isFollowed ? 'Unfollow' : 'Follow'}
               </Button>
