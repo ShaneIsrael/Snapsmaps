@@ -16,6 +16,22 @@ const COOKIE_PARAMS = {
 
 const controller = {}
 
+controller.get = async (req, res, next) => {
+  try {
+    const userRow = await User.findOne({ where: { id: req.user.id }, raw: true, nest: true })
+    res.status(200).send({
+      displayName: userRow.displayName,
+      mention: userRow.mention,
+      bio: userRow.bio,
+      image: userRow.image,
+      followersCount: userRow.followersCount,
+      followingCount: userRow.followingCount,
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
 /**
  * Gets a users profile by their mention name
  */
@@ -28,9 +44,33 @@ controller.getByMention = async (req, res, next) => {
     const userRow = await User.findOne({
       where: { mention },
       include: [{ model: Image, attributes: ['reference'] }],
+      raw: true,
+      nest: true,
     })
 
-    const mutatedUser = { ...userRow.toJSON(), image: userRow.toJSON().image?.reference }
+    let isFollowed = false
+    // if authenticated and looking at a profile
+    if (req.cookies.user && userRow) {
+      let viewingUser = JSON.parse(req.cookies.user)
+      if (viewingUser.email) {
+        const viewingUserRow = await User.findOne({ attributes: ['id'], where: { email: viewingUser.email } })
+        isFollowed =
+          // findAll with a limit of 1 is apparently the fastest way to search
+          // and the follow table is likely to be very large.
+          (
+            await Follow.findAll({
+              attributes: ['id'],
+              limit: 1,
+              where: {
+                followingUserId: viewingUserRow.id,
+                followedUserId: userRow.id,
+              },
+            })
+          ).length > 0
+      }
+    }
+
+    const mutatedUser = { ...userRow, image: userRow.image?.reference, isFollowed }
 
     res.status(200).send(mutatedUser)
   } catch (err) {
@@ -89,6 +129,8 @@ controller.update = async (req, res, next) => {
       userRow.mention,
       userRow.bio,
       userRow.image?.reference,
+      userRow.followersCount,
+      userRow.followingCount,
     )
     res.cookie('session', accessToken, COOKIE_PARAMS)
     res.cookie(
@@ -99,6 +141,8 @@ controller.update = async (req, res, next) => {
         displayName: userRow.displayName,
         bio: userRow.bio,
         image: userRow.image?.reference,
+        followersCount: userRow.followersCount,
+        followingCount: userRow.followingCount,
       }),
     )
 

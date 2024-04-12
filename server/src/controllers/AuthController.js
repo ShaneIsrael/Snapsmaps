@@ -47,7 +47,10 @@ controller.register = async (req, res, next) => {
     if (password.length < 5)
       return res.status(400).send({ field: 'password', message: 'Password must be at least 5 characters.' })
 
-    const userLookup = await User.findOne({ where: { [Op.or]: { email, mention } } })
+    const userLookup = await User.findOne({
+      attributes: { include: ['email'] },
+      where: { [Op.or]: { email, mention } },
+    })
 
     if (userLookup && userLookup.email === email.toLowerCase())
       return res.status(409).send({ field: 'email', message: 'An account with that e-mail already exists.' })
@@ -93,6 +96,8 @@ controller.login = async (req, res, next) => {
           user.mention,
           user.bio,
           user.image?.reference,
+          user.followersCount,
+          user.followingCount,
         )
 
         res.cookie('session', accessToken, COOKIE_PARAMS)
@@ -107,6 +112,8 @@ controller.login = async (req, res, next) => {
               displayName: user.displayName,
               bio: user.bio,
               image: user.image?.reference,
+              followersCount: user.followersCount,
+              followingCount: user.followingCount,
             }),
           )
           .sendStatus(200)

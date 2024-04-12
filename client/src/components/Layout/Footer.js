@@ -98,7 +98,7 @@ function Footer({ refreshFeed, noProfile }) {
                   isBordered
                   as="button"
                   className="transition-transform w-7 h-7"
-                  color="default"
+                  color={user?.image ? 'default' : 'primary'}
                   size="sm"
                   src={user?.image ? getAssetUrl() + user.image : ''}
                 />

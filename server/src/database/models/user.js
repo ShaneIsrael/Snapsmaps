@@ -47,6 +47,16 @@ module.exports = (sequelize, DataTypes) => {
         },
         unique: true,
       },
+      followingCount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      followersCount: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       bio: {
         type: DataTypes.STRING,
       },
@@ -73,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'user',
       defaultScope: {
         attributes: {
-          exclude: ['password', 'token', 'verified'],
+          exclude: ['email', 'password', 'token', 'verified'],
         },
       },
       scopes: {

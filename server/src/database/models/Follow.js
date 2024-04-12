@@ -23,15 +23,26 @@ module.exports = (sequelize, DataTypes) => {
       followingUserId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: { model: sequelize.models.user, key: 'id' },
+        references: { model: sequelize.models.User, key: 'id' },
       },
       followedUserId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: { model: sequelize.models.user, key: 'id' },
+        references: { model: sequelize.models.User, key: 'id' },
       },
     },
     {
+      hooks: {
+        afterCreate: (follow) => {
+          sequelize.models.user.increment('followingCount', { by: 1, where: { id: follow.followingUserId } })
+          sequelize.models.user.increment('followersCount', { by: 1, where: { id: follow.followedUserId } })
+        },
+        afterDestroy: (follow) => {
+          sequelize.models.user.decrement('followingCount', { by: 1, where: { id: follow.followingUserId } })
+          sequelize.models.user.decrement('followersCount', { by: 1, where: { id: follow.followedUserId } })
+        },
+      },
+
       sequelize,
       modelName: 'follow',
     },

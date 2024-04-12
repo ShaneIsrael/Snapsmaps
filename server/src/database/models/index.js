@@ -26,8 +26,9 @@ fs.readdirSync(__dirname)
   })
 
 Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db)
+  const name = modelName.charAt(0).toUpperCase() + modelName.slice(1)
+  if (db[name].associate) {
+    db[name].associate(db)
   }
 })
 

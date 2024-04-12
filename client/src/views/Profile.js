@@ -23,12 +23,6 @@ import { ArrowPathIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../components/Map/SnapMap'
 import Footer from '../components/Layout/Footer'
 
-/**
- * TODO
- * Show post history
- * Show stats on number of posts, followers, and following
- */
-
 function Profile({ isSelf }) {
   const postModal = useDisclosure()
   const imageModal = useDisclosure()
@@ -44,17 +38,10 @@ function Profile({ isSelf }) {
 
   const { isAuthenticated } = useAuthed()
 
-  const [profileDetails, setProfileDetails] = React.useState({
-    displayName: '',
-    email: '',
-    mention: '',
-    bio: '',
-    image: '',
-  })
+  const [profile, setProfile] = React.useState()
 
   const [updatedProfileDetails, setUpdatedProfileDetails] = React.useState({
     displayName: '',
-    email: '',
     mention: '',
     bio: '',
     image: '',
@@ -90,14 +77,15 @@ function Profile({ isSelf }) {
     try {
       let profile
       if (!mention) {
-        profile = getSessionUser()
+        profile = (await ProfileService.getAuthedProfile()).data
         await fetchHistory()
         setUpdatedProfileDetails(profile)
       } else {
         profile = (await ProfileService.getProfileByMention(mention)).data
         await fetchHistory(mention)
       }
-      setProfileDetails(profile)
+      setIsFollowed(profile.isFollowed)
+      setProfile(profile)
     } catch (err) {
       console.error(err)
     }
@@ -167,7 +155,7 @@ function Profile({ isSelf }) {
           {(onClose) => <Post isSelf={isSelf} post={post} onOpenModal={handleOpenImageModal} isSingle />}
         </ModalContent>
       </Modal>
-      <Appbar noProfile backButton="/" pageName={profileDetails.mention} />
+      <Appbar noProfile backButton="/" pageName={profile?.mention} />
       <div className="mt-8 mx-0 pb-[50px]">
         <div className="flex px-4 gap-5 max-w-[500px] justify-start items-start">
           <div className="flex flex-col gap-4">
@@ -179,10 +167,10 @@ function Profile({ isSelf }) {
               </ImageCropProvider>
             ) : (
               <Avatar
-                src={profileDetails.image ? getAssetUrl() + profileDetails.image : ''}
+                src={profile?.image ? getAssetUrl() + profile?.image : ''}
                 isBordered
                 className="w-20 h-20 text-large"
-                color="primary"
+                color={isSelf ? 'primary' : 'default'}
               />
             )}
 
@@ -217,11 +205,9 @@ function Profile({ isSelf }) {
             <div className="h-[125px] w-full">
               {!editMode ? (
                 <>
-                  <h4 className="text-2xl font-semibold leading-none text-default-600">{profileDetails.displayName}</h4>
-                  <h5 className="text-md tracking-tight text-blue-400">@{profileDetails.mention}</h5>
-                  <p className="text-small tracking-tight text-default-500 mt-2 whitespace-pre-line">
-                    {profileDetails.bio}
-                  </p>
+                  <h4 className="text-2xl font-semibold leading-none text-default-600">{profile?.displayName}</h4>
+                  <h5 className="text-md tracking-tight text-blue-400">@{profile?.mention}</h5>
+                  <p className="text-small tracking-tight text-default-500 mt-2 whitespace-pre-line">{profile?.bio}</p>
                 </>
               ) : (
                 <div className="flex flex-col gap-1">
@@ -230,7 +216,7 @@ function Profile({ isSelf }) {
                     size="md"
                     variant="bordered"
                     placeholder="Name"
-                    value={updatedProfileDetails.displayName}
+                    value={updatedprofile?.displayName}
                     onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, displayName: value }))}
                     className="w-full"
                   />
@@ -239,7 +225,7 @@ function Profile({ isSelf }) {
                     size="sm"
                     variant="bordered"
                     placeholder="@mention"
-                    value={updatedProfileDetails.mention}
+                    value={updatedprofile?.mention}
                     onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, mention: value }))}
                     className="w-full"
                     isDisabled
@@ -247,7 +233,7 @@ function Profile({ isSelf }) {
                   <Textarea
                     variant="bordered"
                     placeholder="Bio"
-                    value={updatedProfileDetails.bio}
+                    value={updatedprofile?.bio}
                     onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, bio: value }))}
                     rows={2}
                     maxRows={2}
@@ -263,11 +249,11 @@ function Profile({ isSelf }) {
                   <span className="text-md font-semibold text-default-600">posts</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <h2 className="text-xl font-extrabold text-default-600">117</h2>
+                  <h2 className="text-xl font-extrabold text-default-600">{profile?.followersCount}</h2>
                   <span className="text-md font-semibold text-default-600">followers</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <h2 className="text-xl font-extrabold text-default-600">117</h2>
+                  <h2 className="text-xl font-extrabold text-default-600">{profile?.followingCount}</h2>
                   <span className="text-md font-semibold  text-default-600">following</span>
                 </div>
               </div>

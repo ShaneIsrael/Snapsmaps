@@ -5,8 +5,6 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
   isValidEmail: (email) => validator.validate(email),
-  getTodaysDate: () =>
-    new Date().toLocaleString('fr-CA', { timeZone: 'America/Los_Angeles' }).match(/\d{4}-\d{2}-\d{2}/g)[0],
   capitalizeFirstLetter: (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1)
   },
@@ -17,6 +15,6 @@ module.exports = {
     }
     return dd
   },
-  signUserJwt: (id, email, displayName, mention, bio, image) =>
-    jwt.sign({ id, email, displayName, mention, bio, image }, process.env.SECRET_KEY),
+  signUserJwt: (id, email, displayName, mention, bio, image, followersCount, followingCount) =>
+    jwt.sign({ id, email, displayName, mention, bio, image, followersCount, followingCount }, process.env.SECRET_KEY),
 }

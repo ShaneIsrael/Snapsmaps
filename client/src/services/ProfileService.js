@@ -1,6 +1,9 @@
 import Api from './Api'
 
 class ProfileService {
+  getAuthedProfile() {
+    return Api().get('/profile')
+  }
   update(profile) {
     return Api().putForm('/profile', { ...profile })
   }
