@@ -116,7 +116,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
 
   return (
     <>
-      <Card className="w-full min-h-[550px] max-h-[580px] rounded-none bg-background border-none">
+      <Card className="w-full min-h-[550px] max-h-[600px] rounded-none bg-background border-none">
         <CardHeader className="justify-between p-0">
           <div className="flex m-4 gap-3 cursor-pointer">
             <Avatar
@@ -171,9 +171,9 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
             </Dropdown>
           )}
         </CardHeader>
-        <CardBody className="px-3 py-0 text-small text-default-500 font-semibold rounded-b-2xl">
-          <div className="overflow-y-scroll mb-1">
-            <p>{intPost?.title}</p>
+        <CardBody className="px-3 py-0 text-small text-default-500 ">
+          <div className="mb-2">
+            <p className="leading-4 max-h-[65px] overflow-y-scroll">{intPost?.title}</p>
           </div>
           <Tabs
             aria-label="post tabs"
