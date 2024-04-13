@@ -9,6 +9,10 @@ import {
   Input,
   Textarea,
   Spinner,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
 } from '@nextui-org/react'
 import React from 'react'
 import Appbar from '../components/Layout/Appbar'
@@ -106,7 +110,7 @@ function Profile({ isSelf }) {
   const handleFollow = async () => {
     try {
       await ProfileService.follow(mention)
-      setIsFollowed(true)
+      fetch()
     } catch (err) {
       console.error(err)
     }
@@ -114,7 +118,7 @@ function Profile({ isSelf }) {
   const handleUnfollow = async () => {
     try {
       await ProfileService.unfollow(mention)
-      setIsFollowed(false)
+      fetch()
     } catch (err) {
       console.error(err)
     }
@@ -174,18 +178,37 @@ function Profile({ isSelf }) {
               />
             )}
 
-            {!isSelf && (
-              <Button
-                className={isFollowed ? 'bg-transparent text-foreground border-default-200 w-[80px]' : 'w-[80px]'}
-                color="primary"
-                radius="sm"
-                size="sm"
-                variant={isFollowed ? 'bordered' : 'solid'}
-                onClick={isFollowed ? handleUnfollow : handleFollow}
-              >
-                {isFollowed ? 'Unfollow' : 'Follow'}
-              </Button>
-            )}
+            {!isSelf &&
+              (isFollowed ? (
+                <Dropdown className="dark min-w-0 p-[1px] w-[100px]">
+                  <DropdownTrigger>
+                    <Button size="sm" color="default" className="font-bold" variant="bordered">
+                      following
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="following dropdown" color="default" variant="flat">
+                    <DropdownItem
+                      key="unfollow"
+                      className="text-danger text-center"
+                      color="danger"
+                      onClick={handleUnfollow}
+                    >
+                      Unfollow
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              ) : (
+                <Button
+                  color="primary"
+                  radius="sm"
+                  size="sm"
+                  className="font-bold"
+                  variant="solid"
+                  onClick={handleFollow}
+                >
+                  follow
+                </Button>
+              ))}
             {isSelf && (
               <Button
                 className={isFollowed ? 'bg-transparent text-foreground border-default-200 w-[80px]' : 'w-[80px]'}
