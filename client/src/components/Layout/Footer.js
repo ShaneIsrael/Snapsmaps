@@ -104,7 +104,7 @@ function Footer({ refreshFeed, noProfile }) {
                 />
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <DropdownItem key="signin-info" className="h-14 gap-2">
+                <DropdownItem key="signin-info" className="h-14 gap-2" textValue={`Signed in as ${user?.email}`}>
                   <p className="font-semibold">Signed in as</p>
                   <p className="font-semibold">{user?.email}</p>
                 </DropdownItem>

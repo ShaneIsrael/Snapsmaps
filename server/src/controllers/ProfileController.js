@@ -18,12 +18,18 @@ const controller = {}
 
 controller.get = async (req, res, next) => {
   try {
-    const userRow = await User.findOne({ where: { id: req.user.id }, raw: true, nest: true })
+    const userRow = await User.findOne({
+      where: { id: req.user.id },
+      include: [{ model: Image, attributes: ['reference'] }],
+      raw: true,
+      nest: true,
+    })
+    console.log(userRow)
     res.status(200).send({
       displayName: userRow.displayName,
       mention: userRow.mention,
       bio: userRow.bio,
-      image: userRow.image,
+      image: userRow.image?.reference,
       followersCount: userRow.followersCount,
       followingCount: userRow.followingCount,
     })

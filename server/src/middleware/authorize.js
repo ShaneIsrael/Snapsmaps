@@ -20,7 +20,7 @@ const authorize = (req, res, next) => {
         mention: req.user.mention,
         displayName: req.user.displayName,
         bio: req.user.bio,
-        image: req.user.image?.reference,
+        image: req.user.image,
         followersCount: req.user.followersCount,
         followingCount: req.user.followingCount,
       }),

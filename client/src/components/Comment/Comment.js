@@ -67,7 +67,7 @@ function Comment({ comment }) {
                 <EllipsisVerticalIcon />
               </Button>
             </DropdownTrigger>
-            <DropdownMenu>
+            <DropdownMenu aria-label="Comment actions">
               <DropdownItem key="delete" className="text-danger text-center" color="danger" onClick={handleDelete}>
                 Delete
               </DropdownItem>

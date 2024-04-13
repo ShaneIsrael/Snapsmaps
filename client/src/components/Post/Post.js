@@ -153,7 +153,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                   <EllipsisVerticalIcon className="w-5 h-5" />
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu>
+              <DropdownMenu aria-label="post actions">
                 <DropdownItem
                   showDivider={isSelf}
                   key="download"

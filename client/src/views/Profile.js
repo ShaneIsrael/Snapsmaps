@@ -216,7 +216,7 @@ function Profile({ isSelf }) {
                     size="md"
                     variant="bordered"
                     placeholder="Name"
-                    value={updatedprofile?.displayName}
+                    value={updatedProfileDetails?.displayName}
                     onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, displayName: value }))}
                     className="w-full"
                   />
@@ -225,7 +225,7 @@ function Profile({ isSelf }) {
                     size="sm"
                     variant="bordered"
                     placeholder="@mention"
-                    value={updatedprofile?.mention}
+                    value={updatedProfileDetails?.mention}
                     onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, mention: value }))}
                     className="w-full"
                     isDisabled
@@ -233,7 +233,7 @@ function Profile({ isSelf }) {
                   <Textarea
                     variant="bordered"
                     placeholder="Bio"
-                    value={updatedprofile?.bio}
+                    value={updatedProfileDetails?.bio}
                     onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, bio: value }))}
                     rows={2}
                     maxRows={2}
