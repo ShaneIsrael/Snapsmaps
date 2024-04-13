@@ -173,11 +173,11 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                   }
                   className="overflow-y-scroll"
                 >
-                  <div className="flex align-middle h-[365px] justify-center ">
-                    <Image
-                      className="object-cover max-h-[365px] cursor-pointer"
-                      src={`data:image/png;base64,${imageData?.base64}`}
+                  <div className="flex align-middle h-[385px] justify-center ">
+                    <img
                       alt="preview image upload"
+                      src={`data:image/png;base64,${imageData?.base64}`}
+                      className="object-cover w-full h-full rounded-2xl"
                     />
                   </div>
                 </Tab>

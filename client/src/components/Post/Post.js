@@ -116,7 +116,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
 
   return (
     <>
-      <Card className="w-full min-h-[560px] max-h-[580px] rounded-none bg-background border-none">
+      <Card className="w-full min-h-[550px] max-h-[580px] rounded-none bg-background border-none">
         <CardHeader className="justify-between p-0">
           <div className="flex m-4 gap-3 cursor-pointer">
             <Avatar
@@ -186,6 +186,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
             autoFocus={false}
             classNames={{
               tabList: 'bg-slate-900',
+              panel: 'h-[385px] pt-2',
             }}
           >
             <Tab
@@ -197,17 +198,12 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                 </div>
               }
             >
-              <div className="w-full h-[365px] flex align-middle justify-center">
-                <Image
-                  className="object-cover max-h-[365px] cursor-pointer"
-                  classNames={{
-                    wrapper: 'flex align-middle justify-center',
-                  }}
-                  src={postImage}
-                  onClick={() => onOpenModal(postImage)}
-                  alt="a post image"
-                />
-              </div>
+              <img
+                alt="a post image"
+                src={postImage}
+                className="object-cover w-full h-full rounded-2xl cursor-pointer"
+                onClick={() => onOpenModal(postImage)}
+              />
             </Tab>
             <Tab
               key={`${post.id}-map`}
