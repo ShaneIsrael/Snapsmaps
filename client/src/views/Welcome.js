@@ -10,6 +10,7 @@ import { UserGroupIcon } from '@heroicons/react/24/solid'
 import { GlobeAmericasIcon } from '@heroicons/react/24/solid'
 import Feed from '../components/feed/Feed'
 import FeedWrapper from '../components/feed/FeedWrapper'
+import { useFeed } from '../hooks/useFeed'
 
 const SCROLL_DELTA = 15
 
@@ -19,6 +20,14 @@ const Welcome = ({ mode }) => {
   const [modalImage, setModalImage] = useState()
   const [lastScrollY, setLastScrollY] = useState(window.scrollY)
   const [showNav, setShowNav] = useState(true)
+
+  const [loadingWorld, postsWorld, refreshWorld] = useFeed('world')
+  const [loadingFollowing, postsFollowing, refreshFollowing] = useFeed('following')
+
+  const handleRefreshFeeds = () => {
+    refreshWorld()
+    refreshFollowing()
+  }
 
   const handleOpenModal = (image) => {
     setModalImage(image)
@@ -80,7 +89,7 @@ const Welcome = ({ mode }) => {
             }
           >
             <FeedWrapper>
-              <Feed type="world" onOpenPostImage={handleOpenModal} />
+              <Feed posts={postsWorld} loading={loadingWorld} onOpenPostImage={handleOpenModal} />
             </FeedWrapper>
           </Tab>
           {isAuthenticated && (
@@ -94,13 +103,13 @@ const Welcome = ({ mode }) => {
               }
             >
               <FeedWrapper>
-                <Feed type="following" onOpenPostImage={handleOpenModal} />
+                <Feed posts={postsFollowing} loading={loadingFollowing} onOpenPostImage={handleOpenModal} />
               </FeedWrapper>
             </Tab>
           )}
         </Tabs>
       </div>
-      <Footer refreshFeed={fetch} noProfile={!isAuthenticated} />
+      <Footer refreshFeed={handleRefreshFeeds} noProfile={!isAuthenticated} />
     </>
   )
 }
