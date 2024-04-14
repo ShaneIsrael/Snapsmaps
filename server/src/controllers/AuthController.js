@@ -1,10 +1,12 @@
 const bcrypt = require('bcryptjs')
+const uuidv4 = require('uuidv4')
 const Models = require('../database/models')
 const { User, Image } = Models
 const { isValidEmail, signUserJwt } = require('../utils')
 const { Op } = require('sequelize')
 const logger = require('../utils/logger')
 const { isAuthenticated } = require('../middleware/authorize')
+const { sendVerificationEmail } = require('../services/EmailService')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -62,14 +64,22 @@ controller.register = async (req, res, next) => {
     logger.info(`registering user with email: ${email.toLowerCase()}`)
 
     try {
+      const token = uuidv4()
       await User.create({
         email: email.toLowerCase(),
         mention,
         displayName,
         password,
-        verified: true,
+        token: isProduction ? token : null,
+        verified: isProduction ? false : true,
       })
-      return res.status(200).send('Account created successfully, you can now login.')
+      if (isProduction) {
+        await sendVerificationEmail(email.toLowerCase(), token, displayName)
+        return res
+          .status(201)
+          .send('An account verification email has been sent to that address. Please check your spam folder.')
+      }
+      return res.status(201).send('Account created successfully, you can now login.')
     } catch (err) {
       res.status(500).send('Unable to create account, please try again later.')
       next(err)
@@ -88,6 +98,10 @@ controller.login = async (req, res, next) => {
     const user = await User.scope('withPassword').findOne({ where: { email }, include: [Image] })
 
     if (user) {
+      if (!user.verified) {
+        return res.status(401).send('Awaiting email verification.')
+      }
+
       if (await bcrypt.compare(password, user.password)) {
         const accessToken = signUserJwt(
           user.id,
@@ -121,6 +135,33 @@ controller.login = async (req, res, next) => {
     }
 
     return res.status(400).send('Invalid email or password.')
+  } catch (err) {
+    next(err)
+  }
+}
+
+controller.verifyEmail = async (req, res, next) => {
+  try {
+    const email = req.params.email
+    const token = req.params.token
+
+    logger.info(`verifying email for: ${email.toLowerCase()}`)
+
+    if (!email || !token) {
+      return res.status(400).send('Invalid verification link')
+    }
+
+    const user = await User.findOne({ where: { email, token } })
+
+    if (!user) {
+      return res.status(400).send('Invalid verification link')
+    }
+
+    user.verified = true
+    user.token = null
+    user.save()
+
+    return res.status(200).send('verified!')
   } catch (err) {
     next(err)
   }
