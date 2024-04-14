@@ -32,7 +32,7 @@ const VerifyEmail = (props) => {
       {!verifiedMessage && (
         <>
           <div className="text-2xl font-semibold italic mt-5">Verifying your account...</div>
-          <Progress size="sm" isIndeterminate aria-label="Loading..." className="w-72 mt-[-10px]" />
+          <Progress size="sm" isIndeterminate aria-label="Loading..." className="w-[288px] max-w-[288px] mt-[-10px]" />
         </>
       )}
       {verifiedMessage && (

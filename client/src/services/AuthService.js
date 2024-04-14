@@ -14,12 +14,7 @@ class AuthService {
     return Api().get('/auth/session')
   }
   verify(email, token) {
-    return Api().get('/auth/verify', {
-      params: {
-        email,
-        token,
-      },
-    })
+    return Api().get(`/auth/verify/${email}/${token}`)
   }
 }
 
