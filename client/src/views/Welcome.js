@@ -8,29 +8,17 @@ import { useAuthed } from '../hooks/useAuthed'
 import { FeedService } from '../services'
 import { UserGroupIcon } from '@heroicons/react/24/solid'
 import { GlobeAmericasIcon } from '@heroicons/react/24/solid'
+import Feed from '../components/feed/Feed'
+import FeedWrapper from '../components/feed/FeedWrapper'
 
 const SCROLL_DELTA = 15
 
 const Welcome = ({ mode }) => {
-  const { user, isAuthenticated } = useAuthed()
-  const [posts, setPosts] = useState()
+  const { isAuthenticated } = useAuthed()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [modalImage, setModalImage] = useState()
   const [lastScrollY, setLastScrollY] = useState(window.scrollY)
   const [showNav, setShowNav] = useState(true)
-
-  async function fetch() {
-    try {
-      const feed = (await FeedService.getPublicFeed()).data
-      setPosts(feed)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  React.useEffect(() => {
-    fetch()
-  }, [])
 
   const handleOpenModal = (image) => {
     setModalImage(image)
@@ -81,38 +69,35 @@ const Welcome = ({ mode }) => {
       />
 
       <div className="flex flex-col items-center w-full">
-        <Tabs key="feed-tabs" variant="underlined" aria-label="Feed tabs">
+        <Tabs key="feed-tabs" size="lg" variant="underlined" aria-label="Feed tabs">
           <Tab
             key="world"
             title={
               <div className="flex items-center space-x-2">
-                <GlobeAmericasIcon className="w-5 h-5" />
+                <GlobeAmericasIcon className="w-6 h-6" />
                 <span>World</span>
               </div>
             }
           >
-            <div className="min-h-screen h-full flex justify-center flex-grow  pb-[44px]">
-              <div className="flex flex-col scroll-smooth sm:max-w-[400px] w-full items-center gap-2">
-                {posts?.map((post) => (
-                  <Post
-                    key={`post-${post.id}`}
-                    isSelf={user?.mention === post.user.mention}
-                    post={post}
-                    onOpenModal={handleOpenModal}
-                  />
-                ))}
-              </div>
-            </div>
+            <FeedWrapper>
+              <Feed type="world" onOpenPostImage={handleOpenModal} />
+            </FeedWrapper>
           </Tab>
-          <Tab
-            key="following"
-            title={
-              <div className="flex items-center space-x-2">
-                <UserGroupIcon className="w-5 h-5" />
-                <span>Following</span>
-              </div>
-            }
-          />
+          {isAuthenticated && (
+            <Tab
+              key="following"
+              title={
+                <div className="flex items-center space-x-2">
+                  <UserGroupIcon className="w-6 h-6" />
+                  <span>Following</span>
+                </div>
+              }
+            >
+              <FeedWrapper>
+                <Feed type="following" onOpenPostImage={handleOpenModal} />
+              </FeedWrapper>
+            </Tab>
+          )}
         </Tabs>
       </div>
       <Footer refreshFeed={fetch} noProfile={!isAuthenticated} />

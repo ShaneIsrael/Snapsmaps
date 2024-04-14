@@ -24,7 +24,6 @@ controller.get = async (req, res, next) => {
       raw: true,
       nest: true,
     })
-    console.log(userRow)
     res.status(200).send({
       displayName: userRow.displayName,
       mention: userRow.mention,
