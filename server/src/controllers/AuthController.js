@@ -67,14 +67,17 @@ controller.register = async (req, res, next) => {
     const t = await Models.sequelize.transaction()
     try {
       const token = uuidv4()
-      await User.create({
-        email: email.toLowerCase(),
-        mention,
-        displayName,
-        password,
-        token: isProduction ? token : null,
-        verified: isProduction ? false : true,
-      })
+      await User.create(
+        {
+          email: email.toLowerCase(),
+          mention,
+          displayName,
+          password,
+          token: isProduction ? token : null,
+          verified: isProduction ? false : true,
+        },
+        { transaction: t },
+      )
 
       if (isProduction) {
         await sendVerificationEmail(email.toLowerCase(), token, displayName)
