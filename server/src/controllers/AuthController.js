@@ -81,8 +81,7 @@ controller.register = async (req, res, next) => {
       }
       return res.status(201).send('Account created successfully, you can now login.')
     } catch (err) {
-      res.status(500).send('Unable to create account, please try again later.')
-      next(err)
+      throw new Error('Unable to create account, please try again later.')
     }
   } catch (err) {
     next(err)
