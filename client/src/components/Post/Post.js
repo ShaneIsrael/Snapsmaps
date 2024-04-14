@@ -116,7 +116,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
 
   return (
     <>
-      <Card className="w-full min-h-[550px] max-h-[600px] rounded-none bg-background border-none">
+      <Card className="w-screen sm:w-full min-h-[550px] max-h-[600px] rounded-none bg-background border-none">
         <CardHeader className="justify-between p-0">
           <div className="flex m-4 gap-3 cursor-pointer">
             <Avatar
