@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import TestService from '../services/TestService'
 import Post from '../components/Post/Post'
 import Appbar from '../components/Layout/Appbar'
-import { Image, Modal, ModalContent, useDisclosure } from '@nextui-org/react'
+import { Image, Modal, ModalContent, Tab, Tabs, useDisclosure } from '@nextui-org/react'
 import Footer from '../components/Layout/Footer'
 import { useAuthed } from '../hooks/useAuthed'
 import { FeedService } from '../services'
-import { animate } from 'framer-motion'
+import { UserGroupIcon } from '@heroicons/react/24/solid'
+import { GlobeAmericasIcon } from '@heroicons/react/24/solid'
 
 const SCROLL_DELTA = 15
 
@@ -79,17 +79,41 @@ const Welcome = ({ mode }) => {
           animation: `${showNav ? 'navbarShow' : 'navbarHide'} 0.2s ease forwards`,
         }}
       />
-      <div className="min-h-screen h-full flex justify-center flex-grow  pb-[44px] pt-4">
-        <div className="flex flex-col scroll-smooth sm:max-w-[400px] w-full items-center gap-2">
-          {posts?.map((post) => (
-            <Post
-              key={`post-${post.id}`}
-              isSelf={user?.mention === post.user.mention}
-              post={post}
-              onOpenModal={handleOpenModal}
-            />
-          ))}
-        </div>
+
+      <div className="flex flex-col items-center w-full">
+        <Tabs key="feed-tabs" variant="underlined" aria-label="Feed tabs">
+          <Tab
+            key="world"
+            title={
+              <div className="flex items-center space-x-2">
+                <GlobeAmericasIcon className="w-5 h-5" />
+                <span>World</span>
+              </div>
+            }
+          >
+            <div className="min-h-screen h-full flex justify-center flex-grow  pb-[44px]">
+              <div className="flex flex-col scroll-smooth sm:max-w-[400px] w-full items-center gap-2">
+                {posts?.map((post) => (
+                  <Post
+                    key={`post-${post.id}`}
+                    isSelf={user?.mention === post.user.mention}
+                    post={post}
+                    onOpenModal={handleOpenModal}
+                  />
+                ))}
+              </div>
+            </div>
+          </Tab>
+          <Tab
+            key="following"
+            title={
+              <div className="flex items-center space-x-2">
+                <UserGroupIcon className="w-5 h-5" />
+                <span>Following</span>
+              </div>
+            }
+          />
+        </Tabs>
       </div>
       <Footer refreshFeed={fetch} noProfile={!isAuthenticated} />
     </>
