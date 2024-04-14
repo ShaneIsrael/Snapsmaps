@@ -38,14 +38,15 @@ controller.register = async (req, res, next) => {
       return res.status(400).send({ field: 'mention', message: 'mention must be at least 4 characters.' })
     if (mention.length > 16)
       return res.status(400).send({ field: 'mention', message: 'mention must be less than 16 characters.' })
-    if (mention.match(/[A-Z]/))
+    if (mention.match(/\s/))
+      return res.status(400).send({ field: 'mention', message: 'No spaces in mention names allowed.' })
+    if (mention.match(/\@/))
+      return res.status(400).send({ field: 'mention', message: 'No @ symbol in mention names allowed.' })
+    const match = mention.match(/[A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?/)
+    if (!match || match[0] !== mention)
       return res
         .status(400)
-        .send({ field: 'mention', message: 'Only lowercase letters, numbers, and underscores allowed.' })
-    if (!mention.match(/\w+(?:\.\w+)*/))
-      return res
-        .status(400)
-        .send({ field: 'mention', message: 'Only lowercase letters, numbers, and underscores allowed.' })
+        .send({ field: 'mention', message: 'Only letters, numbers, periods, and underscores allowed.' })
     if (password.length < 5)
       return res.status(400).send({ field: 'password', message: 'Password must be at least 5 characters.' })
 

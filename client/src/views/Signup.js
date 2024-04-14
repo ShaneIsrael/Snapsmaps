@@ -55,8 +55,10 @@ const Signup = () => {
     if (mention === '') return false
     if (mention.length < 4) return 'Too short'
     if (mention.length > 16) return 'Too long'
-    if (mention.match(/[A-Z]/)) return 'Only lowercase letters, numbers, underscores, and periods allowed.'
-    if (!mention.match(/\w+(?:\.\w+)*/)) return 'Only lowercase letters, numbers, underscores, and periods allowed.'
+    if (mention.match(/\s/)) return 'No spaces in mention names allowed'
+    if (mention.match(/\@/)) return 'No @ symbol in mention names allowed'
+    const match = mention.match(/[A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?/)
+    if (!match || match[0] !== mention) return 'Only letters, numbers, periods, and underscores allowed.'
     if (error.field === 'mention') return error.message
   }, [mention, error.field])
 
