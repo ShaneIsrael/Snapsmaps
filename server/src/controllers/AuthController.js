@@ -42,7 +42,7 @@ controller.register = async (req, res, next) => {
       return res
         .status(400)
         .send({ field: 'mention', message: 'Only lowercase letters, numbers, and underscores allowed.' })
-    if (!mention.match(/^\w+/))
+    if (!mention.match(/\w+(?:\.\w+)*/))
       return res
         .status(400)
         .send({ field: 'mention', message: 'Only lowercase letters, numbers, and underscores allowed.' })
