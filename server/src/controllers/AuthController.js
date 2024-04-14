@@ -1,5 +1,5 @@
 const bcrypt = require('bcryptjs')
-const uuidv4 = require('uuidv4')
+const { v4: uuidv4 } = require('uuid')
 const Models = require('../database/models')
 const { User, Image } = Models
 const { isValidEmail, signUserJwt } = require('../utils')
