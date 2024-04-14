@@ -116,12 +116,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
 
   return (
     <>
-      <Card
-        className={clsx('sm:w-full min-h-[550px] max-h-[600px] rounded-none bg-background border-none', {
-          'w-full': isSingle, //when viewing as 'single' post i.e in a modal from a profile view dont use w-screen, it creates a scrollbar.
-          'w-screen': !isSingle, //without this, sometimes the map tab doesn't enlarge to the full width of the card.
-        })}
-      >
+      <Card className="w-full min-h-[550px] max-h-[600px] rounded-none bg-background border-none">
         <CardHeader className="justify-between p-0">
           <div className="flex m-4 gap-3 cursor-pointer">
             <Avatar

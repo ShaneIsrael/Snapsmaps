@@ -148,7 +148,7 @@ function Profile({ isSelf }) {
       </Modal>
 
       <Modal
-        className="dark transform-gpu w-fit h-fit m-0"
+        className="dark m-0"
         isOpen={postModal.isOpen}
         onClose={postModal.onClose}
         placement="center"
