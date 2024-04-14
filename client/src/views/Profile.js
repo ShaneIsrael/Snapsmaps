@@ -148,14 +148,14 @@ function Profile({ isSelf }) {
       </Modal>
 
       <Modal
-        className="dark transform-gpu w-fit h-fit"
+        className="dark transform-gpu w-fit h-fit m-0"
         isOpen={postModal.isOpen}
         onClose={postModal.onClose}
         placement="center"
         backdrop="blur"
         hideCloseButton
       >
-        <ModalContent className="sm:max-w-[375px] w-full ">
+        <ModalContent className="sm:max-w-[375px] ">
           {(onClose) => <Post isSelf={isSelf} post={post} onOpenModal={handleOpenImageModal} isSingle />}
         </ModalContent>
       </Modal>
