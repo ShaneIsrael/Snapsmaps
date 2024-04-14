@@ -74,14 +74,19 @@ controller.register = async (req, res, next) => {
         token: isProduction ? token : null,
         verified: isProduction ? false : true,
       })
+
       if (isProduction) {
         await sendVerificationEmail(email.toLowerCase(), token, displayName)
         await t.commit()
-        return res
-          .status(201)
-          .send('An account verification email has been sent to that address. Please check your spam folder.')
       }
-      return res.status(201).send('Account created successfully, you can now login.')
+
+      return res
+        .status(201)
+        .send(
+          isProduction
+            ? 'An account verification email has been sent to that address. Please check your spam folder.'
+            : 'Account created successfully, you can now login.',
+        )
     } catch (err) {
       await t.rollback()
       throw new Error('Unable to create account, please try again later.')

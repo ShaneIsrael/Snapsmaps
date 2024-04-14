@@ -13,6 +13,14 @@ class AuthService {
   hasSession() {
     return Api().get('/auth/session')
   }
+  verify(email, token) {
+    return Api().get('/auth/verify', {
+      params: {
+        email,
+        token,
+      },
+    })
+  }
 }
 
 const service = new AuthService()
