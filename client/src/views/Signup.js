@@ -55,8 +55,8 @@ const Signup = () => {
     if (mention === '') return false
     if (mention.length < 4) return 'Too short'
     if (mention.length > 16) return 'Too long'
-    if (mention.match(/[A-Z]/)) return 'Only lowercase letters, numbers, and underscores allowed.'
-    if (!mention.match(/^\w+/)) return 'Only lowercase letters, numbers, and underscores allowed.'
+    if (mention.match(/[A-Z]/)) return 'Only lowercase letters, numbers, underscores, and periods allowed.'
+    if (!mention.match(/\w+(?:\.\w+)*/)) return 'Only lowercase letters, numbers, underscores, and periods allowed.'
     if (error.field === 'mention') return error.message
   }, [mention, error.field])
 
@@ -80,8 +80,8 @@ const Signup = () => {
 
   const submit = async () => {
     try {
-      await AuthService.register(email, displayName, mention, password)
-      toast.success('Account created, you can now log in.')
+      const resp = (await AuthService.register(email, displayName, mention, password)).data
+      toast.success(resp, { duration: 5000 })
       navigate('/login')
     } catch (err) {
       console.log(err)
