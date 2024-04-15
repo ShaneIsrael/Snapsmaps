@@ -171,7 +171,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                       <span></span>
                     </div>
                   }
-                  className="overflow-y-scroll"
+                  className="overflow-y-auto"
                 >
                   <div className="flex align-middle h-[385px] justify-center ">
                     <img
