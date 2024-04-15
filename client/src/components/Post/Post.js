@@ -242,7 +242,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
             >
               <div className="h-[365px] flex flex-col">
                 {intPost.postComments.length > 0 && (
-                  <div className="h-full overflow-y-scroll">
+                  <div className="h-full overflow-y-auto">
                     <div className="flex flex-col gap-2">
                       {intPost.postComments.map((comment) => (
                         <Comment key={`post-${post.id}-comment-${comment.id}`} comment={comment} />
