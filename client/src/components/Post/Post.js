@@ -171,9 +171,9 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
             </Dropdown>
           )}
         </CardHeader>
-        <CardBody className="px-3 py-0 text-small text-default-500 ">
-          <div className="mb-2">
-            <p className="leading-4 max-h-[65px] overflow-y-scroll">{intPost?.title}</p>
+        <CardBody className="px-3 py-0 text-small text-default-500 overflow-hidden">
+          <div className="mb-3">
+            <p className="leading-4 max-h-[65px] min-h-[20px] overflow-y-auto">{intPost?.title}</p>
           </div>
           <Tabs
             aria-label="post tabs"
