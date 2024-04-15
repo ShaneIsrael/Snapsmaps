@@ -41,7 +41,7 @@ function Footer({ refreshFeed, noProfile }) {
         backdrop="blur"
         hideCloseButton
       >
-        <ModalContent className="flex flex-row justify-center items-center pt-8 pb-8 gap-4">
+        <ModalContent className="flex flex-row justify-center items-center pt-8 pb-8 gap-4 sm:m-0">
           <UploadImage onImageUploaded={setUploadedImageData} mode="camera" />
           <UploadImage onImageUploaded={setUploadedImageData} />
         </ModalContent>
