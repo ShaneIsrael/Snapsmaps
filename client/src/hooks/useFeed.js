@@ -1,27 +1,34 @@
 import { useEffect, useState } from 'react'
 import { FeedService } from '../services'
+import { useAuthed } from './useAuthed'
 
 const useFeed = (type) => {
   const [posts, setPosts] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [dataLoading, setDataLoading] = useState(true)
+  const { loading, isAuthenticated } = useAuthed()
 
   const refresh = async () => {
-    setLoading(true)
+    setDataLoading(true)
     try {
-      const feed =
-        type === 'world' ? (await FeedService.getPublicFeed()).data : (await FeedService.getFollowingFeed()).data
-      setPosts(feed)
+      // dont attempt to fetch following posts when your not logged in.
+      if (!isAuthenticated && type === 'following') {
+        setPosts([])
+      } else {
+        const feed =
+          type === 'world' ? (await FeedService.getPublicFeed()).data : (await FeedService.getFollowingFeed()).data
+        setPosts(feed)
+      }
     } catch (err) {
       console.error(err)
     }
-    setLoading(false)
+    setDataLoading(false)
   }
 
   useEffect(() => {
     refresh()
-  }, [])
+  }, [loading])
 
-  return [loading, posts, refresh]
+  return [dataLoading, posts, refresh]
 }
 
 export { useFeed }
