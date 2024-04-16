@@ -4,10 +4,8 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  Image,
   Modal,
   ModalContent,
-  Spinner,
   Tab,
   Tabs,
   Textarea,
@@ -17,8 +15,6 @@ import {
 import React, { useEffect, useRef, useState } from 'react'
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
-import GoogleMapReact from 'google-map-react'
-import { GoogleMapDarkMode } from '../../common/themes'
 import clsx from 'clsx'
 import CloseIcon from '../../assets/icons/CloseIcon'
 import SendIcon from '../../assets/icons/SendIcon'
@@ -33,47 +29,6 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
   const [description, setDescription] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
-
-  const renderMarkers = (map, maps) => {
-    new maps.Marker({
-      position: { lat: imageData.gps.latitude, lng: imageData.gps.longitude },
-      map,
-    })
-  }
-
-  const getMapOptions = (maps) => {
-    return {
-      streetViewControl: false,
-      scaleControl: false,
-      fullscreenControl: false,
-      styles: [
-        ...GoogleMapDarkMode,
-        {
-          featureType: 'poi.business',
-          elementType: 'labels',
-          stylers: [
-            {
-              visibility: 'off',
-            },
-          ],
-        },
-      ],
-      gestureHandling: 'greedy',
-      disableDoubleClickZoom: true,
-      minZoom: 16,
-      maxZoom: 16,
-
-      mapTypeControl: false,
-      mapTypeId: maps.MapTypeId.ROADMAP,
-      mapTypeControlOptions: {
-        style: maps.MapTypeControlStyle.DROPDOWN_MENU,
-        position: maps.ControlPosition.TOP_LEFT,
-        mapTypeIds: [maps.MapTypeId.ROADMAP, maps.MapTypeId.SATELLITE],
-      },
-      zoomControl: false,
-      clickableIcons: false,
-    }
-  }
 
   // abort the post upload if unmounted
   useEffect(() => {
@@ -105,14 +60,16 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
   const submit = async () => {
     try {
       setSubmitting(true)
-      await PostService.create(
-        description,
-        imageData.gps,
-        imageData.file,
-        (progress) => setUploadProgress(progress),
-        abortControllerRef.current.signal,
-      )
-      onSubmitted()
+      const post = (
+        await PostService.create(
+          description,
+          imageData.gps,
+          imageData.file,
+          (progress) => setUploadProgress(progress),
+          abortControllerRef.current.signal,
+        )
+      ).data
+      onSubmitted(post)
     } catch (err) {
       if (err.response?.status === 413) {
         return toast.error(err.response.data)

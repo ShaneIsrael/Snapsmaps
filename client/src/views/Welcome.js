@@ -21,14 +21,15 @@ const Welcome = ({ mode }) => {
   const [lastScrollY, setLastScrollY] = useState(window.scrollY)
   const [showNav, setShowNav] = useState(true)
 
-  const [loadingWorld, loadingNextWorldPage, postsWorld, refreshWorld, nextWorldPage] = useFeed('world')
-  const [loadingFollowing, loadingNextFollowingPage, postsFollowing, refreshFollowing, nextFollowingPage] =
-    useFeed('following')
   const [selectedFeed, setSelectedFeed] = useState('world')
+  const worldFeed = useFeed('world')
+  const followingFeed = useFeed('following')
 
-  const handleRefreshFeeds = () => {
-    refreshWorld()
-    refreshFollowing()
+  const handleRefreshFeeds = async (newPost) => {
+    await worldFeed.refresh()
+    await followingFeed.refresh()
+    followingFeed.setPosts((prev) => [newPost].concat(prev))
+    worldFeed.setPosts((prev) => [newPost].concat(prev))
   }
 
   const handleOpenModal = (image) => {
@@ -49,7 +50,7 @@ const Welcome = ({ mode }) => {
       // handle paging
       const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
       if (bottom) {
-        selectedFeed === 'world' ? nextWorldPage() : nextFollowingPage()
+        selectedFeed === 'world' ? worldFeed.nextPage() : followingFeed.nextPage()
       }
     },
     [lastScrollY],
@@ -98,8 +99,8 @@ const Welcome = ({ mode }) => {
             }
           >
             <FeedWrapper>
-              <Feed posts={postsWorld} loading={loadingWorld} onOpenPostImage={handleOpenModal} />
-              {loadingNextWorldPage && <Spinner size="lg" />}
+              <Feed posts={worldFeed.posts} loading={worldFeed.isRefreshing} onOpenPostImage={handleOpenModal} />
+              {worldFeed.isPageLoading && <Spinner size="lg" />}
             </FeedWrapper>
           </Tab>
           {isAuthenticated && (
@@ -113,8 +114,12 @@ const Welcome = ({ mode }) => {
               }
             >
               <FeedWrapper>
-                <Feed posts={postsFollowing} loading={loadingFollowing} onOpenPostImage={handleOpenModal} />
-                {loadingNextFollowingPage && <Spinner size="lg" />}
+                <Feed
+                  posts={followingFeed.posts}
+                  loading={followingFeed.isRefreshing}
+                  onOpenPostImage={handleOpenModal}
+                />
+                {followingFeed.isPageLoading && <Spinner size="lg" />}
               </FeedWrapper>
             </Tab>
           )}

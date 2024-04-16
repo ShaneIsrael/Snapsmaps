@@ -5,6 +5,17 @@ import { useAuthed } from './useAuthed'
 // make sure you update PAGE_SIZE on the backend as well.
 const PAGE_SIZE = 5
 
+/**
+ * @typedef {Object} Feed
+ * @property {boolean} isRefreshing - If the feed is being refreshed.
+ * @property {boolean} isPageLoading - If the next page is loading.
+ * @property {object} posts - Array of posts
+ * @property {Function} setPosts - Sets the posts
+ * @property {Function} refresh - Refreshes the feed completely.
+ * @property {Function} nextPage - Fetches the next page of posts and appends to the current post data
+ *
+ * @returns {Feed}
+ */
 const useFeed = (type) => {
   const [posts, setPosts] = useState([])
   const [lastDate, setLastDate] = useState()
@@ -31,7 +42,6 @@ const useFeed = (type) => {
     setDataLoading(false)
   }
 
-  console.log(lastDate)
   const nextPage = async () => {
     try {
       if (pageLoading) return
@@ -60,7 +70,14 @@ const useFeed = (type) => {
     refresh()
   }, [loading])
 
-  return [dataLoading, pageLoading, posts, refresh, nextPage]
+  return {
+    isRefreshing: dataLoading,
+    isPageLoading: pageLoading,
+    posts,
+    setPosts,
+    refresh,
+    nextPage,
+  }
 }
 
 export { useFeed }

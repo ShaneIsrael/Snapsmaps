@@ -51,10 +51,10 @@ function Footer({ refreshFeed, noProfile, hideProfileSelect }) {
         imageData={uploadedImageData}
         onOpen={captureDeviceSelect.onClose}
         onCancel={() => setUploadedImageData(null)}
-        onSubmitted={() => {
+        onSubmitted={(post) => {
           navigate('/')
           setUploadedImageData(null)
-          refreshFeed()
+          refreshFeed(post)
         }}
       />
       <footer

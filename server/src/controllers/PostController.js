@@ -77,7 +77,20 @@ controller.create = async (req, res, next) => {
 
     await t.commit()
 
-    return res.sendStatus(201)
+    const created = await Post.findOne({
+      where: { id: postRow.id },
+      order: [[PostComment, 'createdAt', 'asc']],
+      include: [
+        { model: User, attributes: ['displayName', 'mention'], include: [Image] },
+        Image,
+        {
+          model: PostComment,
+          include: [{ model: User, include: [Image] }],
+        },
+      ],
+    })
+
+    return res.status(201).send(created)
   } catch (err) {
     await t.rollback()
     next(err)
