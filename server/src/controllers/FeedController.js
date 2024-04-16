@@ -48,6 +48,7 @@ controller.following = async (req, res, next) => {
     })
 
     const followingIds = following.map((follow) => follow.user.id)
+    followingIds.push(req.user.id)
 
     const posts = await Post.findAll({
       where: {
