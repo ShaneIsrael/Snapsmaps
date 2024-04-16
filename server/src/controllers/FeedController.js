@@ -1,6 +1,6 @@
-const { where, Op } = require('sequelize')
+const { Op } = require('sequelize')
 const Models = require('../database/models')
-const { Post, PostComment, User, Image, Follow } = Models
+const { Post, PostComment, User, Image, Follow, sequelize } = Models
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -11,9 +11,14 @@ const PAGE_SIZE = 5
 
 controller.public = async (req, res, next) => {
   try {
-    const { page } = req.query
+    const { lastDate } = req.query
 
     const posts = await Post.findAll({
+      where: {
+        createdAt: {
+          [Op.lt]: lastDate || sequelize.fn('NOW'),
+        },
+      },
       order: [
         ['createdAt', 'desc'],
         [PostComment, 'createdAt', 'asc'],
@@ -24,7 +29,6 @@ controller.public = async (req, res, next) => {
         { model: PostComment, include: [{ model: User, include: [Image] }] },
       ],
       limit: PAGE_SIZE,
-      offset: PAGE_SIZE * page,
     })
     res.status(200).send(posts)
   } catch (err) {
@@ -34,7 +38,7 @@ controller.public = async (req, res, next) => {
 
 controller.following = async (req, res, next) => {
   try {
-    const { page } = req.query
+    const { lastDate } = req.query
     const { id } = req.user
     const following = await Follow.findAll({
       where: {
@@ -50,6 +54,9 @@ controller.following = async (req, res, next) => {
         userId: {
           [Op.in]: followingIds,
         },
+        createdAt: {
+          [Op.lt]: lastDate || sequelize.fn('NOW'),
+        },
       },
       order: [
         ['createdAt', 'desc'],
@@ -61,7 +68,6 @@ controller.following = async (req, res, next) => {
         { model: PostComment, include: [{ model: User, include: [Image] }] },
       ],
       limit: PAGE_SIZE,
-      offset: PAGE_SIZE * page,
     })
     res.status(200).send(posts)
   } catch (err) {

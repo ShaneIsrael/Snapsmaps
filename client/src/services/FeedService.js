@@ -1,19 +1,17 @@
 import Api from './Api'
 
 class FeedService {
-  getPublicFeed(page, pageSize) {
+  getPublicFeed(lastDate) {
     return Api().get('/feed', {
       params: {
-        page,
-        pageSize,
+        lastDate,
       },
     })
   }
-  getFollowingFeed(page, pageSize) {
+  getFollowingFeed(lastDate) {
     return Api().get('/feed/following', {
       params: {
-        page,
-        pageSize,
+        lastDate,
       },
     })
   }

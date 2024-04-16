@@ -6,23 +6,24 @@ import { useAuthed } from './useAuthed'
 const PAGE_SIZE = 5
 
 const useFeed = (type) => {
-  const [page, setPage] = useState(0)
   const [posts, setPosts] = useState([])
+  const [lastDate, setLastDate] = useState()
   const [dataLoading, setDataLoading] = useState(true)
   const [pageLoading, setPageLoading] = useState(false)
   const { loading, isAuthenticated } = useAuthed()
 
   const refresh = async () => {
     setDataLoading(true)
-    setPage(0)
+    setLastDate(null)
     try {
       // dont attempt to fetch following posts when your not logged in.
       if (!isAuthenticated && type === 'following') {
         setPosts([])
       } else {
         const feed =
-          type === 'world' ? (await FeedService.getPublicFeed(0)).data : (await FeedService.getFollowingFeed(0)).data
+          type === 'world' ? (await FeedService.getPublicFeed()).data : (await FeedService.getFollowingFeed()).data
         setPosts(feed)
+        setLastDate(feed[feed.length - 1].createdAt)
       }
     } catch (err) {
       console.error(err)
@@ -30,6 +31,7 @@ const useFeed = (type) => {
     setDataLoading(false)
   }
 
+  console.log(lastDate)
   const nextPage = async () => {
     try {
       if (pageLoading) return
@@ -41,11 +43,11 @@ const useFeed = (type) => {
         setPageLoading(true)
         const feed =
           type === 'world'
-            ? (await FeedService.getPublicFeed(page + 1)).data
-            : (await FeedService.getFollowingFeed(page + 1)).data
+            ? (await FeedService.getPublicFeed(lastDate)).data
+            : (await FeedService.getFollowingFeed(lastDate)).data
         setPosts((prev) => prev.concat(feed))
         if (feed.length === PAGE_SIZE) {
-          setPage((prev) => prev + 1)
+          setLastDate(feed[feed.length - 1].createdAt)
         }
       }
     } catch (err) {
