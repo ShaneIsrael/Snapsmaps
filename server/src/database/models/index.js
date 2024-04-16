@@ -3,7 +3,7 @@ const path = require('path')
 const Sequelize = require('sequelize')
 const logger = require('../../utils/logger')
 const basename = path.basename(__filename)
-const env = process.env.NODE_ENV || 'production'
+const env = process.env.NODE_ENV || 'development'
 const config = require(__dirname + '/../config/database')[env]
 const db = {}
 
