@@ -6,8 +6,13 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 const controller = {}
 
+// make sure you update PAGE_SIZE on the frontend as well
+const PAGE_SIZE = 5
+
 controller.public = async (req, res, next) => {
   try {
+    const { page } = req.query
+
     const posts = await Post.findAll({
       order: [
         ['createdAt', 'desc'],
@@ -18,6 +23,8 @@ controller.public = async (req, res, next) => {
         Image,
         { model: PostComment, include: [{ model: User, include: [Image] }] },
       ],
+      limit: PAGE_SIZE,
+      offset: PAGE_SIZE * page,
     })
     res.status(200).send(posts)
   } catch (err) {
@@ -27,8 +34,8 @@ controller.public = async (req, res, next) => {
 
 controller.following = async (req, res, next) => {
   try {
+    const { page } = req.query
     const { id } = req.user
-
     const following = await Follow.findAll({
       where: {
         followingUserId: id,
@@ -53,6 +60,8 @@ controller.following = async (req, res, next) => {
         Image,
         { model: PostComment, include: [{ model: User, include: [Image] }] },
       ],
+      limit: PAGE_SIZE,
+      offset: PAGE_SIZE * page,
     })
     res.status(200).send(posts)
   } catch (err) {

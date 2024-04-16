@@ -273,7 +273,7 @@ async function seedProfiles() {
   for (let i = 0; i < USER_COUNT; i++) {
     const user = (await (await fetch('https://randomuser.me/api/')).json()).results[0]
     const profileImageReference = '/profile/seeded_' + uuidv4().replace(/-/gi, '') + '.jpg'
-    downloadImage(user.picture.medium, path.join(IMAGES_ROOT, profileImageReference))
+    downloadImage(user.picture.thumbnail, path.join(IMAGES_ROOT, profileImageReference))
     const userRow = await User.create({
       displayName: `${user.name.first} ${user.name.last}`,
       email: user.email,

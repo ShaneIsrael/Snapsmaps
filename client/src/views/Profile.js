@@ -129,7 +129,7 @@ function Profile({ isSelf }) {
   }, [mention])
 
   return (
-    <>
+    <div className="flex flex-col h-screen">
       <Modal
         className="rounded-none transform-gpu w-fit h-fit "
         isOpen={imageModal.isOpen}
@@ -160,7 +160,7 @@ function Profile({ isSelf }) {
         </ModalContent>
       </Modal>
       <Appbar noProfile backButton="/" pageName={profile?.mention} />
-      <div className="mt-8 mx-0 pb-[50px]">
+      <div className="flex-grow mx-0 pb-[50px] pt-20 overflow-y-auto">
         <div className="flex px-4 gap-5 max-w-[500px] justify-start items-start">
           <div className="flex flex-col gap-4">
             {editMode ? (
@@ -308,8 +308,8 @@ function Profile({ isSelf }) {
           ))}
         </div>
       </div>
-      <Footer refreshFeed={fetch} noProfile={!isAuthenticated} />
-    </>
+      <Footer refreshFeed={fetch} noProfile={!isAuthenticated} hideProfileSelect />
+    </div>
   )
 }
 

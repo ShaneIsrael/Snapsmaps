@@ -23,13 +23,13 @@ import { useAuthed } from '../../hooks/useAuthed.js'
 import Logo1 from '../../assets/icons/Logo1.js'
 import clsx from 'clsx'
 
-export default function Appbar({ noProfile, backButton, pageName, allowPost, hidden, styles }) {
+export default function Appbar({ backButton, pageName, allowPost, hidden, styles }) {
   const navigate = useNavigate()
   const { user, isAuthenticated } = useAuthed()
   const { logout } = useAuth()
 
   return (
-    <Navbar isBordered className={clsx({ hidden })} style={{ ...styles }}>
+    <Navbar isBordered className={clsx('fixed', { hidden })} style={{ ...styles }}>
       <NavbarContent justify="start" className="align-middle items-center">
         {!backButton && (
           <NavbarBrand className="mr-4 mt-1 cursor-pointer" onClick={() => navigate('/')}>
@@ -45,54 +45,6 @@ export default function Appbar({ noProfile, backButton, pageName, allowPost, hid
         )}
         <NavbarContent className="hidden sm:flex gap-3"></NavbarContent>
       </NavbarContent>
-
-      {/* {!noProfile ? (
-        <NavbarContent as="div" className="items-center" justify="end">
-          <Dropdown backdrop="blur" placement="bottom-end" className="dark bg-neutral-900 text-foreground">
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                className="transition-transform"
-                color="primary"
-                size="md"
-                src={user?.image ? getAssetUrl() + user.image : ''}
-              />
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="signin-info" className="h-14 gap-2">
-                <p className="font-semibold">Signed in as</p>
-                <p className="font-semibold">{user?.email}</p>
-              </DropdownItem>
-              <DropdownItem key="profile" onClick={() => navigate('/profile')}>
-                My Profile
-              </DropdownItem>
-              <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-              <DropdownItem key="logout" color="danger" onClick={logout}>
-                Log Out
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-        </NavbarContent>
-      ) : (
-        <NavbarContent as="div" className="items-center" justify="end">
-          <Tooltip
-            color={isAuthenticated ? 'danger' : 'primary'}
-            content={isAuthenticated ? 'Logout' : 'Login'}
-            className="capitalize"
-          >
-            {isAuthenticated ? (
-              <div className="cursor-pointer" onClick={logout}>
-                <ArrowLeftEndOnRectangleIcon className="fill-red-600" width="32" height="32" />
-              </div>
-            ) : (
-              <div className="cursor-pointer" onClick={() => navigate('/login')}>
-                <ArrowRightEndOnRectangleIcon width="32" height="32" />
-              </div>
-            )}
-          </Tooltip>
-        </NavbarContent>
-      )} */}
     </Navbar>
   )
 }

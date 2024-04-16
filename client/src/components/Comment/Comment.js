@@ -15,10 +15,13 @@ import clsx from 'clsx'
 import { formatDistanceStrict, subDays } from 'date-fns'
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 import { CommentService } from '../../services'
+import { useNavigate } from 'react-router-dom'
+
 function Comment({ comment }) {
   const profileImage = comment?.user.image
   const currentUser = getSessionUser()
   const [deleted, setDeleted] = React.useState(false)
+  const navigate = useNavigate()
 
   const timeAgo = formatDistanceStrict(new Date(comment.createdAt), new Date(), { addSuffix: true })
 
@@ -41,16 +44,18 @@ function Comment({ comment }) {
           <Avatar
             radius="full"
             size="md"
-            className="min-w-[40px]"
+            className="min-w-[40px] cursor-pointer"
             src={profileImage ? getAssetUrl() + profileImage.reference : ''}
+            onClick={() => navigate(`/user/${comment.user.mention}`)}
           />
           <div className="flex flex-col gap-1 items-start flex-grow ">
             <div className="flex flex-row items-start gap-1">
               <p
-                className={clsx('text-xs font-semibold leading-none', {
+                className={clsx('text-xs font-semibold leading-none cursor-pointer', {
                   'text-blue-400': currentUser?.mention === comment.user.mention,
                   'text-neutral-200': currentUser?.mention !== comment.user.mention,
                 })}
+                onClick={() => navigate(`/user/${comment.user.mention}`)}
               >
                 {comment.user.mention}
               </p>

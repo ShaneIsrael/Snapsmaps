@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import Post from '../components/Post/Post'
 import Appbar from '../components/Layout/Appbar'
-import { Image, Modal, ModalContent, Tab, Tabs, useDisclosure } from '@nextui-org/react'
+import { Image, Modal, ModalContent, Spinner, Tab, Tabs, useDisclosure } from '@nextui-org/react'
 import Footer from '../components/Layout/Footer'
 import { useAuthed } from '../hooks/useAuthed'
 import { FeedService } from '../services'
@@ -21,8 +21,10 @@ const Welcome = ({ mode }) => {
   const [lastScrollY, setLastScrollY] = useState(window.scrollY)
   const [showNav, setShowNav] = useState(true)
 
-  const [loadingWorld, postsWorld, refreshWorld] = useFeed('world')
-  const [loadingFollowing, postsFollowing, refreshFollowing] = useFeed('following')
+  const [loadingWorld, loadingNextWorldPage, postsWorld, refreshWorld, nextWorldPage] = useFeed('world')
+  const [loadingFollowing, loadingNextFollowingPage, postsFollowing, refreshFollowing, nextFollowingPage] =
+    useFeed('following')
+  const [selectedFeed, setSelectedFeed] = useState('world')
 
   const handleRefreshFeeds = () => {
     refreshWorld()
@@ -37,27 +39,34 @@ const Welcome = ({ mode }) => {
   const handleScrolling = useCallback(
     (e) => {
       const window = e.currentTarget
-      if (lastScrollY > window.scrollY + SCROLL_DELTA) {
+      if (lastScrollY > window.scrollTop + SCROLL_DELTA) {
         setShowNav(true)
-      } else if (lastScrollY < window.scrollY - SCROLL_DELTA) {
+      } else if (lastScrollY < window.scrollTop - SCROLL_DELTA) {
         setShowNav(false)
       }
-      setLastScrollY(window.scrollY)
+      setLastScrollY(window.scrollTop)
+
+      // handle paging
+      const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
+      if (bottom) {
+        selectedFeed === 'world' ? nextWorldPage() : nextFollowingPage()
+      }
     },
     [lastScrollY],
   )
 
   useEffect(() => {
-    setLastScrollY(window.scrollY)
-    window.addEventListener('scroll', handleScrolling)
+    const scrollElement = document.getElementById('scroll-content')
+    setLastScrollY(scrollElement.scrollTop)
+    scrollElement.addEventListener('scroll', handleScrolling)
 
     return () => {
-      window.removeEventListener('scroll', handleScrolling)
+      scrollElement.removeEventListener('scroll', handleScrolling)
     }
   }, [handleScrolling])
 
   return (
-    <>
+    <div className="flex flex-col h-screen">
       <Modal
         className="rounded-none h-fit w-fit "
         isOpen={isOpen}
@@ -77,8 +86,8 @@ const Welcome = ({ mode }) => {
         }}
       />
 
-      <div className="flex flex-col items-center w-full">
-        <Tabs key="feed-tabs" size="lg" variant="underlined" aria-label="Feed tabs">
+      <div id="scroll-content" className="flex flex-col flex-grow items-center w-full overflow-y-scroll pt-[64px]">
+        <Tabs key="feed-tabs" size="lg" variant="underlined" aria-label="Feed tabs" onSelectionChange={setSelectedFeed}>
           <Tab
             key="world"
             title={
@@ -90,6 +99,7 @@ const Welcome = ({ mode }) => {
           >
             <FeedWrapper>
               <Feed posts={postsWorld} loading={loadingWorld} onOpenPostImage={handleOpenModal} />
+              {loadingNextWorldPage && <Spinner size="lg" />}
             </FeedWrapper>
           </Tab>
           {isAuthenticated && (
@@ -104,13 +114,14 @@ const Welcome = ({ mode }) => {
             >
               <FeedWrapper>
                 <Feed posts={postsFollowing} loading={loadingFollowing} onOpenPostImage={handleOpenModal} />
+                {loadingNextFollowingPage && <Spinner size="lg" />}
               </FeedWrapper>
             </Tab>
           )}
         </Tabs>
       </div>
       <Footer refreshFeed={handleRefreshFeeds} noProfile={!isAuthenticated} />
-    </>
+    </div>
   )
 }
 

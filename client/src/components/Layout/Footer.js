@@ -21,7 +21,7 @@ import { getAssetUrl } from '../../common/utils'
 import { HomeIcon } from '@heroicons/react/24/outline'
 import { ArrowLeftEndOnRectangleIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/solid'
 
-function Footer({ refreshFeed, noProfile }) {
+function Footer({ refreshFeed, noProfile, hideProfileSelect }) {
   const [uploadedImageData, setUploadedImageData] = useState()
   const captureDeviceSelect = useDisclosure()
 
@@ -59,7 +59,7 @@ function Footer({ refreshFeed, noProfile }) {
       />
       <footer
         onClick={(e) => e.stopPropagation()}
-        className="fixed bottom-0 py-1.5 flex z-40 mt-auto w-full h-auto items-center justify-center  inset-x-0 border-t border-divider backdrop-blur-lg backdrop-saturate-150 bg-background/70"
+        className="py-1.5 flex z-40 mt-auto w-full h-auto items-center justify-center  inset-x-0 border-t border-divider backdrop-blur-lg backdrop-saturate-150 bg-background/70"
       >
         <div className="flex max-w-[1024px] w-full px-6 items-center justify-between">
           <Button
@@ -104,13 +104,20 @@ function Footer({ refreshFeed, noProfile }) {
                 />
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <DropdownItem key="signin-info" className="h-14 gap-2" textValue={`Signed in as ${user?.email}`}>
+                <DropdownItem
+                  key="signin-info"
+                  isReadOnly
+                  className="h-14 gap-2"
+                  textValue={`Signed in as ${user?.email}`}
+                >
                   <p className="font-semibold">Signed in as</p>
-                  <p className="font-semibold">{user?.email}</p>
+                  <p className="font-semibold text-primary-500">{user?.email}</p>
                 </DropdownItem>
-                <DropdownItem key="profile" onClick={() => navigate('/profile')}>
-                  My Profile
-                </DropdownItem>
+                {!hideProfileSelect && (
+                  <DropdownItem key="profile" onClick={() => navigate('/profile')}>
+                    My Profile
+                  </DropdownItem>
+                )}
                 <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
                 <DropdownItem key="logout" color="danger" onClick={logout}>
                   Log Out
