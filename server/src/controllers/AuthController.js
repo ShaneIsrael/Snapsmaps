@@ -81,8 +81,8 @@ controller.register = async (req, res, next) => {
 
       if (isProduction) {
         await sendVerificationEmail(email.toLowerCase(), token, displayName)
-        await t.commit()
       }
+      await t.commit()
 
       return res
         .status(201)
