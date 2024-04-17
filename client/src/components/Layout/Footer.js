@@ -19,7 +19,11 @@ import { useAuthed } from '../../hooks/useAuthed'
 import { useAuth } from '../../hooks/useAuth'
 import { getAssetUrl } from '../../common/utils'
 import { HomeIcon } from '@heroicons/react/24/outline'
-import { ArrowLeftEndOnRectangleIcon, ArrowRightEndOnRectangleIcon } from '@heroicons/react/24/solid'
+import {
+  ArrowLeftEndOnRectangleIcon,
+  ArrowRightEndOnRectangleIcon,
+  MagnifyingGlassIcon,
+} from '@heroicons/react/24/solid'
 
 function Footer({ refreshFeed, noProfile, hideProfileSelect }) {
   const [uploadedImageData, setUploadedImageData] = useState()
@@ -82,7 +86,20 @@ function Footer({ refreshFeed, noProfile, hideProfileSelect }) {
             size="sm"
             color="default"
             variant="light"
-            className="border-small border-neutral-200 h-8 "
+            // className="border-medium border-neutral-200 "
+            aria-label="search users"
+            onClick={() => {
+              console.log('do search things')
+            }}
+          >
+            <MagnifyingGlassIcon />
+          </Button>
+          <Button
+            isIconOnly
+            size="sm"
+            color="default"
+            variant="light"
+            className="border-medium border-neutral-200 h-8 "
             aria-label="new post"
             onClick={(e) => {
               e.stopPropagation()
@@ -91,6 +108,8 @@ function Footer({ refreshFeed, noProfile, hideProfileSelect }) {
           >
             <PlusIcon />
           </Button>
+          {/* This is just a placeholder to keep the buttons aligned */}
+          <div className="w-8 h-8" />
           {!noProfile ? (
             <Dropdown backdrop="blur" placement="bottom-end" className="dark bg-neutral-900 text-foreground">
               <DropdownTrigger>

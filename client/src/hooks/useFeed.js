@@ -29,7 +29,7 @@ const useFeed = (type) => {
     try {
       // dont attempt to fetch following posts when your not logged in.
       if (!isAuthenticated && type === 'following') {
-        setPosts([])
+        return
       } else {
         const feed =
           type === 'world' ? (await FeedService.getPublicFeed()).data : (await FeedService.getFollowingFeed()).data

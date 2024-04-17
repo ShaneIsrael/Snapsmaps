@@ -28,8 +28,10 @@ const Welcome = ({ mode }) => {
   const handleRefreshFeeds = async (newPost) => {
     await worldFeed.refresh()
     await followingFeed.refresh()
-    followingFeed.setPosts((prev) => [newPost].concat(prev))
-    worldFeed.setPosts((prev) => [newPost].concat(prev))
+    if (newPost) {
+      followingFeed.setPosts((prev) => [newPost].concat(prev))
+      worldFeed.setPosts((prev) => [newPost].concat(prev))
+    }
   }
 
   const handleOpenModal = (image) => {
