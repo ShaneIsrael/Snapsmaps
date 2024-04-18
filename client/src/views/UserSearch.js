@@ -83,6 +83,7 @@ function UserSearch() {
       <div className="w-full h-[64px] border-b-1 border-neutral-800">
         <Input
           isClearable
+          autoFocus
           radius="none"
           placeholder="Search users..."
           variant="underlined"
