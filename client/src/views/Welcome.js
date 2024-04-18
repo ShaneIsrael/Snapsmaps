@@ -11,6 +11,7 @@ import { GlobeAmericasIcon } from '@heroicons/react/24/solid'
 import Feed from '../components/feed/Feed'
 import FeedWrapper from '../components/feed/FeedWrapper'
 import { useFeed } from '../hooks/useFeed'
+import { toast } from 'sonner'
 
 const SCROLL_DELTA = 15
 
@@ -50,7 +51,7 @@ const Welcome = ({ mode }) => {
       setLastScrollY(window.scrollTop)
 
       // handle paging
-      const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
+      const bottom = Math.round(e.target.scrollHeight - e.target.scrollTop) === Math.round(e.target.clientHeight)
       if (bottom) {
         selectedFeed === 'world' ? worldFeed.nextPage() : followingFeed.nextPage()
       }
@@ -98,7 +99,7 @@ const Welcome = ({ mode }) => {
         }}
       />
 
-      <div id="scroll-content" className="flex flex-col flex-grow items-center w-full overflow-y-scroll pt-[64px]">
+      <div id="scroll-content" className="flex flex-col h-full items-center w-full overflow-y-auto pt-[64px]">
         <Tabs key="feed-tabs" size="lg" variant="underlined" aria-label="Feed tabs" onSelectionChange={setSelectedFeed}>
           <Tab
             key="world"
@@ -111,7 +112,7 @@ const Welcome = ({ mode }) => {
           >
             <FeedWrapper>
               <Feed posts={worldFeed.posts} loading={worldFeed.isRefreshing} onOpenPostImage={handleOpenModal} />
-              {worldFeed.isPageLoading && <Spinner size="lg" />}
+              {worldFeed.isPageLoading && !worldFeed.noMoreResults && <Spinner size="lg" />}
             </FeedWrapper>
           </Tab>
           {isAuthenticated && (
@@ -130,7 +131,7 @@ const Welcome = ({ mode }) => {
                   loading={followingFeed.isRefreshing}
                   onOpenPostImage={handleOpenModal}
                 />
-                {followingFeed.isPageLoading && <Spinner size="lg" />}
+                {followingFeed.isPageLoading && !followingFeed.noMoreResults && <Spinner size="lg" />}
               </FeedWrapper>
             </Tab>
           )}

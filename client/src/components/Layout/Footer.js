@@ -57,13 +57,12 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) 
         onCancel={() => setUploadedImageData(null)}
         onSubmitted={(post) => {
           navigate('/')
-          setUploadedImageData(null)
-          refreshFeed(post)
+          handleOnSubmit(post)
         }}
       />
       <footer
         onClick={(e) => e.stopPropagation()}
-        className="py-1.5 flex z-40 mt-auto w-full h-auto items-center justify-center  inset-x-0 border-t border-divider backdrop-blur-lg backdrop-saturate-150 bg-background/70"
+        className="sticky bottom-0 py-1.5 z-10 flex mt-auto w-full h-auto items-center justify-center inset-x-0 border-t border-divider bg-background"
       >
         <div className="flex max-w-[1024px] w-full px-6 items-center justify-between">
           <Button

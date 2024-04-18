@@ -35,7 +35,9 @@ function UserSearch() {
           }
           if (users.length < PAGE_SIZE) {
             setLastPageReached(true)
-            toast.info('showing all results')
+            toast.info('showing all results', {
+              position: 'bottom-center',
+            })
           }
         }
       } catch (err) {
@@ -64,7 +66,7 @@ function UserSearch() {
   }, [page])
 
   const hasScrolledBottom = (e) => {
-    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight
+    const bottom = Math.round(e.target.scrollHeight - e.target.scrollTop) === Math.round(e.target.clientHeight)
     if (bottom) {
       setPage((prev) => prev + 1)
     }
