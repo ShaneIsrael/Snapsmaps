@@ -71,6 +71,7 @@ require('./routes/feed')(app)
 require('./routes/like')(app)
 require('./routes/profile')(app)
 require('./routes/comment')(app)
+require('./routes/user')(app)
 require('./routes/test')(app)
 require('./routes')(app)
 

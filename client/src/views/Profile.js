@@ -17,7 +17,7 @@ import {
 import React from 'react'
 import Appbar from '../components/Layout/Appbar'
 import Post from '../components/Post/Post'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getAssetUrl, getSessionUser } from '../common/utils'
 import { PostService, ProfileService } from '../services'
 import ImageCropProvider from '../providers/ImageCropProvider'
@@ -41,6 +41,7 @@ function Profile({ isSelf }) {
   const { mention } = useParams()
 
   const { isAuthenticated } = useAuthed()
+  const navigate = useNavigate()
 
   const [profile, setProfile] = React.useState()
 
@@ -308,7 +309,12 @@ function Profile({ isSelf }) {
           ))}
         </div>
       </div>
-      <Footer refreshFeed={fetch} noProfile={!isAuthenticated} hideProfileSelect />
+      <Footer
+        handleOnHome={() => navigate('/')}
+        handleOnSubmit={() => navigate('/')}
+        noProfile={!isAuthenticated}
+        hideProfileSelect
+      />
     </div>
   )
 }

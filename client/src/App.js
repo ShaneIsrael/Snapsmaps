@@ -8,6 +8,7 @@ import Welcome from './views/Welcome'
 import Signup from './views/Signup'
 import Profile from './views/Profile'
 import VerifyEmail from './views/VerifyEmail'
+import UserSearch from './views/UserSearch'
 
 const router = createBrowserRouter([{ path: '*', Component: Root }])
 
@@ -37,6 +38,7 @@ function Root() {
           </RequireAuth>
         }
       />
+      <Route path="/search" element={<UserSearch />} />
       <Route path="/user/:mention/" element={<Profile />} />
       <Route path="/verify/:email/:token" element={<VerifyEmail />} />
       <Route path="*" element={<div>not found</div>} />

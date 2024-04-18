@@ -25,7 +25,7 @@ import {
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/solid'
 
-function Footer({ refreshFeed, noProfile, hideProfileSelect }) {
+function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) {
   const [uploadedImageData, setUploadedImageData] = useState()
   const captureDeviceSelect = useDisclosure()
 
@@ -73,11 +73,7 @@ function Footer({ refreshFeed, noProfile, hideProfileSelect }) {
             variant="light"
             // className="border-medium border-neutral-200 "
             aria-label="new post"
-            onClick={() => {
-              window.scrollTo(0, 0)
-              navigate('/')
-              refreshFeed()
-            }}
+            onClick={handleOnHome}
           >
             <HomeIcon />
           </Button>
@@ -88,9 +84,7 @@ function Footer({ refreshFeed, noProfile, hideProfileSelect }) {
             variant="light"
             // className="border-medium border-neutral-200 "
             aria-label="search users"
-            onClick={() => {
-              console.log('do search things')
-            }}
+            onClick={() => navigate('/search')}
           >
             <MagnifyingGlassIcon />
           </Button>

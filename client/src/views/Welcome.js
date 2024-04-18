@@ -25,7 +25,7 @@ const Welcome = ({ mode }) => {
   const worldFeed = useFeed('world')
   const followingFeed = useFeed('following')
 
-  const handleRefreshFeeds = async (newPost) => {
+  const refreshFeed = async (newPost) => {
     await worldFeed.refresh()
     await followingFeed.refresh()
     if (newPost) {
@@ -67,6 +67,15 @@ const Welcome = ({ mode }) => {
       scrollElement.removeEventListener('scroll', handleScrolling)
     }
   }, [handleScrolling])
+
+  const handleHomeClicked = () => {
+    document.getElementById('scroll-content').scrollTo(0, 0)
+    refreshFeed()
+  }
+
+  const handlePostCreated = (newPost) => {
+    refreshFeed(newPost)
+  }
 
   return (
     <div className="flex flex-col h-screen">
@@ -127,7 +136,7 @@ const Welcome = ({ mode }) => {
           )}
         </Tabs>
       </div>
-      <Footer refreshFeed={handleRefreshFeeds} noProfile={!isAuthenticated} />
+      <Footer handleOnHome={handleHomeClicked} handleOnSubmit={handlePostCreated} noProfile={!isAuthenticated} />
     </div>
   )
 }
