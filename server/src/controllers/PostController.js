@@ -45,16 +45,16 @@ controller.create = async (req, res, next) => {
     if (!image || !latitude || !longitude || !/^image/.test(image.mimetype))
       return res.status(400).send('A post requires an image and a gps location.')
 
-    const reference = `/post/${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
+    const reference = `/post/${uuidv4().replace(/-/gi, '')}.webp`
     const fileContent = Buffer.from(image.data)
     if (!isProduction) {
       await sharp(fileContent)
-        .jpeg({ quality: 60 })
+        .webp({ quality: 70 })
         .withMetadata()
         .toFile(path.join(process.cwd(), '/images', reference))
     } else {
-      const compressed = await sharp(fileContent).jpeg({ quality: 60 }).withMetadata().toBuffer()
-      await uploadImage(compressed, reference, image.mimetype)
+      const compressed = await sharp(fileContent).webp({ quality: 70 }).withMetadata().toBuffer()
+      await uploadImage(compressed, reference, 'image/webp')
     }
 
     const imageRow = await Image.create(

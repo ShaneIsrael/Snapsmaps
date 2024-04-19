@@ -27,11 +27,12 @@ const Welcome = ({ mode }) => {
   const followingFeed = useFeed('following')
 
   const refreshFeed = async (newPost) => {
-    await worldFeed.refresh()
-    await followingFeed.refresh()
     if (newPost) {
       followingFeed.setPosts((prev) => [newPost].concat(prev))
       worldFeed.setPosts((prev) => [newPost].concat(prev))
+    } else {
+      await worldFeed.refresh()
+      await followingFeed.refresh()
     }
   }
 

@@ -80,6 +80,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
     }
     setSubmitting(false)
     setUploadProgress(0)
+    newPostModal.onClose()
   }
 
   return (

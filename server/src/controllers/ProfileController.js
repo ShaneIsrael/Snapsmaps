@@ -4,6 +4,7 @@ const { User, Image, Post, Follow } = Models
 const { v4: uuidv4 } = require('uuid')
 const { signUserJwt } = require('../utils')
 const { uploadImage } = require('../services/UploadService')
+const sharp = require('sharp')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -106,13 +107,17 @@ controller.update = async (req, res, next) => {
       const { image } = req.files
 
       if (image) {
-        const reference = `/profile/${uuidv4().replace(/-/gi, '')}${image.name.substring(image.name.lastIndexOf('.'))}`
+        const reference = `/profile/${uuidv4().replace(/-/gi, '')}.webp`
 
+        const fileContent = Buffer.from(image.data)
         if (!isProduction) {
-          image.mv(path.join(process.cwd(), '/images', reference))
+          await sharp(fileContent)
+            .webp({ quality: 70 })
+            .withMetadata()
+            .toFile(path.join(process.cwd(), '/images', reference))
         } else {
-          const fileContent = Buffer.from(image.data)
-          await uploadImage(fileContent, reference, image.mimetype)
+          const compressed = await sharp(fileContent).webp({ quality: 70 }).withMetadata().toBuffer()
+          await uploadImage(compressed, reference, 'image/webp')
         }
 
         const imageRow = await Image.create({
