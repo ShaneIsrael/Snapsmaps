@@ -21,13 +21,6 @@ module.exports = {
       },
     },
   },
-  test: {
-    username: process.env.CI_DB_USERNAME,
-    password: process.env.CI_DB_PASSWORD,
-    database: process.env.CI_DB_NAME,
-    host: '127.0.0.1',
-    dialect: 'postgres',
-  },
   production: {
     username: process.env.PROD_DB_USERNAME,
     password: process.env.PROD_DB_PASSWORD,
@@ -45,7 +38,7 @@ module.exports = {
       timezone: 'utc',
       logging: false,
       pool: {
-        max: 20,
+        max: process.env.PROD_DB_POOL_SIZE_PER_NODE || 10,
         min: 0,
         acquire: 30000,
         idle: 10000,

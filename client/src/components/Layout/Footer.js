@@ -18,12 +18,13 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthed } from '../../hooks/useAuthed'
 import { useAuth } from '../../hooks/useAuth'
 import { getAssetUrl } from '../../common/utils'
-import { HomeIcon } from '@heroicons/react/24/outline'
+import { BellIcon, HomeIcon } from '@heroicons/react/24/outline'
 import {
   ArrowLeftEndOnRectangleIcon,
   ArrowRightEndOnRectangleIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/solid'
+import { toast } from 'sonner'
 
 function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) {
   const [uploadedImageData, setUploadedImageData] = useState()
@@ -65,15 +66,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) 
         className="sticky bottom-0 py-1.5 z-10 flex mt-auto w-full h-auto items-center justify-center inset-x-0 border-t border-divider bg-background"
       >
         <div className="flex max-w-[1024px] w-full px-6 items-center justify-between">
-          <Button
-            isIconOnly
-            size="sm"
-            color="default"
-            variant="light"
-            // className="border-medium border-neutral-200 "
-            aria-label="new post"
-            onClick={handleOnHome}
-          >
+          <Button isIconOnly size="sm" color="default" variant="light" aria-label="new post" onClick={handleOnHome}>
             <HomeIcon />
           </Button>
           <Button
@@ -81,7 +74,6 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) 
             size="sm"
             color="default"
             variant="light"
-            // className="border-medium border-neutral-200 "
             aria-label="search users"
             onClick={() => navigate('/search')}
           >
@@ -101,8 +93,17 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) 
           >
             <PlusIcon />
           </Button>
-          {/* This is just a placeholder to keep the buttons aligned */}
-          <div className="w-8 h-8" />
+          <Button
+            isIconOnly
+            size="sm"
+            variant="light"
+            className="cursor-pointer"
+            onClick={() => {
+              toast.info('Notification system not yet implemented.')
+            }}
+          >
+            <BellIcon />
+          </Button>
           {!noProfile ? (
             <Dropdown backdrop="blur" placement="bottom-end" className="dark bg-neutral-900 text-foreground">
               <DropdownTrigger>

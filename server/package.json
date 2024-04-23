@@ -4,7 +4,6 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "local": "export NODE_ENV=development && export PORT=3001 && nodemon src/server.js",
     "seed": "export NODE_ENV=development && node src/seed_test_data.js",
     "migrate": "sequelize db:migrate",
