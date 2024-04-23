@@ -38,7 +38,7 @@ module.exports = {
       timezone: 'utc',
       logging: false,
       pool: {
-        max: process.env.PROD_DB_POOL_SIZE_PER_NODE || 10,
+        max: process.env.PROD_DB_POOL_SIZE_PER_NODE ? Number(process.env.PROD_DB_POOL_SIZE_PER_NODE) : 10,
         min: 0,
         acquire: 30000,
         idle: 10000,
