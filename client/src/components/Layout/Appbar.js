@@ -38,8 +38,8 @@ export default function Appbar({ backButton, pageName, allowPost, hidden, styles
           <NavbarBrand className="mr-4 mt-1 cursor-pointer" onClick={() => navigate('/')}>
             {/* <Logo1 className="w-9 h-9 mr-2 mb-2" />
             <p className="text-center text-neutral-200 tracking-wider text-3xl font-bold font-vibes">Snapsmaps</p> */}
-            <img src={logo} className="h-9" />
-            <img src={wordmark} className="h-4 ml-2 mt-1 hidden sm:block" />
+            <img src={logo} className="h-9 hidden sm:block" />
+            <img src={wordmark} className="h-4 sm:ml-2 sm:h-4 sm:block" />
           </NavbarBrand>
         )}
         {backButton && (

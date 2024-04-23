@@ -25,6 +25,7 @@ import {
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/solid'
 import { toast } from 'sonner'
+import { ReactComponent as Logo } from '../../assets/logo/dark/logo.svg'
 
 function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) {
   const [uploadedImageData, setUploadedImageData] = useState()
@@ -79,7 +80,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) 
           >
             <MagnifyingGlassIcon />
           </Button>
-          <Button
+          {/* <Button
             isIconOnly
             size="sm"
             color="default"
@@ -92,6 +93,21 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) 
             }}
           >
             <PlusIcon />
+          </Button> */}
+
+          <Button
+            isIconOnly
+            size="sm"
+            color="default"
+            variant="light"
+            className="w-11 "
+            aria-label="new post"
+            onClick={(e) => {
+              e.stopPropagation()
+              captureDeviceSelect.onOpen()
+            }}
+          >
+            <Logo />
           </Button>
           <Button
             isIconOnly
