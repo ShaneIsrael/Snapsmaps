@@ -40,14 +40,6 @@
         -webkit-text-size-adjust: 100%; /* 2 */
       }
       /**
-   * Remove extra space added to tables and cells in Outlook.
-   */
-      table,
-      td {
-        mso-table-rspace: 0pt;
-        mso-table-lspace: 0pt;
-      }
-      /**
    * Better fluid images in Internet Explorer.
    */
       img {
@@ -76,12 +68,6 @@
         padding: 0 !important;
         margin: 0 !important;
       }
-      /**
-   * Collapse table borders to avoid space between cells.
-   */
-      table {
-        border-collapse: collapse !important;
-      }
       a {
         color: #007cff;
       }
@@ -94,7 +80,7 @@
       }
     </style>
   </head>
-  <body style="background-color: #121212">
+  <body style="background-color: #020617">
     <!-- start preheader -->
     <div
       class="preheader"
@@ -114,230 +100,95 @@
     <!-- end preheader -->
 
     <!-- start body -->
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <div style="display: flex; flex-direction: column; width: 100%; align-items: center; text-align: center">
       <!-- start logo -->
-      <tr>
-        <td align="center" bgcolor="#121212">
-          <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-        <tr>
-        <td align="center" valign="top" width="600">
-        <![endif]-->
-          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px">
-            <tr>
-              <td align="center" valign="top" style="padding: 24px 12px">
-                <a href="https://snapsmaps.com" target="_blank" style="display: inline-block">
-                  <img
-                    src="https://cdn.snapsmaps.com/thumbnail-title.png"
-                    alt="Logo"
-                    border="0"
-                    width="400"
-                    style="display: block; width: 400px; max-width: 400px; min-width: 400px"
-                  />
-                </a>
-              </td>
-            </tr>
-          </table>
-          <!--[if (gte mso 9)|(IE)]>
-        </td>
-        </tr>
-        </table>
-        <![endif]-->
-        </td>
-      </tr>
+      <div style="padding: 24px 12px; width: 100%">
+        <a href="https://snapsmaps.com" target="_blank" style="display: inline-block">
+          <img
+            src="https://cdn.snapsmaps.com/assets/logo_with_wordmark.svg"
+            alt="Logo"
+            border="0"
+            width="375px"
+            style="display: block"
+          />
+        </a>
+      </div>
       <!-- end logo -->
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          gap: 24px;
+          max-width: 552px;
+          margin-left: 12px;
+          margin-right: 12px;
+          padding: 24px;
+          background-color: #e1e1e1;
+          border-radius: 16px;
+        "
+      >
+        <!-- start hero -->
+        <div style="font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif">
+          <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px">
+            Verify Your Email Address
+          </h1>
+        </div>
+        <!-- end hero -->
+        <div style="font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px">
+          <p style="margin: 0">
+            Tap the button below to confirm your email address. If you didn't create an account with
+            <a href="https://snapsmaps.com">Snapsmaps</a>, you can safely delete this email.
+          </p>
+        </div>
+        <div style="display: flex; justify-content: center; width: 100%">
+          <div style="border-radius: 6px; background-color: #1a82e2; width: 150px; text-align: center">
+            <a
+              href="{{verification_link}}"
+              target="_blank"
+              style="
+                display: inline-block;
+                padding: 16px;
+                font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+                font-size: 16px;
+                color: #ffffff;
+                text-decoration: none;
+                border-radius: 6px;
+              "
+              >Verify Email</a
+            >
+          </div>
+        </div>
 
-      <!-- start hero -->
-      <tr>
-        <td align="center" bgcolor="#121212">
-          <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-        <tr>
-        <td align="center" valign="top" width="600">
-        <![endif]-->
-          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px">
-            <tr>
-              <td
-                align="left"
-                bgcolor="#e1e1e1"
-                style="
-                  padding: 36px 24px 0;
-                  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                  border-top: 3px solid #d4dadf;
-                "
-              >
-                <h1 style="margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -1px; line-height: 48px">
-                  Verify Your Email Address
-                </h1>
-              </td>
-            </tr>
-          </table>
-          <!--[if (gte mso 9)|(IE)]>
-        </td>
-        </tr>
-        </table>
-        <![endif]-->
-        </td>
-      </tr>
-      <!-- end hero -->
+        <div style="font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px">
+          <p style="margin: 0">If that doesn't work, copy and paste the following link into your browser:</p>
+          <p style="margin: 0; font-size: 12px">
+            <a href="{{verification_link}}" target="_blank">{{verification_link}}</a>
+          </p>
+        </div>
 
-      <!-- start copy block -->
-      <tr>
-        <td align="center" bgcolor="#121212">
-          <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-        <tr>
-        <td align="center" valign="top" width="600">
-        <![endif]-->
-          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px">
-            <!-- start copy -->
-            <tr>
-              <td
-                align="left"
-                bgcolor="#e1e1e1"
-                style="
-                  padding: 24px;
-                  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                  font-size: 16px;
-                  line-height: 24px;
-                "
-              >
-                <p style="margin: 0">
-                  Tap the button below to confirm your email address. If you didn't create an account with
-                  <a href="https://snapsmaps.com">Snapsmaps</a>, you can safely delete this email.
-                </p>
-              </td>
-            </tr>
-            <!-- end copy -->
-
-            <!-- start button -->
-            <tr>
-              <td align="left" bgcolor="#e1e1e1">
-                <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                  <tr>
-                    <td align="center" bgcolor="#e1e1e1" style="padding: 12px">
-                      <table border="0" cellpadding="0" cellspacing="0">
-                        <tr>
-                          <td align="center" bgcolor="#1a82e2" style="border-radius: 6px">
-                            <a
-                              href="{{verification_link}}"
-                              target="_blank"
-                              style="
-                                display: inline-block;
-                                padding: 16px 36px;
-                                font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                                font-size: 16px;
-                                color: #ffffff;
-                                text-decoration: none;
-                                border-radius: 6px;
-                              "
-                              >Verify Email</a
-                            >
-                          </td>
-                        </tr>
-                      </table>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-            <!-- end button -->
-
-            <!-- start copy -->
-            <tr>
-              <td
-                align="left"
-                bgcolor="#e1e1e1"
-                style="
-                  padding: 24px;
-                  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                  font-size: 16px;
-                  line-height: 24px;
-                "
-              >
-                <p style="margin: 0">If that doesn't work, copy and paste the following link into your browser:</p>
-                <p style="margin: 0"><a href="{{verification_link}}" target="_blank">{{verification_link}}</a></p>
-              </td>
-            </tr>
-            <!-- end copy -->
-
-            <!-- start copy -->
-            <tr>
-              <td
-                align="left"
-                bgcolor="#e1e1e1"
-                style="
-                  padding: 24px;
-                  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                  font-size: 16px;
-                  line-height: 24px;
-                  border-bottom: 3px solid #d4dadf;
-                "
-              >
-                <p style="margin: 0">
-                  Snap on adventurers,<br />
-                  Snapsmaps Team
-                </p>
-              </td>
-            </tr>
-            <!-- end copy -->
-          </table>
-          <!--[if (gte mso 9)|(IE)]>
-        </td>
-        </tr>
-        </table>
-        <![endif]-->
-        </td>
-      </tr>
-      <!-- end copy block -->
-
-      <!-- start footer -->
-      <tr>
-        <td align="center" bgcolor="#121212" style="padding: 24px">
-          <!--[if (gte mso 9)|(IE)]>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600">
-        <tr>
-        <td align="center" valign="top" width="600">
-        <![endif]-->
-          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px">
-            <!-- start permission -->
-            <tr>
-              <td
-                align="center"
-                bgcolor="#121212"
-                style="
-                  padding: 12px 24px;
-                  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-                  font-size: 14px;
-                  line-height: 20px;
-                  color: #666;
-                "
-              >
-                <p style="margin: 0">
-                  You received this email because an account was created with your email. If you didn't create an
-                  account with us you can safely delete this email.
-                </p>
-              </td>
-            </tr>
-            <!-- end permission -->
-
-            <!-- start unsubscribe -->
-            <!-- <tr>
-            <td align="center" bgcolor="#121212" style="padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;">
-              <p style="margin: 0;">To stop receiving these emails, you can <a href="https://snapsmaps.com" target="_blank">unsubscribe</a> at any time.</p>
-            </td>
-          </tr> -->
-            <!-- end unsubscribe -->
-          </table>
-          <!--[if (gte mso 9)|(IE)]>
-        </td>
-        </tr>
-        </table>
-        <![endif]-->
-        </td>
-      </tr>
-      <!-- end footer -->
-    </table>
-    <!-- end body -->
+        <div style="font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px">
+          <p style="margin: 0">
+            Snap on adventurers,<br />
+            Snapsmaps Team
+          </p>
+        </div>
+      </div>
+      <div
+        style="
+          padding: 12px 24px;
+          font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+          font-size: 14px;
+          line-height: 20px;
+          color: #666;
+          max-width: 552px;
+          text-align: center;
+        "
+      >
+        <p style="margin: 0">
+          You received this email because an account was created with your email. If you didn't create an account with
+          us you can safely delete this email.
+        </p>
+      </div>
+    </div>
   </body>
 </html>

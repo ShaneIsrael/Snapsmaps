@@ -23,13 +23,11 @@ function UserSearch() {
   const [loading, setLoading] = useState(false)
 
   async function search(p) {
-    console.log(debouncedQuery)
     if (debouncedQuery.replace(/\s/g, '')) {
       try {
         if (!lastPageReached) {
           setLoading(true)
           const users = (await UserService.search(debouncedQuery, p)).data
-          console.log(users)
           if (p > 0) {
             setUsers((prev) => prev.concat(users))
           } else {

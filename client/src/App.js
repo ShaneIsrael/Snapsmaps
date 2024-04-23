@@ -9,6 +9,7 @@ import Signup from './views/Signup'
 import Profile from './views/Profile'
 import VerifyEmail from './views/VerifyEmail'
 import UserSearch from './views/UserSearch'
+import ProfileFollows from './views/ProfileFollows'
 
 const router = createBrowserRouter([{ path: '*', Component: Root }])
 
@@ -38,8 +39,11 @@ function Root() {
           </RequireAuth>
         }
       />
+      <Route path="/profile/follows" element={<ProfileFollows />} />
       <Route path="/search" element={<UserSearch />} />
       <Route path="/user/:mention/" element={<Profile />} />
+      <Route path="/user/:mention/follows" element={<ProfileFollows />} />
+
       <Route path="/verify/:email/:token" element={<VerifyEmail />} />
       <Route path="*" element={<div>not found</div>} />
     </Routes>

@@ -23,6 +23,9 @@ import { useAuthed } from '../../hooks/useAuthed.js'
 import Logo1 from '../../assets/icons/Logo1.js'
 import clsx from 'clsx'
 
+import logo from '../../assets/logo/dark/logo.svg'
+import wordmark from '../../assets/logo/dark/wordmark_no_slogan.svg'
+
 export default function Appbar({ backButton, pageName, allowPost, hidden, styles }) {
   const navigate = useNavigate()
   const { user, isAuthenticated } = useAuthed()
@@ -33,12 +36,14 @@ export default function Appbar({ backButton, pageName, allowPost, hidden, styles
       <NavbarContent justify="start" className="align-middle items-center">
         {!backButton && (
           <NavbarBrand className="mr-4 mt-1 cursor-pointer" onClick={() => navigate('/')}>
-            <Logo1 className="w-9 h-9 mr-2 mb-2" />
-            <p className="text-center text-neutral-200 tracking-wider text-3xl font-bold font-vibes">Snapsmaps</p>
+            {/* <Logo1 className="w-9 h-9 mr-2 mb-2" />
+            <p className="text-center text-neutral-200 tracking-wider text-3xl font-bold font-vibes">Snapsmaps</p> */}
+            <img src={logo} className="h-9" />
+            <img src={wordmark} className="h-5 ml-2" />
           </NavbarBrand>
         )}
         {backButton && (
-          <NavbarBrand className="flex gap-4 align-middle cursor-pointer" onClick={() => navigate(backButton)}>
+          <NavbarBrand className="flex gap-4 align-middle cursor-pointer" onClick={backButton}>
             <ArrowLeft />
             <h2 className="font-bold text-lg">{pageName}</h2>
           </NavbarBrand>

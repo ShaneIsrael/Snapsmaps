@@ -97,94 +97,98 @@ const Signup = () => {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-tr from-sky-900 to-purple-900 pt-10">
-      <div className="flex flex-col items-center justify-center w-full px-4">
-        <h1 className="text-center text-neutral-200 tracking-wider text-7xl font-semibold font-vibes">Snapsmaps</h1>
-        <Card className="mt-5 w-full sm:w-96 bg-background/50">
-          <CardHeader className="p-4">
-            <h2 className="font-bold text-3xl">Create an account</h2>
-          </CardHeader>
-          <Divider />
-          <CardBody>
-            <div className="flex flex-col w-full gap-2">
-              <Input
-                type="email"
-                label="Email"
-                variant="flat"
-                value={email}
-                size="sm"
-                isInvalid={!!isInvalidEmail}
-                errorMessage={isInvalidEmail}
-                color={getColor(email, !!isInvalidEmail)}
-                onValueChange={setEmail}
-                className="w-full"
-                classNames={inputStyles}
-              />
-              <Input
-                type="text"
-                label="Display name"
-                variant="flat"
-                size="sm"
-                value={displayName}
-                isInvalid={!!isInvalidDn}
-                errorMessage={isInvalidDn}
-                color={getColor(displayName, !!isInvalidDn)}
-                onValueChange={setDisplayName}
-                className="w-full"
-                classNames={inputStyles}
-              />
-              <Input
-                type="text"
-                label="@ mention"
-                variant="flat"
-                size="sm"
-                value={mention}
-                isInvalid={!!isInvalidMention}
-                errorMessage={isInvalidMention}
-                color={getColor(mention, !!isInvalidMention)}
-                onValueChange={setMention}
-                className="w-full"
-                classNames={inputStyles}
-              />
-              <Input
-                type="password"
-                label="Password"
-                variant="flat"
-                size="sm"
-                value={password}
-                isInvalid={!!isInvalidPassword}
-                color={getColor(password, !!isInvalidPassword)}
-                onValueChange={setPassword}
-                className="w-full"
-                classNames={inputStyles}
-              />
-              <Input
-                type="password"
-                label="Confirm password"
-                variant="flat"
-                size="sm"
-                value={password2}
-                isInvalid={!!isInvalidPassword}
-                errorMessage={isInvalidPassword}
-                color={getColor(password2, !!isInvalidPassword)}
-                onValueChange={setPassword2}
-                className="w-full"
-                classNames={inputStyles}
-              />
-            </div>
-          </CardBody>
-          <Divider />
-          <CardFooter>
-            <div className="flex flex-wrap gap-2 justify-center w-full">
-              <Button color="primary" variant="solid" className="w-full" isDisabled={!formValid()} onClick={submit}>
-                Sign up
-              </Button>
-              <Link onClick={() => navigate('/login')} className="cursor-pointer text-sm">
-                Already have an account?
-              </Link>
-            </div>
-          </CardFooter>
-        </Card>
+    <div className="h-screen pt-10 sm:pt-0 bg-gradient-to-tr from-sky-900 to-purple-900">
+      <div className="flex flex-col sm:h-full sm:flex-row items-center justify-center align-middle w-full px-4 sm:px-0 gap-5 sm:gap-0">
+        <div className="flex h-full w-full items-center justify-center sm:justify-end sm:bg-slate-900 sm:pr-8">
+          <h1 className="text-center text-neutral-200 tracking-wider text-7xl font-semibold font-vibes">Snapsmaps</h1>
+        </div>
+        <div className="flex h-full w-full items-center justify-center sm:bg-gradient-to-tr sm:from-sky-900 sm:to-purple-900 ">
+          <Card className="w-full sm:w-96 bg-background/50">
+            <CardHeader className="p-4">
+              <h2 className="font-bold text-xl">Create an account</h2>
+            </CardHeader>
+            <Divider />
+            <CardBody>
+              <div className="flex flex-col w-full gap-2">
+                <Input
+                  type="email"
+                  label="Email"
+                  variant="flat"
+                  value={email}
+                  size="sm"
+                  isInvalid={!!isInvalidEmail}
+                  errorMessage={isInvalidEmail}
+                  color={getColor(email, !!isInvalidEmail)}
+                  onValueChange={setEmail}
+                  className="w-full"
+                  classNames={inputStyles}
+                />
+                <Input
+                  type="text"
+                  label="Display name"
+                  variant="flat"
+                  size="sm"
+                  value={displayName}
+                  isInvalid={!!isInvalidDn}
+                  errorMessage={isInvalidDn}
+                  color={getColor(displayName, !!isInvalidDn)}
+                  onValueChange={setDisplayName}
+                  className="w-full"
+                  classNames={inputStyles}
+                />
+                <Input
+                  type="text"
+                  label="@ mention"
+                  variant="flat"
+                  size="sm"
+                  value={mention}
+                  isInvalid={!!isInvalidMention}
+                  errorMessage={isInvalidMention}
+                  color={getColor(mention, !!isInvalidMention)}
+                  onValueChange={setMention}
+                  className="w-full"
+                  classNames={inputStyles}
+                />
+                <Input
+                  type="password"
+                  label="Password"
+                  variant="flat"
+                  size="sm"
+                  value={password}
+                  isInvalid={!!isInvalidPassword}
+                  color={getColor(password, !!isInvalidPassword)}
+                  onValueChange={setPassword}
+                  className="w-full"
+                  classNames={inputStyles}
+                />
+                <Input
+                  type="password"
+                  label="Confirm password"
+                  variant="flat"
+                  size="sm"
+                  value={password2}
+                  isInvalid={!!isInvalidPassword}
+                  errorMessage={isInvalidPassword}
+                  color={getColor(password2, !!isInvalidPassword)}
+                  onValueChange={setPassword2}
+                  className="w-full"
+                  classNames={inputStyles}
+                />
+              </div>
+            </CardBody>
+            <Divider />
+            <CardFooter>
+              <div className="flex flex-wrap gap-2 justify-center w-full">
+                <Button color="primary" variant="solid" className="w-full" isDisabled={!formValid()} onClick={submit}>
+                  Sign up
+                </Button>
+                <Link onClick={() => navigate('/login')} className="cursor-pointer text-sm">
+                  Already have an account?
+                </Link>
+              </div>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
     </div>
   )

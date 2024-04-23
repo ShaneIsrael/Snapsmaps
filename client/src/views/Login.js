@@ -4,6 +4,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Link } 
 
 import { useAuth } from '../hooks/useAuth'
 import { useAuthed } from '../hooks/useAuthed'
+import logo from '../assets/logo/dark/logo_with_wordmark.svg'
 
 const inputStyles = {
   label: 'text-black/50 dark:text-white/90',
@@ -11,6 +12,7 @@ const inputStyles = {
     'bg-transparent',
     'text-black/90 dark:text-white/90',
     'placeholder:text-default-700/50 dark:placeholder:text-white/60',
+    'font-semibold',
   ],
   innerWrapper: 'bg-transparent',
   inputWrapper: [
@@ -61,62 +63,67 @@ const Login = (props) => {
   }
 
   return (
-    <div className="h-screen bg-gradient-to-tr from-sky-900 to-purple-900 pt-10">
-      <div className="flex flex-col items-center justify-center w-full px-4">
-        <h1 className="text-center text-neutral-200 tracking-wider text-7xl font-semibold font-vibes">Snapsmaps</h1>
-        <Card className="mt-5 w-full sm:w-96 bg-background/50">
-          <CardHeader className="p-4">
-            <h2 className="font-bold text-3xl">Sign in</h2>
-          </CardHeader>
-          <Divider />
-          <CardBody>
-            <div className="flex flex-col w-full gap-2">
-              <Input
-                type="email"
-                label="Email"
-                variant="flat"
-                value={email}
-                onValueChange={setEmail}
-                onKeyDown={handleKeyDown}
-                className="w-full"
-                classNames={inputStyles}
-              />
+    <div className="h-screen pt-10 md:pt-0 bg-gradient-to-tr from-sky-900 to-purple-900">
+      <div className="flex flex-col md:h-full md:flex-row items-center justify-center align-middle w-full px-4 md:px-0 gap-5 md:gap-0">
+        <div className="flex h-full w-full items-center justify-center md:justify-end md:bg-slate-950 md:px-8">
+          {/* <h1 className="text-center text-neutral-200 tracking-wider text-7xl font-semibold font-vibes">Snapsmaps</h1> */}
+          <img src={logo} className="max-h-[80px]" />
+        </div>
+        <div className="flex h-full w-full items-center justify-center md:bg-gradient-to-tr md:from-sky-900 md:to-purple-900">
+          <Card className="w-full md:w-96 bg-background/50">
+            <CardHeader className="p-4">
+              <h2 className="font-bold text-xl">Sign-in</h2>
+            </CardHeader>
+            <Divider />
+            <CardBody>
+              <div className="flex flex-col w-full gap-2">
+                <Input
+                  type="email"
+                  label="Email"
+                  variant="flat"
+                  value={email}
+                  onValueChange={setEmail}
+                  onKeyDown={handleKeyDown}
+                  className="w-full"
+                  classNames={inputStyles}
+                />
 
-              <Input
-                type="password"
-                label="Password"
-                variant="flat"
-                value={password}
-                onValueChange={setPassword}
-                onKeyDown={handleKeyDown}
-                className="w-full"
-                classNames={inputStyles}
-              />
-            </div>
-            {error && (
-              <div className="flex justify-center w-full mt-2 p-2 rounded-lg bg-red-600 bg-opacity-40 text-neutral-50 font-bold border-large border-red-600">
-                {error}
+                <Input
+                  type="password"
+                  label="Password"
+                  variant="flat"
+                  value={password}
+                  onValueChange={setPassword}
+                  onKeyDown={handleKeyDown}
+                  className="w-full"
+                  classNames={inputStyles}
+                />
               </div>
-            )}
-          </CardBody>
-          <Divider />
-          <CardFooter>
-            <div className="flex flex-wrap gap-2 justify-center w-full">
-              <Button
-                color="primary"
-                variant="solid"
-                className="w-full"
-                isDisabled={!email || !password}
-                onClick={handleLogin}
-              >
-                Sign in
-              </Button>
-              <Link onClick={() => navigate('/signup')} className="cursor-pointer text-sm">
-                Don't have an account?
-              </Link>
-            </div>
-          </CardFooter>
-        </Card>
+              {error && (
+                <div className="flex justify-center w-full mt-2 p-2 rounded-lg bg-red-600 bg-opacity-40 text-neutral-50 font-semibold border-medium border-red-600">
+                  {error}
+                </div>
+              )}
+            </CardBody>
+            <Divider />
+            <CardFooter>
+              <div className="flex flex-wrap gap-2 justify-center w-full">
+                <Button
+                  color="primary"
+                  variant="solid"
+                  className="w-full"
+                  isDisabled={!email || !password}
+                  onClick={handleLogin}
+                >
+                  Sign in
+                </Button>
+                <Link onClick={() => navigate('/signup')} className="cursor-pointer text-sm">
+                  Don't have an account?
+                </Link>
+              </div>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
     </div>
   )

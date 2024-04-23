@@ -1,10 +1,11 @@
 const path = require('path')
 const Models = require('../database/models')
-const { User, Image, Post, Follow } = Models
+const { User, Image, Post, Follow, sequelize } = Models
 const { v4: uuidv4 } = require('uuid')
 const { signUserJwt } = require('../utils')
 const { uploadImage } = require('../services/UploadService')
 const sharp = require('sharp')
+const { Op } = require('sequelize')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -260,6 +261,82 @@ controller.unfollowProfile = async (req, res, next) => {
       return res.sendStatus(200)
     }
     return res.sendStatus(404)
+  } catch (err) {
+    next(err)
+  }
+}
+
+controller.getFollowers = async (req, res, next) => {
+  const PAGE_SIZE = 25
+  try {
+    const { mention, lastDate } = req.query
+    let userId = req.user?.id
+    if (mention) {
+      const user = await User.findOne({
+        attributes: ['id'],
+        where: {
+          mention,
+        },
+        raw: true,
+      })
+      userId = user.id
+    }
+
+    if (!userId) return res.sendStatus(400)
+
+    // If no mention is provided, assume getting followers for self.
+    const followers = await Follow.findAll({
+      where: {
+        followedUserId: userId,
+        createdAt: {
+          [Op.lt]: lastDate || sequelize.fn('NOW'),
+        },
+      },
+      limit: PAGE_SIZE,
+      order: [['createdAt', 'desc']],
+      include: [{ model: User, include: [Image] }],
+      raw: true,
+      nest: true,
+    })
+    return res.status(200).send(followers)
+  } catch (err) {
+    next(err)
+  }
+}
+
+controller.getFollowing = async (req, res, next) => {
+  const PAGE_SIZE = 25
+  try {
+    const { mention, lastDate } = req.query
+    let userId = req.user?.id
+    if (mention) {
+      const user = await User.findOne({
+        attributes: ['id'],
+        where: {
+          mention,
+        },
+        raw: true,
+      })
+      userId = user.id
+    }
+
+    if (!userId) return res.sendStatus(400)
+
+    // If no mention is provided, assume getting following for self.
+    const followers = await Follow.findAll({
+      where: {
+        followingUserId: userId,
+        createdAt: {
+          [Op.lt]: lastDate || sequelize.fn('NOW'),
+        },
+      },
+      limit: PAGE_SIZE,
+      order: [['createdAt', 'desc']],
+      include: [{ model: User, include: [Image] }],
+      raw: true,
+      nest: true,
+    })
+    return res.status(200).send(followers)
   } catch (err) {
     next(err)
   }

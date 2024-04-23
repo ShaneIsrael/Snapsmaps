@@ -17,6 +17,7 @@ import {
   DropdownItem,
   Divider,
   Image,
+  Skeleton,
 } from '@nextui-org/react'
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
@@ -33,6 +34,7 @@ import {
 } from '@heroicons/react/24/solid'
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
 import SnapMap from '../Map/SnapMap'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSingle }) {
   const [intPost, setIntPost] = React.useState(post)
@@ -198,11 +200,22 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                 </div>
               }
             >
-              <img
+              {/* <LazyLoadImage
+                onClick={() => onOpenModal(postImage)}
+                className="object-cover w-full h-full rounded-2xl cursor-pointer"
                 alt="a post image"
                 src={postImage}
-                className="object-cover w-full h-full rounded-2xl cursor-pointer"
+                width="100%"
+                height="100%"
+                effect="opacity"
+                threshold={600}
+                // useIntersectionObserver
+              /> */}
+              <img
                 onClick={() => onOpenModal(postImage)}
+                className="object-cover w-full h-full rounded-2xl cursor-pointer"
+                alt="a post image"
+                src={postImage}
               />
             </Tab>
             <Tab

@@ -22,6 +22,12 @@ class ProfileService {
   unfollow(mention) {
     return Api().delete('/profile/follow', { params: { mention } })
   }
+  getFollowers(mention, lastDate) {
+    return Api().get('/profile/followers', { params: { mention, lastDate } })
+  }
+  getFollowing(mention, lastDate) {
+    return Api().get('/profile/following', { params: { mention, lastDate } })
+  }
 }
 
 const service = new ProfileService()
