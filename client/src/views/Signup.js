@@ -189,6 +189,7 @@ const Signup = () => {
               </div>
             </CardFooter>
           </Card>
+          <div className="absolute bottom-1 text-xs opacity-40">© 2024 Snapsmaps by Shane Israel</div>
         </div>
       </div>
     </div>
