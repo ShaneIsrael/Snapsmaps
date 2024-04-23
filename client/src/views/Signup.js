@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Link } from '@nextui-org/react'
 import { toast } from 'sonner'
 import { AuthService } from '../services'
+import logo from '../assets/logo/dark/logo_with_wordmark.svg'
 
 const inputStyles = {
   label: 'text-black/50 dark:text-white/90',
@@ -97,13 +98,13 @@ const Signup = () => {
   }
 
   return (
-    <div className="h-screen pt-10 sm:pt-0 bg-gradient-to-tr from-sky-900 to-purple-900">
-      <div className="flex flex-col sm:h-full sm:flex-row items-center justify-center align-middle w-full px-4 sm:px-0 gap-5 sm:gap-0">
-        <div className="flex h-full w-full items-center justify-center sm:justify-end sm:bg-slate-900 sm:pr-8">
-          <h1 className="text-center text-neutral-200 tracking-wider text-7xl font-semibold font-vibes">Snapsmaps</h1>
+    <div className="h-screen pt-10 md:pt-0 bg-gradient-to-tr from-sky-900 to-purple-900">
+      <div className="flex flex-col md:h-full md:flex-row items-center justify-center align-middle w-full px-4 md:px-0 gap-5 md:gap-0">
+        <div className="flex h-full w-full items-center justify-center md:justify-end md:bg-slate-950 md:px-4">
+          <img src={logo} className="max-h-[80px]" />
         </div>
-        <div className="flex h-full w-full items-center justify-center sm:bg-gradient-to-tr sm:from-sky-900 sm:to-purple-900 ">
-          <Card className="w-full sm:w-96 bg-background/50">
+        <div className="flex h-full w-full items-center justify-center md:bg-gradient-to-tr md:from-sky-900 md:to-purple-900  md:px-4 ">
+          <Card className="w-full md:w-96 bg-background/50">
             <CardHeader className="p-4">
               <h2 className="font-bold text-xl">Create an account</h2>
             </CardHeader>

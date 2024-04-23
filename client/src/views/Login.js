@@ -65,11 +65,11 @@ const Login = (props) => {
   return (
     <div className="h-screen pt-10 md:pt-0 bg-gradient-to-tr from-sky-900 to-purple-900">
       <div className="flex flex-col md:h-full md:flex-row items-center justify-center align-middle w-full px-4 md:px-0 gap-5 md:gap-0">
-        <div className="flex h-full w-full items-center justify-center md:justify-end md:bg-slate-950 md:px-8">
+        <div className="flex h-full w-full items-center justify-center md:justify-end md:bg-slate-950 md:px-4">
           {/* <h1 className="text-center text-neutral-200 tracking-wider text-7xl font-semibold font-vibes">Snapsmaps</h1> */}
           <img src={logo} className="max-h-[80px]" />
         </div>
-        <div className="flex h-full w-full items-center justify-center md:bg-gradient-to-tr md:from-sky-900 md:to-purple-900">
+        <div className="flex h-full w-full items-center justify-center md:bg-gradient-to-tr md:from-sky-900 md:to-purple-900 md:px-4">
           <Card className="w-full md:w-96 bg-background/50">
             <CardHeader className="p-4">
               <h2 className="font-bold text-xl">Sign-in</h2>
