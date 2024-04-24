@@ -18,12 +18,13 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthed } from '../../hooks/useAuthed'
 import { useAuth } from '../../hooks/useAuth'
 import { getAssetUrl } from '../../common/utils'
-import { BellIcon, HomeIcon } from '@heroicons/react/24/outline'
+import { BellIcon, EnvelopeIcon, HomeIcon } from '@heroicons/react/24/outline'
 import {
   ArrowLeftEndOnRectangleIcon,
   ArrowRightEndOnRectangleIcon,
   MagnifyingGlassIcon,
-} from '@heroicons/react/24/solid'
+  UserIcon,
+} from '@heroicons/react/24/outline'
 import { toast } from 'sonner'
 import { ReactComponent as Logo } from '../../assets/logo/dark/logo.svg'
 
@@ -132,7 +133,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) 
                   src={user?.image ? getAssetUrl() + user.image : ''}
                 />
               </DropdownTrigger>
-              <DropdownMenu aria-label="Profile Actions" variant="flat">
+              <DropdownMenu aria-label="Profile Actions" variant="faded">
                 <DropdownItem
                   key="signin-info"
                   isReadOnly
@@ -143,12 +144,29 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) 
                   <p className="font-semibold text-primary-500">{user?.email}</p>
                 </DropdownItem>
                 {!hideProfileSelect && (
-                  <DropdownItem key="profile" onClick={() => navigate('/profile')}>
+                  <DropdownItem
+                    key="profile"
+                    onClick={() => navigate('/profile')}
+                    startContent={<UserIcon className="w-5 h-5 text-default-500 pointer-events-none flex-shrink-0" />}
+                  >
                     My Profile
                   </DropdownItem>
                 )}
-                <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-                <DropdownItem key="logout" color="danger" onClick={logout}>
+                <DropdownItem
+                  key="feedback"
+                  href="mailto:shane@snapsmaps.com"
+                  startContent={<EnvelopeIcon className="w-5 h-5 text-default-500 pointer-events-none flex-shrink-0" />}
+                >
+                  Send Feedback
+                </DropdownItem>
+                <DropdownItem
+                  key="logout"
+                  color="danger"
+                  onClick={logout}
+                  startContent={
+                    <ArrowLeftEndOnRectangleIcon className="w-5 h-5 text-default-500 pointer-events-none flex-shrink-0" />
+                  }
+                >
                   Log Out
                 </DropdownItem>
               </DropdownMenu>
