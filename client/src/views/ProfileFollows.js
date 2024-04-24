@@ -28,6 +28,8 @@ import { useAuthed } from '../hooks/useAuthed'
 import { ArrowPathIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../components/Map/SnapMap'
 import Footer from '../components/Layout/Footer'
+import UserCard from '../components/Follows/UserCard'
+import ListEndCard from '../components/Search/ListEndCard'
 
 const PAGE_SIZE = 25
 
@@ -45,20 +47,21 @@ function ProfileFollows() {
   const [followResults, setFollowResults] = React.useState([])
   const [reachedLastPage, setReachedLastPage] = React.useState(false)
 
-  async function fetch() {
+  async function fetch(date) {
     setLoading(true)
     try {
       let results
       if (hash === '#following') {
-        results = (await ProfileService.getFollowing(mention, lastDate)).data
+        results = (await ProfileService.getFollowing(mention, date)).data
       } else {
-        results = (await ProfileService.getFollowers(mention, lastDate)).data
+        results = (await ProfileService.getFollowers(mention, date)).data
       }
+      console.log(results)
       if (results.length < PAGE_SIZE) {
         setReachedLastPage(true)
       }
       setLastDate(results[results.length - 1]?.createdAt)
-      setFollowResults(results)
+      setFollowResults(results || [])
     } catch (err) {
       console.error(err)
     }
@@ -69,11 +72,8 @@ function ProfileFollows() {
     setLastDate(null)
     setLoading(false)
     setReachedLastPage(false)
-    setFollowResults([])
-    fetch()
+    fetch(null)
   }, [hash, mention])
-
-  console.log(followResults)
 
   return (
     <div className="flex justify-center">
@@ -87,10 +87,18 @@ function ProfileFollows() {
             selectedKey={hash}
           >
             <Tab key="#followers" title="Followers" href="#followers" className="w-full px-6">
-              <div className="flex">followers</div>
+              {followResults.map((follow) => (
+                <UserCard key={follow.id} user={follow.follower} />
+              ))}
+              {reachedLastPage && <ListEndCard label="No more results" />}
+              {!reachedLastPage && <ListEndCard label="Load more" onClick={() => fetch(lastDate)} />}
             </Tab>
             <Tab key="#following" title="Following" href="#following" className="w-full px-6">
-              following
+              {followResults.map((follow) => (
+                <UserCard key={follow.id} user={follow.followed} />
+              ))}
+              {reachedLastPage && <ListEndCard label="No more results" />}
+              {!reachedLastPage && <ListEndCard label="Load more" onClick={() => fetch(lastDate)} />}
             </Tab>
           </Tabs>
         </div>

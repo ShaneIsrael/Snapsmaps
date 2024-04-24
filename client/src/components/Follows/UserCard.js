@@ -9,6 +9,7 @@ function UserCard({ user }) {
     navigate(`/user/${user.mention}`)
   }
 
+  if (!user) return false
   return (
     <div className="w-full flex px-4 py-2 gap-3 hover:bg-slate-900 cursor-pointer" onClick={handleClick}>
       <Avatar radius="full" size="lg" src={user.image?.reference ? getAssetUrl() + user.image?.reference : null} />

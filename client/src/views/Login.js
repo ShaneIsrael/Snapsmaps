@@ -69,7 +69,7 @@ const Login = (props) => {
           {/* <h1 className="text-center text-neutral-200 tracking-wider text-7xl font-semibold font-vibes">Snapsmaps</h1> */}
           <img src={logo} className="max-h-[60px] sm:max-h-[80px]" />
         </div>
-        <div className="flex  h-full w-full items-center justify-center md:bg-gradient-to-tr md:from-sky-900 md:to-purple-900 md:px-4">
+        <div className="flex flex-col gap-8  h-full w-full items-center justify-center md:bg-gradient-to-tr md:from-sky-900 md:to-purple-900 md:px-4">
           <Card className="w-full md:w-96 bg-background/50 ">
             <CardHeader className="p-4">
               <h2 className="font-bold text-xl">Sign-in</h2>
@@ -117,15 +117,26 @@ const Login = (props) => {
                 >
                   Sign in
                 </Button>
-                <Button color="secondary" variant="solid" className="w-full" onClick={() => navigate('/')}>
-                  Continue as Guest
-                </Button>
+
                 <Link onClick={() => navigate('/signup')} className="cursor-pointer text-sm">
                   Don't have an account?
                 </Link>
               </div>
             </CardFooter>
           </Card>
+          <div className="flex w-full max-w-[360px] justify-evenly items-center">
+            <div className="h-[1px] border-b-1 border-neutral-100 opacity-25 w-full" />
+            <h2 className="mx-2 opacity-50 font-bold text-lg">OR</h2>
+            <div className="h-[1px] border-b-1 border-neutral-100 opacity-25 w-full" />
+          </div>
+          <Button
+            color="primary"
+            variant="solid"
+            className="w-full max-w-[360px] bg-slate-900 border-medium border-neutral-300 font-semibold"
+            onClick={() => navigate('/')}
+          >
+            Continue as Guest
+          </Button>
           <div className="absolute bottom-1 text-xs opacity-40">© 2024 Snapsmaps by Shane Israel</div>
         </div>
       </div>

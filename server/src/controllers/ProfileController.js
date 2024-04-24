@@ -294,7 +294,7 @@ controller.getFollowers = async (req, res, next) => {
       },
       limit: PAGE_SIZE,
       order: [['createdAt', 'desc']],
-      include: [{ model: User, include: [Image] }],
+      include: [{ model: User, as: 'follower', include: [Image] }],
       raw: true,
       nest: true,
     })
@@ -332,7 +332,7 @@ controller.getFollowing = async (req, res, next) => {
       },
       limit: PAGE_SIZE,
       order: [['createdAt', 'desc']],
-      include: [{ model: User, include: [Image] }],
+      include: [{ model: User, as: 'followed', include: [Image] }],
       raw: true,
       nest: true,
     })

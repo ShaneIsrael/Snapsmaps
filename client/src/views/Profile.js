@@ -26,6 +26,7 @@ import { useAuthed } from '../hooks/useAuthed'
 import { ArrowPathIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../components/Map/SnapMap'
 import Footer from '../components/Layout/Footer'
+import { toast } from 'sonner'
 
 function Profile({ isSelf }) {
   const postModal = useDisclosure()
@@ -113,7 +114,9 @@ function Profile({ isSelf }) {
       await ProfileService.follow(mention)
       fetch()
     } catch (err) {
-      console.error(err)
+      if (err.response?.data) {
+        toast.error(err.response?.data)
+      }
     }
   }
   const handleUnfollow = async () => {
@@ -121,7 +124,9 @@ function Profile({ isSelf }) {
       await ProfileService.unfollow(mention)
       fetch()
     } catch (err) {
-      console.error(err)
+      if (err.response?.data) {
+        toast.error(err.response?.data)
+      }
     }
   }
 
