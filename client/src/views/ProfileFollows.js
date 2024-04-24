@@ -38,7 +38,7 @@ function ProfileFollows() {
   const { hash } = location
   const { mention } = useParams()
 
-  const { isAuthenticated } = useAuthed()
+  const { isAuthenticated, user } = useAuthed()
   const navigate = useNavigate()
   const [profile, setProfile] = React.useState()
   const [tabClickCount, setTabClickCount] = React.useState(1)
@@ -56,7 +56,6 @@ function ProfileFollows() {
       } else {
         results = (await ProfileService.getFollowers(mention, date)).data
       }
-      console.log(results)
       if (results.length < PAGE_SIZE) {
         setReachedLastPage(true)
       }
@@ -72,8 +71,9 @@ function ProfileFollows() {
     setLastDate(null)
     setLoading(false)
     setReachedLastPage(false)
+    setProfile(user)
     fetch(null)
-  }, [hash, mention])
+  }, [hash, mention, user])
 
   return (
     <div className="flex justify-center">
@@ -102,12 +102,7 @@ function ProfileFollows() {
             </Tab>
           </Tabs>
         </div>
-        <Footer
-          handleOnHome={() => navigate('/')}
-          handleOnSubmit={() => navigate('/')}
-          noProfile={!isAuthenticated}
-          hideProfileSelect
-        />
+        <Footer handleOnHome={() => navigate('/')} handleOnSubmit={() => navigate('/')} noProfile={!isAuthenticated} />
       </div>
     </div>
   )

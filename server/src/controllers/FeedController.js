@@ -44,10 +44,10 @@ controller.following = async (req, res, next) => {
       where: {
         followingUserId: id,
       },
-      include: [User],
+      include: [{ model: User, as: 'followed' }],
     })
 
-    const followingIds = following.map((follow) => follow.user.id)
+    const followingIds = following.map((follow) => follow.followed.id)
     followingIds.push(req.user.id)
 
     const posts = await Post.findAll({

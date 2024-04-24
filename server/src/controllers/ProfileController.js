@@ -281,6 +281,7 @@ controller.getFollowers = async (req, res, next) => {
       })
       userId = user.id
     }
+    console.log(req.user)
 
     if (!userId) return res.sendStatus(400)
 

@@ -15,8 +15,8 @@ const { publicCache, privateCache } = require('../middleware/cache')
 
 module.exports = (app) => {
   app.get('/api/profile', authorize, get)
-  app.get('/api/profile/followers', privateCache(30), getFollowers)
-  app.get('/api/profile/following', privateCache(30), getFollowing)
+  app.get('/api/profile/followers', authorize, privateCache(30), getFollowers)
+  app.get('/api/profile/following', authorize, privateCache(30), getFollowing)
   app.get('/api/profile/mention', getByMention)
   app.get('/api/profile/history', authorize, getPostHistory)
   app.get('/api/profile/history/mention', publicCache(30), getMentionPostHistory)
