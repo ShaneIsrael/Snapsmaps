@@ -100,7 +100,10 @@ const Welcome = ({ mode }) => {
         }}
       />
 
-      <div id="scroll-content" className="flex flex-col h-full items-center w-full overflow-y-auto pt-[64px]">
+      <div
+        id="scroll-content"
+        className="flex flex-col h-full items-center w-full overflow-y-auto overflow-x-hidden pt-[64px]"
+      >
         <Tabs key="feed-tabs" size="lg" variant="underlined" aria-label="Feed tabs" onSelectionChange={setSelectedFeed}>
           <Tab
             key="world"
