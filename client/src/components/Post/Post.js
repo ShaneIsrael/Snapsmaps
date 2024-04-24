@@ -32,7 +32,7 @@ import {
   ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid,
   EllipsisVerticalIcon,
 } from '@heroicons/react/24/solid'
-import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
+import { ArrowDownTrayIcon, ChatBubbleLeftRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import SnapMap from '../Map/SnapMap'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 
@@ -161,11 +161,18 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                   key="download"
                   className="text-neutral-100"
                   onClick={() => downloadFile(post?.image?.reference)}
+                  startContent={<ArrowDownTrayIcon className="h-4 w-4" />}
                 >
                   Download image
                 </DropdownItem>
                 {isSelf && (
-                  <DropdownItem key="delete" className="text-danger" color="danger" onClick={handleDelete}>
+                  <DropdownItem
+                    key="delete"
+                    className="text-danger"
+                    color="danger"
+                    onClick={handleDelete}
+                    startContent={<XMarkIcon className="h-4 w-4" />}
+                  >
                     Delete Post
                   </DropdownItem>
                 )}
@@ -227,7 +234,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                 </div>
               }
             >
-              <div className="overflow-hidden rounded-2xl h-[365px]">
+              <div className="overflow-hidden rounded-2xl h-[365px] min-w-[284px]">
                 <SnapMap
                   markers={[{ lat: intPost?.image?.latitude, lng: intPost?.image?.longitude }]}
                   defaultZoom={14}
@@ -253,7 +260,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                 </div>
               }
             >
-              <div className="h-[365px] flex flex-col">
+              <div className="h-[365px] min-w-[284px] flex flex-col">
                 {intPost.postComments.length > 0 && (
                   <div className="h-full overflow-y-auto">
                     <div className="flex flex-col gap-2">
@@ -266,7 +273,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                 {intPost.postComments.length === 0 && (
                   <div className="flex flex-col h-full justify-center align-middle">
                     <h2 className="text-center text-lg font-bold text-blue-600">
-                      {isAuthenticated ? 'Be the first to comment on this post' : 'no comments'}
+                      {isAuthenticated ? 'Be the first to comment' : 'no comments'}
                     </h2>
                   </div>
                 )}
