@@ -21,7 +21,7 @@ const controller = {}
 controller.get = async (req, res, next) => {
   try {
     const userRow = await User.findOne({
-      where: { id: req.user.id },
+      where: { id: req.session.user.id },
       include: [{ model: Image, attributes: ['reference'] }],
       raw: true,
       nest: true,
@@ -98,7 +98,7 @@ controller.update = async (req, res, next) => {
     }
 
     const userRow = await User.findOne({
-      where: { id: req.user.id },
+      where: { id: req.session.user.id },
       include: [Image],
     })
     if (displayName) userRow.displayName = displayName
@@ -122,7 +122,7 @@ controller.update = async (req, res, next) => {
         }
 
         const imageRow = await Image.create({
-          userId: req.user.id,
+          userId: req.session.user.id,
           reference,
         })
 
@@ -169,7 +169,7 @@ controller.update = async (req, res, next) => {
 controller.getPostHistory = async (req, res, next) => {
   try {
     const history = await Post.findAll({
-      where: { userId: req.user.id },
+      where: { userId: req.session.user.id },
       order: [['createdAt', 'desc']],
       attributes: ['id'],
       include: [{ model: Image, attributes: ['reference', 'latitude', 'longitude'] }],
@@ -209,7 +209,7 @@ controller.followProfile = async (req, res, next) => {
   try {
     const { mention } = req.body
     if (!mention) return res.status(400).send('a mention is required')
-    if (mention === req.user.mention) return res.status(400).send('you cant follow yourself')
+    if (mention === req.session.user.mention) return res.status(400).send('you cant follow yourself')
 
     const mentionUser = await User.findOne({
       attributes: ['id'],
@@ -221,9 +221,9 @@ controller.followProfile = async (req, res, next) => {
     }
 
     const [follow, created] = await Follow.findOrCreate({
-      where: { followingUserId: req.user.id, followedUserId: mentionUser.id },
+      where: { followingUserId: req.session.user.id, followedUserId: mentionUser.id },
       defaults: {
-        followingUserId: req.user.id,
+        followingUserId: req.session.user.id,
         followedUserId: mentionUser.id,
       },
     })
@@ -241,7 +241,7 @@ controller.unfollowProfile = async (req, res, next) => {
   try {
     const { mention } = req.query
     if (!mention) return res.status(400).send('a mention is required')
-    if (mention === req.user.mention)
+    if (mention === req.session.user.mention)
       return res.status(400).send('you must first follow yourself before you can unfollow yourself')
 
     const mentionUser = await User.findOne({
@@ -254,7 +254,7 @@ controller.unfollowProfile = async (req, res, next) => {
     }
 
     const follow = await Follow.findOne({
-      where: { followingUserId: req.user.id, followedUserId: mentionUser.id },
+      where: { followingUserId: req.session.user.id, followedUserId: mentionUser.id },
     })
     if (follow) {
       follow.destroy()
@@ -270,7 +270,7 @@ controller.getFollowers = async (req, res, next) => {
   const PAGE_SIZE = 25
   try {
     const { mention, lastDate } = req.query
-    let userId = req.user?.id
+    let userId = req.session.user?.id
     if (mention) {
       const user = await User.findOne({
         attributes: ['id'],
@@ -281,7 +281,7 @@ controller.getFollowers = async (req, res, next) => {
       })
       userId = user.id
     }
-    console.log(req.user)
+    console.log(req.session.user)
 
     if (!userId) return res.sendStatus(400)
 
@@ -309,7 +309,7 @@ controller.getFollowing = async (req, res, next) => {
   const PAGE_SIZE = 25
   try {
     const { mention, lastDate } = req.query
-    let userId = req.user?.id
+    let userId = req.session.user?.id
     if (mention) {
       const user = await User.findOne({
         attributes: ['id'],

@@ -22,6 +22,7 @@
     "exif": "^0.6.0",
     "express": "^4.18.2",
     "express-fileupload": "^1.5.0",
+    "express-session": "^1.18.0",
     "handlebars": "^4.7.8",
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.1",

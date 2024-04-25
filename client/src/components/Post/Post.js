@@ -16,8 +16,6 @@ import {
   DropdownMenu,
   DropdownItem,
   Divider,
-  Image,
-  Skeleton,
 } from '@nextui-org/react'
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
@@ -26,7 +24,6 @@ import { downloadFile, getAssetUrl } from '../../common/utils'
 import { CommentService, LikeService, PostService } from '../../services'
 import { formatDistanceStrict } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
-import { useAuthed } from '../../hooks/useAuthed'
 import {
   HandThumbUpIcon,
   ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid,
@@ -36,7 +33,7 @@ import { ArrowDownTrayIcon, ChatBubbleLeftRightIcon, XMarkIcon } from '@heroicon
 import SnapMap from '../Map/SnapMap'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 
-function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSingle }) {
+function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSingle, user, isAuthenticated }) {
   const [intPost, setIntPost] = React.useState(post)
   const [isFollowed, setIsFollowed] = React.useState(defaultFollowed)
   const [selectedTab, setSelectedTab] = React.useState('photo')
@@ -45,7 +42,6 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
   const [deleted, setDeleted] = React.useState(false)
 
   const navigate = useNavigate()
-  const { user, isAuthenticated } = useAuthed()
 
   const postImage = getAssetUrl() + intPost?.image?.reference
 
@@ -118,7 +114,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
 
   return (
     <>
-      <Card className="w-screen sm:w-full min-h-[560px] max-h-[600px] rounded-none bg-background border-none">
+      <Card className=" sm:w-full min-h-[560px] max-h-[600px] rounded-none bg-background border-none">
         <CardHeader className="justify-between p-0">
           <div className="flex m-4 gap-3 cursor-pointer">
             <Avatar
@@ -265,7 +261,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                   <div className="h-full overflow-y-auto">
                     <div className="flex flex-col gap-2">
                       {intPost.postComments.map((comment) => (
-                        <Comment key={`post-${post.id}-comment-${comment.id}`} comment={comment} />
+                        <Comment key={`post-${post.id}-comment-${comment.id}`} comment={comment} user={user} />
                       ))}
                     </div>
                   </div>

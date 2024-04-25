@@ -13,9 +13,7 @@ import {
   Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
-import PlusIcon from '../../assets/icons/PlusIcon'
 import { useNavigate } from 'react-router-dom'
-import { useAuthed } from '../../hooks/useAuthed'
 import { useAuth } from '../../hooks/useAuth'
 import { getAssetUrl } from '../../common/utils'
 import { BellIcon, EnvelopeIcon, HomeIcon } from '@heroicons/react/24/outline'
@@ -28,13 +26,11 @@ import {
 import { toast } from 'sonner'
 import { ReactComponent as Logo } from '../../assets/logo/dark/logo.svg'
 
-function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) {
+function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, user, isAuthenticated }) {
   const [uploadedImageData, setUploadedImageData] = useState()
   const captureDeviceSelect = useDisclosure()
 
   const navigate = useNavigate()
-
-  const { user, isAuthenticated } = useAuthed()
 
   const { logout } = useAuth()
 
@@ -81,21 +77,6 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) 
           >
             <MagnifyingGlassIcon />
           </Button>
-          {/* <Button
-            isIconOnly
-            size="sm"
-            color="default"
-            variant="light"
-            className="border-medium border-neutral-200 h-8 "
-            aria-label="new post"
-            onClick={(e) => {
-              e.stopPropagation()
-              captureDeviceSelect.onOpen()
-            }}
-          >
-            <PlusIcon />
-          </Button> */}
-
           <Button
             isIconOnly
             size="sm"
@@ -130,7 +111,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect }) 
                   className="transition-transform w-7 h-7"
                   color={user?.image ? 'default' : 'primary'}
                   size="sm"
-                  src={user?.image ? getAssetUrl() + user.image : ''}
+                  src={user?.image ? getAssetUrl() + user.image.reference : ''}
                 />
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="faded">

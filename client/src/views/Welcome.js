@@ -5,18 +5,16 @@ import Appbar from '../components/Layout/Appbar'
 import { Image, Modal, ModalContent, Spinner, Tab, Tabs, useDisclosure } from '@nextui-org/react'
 import Footer from '../components/Layout/Footer'
 import { useAuthed } from '../hooks/useAuthed'
-import { FeedService } from '../services'
 import { UserGroupIcon } from '@heroicons/react/24/solid'
 import { GlobeAmericasIcon } from '@heroicons/react/24/solid'
 import Feed from '../components/feed/Feed'
 import FeedWrapper from '../components/feed/FeedWrapper'
 import { useFeed } from '../hooks/useFeed'
-import { toast } from 'sonner'
 
 const SCROLL_DELTA = 15
 
 const Welcome = ({ mode }) => {
-  const { isAuthenticated } = useAuthed()
+  const { user, isAuthenticated } = useAuthed()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [modalImage, setModalImage] = useState()
   const [lastScrollY, setLastScrollY] = useState(window.scrollY)
@@ -115,7 +113,13 @@ const Welcome = ({ mode }) => {
             }
           >
             <FeedWrapper>
-              <Feed posts={worldFeed.posts} loading={worldFeed.isRefreshing} onOpenPostImage={handleOpenModal} />
+              <Feed
+                posts={worldFeed.posts}
+                loading={worldFeed.isRefreshing}
+                onOpenPostImage={handleOpenModal}
+                user={user}
+                isAuthenticated={isAuthenticated}
+              />
               {worldFeed.isPageLoading && !worldFeed.noMoreResults && <Spinner size="lg" />}
             </FeedWrapper>
           </Tab>
@@ -134,6 +138,8 @@ const Welcome = ({ mode }) => {
                   posts={followingFeed.posts}
                   loading={followingFeed.isRefreshing}
                   onOpenPostImage={handleOpenModal}
+                  user={user}
+                  isAuthenticated={isAuthenticated}
                 />
                 {followingFeed.isPageLoading && !followingFeed.noMoreResults && <Spinner size="lg" />}
               </FeedWrapper>
@@ -141,7 +147,13 @@ const Welcome = ({ mode }) => {
           )}
         </Tabs>
       </div>
-      <Footer handleOnHome={handleHomeClicked} handleOnSubmit={handlePostCreated} noProfile={!isAuthenticated} />
+      <Footer
+        handleOnHome={handleHomeClicked}
+        handleOnSubmit={handlePostCreated}
+        noProfile={!isAuthenticated}
+        user={user}
+        isAuthenticated={isAuthenticated}
+      />
     </div>
   )
 }

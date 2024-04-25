@@ -39,7 +39,7 @@ controller.public = async (req, res, next) => {
 controller.following = async (req, res, next) => {
   try {
     const { lastDate } = req.query
-    const { id } = req.user
+    const { id } = req.session.user
     const following = await Follow.findAll({
       where: {
         followingUserId: id,
@@ -48,7 +48,7 @@ controller.following = async (req, res, next) => {
     })
 
     const followingIds = following.map((follow) => follow.followed.id)
-    followingIds.push(req.user.id)
+    followingIds.push(req.session.user.id)
 
     const posts = await Post.findAll({
       where: {

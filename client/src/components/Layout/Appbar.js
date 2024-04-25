@@ -28,8 +28,6 @@ import wordmark from '../../assets/logo/dark/wordmark_no_slogan.svg'
 
 export default function Appbar({ backButton, pageName, allowPost, hidden, styles }) {
   const navigate = useNavigate()
-  const { user, isAuthenticated } = useAuthed()
-  const { logout } = useAuth()
 
   return (
     <Navbar isBordered className={clsx('fixed', { hidden })} style={{ ...styles }}>

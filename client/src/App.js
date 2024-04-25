@@ -13,11 +13,11 @@ import ProfileFollows from './views/ProfileFollows'
 
 const router = createBrowserRouter([{ path: '*', Component: Root }])
 
-function RequireAuth({ children, redirectTo }) {
-  const { loading, isAuthenticated } = useAuthed()
-  if (loading) return <div />
-  return isAuthenticated ? children : <Navigate to={redirectTo} />
-}
+// function RequireAuth({ children, redirectTo }) {
+//   const { loading, isAuthenticated } = useAuthed()
+//   if (loading) return <div />
+//   return isAuthenticated ? children : <Navigate to={redirectTo} />
+// }
 
 function Root() {
   const [appearance, setAppearance] = useState('dark')
@@ -31,14 +31,7 @@ function Root() {
       <Route path="/" element={<Welcome modeToggle={toggle} />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route
-        path="/profile"
-        element={
-          <RequireAuth redirectTo={'/login'}>
-            <Profile isSelf />
-          </RequireAuth>
-        }
-      />
+      <Route path="/profile" element={<Profile isSelf />} />
       <Route path="/profile/follows" element={<ProfileFollows />} />
       <Route path="/search" element={<UserSearch />} />
       <Route path="/user/:mention/" element={<Profile />} />

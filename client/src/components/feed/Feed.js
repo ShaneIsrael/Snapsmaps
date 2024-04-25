@@ -1,11 +1,8 @@
 import React from 'react'
 import Post from '../Post/Post'
-import { useAuthed } from '../../hooks/useAuthed'
 import { Spinner } from '@nextui-org/react'
 
-function Feed({ loading, posts, onOpenPostImage }) {
-  const { user, isAuthenticated } = useAuthed()
-
+function Feed({ loading, posts, onOpenPostImage, user, isAuthenticated }) {
   if (loading)
     return (
       <div className="flex w-full justify-center">
@@ -18,6 +15,8 @@ function Feed({ loading, posts, onOpenPostImage }) {
       isSelf={user?.mention === post.user.mention}
       post={post}
       onOpenModal={onOpenPostImage}
+      user={user}
+      isAuthenticated={isAuthenticated}
     />
   ))
 }

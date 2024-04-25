@@ -3,23 +3,21 @@ import {
   Avatar,
   CardBody,
   Card,
-  CardHeader,
   Dropdown,
   DropdownTrigger,
   Button,
   DropdownMenu,
   DropdownItem,
 } from '@nextui-org/react'
-import { getAssetUrl, getSessionUser } from '../../common/utils'
+import { getAssetUrl } from '../../common/utils'
 import clsx from 'clsx'
 import { formatDistanceStrict, subDays } from 'date-fns'
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
 import { CommentService } from '../../services'
 import { useNavigate } from 'react-router-dom'
 
-function Comment({ comment }) {
+function Comment({ comment, user }) {
   const profileImage = comment?.user.image
-  const currentUser = getSessionUser()
   const [deleted, setDeleted] = React.useState(false)
   const navigate = useNavigate()
 
@@ -52,8 +50,8 @@ function Comment({ comment }) {
             <div className="flex flex-row items-start gap-1">
               <p
                 className={clsx('text-xs font-semibold leading-none cursor-pointer', {
-                  'text-blue-400': currentUser?.mention === comment.user.mention,
-                  'text-neutral-200': currentUser?.mention !== comment.user.mention,
+                  'text-blue-400': user?.mention === comment.user.mention,
+                  'text-neutral-200': user?.mention !== comment.user.mention,
                 })}
                 onClick={() => navigate(`/user/${comment.user.mention}`)}
               >
@@ -65,10 +63,10 @@ function Comment({ comment }) {
             <p className="text-tiny text-default-600 ">{comment.body}</p>
           </div>
         </div>
-        {currentUser?.mention === comment.user.mention && (
+        {user?.mention === comment.user.mention && (
           <Dropdown className="dark min-w-0 p-[1px] w-fit">
             <DropdownTrigger>
-              <Button variant="light" size="sm" className="mr-1 mt-1 w-4 h-6 absolute top-0 right-0 min-w-0" isIconOnly>
+              <Button variant="light" size="sm" className="mr-1 mt-1 w-4 h-6 absolute top-0 right-1 min-w-0" isIconOnly>
                 <EllipsisVerticalIcon />
               </Button>
             </DropdownTrigger>

@@ -59,7 +59,7 @@ controller.create = async (req, res, next) => {
 
     const imageRow = await Image.create(
       {
-        userId: req.user.id,
+        userId: req.session.user.id,
         reference,
         latitude,
         longitude,
@@ -69,7 +69,7 @@ controller.create = async (req, res, next) => {
     const postRow = await Post.create(
       {
         title,
-        userId: req.user.id,
+        userId: req.session.user.id,
         imageId: imageRow.id,
       },
       { transaction: t },
@@ -104,7 +104,7 @@ controller.deletePost = async (req, res, next) => {
 
     const post = await Post.findOne({ where: { id }, attributes: ['id', 'userId'] })
 
-    if (post.userId !== req.user.id) {
+    if (post.userId !== req.session.user.id) {
       return res.status(400).send('only the owner of a post can delete a post')
     }
 

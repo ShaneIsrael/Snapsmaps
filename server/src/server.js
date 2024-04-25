@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session')
 const fileUpload = require('express-fileupload')
 const https = require('https')
 const fs = require('fs')
@@ -42,6 +43,17 @@ app.use(helmet())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cookieParser())
+app.use(
+  session({
+    secret: process.env.SECRET_KEY,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      sameSite: 'Strict',
+      secure: true,
+    },
+  }),
+)
 
 // CORS middleware
 app.use(

@@ -2,22 +2,14 @@ const bcrypt = require('bcryptjs')
 const { v4: uuidv4 } = require('uuid')
 const Models = require('../database/models')
 const { User, Image } = Models
-const { isValidEmail, signUserJwt } = require('../utils')
+const { isValidEmail } = require('../utils')
 const { Op } = require('sequelize')
 const logger = require('../utils/logger')
-const { isAuthenticated } = require('../middleware/authorize')
 const { sendVerificationEmail } = require('../services/EmailService')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
 const controller = {}
-
-const COOKIE_PARAMS = {
-  maxAge: 24 * 60 * 60 * 1000,
-  httpOnly: true,
-  sameSite: 'Strict',
-  secure: true,
-}
 
 controller.register = async (req, res, next) => {
   try {
@@ -114,19 +106,7 @@ controller.login = async (req, res, next) => {
       }
 
       if (await bcrypt.compare(password, user.password)) {
-        const accessToken = signUserJwt(
-          user.id,
-          user.email,
-          user.displayName,
-          user.mention,
-          user.bio,
-          user.image?.reference,
-          user.followersCount,
-          user.followingCount,
-        )
-
-        res.cookie('session', accessToken, COOKIE_PARAMS)
-
+        req.session.user = user
         logger.info(`logging in user with email: ${user.email}`)
         return res
           .cookie(
@@ -180,16 +160,26 @@ controller.verifyEmail = async (req, res, next) => {
 
 controller.hasSession = async (req, res, next) => {
   try {
-    const hasSession = isAuthenticated(req.cookies.session)
-    return res.status(200).send(hasSession)
+    if (!req.session.user) return res.status(200).send(false)
+    else {
+      res.status(200).send({
+        email: req.session.user.email,
+        mention: req.session.user.mention,
+        displayName: req.session.user.displayName,
+        bio: req.session.user.bio,
+        image: req.session.user.image,
+        followersCount: req.session.user.followersCount,
+        followingCount: req.session.user.followingCount,
+      })
+    }
   } catch (err) {
     next(err)
   }
 }
 
 controller.logout = async (req, res, next) => {
+  req.session.destroy(() => logger.info(`User ${req.session?.user?.mention} has logged out.`))
   res.clearCookie('user')
-  res.clearCookie('session')
   return res.status(200).json({ message: 'Successfully logged out!' })
 }
 

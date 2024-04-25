@@ -10,7 +10,7 @@ controller.create = async (req, res, next) => {
     if (!postId) return res.status(400).send('a post id is required')
 
     const comment = await PostComment.create({
-      userId: req.user.id,
+      userId: req.session.user.id,
       postId,
       body,
     })
@@ -28,7 +28,7 @@ controller.deleteComment = async (req, res, next) => {
 
     const comment = await PostComment.findOne({ where: { id }, attributes: ['id', 'userId', 'postId'] })
 
-    if (comment.userId !== req.user.id) {
+    if (comment.userId !== req.session.user.id) {
       return res.status(400).send('only the owner can delete a comment')
     }
 

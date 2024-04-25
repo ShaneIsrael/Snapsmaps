@@ -10,9 +10,9 @@ const useAuthed = () => {
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const session = getSessionUser()
+        const session = (await AuthService.hasSession()).data
         setIsAuthenticated(!!session)
-        setUser(session)
+        setUser(session ? session : null)
       } catch (err) {
         console.error(err)
       }

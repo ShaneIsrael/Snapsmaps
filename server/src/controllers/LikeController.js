@@ -10,7 +10,7 @@ controller.likedPost = async (req, res, next) => {
     if (!id) return res.status(400).send('id of post is required')
 
     const liked = await PostLike.findOne({
-      where: { userId: req.user.id, postId: id },
+      where: { userId: req.session.user.id, postId: id },
     })
 
     res.status(200).send(!!liked)
@@ -25,9 +25,9 @@ controller.likePost = async (req, res, next) => {
     if (!id) return res.status(400).send('id of post is required')
 
     const [postLike, created] = await PostLike.findOrCreate({
-      where: { userId: req.user.id, postId: id },
+      where: { userId: req.session.user.id, postId: id },
       defaults: {
-        userId: req.user.id,
+        userId: req.session.user.id,
         postId: id,
       },
     })

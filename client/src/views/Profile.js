@@ -44,7 +44,7 @@ function Profile({ isSelf }) {
 
   const { mention } = useParams()
 
-  const { isAuthenticated } = useAuthed()
+  const { isAuthenticated, user } = useAuthed()
   const navigate = useNavigate()
 
   const [profile, setProfile] = React.useState()
@@ -183,7 +183,16 @@ function Profile({ isSelf }) {
         hideCloseButton
       >
         <ModalContent className="sm:max-w-[375px] ">
-          {(onClose) => <Post isSelf={isSelf} post={post} onOpenModal={handleOpenImageModal} isSingle />}
+          {(onClose) => (
+            <Post
+              isSelf={isSelf}
+              post={post}
+              onOpenModal={handleOpenImageModal}
+              isSingle
+              user={user}
+              isAuthenticated={isAuthenticated}
+            />
+          )}
         </ModalContent>
       </Modal>
       <div className="flex flex-col w-full sm:max-w-[1024px] h-screen">
@@ -348,7 +357,9 @@ function Profile({ isSelf }) {
           handleOnHome={() => navigate('/')}
           handleOnSubmit={() => navigate('/')}
           noProfile={!isAuthenticated}
-          hideProfileSelect
+          hideProfileSelect={!mention || mention === user?.mention}
+          user={user}
+          isAuthenticated={isAuthenticated}
         />
       </div>
     </div>
