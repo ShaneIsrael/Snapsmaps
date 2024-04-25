@@ -13,6 +13,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Skeleton,
 } from '@nextui-org/react'
 import React from 'react'
 import Appbar from '../components/Layout/Appbar'
@@ -27,6 +28,7 @@ import { ArrowPathIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../components/Map/SnapMap'
 import Footer from '../components/Layout/Footer'
 import { toast } from 'sonner'
+import ProfilePageSkeleton from '../components/Skeletons/ProfilePageSkeleton'
 
 function Profile({ isSelf }) {
   const postModal = useDisclosure()
@@ -38,6 +40,7 @@ function Profile({ isSelf }) {
   const [modalImage, setModalImage] = React.useState()
   const [editMode, setEditMode] = React.useState(false)
   const [saving, setSaving] = React.useState(false)
+  const [firstLoad, setFirstLoad] = React.useState(true)
 
   const { mention } = useParams()
 
@@ -95,6 +98,7 @@ function Profile({ isSelf }) {
     } catch (err) {
       console.error(err)
     }
+    setFirstLoad(false)
   }
 
   const handleUpdateProfile = async () => {
@@ -134,6 +138,24 @@ function Profile({ isSelf }) {
     fetch()
   }, [mention])
 
+  if (firstLoad) {
+    return (
+      <ProfilePageSkeleton
+        appbar={
+          <Appbar noProfile backButton={() => navigate('/')} pageName={<Skeleton className="rounded-md w-28 h-6" />} />
+        }
+        footer={
+          <Footer
+            handleOnHome={() => navigate('/')}
+            handleOnSubmit={() => navigate('/')}
+            noProfile={!isAuthenticated}
+            hideProfileSelect
+          />
+        }
+      />
+    )
+  }
+
   return (
     <div className="flex justify-center">
       <Modal
@@ -166,7 +188,7 @@ function Profile({ isSelf }) {
       </Modal>
       <div className="flex flex-col w-full sm:max-w-[1024px] h-screen">
         <Appbar noProfile backButton={() => navigate('/')} pageName={profile?.mention} />
-        <div className="flex-grow  mx-0 pb-[50px] pt-20 overflow-y-auto">
+        <div className="flex-grow mx-0 pb-[50px] pt-20 overflow-y-auto">
           <div className="flex px-4 gap-5 max-w-[500px] justify-start items-start">
             <div className="flex flex-col gap-4">
               {editMode ? (
