@@ -1,5 +1,6 @@
 const express = require('express')
 const session = require('express-session')
+const SequelizeStore = require('connect-session-sequelize')(session.Store)
 const fileUpload = require('express-fileupload')
 const https = require('https')
 const fs = require('fs')
@@ -9,6 +10,7 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const helmet = require('helmet')
 const morgan = require('morgan')
+
 require('dotenv').config()
 
 const app = express()
@@ -43,16 +45,25 @@ app.use(helmet())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cookieParser())
+
+const sessionStore = new SequelizeStore({
+  db: db.sequelize,
+})
 app.use(
   session({
     secret: process.env.SECRET_KEY,
+    store: sessionStore,
+    resave: false,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true,
       sameSite: true,
       secure: true,
     },
   }),
 )
+// Create the session store databse table, eventually move this to Redis
+sessionStore.sync()
 
 // CORS middleware
 app.use(
