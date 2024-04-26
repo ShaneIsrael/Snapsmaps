@@ -1,4 +1,5 @@
 const authorize = (req, res, next) => {
+  console.log(req.session)
   if (!req.session.user) {
     res.clearCookie('user')
     return res.sendStatus(403)
