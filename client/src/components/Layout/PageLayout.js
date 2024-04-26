@@ -1,14 +1,50 @@
-import { Layout } from 'antd'
-import { Content, Footer, Header } from 'antd/es/layout/layout'
 import React from 'react'
+import { useAuthed } from '../../hooks/useAuthed'
+import Appbar from './Appbar'
+import Footer from './Footer'
+import { useNavigate } from 'react-router-dom'
+import clsx from 'clsx'
 
-function PageLayout({ header, footer, children }) {
+function PageLayout({
+  showNav = true,
+  fullwidth = false,
+  backButton,
+  pageName,
+  noProfile,
+  hideProfileSelect,
+  onHome,
+  onSubmit,
+  AppbarProps,
+  FooterProps,
+  children,
+}) {
+  const { user, isAuthenticated } = useAuthed()
+  const navigate = useNavigate()
+
   return (
-    <Layout style={{ height: '100%' }}>
-      {header && <Header style={{ height: 64 }}>{header}</Header>}
-      <Content>{children}</Content>
-      {footer && <Footer>{footer}</Footer>}
-    </Layout>
+    <div className="flex justify-center">
+      <div className={clsx('flex flex-col  w-full  h-screen', { 'sm:max-w-[1024px]': !fullwidth })}>
+        <Appbar
+          noProfile={!isAuthenticated || noProfile}
+          styles={{
+            animation: `${showNav ? 'navbarShow' : 'navbarHide'} 0.2s ease forwards`,
+          }}
+          pageName={pageName}
+          backButton={backButton}
+          {...AppbarProps}
+        />
+        {children({ user, isAuthenticated })}
+        <Footer
+          handleOnHome={onHome || (() => navigate('/'))}
+          handleOnSubmit={onSubmit || (() => navigate('/'))}
+          noProfile={!isAuthenticated}
+          user={user}
+          isAuthenticated={isAuthenticated}
+          hideProfileSelect={hideProfileSelect}
+          {...FooterProps}
+        />
+      </div>
+    </div>
   )
 }
 

@@ -29,13 +29,13 @@ const inputStyles = {
   ],
 }
 
-const Login = (props) => {
+const Login = () => {
   const navigate = useNavigate()
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const { isAuthenticated } = useAuthed()
   const { login } = useAuth()
   const [error, setError] = React.useState()
-  const { isAuthenticated } = useAuthed()
 
   useEffect(() => {
     if (isAuthenticated) {

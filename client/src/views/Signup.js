@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Link } from '@nextui-org/react'
 import { toast } from 'sonner'
 import { AuthService } from '../services'
 import logo from '../assets/logo/dark/logo_with_wordmark.svg'
+import { useAuthed } from '../hooks/useAuthed'
 
 const inputStyles = {
   label: 'text-black/50 dark:text-white/90',
@@ -35,6 +36,8 @@ const Signup = () => {
   const [password, setPassword] = React.useState('')
   const [password2, setPassword2] = React.useState('')
   const [error, setError] = React.useState({ field: null, message: null })
+
+  const { isAuthenticated } = useAuthed()
 
   const validateEmail = (value) => value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)
 
@@ -96,6 +99,12 @@ const Signup = () => {
       }
     }
   }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/')
+    }
+  }, [isAuthenticated])
 
   return (
     <div className="h-screen pt-5 md:pt-0 bg-gradient-to-tr from-sky-900 to-purple-900">

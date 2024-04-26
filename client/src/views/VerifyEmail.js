@@ -29,7 +29,6 @@ const VerifyEmail = (props) => {
 
   return (
     <div className="flex flex-col w-screen h-screen items-center gap-4 bg-gradient-to-tr from-sky-900 to-purple-900 pt-10">
-      {/* <h1 className="text-center text-neutral-200 tracking-wider text-7xl font-semibold font-vibes">Snapsmaps</h1> */}
       <img src={logo} className="max-h-[70px]" />
       {!verifiedMessage && (
         <>

@@ -98,6 +98,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
       console.error(err)
     }
   }
+
   const handleCommentKeydown = (e) => {
     if (e.key === 'Enter') {
       if (comment) {

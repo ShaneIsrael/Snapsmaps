@@ -1,35 +1,11 @@
-import {
-  Button,
-  Image,
-  Avatar,
-  Divider,
-  useDisclosure,
-  Modal,
-  ModalContent,
-  Input,
-  Textarea,
-  Spinner,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Tabs,
-  Tab,
-} from '@nextui-org/react'
+import { Tabs, Tab } from '@nextui-org/react'
 import React, { useEffect } from 'react'
-import Appbar from '../components/Layout/Appbar'
-import Post from '../components/Post/Post'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { getAssetUrl, getSessionUser } from '../common/utils'
-import { PostService, ProfileService } from '../services'
-import ImageCropProvider from '../providers/ImageCropProvider'
-import ImageCrop from '../components/Cropper/ImageCrop'
-import { useAuthed } from '../hooks/useAuthed'
-import { ArrowPathIcon } from '@heroicons/react/24/solid'
-import SnapMap from '../components/Map/SnapMap'
-import Footer from '../components/Layout/Footer'
-import UserCard from '../components/Follows/UserCard'
+import { getSessionUser } from '../common/utils'
+import { ProfileService } from '../services'
 import ListEndCard from '../components/Search/ListEndCard'
+import PageLayout from '../components/Layout/PageLayout'
+import UserCard from '../components/Follows/UserCard'
 
 const PAGE_SIZE = 25
 
@@ -38,10 +14,7 @@ function ProfileFollows() {
   const { hash } = location
   const { mention } = useParams()
 
-  const { isAuthenticated, user } = useAuthed()
   const navigate = useNavigate()
-  const [profile, setProfile] = React.useState()
-  const [tabClickCount, setTabClickCount] = React.useState(1)
   const [lastDate, setLastDate] = React.useState()
   const [loading, setLoading] = React.useState(false)
   const [followResults, setFollowResults] = React.useState([])
@@ -56,6 +29,7 @@ function ProfileFollows() {
       } else {
         results = (await ProfileService.getFollowers(mention, date)).data
       }
+      console.log(results)
       if (results.length < PAGE_SIZE) {
         setReachedLastPage(true)
       }
@@ -71,21 +45,20 @@ function ProfileFollows() {
     setLastDate(null)
     setLoading(false)
     setReachedLastPage(false)
-    setProfile(user)
     fetch(null)
-  }, [hash, mention, user])
+  }, [hash, mention])
+
+  const profile = getSessionUser()
 
   return (
-    <div className="flex justify-center">
-      <div className="flex flex-col w-full sm:max-w-[1024px] h-screen">
-        <Appbar noProfile backButton={() => navigate(-tabClickCount)} pageName={mention || profile?.mention} />
+    <PageLayout
+      noProfile
+      backButton={() => navigate(mention ? `/user/${mention}` : '/profile')}
+      pageName={mention || profile?.mention}
+    >
+      {({ user, isAuthenticated }) => (
         <div className="flex flex-col flex-grow items-center mx-0 mt-2 pt-16 overflow-y-auto">
-          <Tabs
-            aria-label="follows tabs"
-            variant="underlined"
-            onSelectionChange={() => setTabClickCount((prev) => prev + 1)}
-            selectedKey={hash}
-          >
+          <Tabs aria-label="follows tabs" variant="underlined" selectedKey={hash}>
             <Tab key="#followers" title="Followers" href="#followers" className="w-full px-6">
               {followResults.map((follow) => (
                 <UserCard key={follow.id} user={follow.follower} />
@@ -102,9 +75,8 @@ function ProfileFollows() {
             </Tab>
           </Tabs>
         </div>
-        <Footer handleOnHome={() => navigate('/')} handleOnSubmit={() => navigate('/')} noProfile={!isAuthenticated} />
-      </div>
-    </div>
+      )}
+    </PageLayout>
   )
 }
 

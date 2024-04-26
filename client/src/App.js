@@ -3,8 +3,7 @@ import { createBrowserRouter, RouterProvider, Navigate, Route, Routes } from 're
 
 import Login from './views/Login'
 
-import { useAuthed } from './hooks/useAuthed'
-import Welcome from './views/Welcome'
+import Dashboard from './views/Dashboard'
 import Signup from './views/Signup'
 import Profile from './views/Profile'
 import VerifyEmail from './views/VerifyEmail'
@@ -12,12 +11,6 @@ import UserSearch from './views/UserSearch'
 import ProfileFollows from './views/ProfileFollows'
 
 const router = createBrowserRouter([{ path: '*', Component: Root }])
-
-// function RequireAuth({ children, redirectTo }) {
-//   const { loading, isAuthenticated } = useAuthed()
-//   if (loading) return <div />
-//   return isAuthenticated ? children : <Navigate to={redirectTo} />
-// }
 
 function Root() {
   const [appearance, setAppearance] = useState('dark')
@@ -28,7 +21,7 @@ function Root() {
 
   return (
     <Routes>
-      <Route path="/" element={<Welcome modeToggle={toggle} />} />
+      <Route path="/" element={<Dashboard />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/profile" element={<Profile isSelf />} />
