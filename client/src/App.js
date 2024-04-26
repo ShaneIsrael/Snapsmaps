@@ -29,7 +29,6 @@ function Root() {
       <Route path="/search" element={<UserSearch />} />
       <Route path="/user/:mention/" element={<Profile />} />
       <Route path="/user/:mention/follows" element={<ProfileFollows />} />
-
       <Route path="/verify/:email/:token" element={<VerifyEmail />} />
       <Route path="*" element={<div>not found</div>} />
     </Routes>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { FeedService } from '../services'
-import { useAuthed } from './useAuthed'
+import { getSessionUser } from '../common/utils'
 
 // make sure you update PAGE_SIZE on the backend as well.
 const PAGE_SIZE = 5
@@ -23,14 +23,14 @@ const useFeed = (type) => {
   const [hasReachedLastPage, setHasReachedLastPage] = useState(false)
   const [dataLoading, setDataLoading] = useState(true)
   const [pageLoading, setPageLoading] = useState(false)
-  const { loading, isAuthenticated } = useAuthed()
+  const hasSession = !!getSessionUser()
 
   const refresh = async () => {
     setDataLoading(true)
     setLastDate(null)
     try {
       // dont attempt to fetch following posts when your not logged in.
-      if (!isAuthenticated && type === 'following') {
+      if (!hasSession && type === 'following') {
         return
       } else {
         const feed =
@@ -49,7 +49,7 @@ const useFeed = (type) => {
       if (pageLoading) return
 
       // dont attempt to fetch following posts when your not logged in.
-      if (!isAuthenticated && type === 'following') {
+      if (!hasSession && type === 'following') {
         return
       } else {
         if (!hasReachedLastPage) {
@@ -74,7 +74,7 @@ const useFeed = (type) => {
 
   useEffect(() => {
     refresh()
-  }, [loading])
+  }, [])
 
   return {
     isRefreshing: dataLoading,

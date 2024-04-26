@@ -18,11 +18,10 @@ import React from 'react'
 import Appbar from '../components/Layout/Appbar'
 import Post from '../components/Post/Post'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getAssetUrl } from '../common/utils'
+import { getAssetUrl, getSessionUser } from '../common/utils'
 import { PostService, ProfileService } from '../services'
 import ImageCropProvider from '../providers/ImageCropProvider'
 import ImageCrop from '../components/Cropper/ImageCrop'
-import { useAuthed } from '../hooks/useAuthed'
 import { ArrowPathIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../components/Map/SnapMap'
 import Footer from '../components/Layout/Footer'
@@ -44,7 +43,6 @@ function Profile({ isSelf }) {
 
   const { mention } = useParams()
 
-  const { isAuthenticated, user } = useAuthed()
   const navigate = useNavigate()
 
   const [profile, setProfile] = React.useState()
@@ -138,6 +136,8 @@ function Profile({ isSelf }) {
     fetch()
   }, [mention])
 
+  const sessionUser = getSessionUser()
+
   if (firstLoad) {
     return (
       <ProfilePageSkeleton
@@ -148,7 +148,7 @@ function Profile({ isSelf }) {
           <Footer
             handleOnHome={() => navigate('/')}
             handleOnSubmit={() => navigate('/')}
-            noProfile={!isAuthenticated}
+            noProfile={!sessionUser}
             hideProfileSelect
           />
         }
@@ -161,7 +161,7 @@ function Profile({ isSelf }) {
       noProfile
       backButton={() => navigate('/')}
       pageName={profile?.mention}
-      hideProfileSelect={!mention || mention === user?.mention}
+      hideProfileSelect={!mention || mention === sessionUser?.mention}
     >
       {({ user, isAuthenticated }) => (
         <>
