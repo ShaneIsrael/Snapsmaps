@@ -18,8 +18,8 @@
       "type": "image/png"
     }
   ],
-  "start_url": "https://snapsmaps.com",
-  "display": "standalone",
+  "start_url": "https://snapsmaps.com/login",
+  "display": "fullscreen",
   "theme_color": "#000000",
   "background_color": "#ffffff",
   "dir": "auto",
