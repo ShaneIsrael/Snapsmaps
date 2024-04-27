@@ -19,7 +19,7 @@
     }
   ],
   "start_url": "https://snapsmaps.com/login",
-  "display": "fullscreen",
+  "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
   "dir": "auto",
