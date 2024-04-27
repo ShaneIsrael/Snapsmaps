@@ -12,6 +12,7 @@ controller.search = async (req, res, next) => {
     const users = await User.findAll({
       attributes: ['displayName', 'mention', 'bio'],
       where: {
+        verified: true,
         [Op.or]: {
           displayName: {
             [Op.iLike]: `%${query}%`,
