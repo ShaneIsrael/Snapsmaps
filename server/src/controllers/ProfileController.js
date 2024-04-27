@@ -2,7 +2,6 @@ const path = require('path')
 const Models = require('../database/models')
 const { User, Image, Post, Follow, sequelize } = Models
 const { v4: uuidv4 } = require('uuid')
-const { signUserJwt } = require('../utils')
 const { uploadImage } = require('../services/UploadService')
 const sharp = require('sharp')
 const { Op } = require('sequelize')
@@ -133,17 +132,8 @@ controller.update = async (req, res, next) => {
     await userRow.save()
     await userRow.reload()
 
-    const accessToken = signUserJwt(
-      userRow.id,
-      userRow.email,
-      userRow.displayName,
-      userRow.mention,
-      userRow.bio,
-      userRow.image?.reference,
-      userRow.followersCount,
-      userRow.followingCount,
-    )
-    res.cookie('session', accessToken, COOKIE_PARAMS)
+    req.session.user = userRow
+
     res.cookie(
       'user',
       JSON.stringify({
@@ -151,7 +141,7 @@ controller.update = async (req, res, next) => {
         mention: userRow.mention,
         displayName: userRow.displayName,
         bio: userRow.bio,
-        image: userRow.image?.reference,
+        image: userRow.image,
         followersCount: userRow.followersCount,
         followingCount: userRow.followingCount,
       }),
