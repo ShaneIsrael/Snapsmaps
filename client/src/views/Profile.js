@@ -29,7 +29,7 @@ import { toast } from 'sonner'
 import ProfilePageSkeleton from '../components/Skeletons/ProfilePageSkeleton'
 import PageLayout from '../components/Layout/PageLayout'
 
-function Profile({ isSelf }) {
+function Profile({ isSelf, isMention }) {
   const postModal = useDisclosure()
   const imageModal = useDisclosure()
 
@@ -137,6 +137,10 @@ function Profile({ isSelf }) {
   }, [mention])
 
   const sessionUser = getSessionUser()
+
+  if (isMention && sessionUser.mention === mention) {
+    navigate('/profile')
+  }
 
   if (firstLoad) {
     return (
