@@ -33,7 +33,7 @@ const Login = () => {
   const navigate = useNavigate()
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const { isAuthenticated } = useAuthed()
+  const { loading, isAuthenticated } = useAuthed()
   const { login } = useAuth()
   const [error, setError] = React.useState()
 
@@ -61,6 +61,8 @@ const Login = () => {
       }
     }
   }
+
+  if (loading) return <div />
 
   return (
     <div className="h-screen pt-5 md:pt-0 bg-gradient-to-tr from-sky-900 to-purple-900">
