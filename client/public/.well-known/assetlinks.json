@@ -1,8 +1,12 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "com.snapsmaps.twa",
-        "sha256_cert_fingerprints": ["E0:7D:0A:24:28:B2:69:EF:B9:54:1E:E2:AE:63:2A:69:A0:63:04:0D:D2:1E:5E:8C:E1:B0:A7:2A:F0:38:9A:7F"]
-      }
-    }]
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.snapsmaps.twa",
+      "sha256_cert_fingerprints": [
+        "CF:2A:E3:C3:89:09:70:EC:18:AD:48:B7:84:C3:FD:C6:70:2D:2C:63:54:27:E1:ED:53:1D:DC:29:20:98:C4:08"
+      ]
+    }
+  }
+]
