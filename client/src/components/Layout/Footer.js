@@ -3,6 +3,7 @@ import UploadImage from '../Post/UploadImage'
 import CreatePost from '../Post/CreatePost'
 import {
   Avatar,
+  Badge,
   Button,
   Dropdown,
   DropdownItem,
@@ -25,9 +26,12 @@ import {
 } from '@heroicons/react/24/outline'
 import { toast } from 'sonner'
 import { ReactComponent as Logo } from '../../assets/logo/dark/logo.svg'
+import { useNotifications } from '../../hooks/useNotifications'
+import NotificationMenu from '../Notification/NotificationMenu'
 
 function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, user, isAuthenticated }) {
   const [uploadedImageData, setUploadedImageData] = useState()
+  const notifications = useNotifications()
   const captureDeviceSelect = useDisclosure()
 
   const navigate = useNavigate()
@@ -91,17 +95,23 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
           >
             <Logo />
           </Button>
-          <Button
-            isIconOnly
+          <Badge
+            content={notifications.unreadCount}
+            isInvisible={notifications.unreadCount === 0}
             size="sm"
-            variant="light"
-            className="cursor-pointer"
-            onClick={() => {
-              toast.info('Notification system not yet implemented.')
-            }}
+            color="danger"
           >
-            <BellIcon />
-          </Button>
+            <NotificationMenu
+              trigger={
+                <Button isIconOnly size="sm" variant="light" className="cursor-pointer">
+                  <BellIcon />
+                </Button>
+              }
+              onMenuClosed={() => notifications.read()}
+              notifications={notifications.notifications}
+            />
+          </Badge>
+
           {!noProfile ? (
             <Dropdown backdrop="blur" placement="bottom-end" className="dark bg-neutral-900 text-foreground">
               <DropdownTrigger>

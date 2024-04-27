@@ -1,6 +1,6 @@
 const { Op } = require('sequelize')
 const Models = require('../database/models')
-const { User, Image } = Models
+const { User, Image, Notification, Post, PostComment, Follow } = Models
 
 const controller = {}
 
@@ -28,6 +28,53 @@ controller.search = async (req, res, next) => {
       offset: page * PAGE_SIZE,
     })
     res.status(200).send(users)
+  } catch (err) {
+    next(err)
+  }
+}
+
+controller.getNotifications = async (req, res, next) => {
+  try {
+    const notifications = await Notification.findAll({
+      where: {
+        userId: req.session.user.id,
+      },
+      include: [
+        {
+          model: User,
+          as: 'fromUser',
+          attributes: ['displayName', 'mention'],
+          include: [{ model: Image, attributes: ['reference'] }],
+        },
+        {
+          model: Follow,
+          attributes: ['createdAt'],
+          include: [
+            {
+              model: User,
+              as: 'follower',
+              attributes: ['displayName', 'mention'],
+              include: [{ model: Image, attributes: ['reference'] }],
+            },
+          ],
+        },
+        { model: Post, attributes: ['id', 'title'] },
+        { model: PostComment, attributes: ['id', 'body'] },
+      ],
+      attributes: ['id', 'body', 'read', 'createdAt'],
+      order: [['createdAt', 'desc']],
+      limit: 50,
+    })
+    res.status(200).send(notifications)
+  } catch (err) {
+    next(err)
+  }
+}
+
+controller.readNotifications = async (req, res, next) => {
+  try {
+    await Notification.update({ read: true }, { where: { userId: req.session.user.id, read: false } })
+    res.sendStatus(201)
   } catch (err) {
     next(err)
   }

@@ -1,4 +1,5 @@
 const Models = require('../database/models')
+const { createPostCommentNotifications } = require('../services/NotificationService')
 const { PostComment } = Models
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -14,6 +15,8 @@ controller.create = async (req, res, next) => {
       postId,
       body,
     })
+
+    createPostCommentNotifications(req.session.user.id, postId, comment.id)
 
     res.status(201).send(comment)
   } catch (err) {

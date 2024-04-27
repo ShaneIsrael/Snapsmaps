@@ -9,6 +9,12 @@ class UserService {
       },
     })
   }
+  notifications() {
+    return Api().get('/user/notifications')
+  }
+  readNotifications() {
+    return Api().put('/user/notifications')
+  }
 }
 
 const service = new UserService()

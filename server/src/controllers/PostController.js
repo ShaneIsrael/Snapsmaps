@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid')
 const Models = require('../database/models')
 const { Post, User, PostComment, Image } = Models
 const { uploadImage } = require('../services/UploadService')
+const { createPostNotifications } = require('../services/NotificationService')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -37,6 +38,7 @@ controller.getById = async (req, res, next) => {
 controller.create = async (req, res, next) => {
   const t = await Models.sequelize.transaction()
   req.setTimeout(300 * 1000)
+  let createdPost
   try {
     const { image } = req.files
     const { title, latitude, longitude } = req.body
@@ -58,6 +60,10 @@ controller.create = async (req, res, next) => {
       await uploadImage(compressed, reference, 'image/webp')
     }
 
+    try {
+    } catch (err) {
+      throw err
+    }
     const imageRow = await Image.create(
       {
         userId: req.session.user.id,
@@ -78,7 +84,7 @@ controller.create = async (req, res, next) => {
 
     await t.commit()
 
-    const created = await Post.findOne({
+    createdPost = await Post.findOne({
       where: { id: postRow.id },
       order: [[PostComment, 'createdAt', 'asc']],
       include: [
@@ -91,11 +97,16 @@ controller.create = async (req, res, next) => {
       ],
     })
 
-    return res.status(201).send(created)
+    res.status(201).send(createdPost)
   } catch (err) {
     await t.rollback()
-    next(err)
+    return next(err)
   }
+
+  /**
+   * async create notifications for followers
+   */
+  createPostNotifications(req.session.user.id, createdPost.id)
 }
 
 controller.deletePost = async (req, res, next) => {

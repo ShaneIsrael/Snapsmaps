@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid')
 const { uploadImage } = require('../services/UploadService')
 const sharp = require('sharp')
 const { Op } = require('sequelize')
+const { createFollowNotification } = require('../services/NotificationService')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -146,6 +147,7 @@ controller.update = async (req, res, next) => {
         followersCount: userRow.followersCount,
         followingCount: userRow.followingCount,
       }),
+      { sameSite: 'strict' },
     )
 
     res.status(200).send(userRow)
@@ -220,8 +222,10 @@ controller.followProfile = async (req, res, next) => {
     })
 
     if (created) {
+      createFollowNotification(req.session.user.id, mentionUser.id, follow.id)
       return res.status(201).send(created)
     }
+
     return res.status(200).send(follow)
   } catch (err) {
     next(err)

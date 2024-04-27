@@ -29,7 +29,6 @@ function ProfileFollows() {
       } else {
         results = (await ProfileService.getFollowers(mention, date)).data
       }
-      console.log(results)
       if (results.length < PAGE_SIZE) {
         setReachedLastPage(true)
       }
