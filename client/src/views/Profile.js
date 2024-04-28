@@ -35,13 +35,14 @@ function Profile({ isSelf, isMention }) {
 
   const [isFollowed, setIsFollowed] = React.useState(false)
   const [post, setPost] = React.useState()
+  const [selectedPostTab, setSelectedPostTab] = React.useState('photo')
   const [postHistory, setPostHistory] = React.useState([])
   const [modalImage, setModalImage] = React.useState()
   const [editMode, setEditMode] = React.useState(false)
   const [saving, setSaving] = React.useState(false)
   const [firstLoad, setFirstLoad] = React.useState(true)
 
-  const { mention } = useParams()
+  const { mention, postId, tabId } = useParams()
 
   const navigate = useNavigate()
 
@@ -54,10 +55,11 @@ function Profile({ isSelf, isMention }) {
     image: '',
   })
 
-  const handleOpenModal = async (id) => {
+  const handleOpenModal = async (id, tab) => {
     try {
       const post = (await PostService.get(id)).data
       setPost(post)
+      setSelectedPostTab(tab || 'photo')
       postModal.onOpen()
     } catch (err) {
       console.error(err)
@@ -136,6 +138,16 @@ function Profile({ isSelf, isMention }) {
     fetch()
   }, [mention])
 
+  React.useEffect(() => {
+    async function openPost() {
+      if (postId) {
+        await handleOpenModal(postId, tabId)
+      }
+      // navigate(`/user/${mention}`)
+    }
+    openPost()
+  }, [postId, tabId])
+
   const sessionUser = getSessionUser()
 
   if (isMention && sessionUser?.mention === mention) {
@@ -198,6 +210,7 @@ function Profile({ isSelf, isMention }) {
                 <Post
                   isSelf={isSelf}
                   post={post}
+                  defaultSelectedTab={selectedPostTab}
                   defaultLiked={post.postLikes?.length > 0}
                   onOpenModal={handleOpenImageModal}
                   isSingle
@@ -323,14 +336,18 @@ function Profile({ isSelf, isMention }) {
                     </div>
                     <div
                       className="flex flex-col items-center cursor-pointer"
-                      onClick={() => navigate('follows#followers')}
+                      onClick={() =>
+                        navigate(mention ? `/user/${mention}/follows#followers` : '/profile/follows#followers')
+                      }
                     >
                       <h2 className="text-xl font-extrabold text-default-600">{profile?.followersCount}</h2>
                       <span className="text-md font-semibold text-default-600">followers</span>
                     </div>
                     <div
                       className="flex flex-col items-center cursor-pointer"
-                      onClick={() => navigate('follows#following')}
+                      onClick={() =>
+                        navigate(mention ? `/user/${mention}/follows#following` : '/profile/follows#following')
+                      }
                     >
                       <h2 className="text-xl font-extrabold text-default-600">{profile?.followingCount}</h2>
                       <span className="text-md font-semibold  text-default-600">following</span>

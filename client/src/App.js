@@ -27,8 +27,10 @@ function Root() {
       <Route path="/profile" element={<Profile isSelf />} />
       <Route path="/profile/follows" element={<ProfileFollows />} />
       <Route path="/search" element={<UserSearch />} />
-      <Route path="/user/:mention/" element={<Profile isMention />} />
+      <Route path="/user/:mention" element={<Profile isMention />} />
       <Route path="/user/:mention/follows" element={<ProfileFollows />} />
+      <Route path="/user/:mention/:postId" element={<Profile isMention />} />
+      <Route path="/user/:mention/:postId/:tabId" element={<Profile isMention />} />
       <Route path="/verify/:email/:token" element={<VerifyEmail />} />
       <Route path="*" element={<div>not found</div>} />
     </Routes>

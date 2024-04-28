@@ -2,14 +2,17 @@ import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@
 import React from 'react'
 import { getAssetUrl } from '../../common/utils'
 import clsx from 'clsx'
+import { useNavigate } from 'react-router-dom'
 
 function NotificationMenu({ trigger, notifications, onMenuClosed }) {
+  const navigate = useNavigate()
+
   function createItem(notification) {
     if (notification.postComment) {
       return (
         <DropdownItem
           key={notification.id}
-          isReadOnly
+          onClick={() => navigate(`/user/${notification.fromUser.mention}/${notification.post.id}/comments`)}
           textValue={`${notification.fromUser.mention} commented on your post`}
           description={
             <p className="overflow-hidden w-56 text-blue-500 text-nowrap truncate">{notification.postComment.body}</p>
@@ -37,7 +40,7 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
       return (
         <DropdownItem
           key={notification.id}
-          isReadOnly
+          onClick={() => navigate(`/user/${notification.fromUser.mention}`)}
           textValue={`${notification.fromUser.mention} followed you`}
           startContent={
             <div>
@@ -54,7 +57,7 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
         >
           <>
             <p className="inline text-default-900 font-semibold">{notification.fromUser.mention} </p>
-            is now following you
+            followed you
           </>
         </DropdownItem>
       )
@@ -62,7 +65,7 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
       return (
         <DropdownItem
           key={notification.id}
-          isReadOnly
+          onClick={() => navigate(`/user/${notification.fromUser.mention}/${notification.post.id}`)}
           textValue={`${notification.fromUser.mention} posted a new Snapsmap`}
           startContent={
             <div>

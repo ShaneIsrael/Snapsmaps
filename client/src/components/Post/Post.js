@@ -29,14 +29,25 @@ import {
   ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid,
   EllipsisVerticalIcon,
 } from '@heroicons/react/24/solid'
-import { ArrowDownTrayIcon, ChatBubbleLeftRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { ChatBubbleLeftRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { ArrowDownTrayIcon, ShareIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../Map/SnapMap'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
+import { toast } from 'sonner'
 
-function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSingle, user, isAuthenticated }) {
+function Post({
+  post,
+  isSelf,
+  defaultFollowed,
+  defaultLiked,
+  defaultSelectedTab,
+  onOpenModal,
+  isSingle,
+  user,
+  isAuthenticated,
+}) {
   const [intPost, setIntPost] = React.useState(post)
   const [isFollowed, setIsFollowed] = React.useState(defaultFollowed)
-  const [selectedTab, setSelectedTab] = React.useState('photo')
+  const [selectedTab, setSelectedTab] = React.useState(defaultSelectedTab || 'photo')
   const [liked, setLiked] = React.useState(defaultLiked)
   const [comment, setComment] = React.useState('')
   const [deleted, setDeleted] = React.useState(false)
@@ -113,6 +124,28 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
   // don't show the post on the feed anymore.
   if (deleted) return false
 
+  function canBrowserShareData(data) {
+    if (!navigator.share || !navigator.canShare) {
+      return false
+    }
+
+    return navigator.canShare(data)
+  }
+
+  const handleSharePost = async () => {
+    const shareLink = `${window.location.origin}/user/${intPost.user?.mention}/${intPost.id}`
+    try {
+      if (canBrowserShareData({ url: shareLink })) {
+        await navigator.share({ url: shareLink })
+      } else {
+        await navigator.clipboard.writeText(shareLink)
+        toast.info('Link copied to clipboard.')
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   return (
     <>
       <Card
@@ -159,14 +192,23 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
               </DropdownTrigger>
               <DropdownMenu aria-label="post actions">
                 <DropdownItem
-                  showDivider={isSelf}
                   key="download"
                   className="text-neutral-100"
                   onClick={() => downloadFile(post?.image?.reference)}
                   startContent={<ArrowDownTrayIcon className="h-4 w-4" />}
                 >
-                  Download image
+                  Download photo
                 </DropdownItem>
+                <DropdownItem
+                  showDivider={isSelf}
+                  key="share"
+                  className="text-neutral-100"
+                  onClick={handleSharePost}
+                  startContent={<ShareIcon className="h-4 w-4" />}
+                >
+                  Share
+                </DropdownItem>
+
                 {isSelf && (
                   <DropdownItem
                     key="delete"
@@ -204,10 +246,10 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
             }}
           >
             <Tab
-              key={`${post.id}-photo`}
+              key={`photo`}
               title={
                 <div className="flex items-center space-x-2">
-                  <PhotoIcon className={clsx({ 'fill-green-500': selectedTab !== `${post.id}-photo` })} />
+                  <PhotoIcon className={clsx({ 'fill-green-500': selectedTab !== `photo` })} />
                   <span></span>
                 </div>
               }
@@ -220,10 +262,10 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
               />
             </Tab>
             <Tab
-              key={`${post.id}-map`}
+              key={`map`}
               title={
                 <div className="flex items-center space-x-2">
-                  <MapPinIcon className={clsx({ 'fill-red-500': selectedTab !== `${post.id}-map` })} />
+                  <MapPinIcon className={clsx({ 'fill-red-500': selectedTab !== `map` })} />
                   <span></span>
                 </div>
               }
@@ -237,10 +279,10 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
               </div>
             </Tab>
             <Tab
-              key={`${post.id}-comments`}
+              key={`comments`}
               title={
                 <div className="flex items-center space-x-2">
-                  {selectedTab !== `${post.id}-comments` ? (
+                  {selectedTab !== `comments` ? (
                     <ChatBubbleLeftRightIcon className="w-6 h-6 stroke-neutral-200" />
                   ) : (
                     <ChatBubbleLeftRightIconSolid className="w-6 h-6" />

@@ -49,7 +49,7 @@ controller.getByMention = async (req, res, next) => {
     if (!mention) return res.status(400).send('a mention is required')
 
     const userRow = await User.findOne({
-      where: { mention },
+      where: { mention, verified: true },
       include: [{ model: Image, attributes: ['reference'] }],
       raw: true,
       nest: true,
@@ -98,7 +98,7 @@ controller.update = async (req, res, next) => {
     }
 
     const userRow = await User.findOne({
-      where: { id: req.session.user.id },
+      where: { id: req.session.user.id, verified: true },
       include: [Image],
     })
     if (displayName) userRow.displayName = displayName
@@ -182,7 +182,7 @@ controller.getMentionPostHistory = async (req, res, next) => {
     if (!mention) return res.status(400).send('a mention is required')
 
     const userRow = await User.findOne({
-      where: { mention },
+      where: { mention, verified: true },
       order: [[Post, 'createdAt', 'desc']],
       include: [
         {
@@ -206,7 +206,7 @@ controller.followProfile = async (req, res, next) => {
 
     const mentionUser = await User.findOne({
       attributes: ['id'],
-      where: { mention },
+      where: { mention, verified: true },
     })
 
     if (!mentionUser) {
@@ -271,6 +271,7 @@ controller.getFollowers = async (req, res, next) => {
         attributes: ['id'],
         where: {
           mention,
+          verified: true,
         },
         raw: true,
       })
@@ -309,6 +310,7 @@ controller.getFollowing = async (req, res, next) => {
         attributes: ['id'],
         where: {
           mention,
+          verified: true,
         },
         raw: true,
       })
