@@ -55,15 +55,12 @@ app.use(
     store: sessionStore,
     resave: false,
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000,
       httpOnly: true,
       sameSite: true,
       secure: true,
     },
   }),
 )
-// Create the session store databse table, eventually move this to Redis
-sessionStore.sync()
 
 // CORS middleware
 app.use(
