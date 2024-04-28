@@ -9,6 +9,7 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
       return (
         <DropdownItem
           key={notification.id}
+          isReadOnly
           textValue={`${notification.fromUser.mention} commented on your post`}
           description={
             <p className="overflow-hidden w-56 text-blue-500 text-nowrap truncate">{notification.postComment.body}</p>
@@ -36,6 +37,7 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
       return (
         <DropdownItem
           key={notification.id}
+          isReadOnly
           textValue={`${notification.fromUser.mention} followed you`}
           startContent={
             <div>
@@ -60,6 +62,7 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
       return (
         <DropdownItem
           key={notification.id}
+          isReadOnly
           textValue={`${notification.fromUser.mention} posted a new Snapsmap`}
           startContent={
             <div>
@@ -84,6 +87,7 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
       return (
         <DropdownItem
           key={notification.id}
+          isReadOnly
           textValue={notification.body || '_'}
           description={<p className="overflow-hidden w-56 text-blue-500 text-nowrap truncate">{notification.body}</p>}
           startContent={
