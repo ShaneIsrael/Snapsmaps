@@ -108,7 +108,7 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
   }
 
   return (
-    <Dropdown backdrop="blur" onClose={onMenuClosed} className="dark min-w-0">
+    <Dropdown backdrop="blur" onClose={onMenuClosed} className="dark min-w-0 bg-black">
       <DropdownTrigger>{trigger}</DropdownTrigger>
       <DropdownMenu
         variant="faded"

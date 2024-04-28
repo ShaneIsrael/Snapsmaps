@@ -3,7 +3,7 @@ const sharp = require('sharp')
 const { v4: uuidv4 } = require('uuid')
 
 const Models = require('../database/models')
-const { Post, User, PostComment, Image } = Models
+const { Post, User, PostComment, Image, PostLike } = Models
 const { uploadImage } = require('../services/UploadService')
 const { createPostNotifications } = require('../services/NotificationService')
 
@@ -16,17 +16,22 @@ controller.getById = async (req, res, next) => {
     const { id } = req.query
     if (!id) return res.status(400).send('id of post is required')
 
+    const include = [
+      { model: User, attributes: ['displayName', 'mention'], include: [Image] },
+      Image,
+      {
+        model: PostComment,
+        include: [{ model: User, include: [Image] }],
+      },
+    ]
+    if (req.session.user) {
+      include.push({ model: PostLike, where: { userId: req.session?.user?.id }, required: false })
+    }
+
     const post = await Post.findOne({
       where: { id },
       order: [[PostComment, 'createdAt', 'asc']],
-      include: [
-        { model: User, attributes: ['displayName', 'mention'], include: [Image] },
-        Image,
-        {
-          model: PostComment,
-          include: [{ model: User, include: [Image] }],
-        },
-      ],
+      include,
     })
 
     res.status(200).send(post)

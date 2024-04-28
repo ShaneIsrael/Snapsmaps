@@ -151,7 +151,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
             </div>
           </div>
           {isAuthenticated && (
-            <Dropdown className="dark min-w-0 p-[1px] w-fit">
+            <Dropdown className="dark min-w-0 p-[1px] w-fit bg-black">
               <DropdownTrigger>
                 <Button variant="light" size="sm" className="mr-2 mt-[-24px]" isIconOnly>
                   <EllipsisVerticalIcon className="w-5 h-5" />

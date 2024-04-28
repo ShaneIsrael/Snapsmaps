@@ -117,7 +117,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
           </Badge>
 
           {!noProfile ? (
-            <Dropdown backdrop="blur" placement="bottom-end" className="dark bg-neutral-900 text-foreground">
+            <Dropdown backdrop="blur" placement="bottom-end" className="dark bg-neutral-900 text-foreground bg-black">
               <DropdownTrigger>
                 <Avatar
                   isBordered

@@ -64,7 +64,7 @@ function Comment({ comment, user }) {
           </div>
         </div>
         {user?.mention === comment.user.mention && (
-          <Dropdown className="dark min-w-0 p-[1px] w-fit">
+          <Dropdown className="dark min-w-0 p-[1px] w-fit bg-black">
             <DropdownTrigger>
               <Button variant="light" size="sm" className="mr-1 mt-1 w-4 h-6 absolute top-0 right-1 min-w-0" isIconOnly>
                 <EllipsisVerticalIcon />

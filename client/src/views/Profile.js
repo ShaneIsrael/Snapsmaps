@@ -198,6 +198,7 @@ function Profile({ isSelf, isMention }) {
                 <Post
                   isSelf={isSelf}
                   post={post}
+                  defaultLiked={post.postLikes?.length > 0}
                   onOpenModal={handleOpenImageModal}
                   isSingle
                   user={user}

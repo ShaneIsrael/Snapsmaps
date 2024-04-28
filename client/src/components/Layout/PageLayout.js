@@ -4,6 +4,7 @@ import Appbar from './Appbar'
 import Footer from './Footer'
 import { useNavigate } from 'react-router-dom'
 import clsx from 'clsx'
+import { Spinner } from '@nextui-org/react'
 
 function PageLayout({
   showNav = true,
@@ -18,7 +19,7 @@ function PageLayout({
   FooterProps,
   children,
 }) {
-  const { user, isAuthenticated } = useAuthed()
+  const { loading, user, isAuthenticated } = useAuthed()
   const navigate = useNavigate()
 
   return (
@@ -33,7 +34,7 @@ function PageLayout({
           backButton={backButton}
           {...AppbarProps}
         />
-        {children({ user, isAuthenticated })}
+        {children({ loading, user, isAuthenticated })}
         <Footer
           handleOnHome={onHome || (() => navigate('/'))}
           handleOnSubmit={onSubmit || (() => navigate('/'))}

@@ -8,9 +8,9 @@ const { v4: uuidv4 } = require('uuid')
 const logger = require('./utils/logger')
 const { exit } = require('process')
 
-const USER_COUNT = 20
-const MAX_POSTS_PER_USER = 10
-const MAX_COMMENTS_PER_USER = 40
+const USER_COUNT = 10
+const MAX_POSTS_PER_USER = 5
+const MAX_COMMENTS_PER_USER = 20
 
 const IMAGES_ROOT = path.join(__dirname, '../images')
 

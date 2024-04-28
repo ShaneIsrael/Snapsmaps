@@ -74,7 +74,7 @@ const Dashboard = () => {
 
   return (
     <PageLayout onHome={handleHomeClicked} onSubmit={handlePostCreated} showNav={showNav} fullwidth>
-      {({ user, isAuthenticated }, setUser) => (
+      {({ user, isAuthenticated }) => (
         <>
           <Modal
             className="rounded-none h-fit w-fit "

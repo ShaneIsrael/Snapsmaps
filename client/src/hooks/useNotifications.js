@@ -11,7 +11,9 @@ const useNotifications = () => {
     try {
       const resp = await UserService.notifications()
       setNotifications(resp.data)
-      setUnreadCount(resp.data.filter((notification) => !notification.read).length)
+      if (resp.data) {
+        setUnreadCount(resp.data.filter((notification) => !notification.read).length || 0)
+      }
     } catch (err) {
       console.error(err)
     }
