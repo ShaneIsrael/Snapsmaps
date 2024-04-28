@@ -116,7 +116,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
   return (
     <>
       <Card
-        className={clsx('sm:w-full  min-h-[560px] max-h-[600px] rounded-none bg-background border-none', {
+        className={clsx('sm:w-full  min-h-[528px] max-h-[600px] rounded-none bg-background border-none', {
           'w-screen': !isSingle,
           'sm:min-w-[450px]': !isSingle,
         })}
@@ -183,9 +183,11 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
           )}
         </CardHeader>
         <CardBody className="px-3 py-0 text-small text-default-500 overflow-hidden">
-          <div className="mb-3">
-            <p className="leading-4 max-h-[65px] min-h-[20px] overflow-y-auto">{intPost?.title}</p>
-          </div>
+          {intPost?.title && (
+            <div className="mb-3">
+              <p className="leading-4 max-h-[65px] min-h-[20px] overflow-y-auto">{intPost?.title}</p>
+            </div>
+          )}
           <Tabs
             aria-label="post tabs"
             color="primary"
@@ -194,6 +196,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
             onSelectionChange={setSelectedTab}
             className="block"
             variant="solid"
+            size="sm"
             autoFocus={false}
             classNames={{
               tabList: 'bg-slate-900',
@@ -209,17 +212,6 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
                 </div>
               }
             >
-              {/* <LazyLoadImage
-                onClick={() => onOpenModal(postImage)}
-                className="object-cover w-full h-full rounded-2xl cursor-pointer"
-                alt="a post image"
-                src={postImage}
-                width="100%"
-                height="100%"
-                effect="opacity"
-                threshold={600}
-                // useIntersectionObserver
-              /> */}
               <img
                 onClick={() => onOpenModal(postImage)}
                 className="object-cover w-full h-full rounded-2xl cursor-pointer"
