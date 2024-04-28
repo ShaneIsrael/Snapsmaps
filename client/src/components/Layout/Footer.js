@@ -77,7 +77,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
             color="default"
             variant="light"
             aria-label="search users"
-            onClick={() => navigate('/search')}
+            onClick={() => (isAuthenticated ? navigate('/search') : toast.info('You must be logged in to do that.'))}
           >
             <MagnifyingGlassIcon className="h-8 w-8" />
           </Button>
@@ -89,8 +89,12 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
             className="w-11 "
             aria-label="new post"
             onClick={(e) => {
-              e.stopPropagation()
-              captureDeviceSelect.onOpen()
+              if (isAuthenticated) {
+                e.stopPropagation()
+                captureDeviceSelect.onOpen()
+              } else {
+                toast.info('You must be logged in to do that.')
+              }
             }}
           >
             <Logo className="h-11" />

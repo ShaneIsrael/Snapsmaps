@@ -116,12 +116,10 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
   return (
     <>
       <Card
-        className={clsx(
-          'sm:w-full sm:min-w-[450px] min-h-[560px] max-h-[600px] rounded-none bg-background border-none',
-          {
-            'w-screen': !isSingle,
-          },
-        )}
+        className={clsx('sm:w-full  min-h-[560px] max-h-[600px] rounded-none bg-background border-none', {
+          'w-screen': !isSingle,
+          'sm:min-w-[450px]': !isSingle,
+        })}
       >
         <CardHeader className="justify-between p-0">
           <div className="flex m-4 gap-3 cursor-pointer">

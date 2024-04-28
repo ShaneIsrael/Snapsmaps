@@ -138,7 +138,7 @@ function Profile({ isSelf, isMention }) {
 
   const sessionUser = getSessionUser()
 
-  if (isMention && sessionUser.mention === mention) {
+  if (isMention && sessionUser?.mention === mention) {
     navigate('/profile')
   }
 
