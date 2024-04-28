@@ -1,6 +1,6 @@
 const { Op } = require('sequelize')
 const Models = require('../database/models')
-const { Post, PostComment, User, Image, Follow, sequelize } = Models
+const { Post, PostComment, User, Image, Follow, PostLike, sequelize } = Models
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -13,6 +13,14 @@ controller.public = async (req, res, next) => {
   try {
     const { lastDate } = req.query
 
+    const include = [
+      { model: User, attributes: ['displayName', 'mention'], include: [Image] },
+      Image,
+      { model: PostComment, include: [{ model: User, include: [Image] }] },
+    ]
+    if (req.session.user) {
+      include.push({ model: PostLike, where: { userId: req.session?.user?.id }, required: false })
+    }
     const posts = await Post.findAll({
       where: {
         createdAt: {
@@ -23,11 +31,7 @@ controller.public = async (req, res, next) => {
         ['createdAt', 'desc'],
         [PostComment, 'createdAt', 'asc'],
       ],
-      include: [
-        { model: User, attributes: ['displayName', 'mention'], include: [Image] },
-        Image,
-        { model: PostComment, include: [{ model: User, include: [Image] }] },
-      ],
+      include,
       limit: PAGE_SIZE,
     })
     res.status(200).send(posts)
@@ -67,6 +71,7 @@ controller.following = async (req, res, next) => {
         { model: User, attributes: ['displayName', 'mention'], include: [Image] },
         Image,
         { model: PostComment, include: [{ model: User, include: [Image] }] },
+        { model: PostLike, where: { userId: req.session?.user?.id }, required: false },
       ],
       limit: PAGE_SIZE,
     })

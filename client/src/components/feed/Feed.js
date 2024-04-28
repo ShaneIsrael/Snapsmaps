@@ -13,6 +13,7 @@ function Feed({ loading, posts, onOpenPostImage, user, isAuthenticated }) {
     <Post
       key={`post-${post.id}`}
       isSelf={user?.mention === post.user.mention}
+      defaultLiked={post.postLikes?.length > 0}
       post={post}
       onOpenModal={onOpenPostImage}
       user={user}

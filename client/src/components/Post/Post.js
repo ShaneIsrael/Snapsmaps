@@ -37,7 +37,7 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
   const [intPost, setIntPost] = React.useState(post)
   const [isFollowed, setIsFollowed] = React.useState(defaultFollowed)
   const [selectedTab, setSelectedTab] = React.useState('photo')
-  const [liked, setLiked] = React.useState(false)
+  const [liked, setLiked] = React.useState(defaultLiked)
   const [comment, setComment] = React.useState('')
   const [deleted, setDeleted] = React.useState(false)
 
@@ -55,17 +55,17 @@ function Post({ post, isSelf, defaultFollowed, defaultLiked, onOpenModal, isSing
     }
   }
 
-  useEffect(() => {
-    async function checkIfLiked() {
-      if (isAuthenticated) {
-        const isLiked = (await LikeService.hasLikedPost(post?.id)).data
-        setLiked(isLiked)
-      }
-    }
-    if (user) {
-      checkIfLiked()
-    }
-  }, [user])
+  // useEffect(() => {
+  //   async function checkIfLiked() {
+  //     if (isAuthenticated) {
+  //       const isLiked = (await LikeService.hasLikedPost(post?.id)).data
+  //       setLiked(isLiked)
+  //     }
+  //   }
+  //   if (user) {
+  //     checkIfLiked()
+  //   }
+  // }, [user])
 
   const handleLike = async () => {
     if (isAuthenticated) {
