@@ -117,7 +117,7 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
           list: 'max-h-96 overflow-y-scroll',
         }}
       >
-        {notifications?.map((notification) => createItem(notification))}
+        {notifications && notifications?.map((notification) => createItem(notification))}
       </DropdownMenu>
     </Dropdown>
   )
