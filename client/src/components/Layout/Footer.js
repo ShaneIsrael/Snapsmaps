@@ -69,7 +69,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
       >
         <div className="flex max-w-[1024px] w-full px-6 items-center justify-between">
           <Button isIconOnly size="sm" color="default" variant="light" aria-label="new post" onClick={handleOnHome}>
-            <HomeIcon />
+            <HomeIcon className="h-8 w-8" />
           </Button>
           <Button
             isIconOnly
@@ -79,7 +79,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
             aria-label="search users"
             onClick={() => navigate('/search')}
           >
-            <MagnifyingGlassIcon />
+            <MagnifyingGlassIcon className="h-8 w-8" />
           </Button>
           <Button
             isIconOnly
@@ -93,7 +93,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
               captureDeviceSelect.onOpen()
             }}
           >
-            <Logo />
+            <Logo className="h-11" />
           </Button>
           <Badge
             content={notifications.unreadCount}
@@ -104,7 +104,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
             <NotificationMenu
               trigger={
                 <Button isIconOnly size="sm" variant="light" className="cursor-pointer">
-                  <BellIcon />
+                  <BellIcon className="h-8 w-8" />
                 </Button>
               }
               onMenuClosed={() => notifications.read()}
