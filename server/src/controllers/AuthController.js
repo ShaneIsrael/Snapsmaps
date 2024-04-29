@@ -162,6 +162,19 @@ controller.hasSession = async (req, res, next) => {
   try {
     if (!req.session.user) return res.status(200).send(false)
     else {
+      res.cookie(
+        'user',
+        JSON.stringify({
+          email: req.session.user.email,
+          mention: req.session.user.mention,
+          displayName: req.session.user.displayName,
+          bio: req.session.user.bio,
+          image: req.session.user.image,
+          followersCount: req.session.user.followersCount,
+          followingCount: req.session.user.followingCount,
+        }),
+        { sameSite: 'strict' },
+      )
       res.status(200).send({
         email: req.session.user.email,
         mention: req.session.user.mention,
