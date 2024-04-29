@@ -150,9 +150,11 @@ function Profile({ isSelf, isMention }) {
 
   const sessionUser = getSessionUser()
 
-  if (isMention && sessionUser?.mention === mention) {
-    navigate('/profile')
-  }
+  React.useEffect(() => {
+    if (isMention && sessionUser?.mention === mention) {
+      navigate('/profile')
+    }
+  }, [isMention, mention])
 
   if (firstLoad) {
     return (

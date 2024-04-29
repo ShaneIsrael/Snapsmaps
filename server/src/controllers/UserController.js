@@ -59,7 +59,7 @@ controller.getNotifications = async (req, res, next) => {
             },
           ],
         },
-        { model: Post, attributes: ['id', 'title'] },
+        { model: Post, attributes: ['id', 'title'], include: [{ model: User, attributes: ['mention'] }] },
         { model: PostComment, attributes: ['id', 'body'] },
       ],
       attributes: ['id', 'body', 'read', 'createdAt'],
