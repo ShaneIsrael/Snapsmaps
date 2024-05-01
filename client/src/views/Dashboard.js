@@ -37,9 +37,9 @@ const Dashboard = () => {
   const handleScrolling = useCallback(
     (e) => {
       const window = e.currentTarget
-      if (lastScrollY > window.scrollTop + SCROLL_DELTA) {
+      if (lastScrollY > window.scrollTop + SCROLL_DELTA && !showNav) {
         setShowNav(true)
-      } else if (lastScrollY < window.scrollTop - SCROLL_DELTA) {
+      } else if (lastScrollY < window.scrollTop - SCROLL_DELTA && showNav) {
         setShowNav(false)
       }
       setLastScrollY(window.scrollTop)

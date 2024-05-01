@@ -32,7 +32,7 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
         >
           <>
             <p className="inline text-default-900 font-semibold">{notification.fromUser.mention} </p>
-            replied to your post
+            replied to your post.
           </>
         </DropdownItem>
       )
@@ -57,7 +57,7 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
         >
           <>
             <p className="inline text-default-900 font-semibold">{notification.fromUser.mention} </p>
-            followed you
+            followed you.
           </>
         </DropdownItem>
       )
@@ -82,7 +82,7 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
         >
           <>
             <p className="inline text-default-900 font-semibold">{notification.fromUser.mention} </p>
-            posted a new Snapsmap
+            posted.
           </>
         </DropdownItem>
       )

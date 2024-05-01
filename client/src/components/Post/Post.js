@@ -118,6 +118,12 @@ function Post({
     }
   }
 
+  useEffect(() => {
+    if (selectedTab === 'comments') {
+      reload()
+    }
+  }, [selectedTab])
+
   const hasProfileImage = !!intPost?.user?.image
   const timeAgo = formatDistanceStrict(new Date(intPost.createdAt), new Date(), { addSuffix: true })
 
@@ -146,6 +152,7 @@ function Post({
     }
   }
 
+  console.log('wtf')
   return (
     <>
       <Card
