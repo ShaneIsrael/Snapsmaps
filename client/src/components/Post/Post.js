@@ -29,7 +29,7 @@ import {
   ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid,
   EllipsisVerticalIcon,
 } from '@heroicons/react/24/solid'
-import { ChatBubbleLeftRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { ArrowsPointingOutIcon, ChatBubbleLeftRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ArrowDownTrayIcon, ShareIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../Map/SnapMap'
 import { toast } from 'sonner'
@@ -152,7 +152,6 @@ function Post({
     }
   }
 
-  console.log('wtf')
   return (
     <>
       <Card
@@ -231,9 +230,9 @@ function Post({
             </Dropdown>
           )}
         </CardHeader>
-        <CardBody className="px-3 py-0 text-small text-default-500 overflow-hidden">
+        <CardBody className="py-0 text-small text-default-500 overflow-hidden px-0" classNames={{}}>
           {intPost?.title && (
-            <div className="mb-3">
+            <div className="mb-3 mx-3">
               <p className="leading-4 max-h-[65px] min-h-[20px] overflow-y-auto">{intPost?.title}</p>
             </div>
           )}
@@ -248,8 +247,8 @@ function Post({
             size="sm"
             autoFocus={false}
             classNames={{
-              tabList: 'bg-slate-900',
-              panel: 'h-[385px] pt-2',
+              tabList: 'bg-slate-900 mx-3',
+              panel: 'h-[385px] pt-2 px-0',
             }}
           >
             <Tab
@@ -261,12 +260,22 @@ function Post({
                 </div>
               }
             >
-              <img
-                onClick={() => onOpenModal(postImage)}
-                className="object-cover w-full h-full rounded-2xl cursor-pointer"
-                alt="a post image"
-                src={postImage}
-              />
+              <div className="relative w-full h-full cursor-pointer [&>button]:hover:block">
+                <Button
+                  size="sm"
+                  isIconOnly
+                  variant="flat"
+                  className="absolute hidden right-2 top-2 pointer-events-none"
+                >
+                  <ArrowsPointingOutIcon className="stroke-neutral-100/80 w-8 h-8" />
+                </Button>
+                <img
+                  onClick={() => onOpenModal(postImage)}
+                  className="object-cover w-full h-full"
+                  alt="a post image"
+                  src={postImage}
+                />
+              </div>
             </Tab>
             <Tab
               key={`map`}
@@ -277,7 +286,7 @@ function Post({
                 </div>
               }
             >
-              <div className="overflow-hidden rounded-2xl h-[365px] min-w-[284px]">
+              <div className="overflow-hidden h-[365px] min-w-[284px]">
                 <SnapMap
                   markers={[{ lat: intPost?.image?.latitude, lng: intPost?.image?.longitude }]}
                   defaultZoom={14}
@@ -303,7 +312,7 @@ function Post({
                 </div>
               }
             >
-              <div className="h-[365px] min-w-[284px] flex flex-col">
+              <div className="h-[365px] min-w-[284px] flex flex-col  px-2">
                 {intPost.postComments.length > 0 && (
                   <div className="h-full overflow-y-auto">
                     <div className="flex flex-col gap-2">
@@ -322,7 +331,7 @@ function Post({
                 )}
                 {isAuthenticated && (
                   <Textarea
-                    variant="faded"
+                    variant="flat"
                     labelPlacement="outside"
                     placeholder="Write..."
                     value={comment}
@@ -331,7 +340,7 @@ function Post({
                     onKeyDown={handleCommentKeydown}
                     className="max-w mt-2"
                     classNames={{
-                      inputWrapper: 'rounded-lg',
+                      inputWrapper: 'rounded-md',
                     }}
                   />
                 )}
