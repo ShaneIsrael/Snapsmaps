@@ -155,7 +155,7 @@ function Post({
   return (
     <>
       <Card
-        className={clsx('sm:w-full  min-h-[528px] max-h-[600px] rounded-none bg-background border-none', {
+        className={clsx('sm:w-full rounded-none bg-background border-none', {
           'w-screen': !isSingle,
           'sm:min-w-[450px]': !isSingle,
         })}
@@ -242,13 +242,13 @@ function Post({
             radius="full"
             selectedKey={selectedTab}
             onSelectionChange={setSelectedTab}
-            className="block"
+            className="block "
             variant="solid"
             size="sm"
             autoFocus={false}
             classNames={{
               tabList: 'bg-slate-900 mx-3',
-              panel: 'h-[385px] pt-2 px-0',
+              panel: 'pt-2 px-0',
             }}
           >
             <Tab
@@ -260,7 +260,7 @@ function Post({
                 </div>
               }
             >
-              <div className="relative w-full h-full cursor-pointer [&>button]:hover:block">
+              <div className="relative w-full h-full cursor-pointer [&>button]:hover:block max-h-[598px] overflow-y-hidden">
                 <Button
                   size="sm"
                   isIconOnly
