@@ -1,10 +1,10 @@
 import Api from './Api'
 
 class PostService {
-  create(title, gps, image, onUploadProgress, signal) {
+  create(title, publicPost, gps, image, onUploadProgress, signal) {
     return Api().postForm(
       '/post',
-      { title, ...gps, image },
+      { title, public: publicPost, ...gps, image },
       {
         timeout: 300 * 1000,
         signal,

@@ -3,9 +3,10 @@ const sharp = require('sharp')
 const { v4: uuidv4 } = require('uuid')
 
 const Models = require('../database/models')
-const { Post, User, PostComment, Image, PostLike } = Models
+const { Post, User, PostComment, Image, PostLike, Follow } = Models
 const { uploadImage } = require('../services/UploadService')
 const { createPostNotifications } = require('../services/NotificationService')
+const { isFollowingUser } = require('../services/FollowService')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -17,7 +18,7 @@ controller.getById = async (req, res, next) => {
     if (!id) return res.status(400).send('id of post is required')
 
     const include = [
-      { model: User, attributes: ['displayName', 'mention'], include: [Image] },
+      { model: User, attributes: ['displayName', 'mention', 'id'], include: [Image] },
       Image,
       {
         model: PostComment,
@@ -33,6 +34,13 @@ controller.getById = async (req, res, next) => {
       order: [[PostComment, 'createdAt', 'asc']],
       include,
     })
+    const isFollowing = await isFollowingUser(req.session.user, post.user.id)
+
+    if (!post.public && !isFollowing) {
+      return res
+        .status(401)
+        .send('You are trying to view a private post. You must be a follower of the user to view their private posts.')
+    }
 
     res.status(200).send(post)
   } catch (err) {
@@ -46,7 +54,7 @@ controller.create = async (req, res, next) => {
   let createdPost
   try {
     const { image } = req.files
-    const { title, latitude, longitude } = req.body
+    const { title, latitude, longitude, public } = req.body
 
     if (!image || !latitude || !longitude || !/^image/.test(image.mimetype))
       return res.status(400).send('A post requires an image and a gps location.')
@@ -80,6 +88,7 @@ controller.create = async (req, res, next) => {
     const postRow = await Post.create(
       {
         title,
+        public,
         userId: req.session.user.id,
         imageId: imageRow.id,
       },

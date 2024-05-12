@@ -11,8 +11,11 @@ import {
   Textarea,
   useDisclosure,
   Progress,
+  Switch,
+  Tooltip,
 } from '@nextui-org/react'
 import React, { useEffect, useRef, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
 import clsx from 'clsx'
@@ -21,12 +24,14 @@ import SendIcon from '../../assets/icons/SendIcon'
 import { PostService } from '../../services'
 import { toast } from 'sonner'
 import SnapMap from '../Map/SnapMap'
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 
 function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
   const abortControllerRef = useRef(new AbortController())
   const newPostModal = useDisclosure()
   const [selectedTab, setSelectedTab] = useState('photo')
   const [description, setDescription] = useState('')
+  const [publicPost, setPublicPost] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
 
@@ -63,6 +68,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
       const post = (
         await PostService.create(
           description,
+          publicPost,
           imageData.gps,
           imageData.file,
           (progress) => setUploadProgress(progress),
@@ -85,15 +91,16 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
 
   return (
     <Modal
-      className="dark transform-gpu w-full h-full sm:max-h-[900px] rounded-none m-0 p-0"
+      className="dark transform-gpu rounded-none m-0 p-0"
       isOpen={newPostModal.isOpen}
       onClose={newPostModal.onClose}
       placement="top"
+      size={isMobile ? 'full' : 'lg'}
     >
       <ModalContent className="">
         {(onClose) => (
-          <Card className="h-full w-full rounded-none">
-            <CardHeader className="flex flex-col items-center gap-2">
+          <Card className="h-full w-full rounded-none bg-black">
+            <CardHeader className="flex flex-col items-center gap-2 pt-1">
               <h2 className="font-bold text-2xl">New Post</h2>
               <Textarea
                 variant="bordered"
@@ -108,16 +115,17 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                 isDisabled={submitting}
               />
             </CardHeader>
-            <CardBody className="px-3 py-0 ">
+            <CardBody className="py-0 px-0 relative w-full h-full">
               <Tabs
                 aria-label="post tabs"
+                size="sm"
                 color="primary"
                 radius="full"
                 selectedKey={selectedTab}
                 onSelectionChange={setSelectedTab}
                 className="block"
                 classNames={{
-                  tabList: 'mb-2',
+                  tabList: 'mb-2 mx-3 bg-slate-900',
                   panel: 'p-0',
                 }}
               >
@@ -131,13 +139,11 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                   }
                   className="overflow-y-auto"
                 >
-                  <div className="flex align-middle h-[385px] justify-center ">
-                    <img
-                      alt="preview image upload"
-                      src={`data:image/png;base64,${imageData?.base64}`}
-                      className="object-cover w-full h-full rounded-2xl"
-                    />
-                  </div>
+                  <img
+                    alt="preview image upload"
+                    src={`data:image/png;base64,${imageData?.base64}`}
+                    className="object-cover w-full h-full"
+                  />
                 </Tab>
                 <Tab
                   key="map"
@@ -149,7 +155,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                   }
                   className="h-full"
                 >
-                  <div className="overflow-hidden rounded-2xl h-[365px]">
+                  <div className="overflow-hidden h-full">
                     <SnapMap
                       markers={[{ lat: imageData?.gps.latitude, lng: imageData?.gps.longitude }]}
                       defaultZoom={16}
@@ -158,7 +164,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                 </Tab>
               </Tabs>
             </CardBody>
-            <CardFooter className="flex flex-col px-3 pt-2 pb-6 gap-2">
+            <CardFooter className="flex flex-col px-2 pt-2 pb-5 gap-2">
               {submitting && (
                 <div className="relative align-middle justify-center w-full">
                   <p className="absolute bottom-0 text-center text-sm font-extrabold tracking-widest w-full z-10">
@@ -174,10 +180,22 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                   />
                 </div>
               )}
-              <div className="w-full flex flex-row align-middle items-center justify-center gap-4">
-                <Button color="danger" variant="flat" fullWidth onClick={handleCancel}>
+              <div className="w-full flex flex-row align-middle items-center justify-center gap-8">
+                <Button size="lg" color="danger" variant="flat" fullWidth onClick={handleCancel}>
                   <CloseIcon />
                 </Button>
+                <Tooltip content={publicPost ? 'public post' : 'private post'} color="primary">
+                  <div>
+                    <Switch
+                      color={publicPost ? 'primary' : 'default'}
+                      isSelected={publicPost}
+                      onValueChange={setPublicPost}
+                      size="lg"
+                      startContent={<EyeIcon />}
+                      endContent={<EyeSlashIcon />}
+                    />
+                  </div>
+                </Tooltip>
                 <Button color="primary" variant="solid" fullWidth onClick={submit} isDisabled={submitting}>
                   {submitting ? 'Posting...' : <SendIcon />}
                 </Button>

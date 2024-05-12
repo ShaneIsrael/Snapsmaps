@@ -6,6 +6,7 @@ const { uploadImage } = require('../services/UploadService')
 const sharp = require('sharp')
 const { Op } = require('sequelize')
 const { createFollowNotification } = require('../services/NotificationService')
+const { isFollowingUser } = require('../services/FollowService')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -182,17 +183,34 @@ controller.getMentionPostHistory = async (req, res, next) => {
     if (!mention) return res.status(400).send('a mention is required')
 
     const userRow = await User.findOne({
+      attributes: ['id'],
       where: { mention, verified: true },
-      order: [[Post, 'createdAt', 'desc']],
+    })
+
+    if (!userRow) {
+      return res.status(400).send('No user by that mention exists.')
+    }
+
+    const isFollowing = await isFollowingUser(req.session.user, userRow.id)
+
+    let whereStatement = { userId: userRow.id, public: true }
+    if (isFollowing) {
+      whereStatement = {
+        userId: userRow.id,
+        [Op.or]: [{ public: true }, { public: false }],
+      }
+    }
+    const posts = await Post.findAll({
+      where: whereStatement,
+      order: [['createdAt', 'desc']],
       include: [
         {
-          model: Post,
-          attributes: ['id'],
-          include: [{ model: Image, attributes: ['reference', 'latitude', 'longitude'] }],
+          model: Image,
+          attributes: ['reference', 'latitude', 'longitude'],
         },
       ],
     })
-    res.status(200).send(userRow.posts)
+    res.status(200).send(posts)
   } catch (err) {
     next(err)
   }

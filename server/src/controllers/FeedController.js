@@ -23,6 +23,14 @@ controller.public = async (req, res, next) => {
     }
     const posts = await Post.findAll({
       where: {
+        [Op.or]: [
+          {
+            public: true,
+          },
+          {
+            userId: req.session.user?.id,
+          },
+        ],
         createdAt: {
           [Op.lt]: lastDate || sequelize.fn('NOW'),
         },

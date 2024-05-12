@@ -12,7 +12,8 @@ module.exports = {
     dialect: 'postgres',
     options: {
       timezone: 'utc',
-      logging: (msg) => logger.debug(msg),
+      // logging: (msg) => logger.debug(msg),
+      logging: false,
       pool: {
         max: 5,
         min: 0,

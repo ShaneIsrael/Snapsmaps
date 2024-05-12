@@ -62,7 +62,7 @@ function Profile({ isSelf, isMention }) {
       setSelectedPostTab(tab || 'photo')
       postModal.onOpen()
     } catch (err) {
-      console.error(err)
+      toast.error(err.response?.data)
     }
   }
   const handleOpenImageModal = (image) => {
@@ -72,6 +72,7 @@ function Profile({ isSelf, isMention }) {
 
   async function fetchHistory(mention) {
     try {
+      console.log(mention)
       const history = mention
         ? (await ProfileService.getMentionPostHistory(mention)).data
         : (await ProfileService.getPostHistory()).data
@@ -128,8 +129,8 @@ function Profile({ isSelf, isMention }) {
       await ProfileService.unfollow(mention)
       fetch()
     } catch (err) {
-      if (err.response?.data) {
-        toast.error(err.response?.data)
+      if (err.response) {
+        toast.error(err.response.data)
       }
     }
   }

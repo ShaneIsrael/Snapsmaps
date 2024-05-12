@@ -16,6 +16,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Divider,
+  Tooltip,
 } from '@nextui-org/react'
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
@@ -28,6 +29,8 @@ import {
   HandThumbUpIcon,
   ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid,
   EllipsisVerticalIcon,
+  EyeIcon,
+  EyeSlashIcon,
 } from '@heroicons/react/24/solid'
 import { ArrowsPointingOutIcon, ChatBubbleLeftRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ArrowDownTrayIcon, ShareIcon } from '@heroicons/react/24/solid'
@@ -354,13 +357,26 @@ function Post({
               {intPost?.likeCount > 0 && (
                 <p className="font-semibold text-default-400 text-small">{intPost?.likeCount}</p>
               )}
-              <p className=" text-default-400 text-small cursor-pointer" onClick={handleLike}>
-                <HandThumbUpIcon className={clsx('w-5 h-5', { 'fill-blue-500': liked, 'fill-neutral-500': !liked })} />
+              <p className=" text-default-500 text-small cursor-pointer" onClick={handleLike}>
+                <HandThumbUpIcon className={clsx('w-5 h-5', { 'fill-blue-500': liked, 'fill-neutral-400': !liked })} />
               </p>
             </div>
             <div className="flex-grow" />
-            <div className="flex">
-              <p className="text-small font-semibold leading-none text-default-400">{timeAgo}</p>
+            <div className="flex gap-4">
+              <p className="text-small font-semibold leading-none text-default-500">{timeAgo}</p>
+              <Tooltip
+                classNames={{
+                  content: 'dark text-neutral-400',
+                }}
+                delay={750}
+                content={intPost.public ? 'public post' : 'private post'}
+              >
+                {intPost.public ? (
+                  <EyeIcon className="w-4  text-neutral-400" />
+                ) : (
+                  <EyeSlashIcon className="w-4 text-neutral-400" />
+                )}
+              </Tooltip>
             </div>
           </div>
         </CardFooter>
