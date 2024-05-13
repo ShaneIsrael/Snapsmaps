@@ -18,19 +18,14 @@ controller.public = async (req, res, next) => {
       Image,
       { model: PostComment, include: [{ model: User, include: [Image] }] },
     ]
+    const orQuery = [{ public: true }]
     if (req.session.user) {
+      orQuery.push({ userId: req.session.user.id })
       include.push({ model: PostLike, where: { userId: req.session?.user?.id }, required: false })
     }
     const posts = await Post.findAll({
       where: {
-        [Op.or]: [
-          {
-            public: true,
-          },
-          {
-            userId: req.session.user?.id,
-          },
-        ],
+        [Op.or]: orQuery,
         createdAt: {
           [Op.lt]: lastDate || sequelize.fn('NOW'),
         },

@@ -54,7 +54,7 @@ controller.create = async (req, res, next) => {
   let createdPost
   try {
     const { image } = req.files
-    const { title, latitude, longitude, public } = req.body
+    const { title, nsfw, latitude, longitude, public } = req.body
 
     if (!image || !latitude || !longitude || !/^image/.test(image.mimetype))
       return res.status(400).send('A post requires an image and a gps location.')
@@ -89,6 +89,7 @@ controller.create = async (req, res, next) => {
       {
         title,
         public,
+        nsfw,
         userId: req.session.user.id,
         imageId: imageRow.id,
       },

@@ -25,6 +25,8 @@ import { PostService } from '../../services'
 import { toast } from 'sonner'
 import SnapMap from '../Map/SnapMap'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
+import Nsfw from '../../assets/icons/Nsfw'
+import Sfw from '../../assets/icons/Sfw'
 
 function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
   const abortControllerRef = useRef(new AbortController())
@@ -32,6 +34,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
   const [selectedTab, setSelectedTab] = useState('photo')
   const [description, setDescription] = useState('')
   const [publicPost, setPublicPost] = useState(true)
+  const [nsfw, setNsfw] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
 
@@ -45,6 +48,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
     setDescription('')
     setSelectedTab('photo')
     setSubmitting(false)
+    setNsfw(false)
     setUploadProgress(0)
 
     if (imageData) {
@@ -69,6 +73,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
         await PostService.create(
           description,
           publicPost,
+          nsfw,
           imageData.gps,
           imageData.file,
           (progress) => setUploadProgress(progress),
@@ -114,6 +119,41 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                 }}
                 isDisabled={submitting}
               />
+              <div className="flex w-full mt-1">
+                <div className="flex flex-row-reverse mr-2 w-full items-center">
+                  <div className=" text-sm font-bold ">{publicPost ? 'PUBLIC' : 'PRIVATE'}</div>
+                </div>
+                <div className="flex gap-0 items-center">
+                  <Tooltip content={publicPost ? 'public post' : 'private post'} color="primary">
+                    <div>
+                      <Switch
+                        color={publicPost ? 'primary' : 'default'}
+                        isSelected={publicPost}
+                        onValueChange={setPublicPost}
+                        size="lg"
+                        startContent={<EyeIcon />}
+                        endContent={<EyeSlashIcon />}
+                      />
+                    </div>
+                  </Tooltip>
+                  <div className="h-[31px] w-[3px] bg-neutral-700 mr-2 rounded-2xl" />
+                  <Tooltip content={!nsfw ? 'safe for work' : 'not safe for work'} color="danger">
+                    <div>
+                      <Switch
+                        color={nsfw ? 'danger' : 'default'}
+                        isSelected={nsfw}
+                        onValueChange={setNsfw}
+                        size="lg"
+                        startContent={<Nsfw />}
+                        endContent={<Sfw />}
+                      />
+                    </div>
+                  </Tooltip>
+                </div>
+                <div className="flex items-center w-full">
+                  <div className="text-sm font-bold ">{nsfw ? 'NSFW' : 'SFW'}</div>
+                </div>
+              </div>
             </CardHeader>
             <CardBody className="py-0 px-0 relative w-full h-full">
               <Tabs
@@ -142,7 +182,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                   <img
                     alt="preview image upload"
                     src={`data:image/png;base64,${imageData?.base64}`}
-                    className="object-cover w-full h-full"
+                    className={clsx('object-cover w-full h-full', { 'blur-md': nsfw })}
                   />
                 </Tab>
                 <Tab
@@ -155,7 +195,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                   }
                   className="h-full"
                 >
-                  <div className="overflow-hidden h-full">
+                  <div className="overflow-hidden h-full ">
                     <SnapMap
                       markers={[{ lat: imageData?.gps.latitude, lng: imageData?.gps.longitude }]}
                       defaultZoom={16}
@@ -164,7 +204,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                 </Tab>
               </Tabs>
             </CardBody>
-            <CardFooter className="flex flex-col px-2 pt-2 pb-5 gap-2">
+            <CardFooter className="flex flex-col px-4 pt-2 pb-5 gap-2">
               {submitting && (
                 <div className="relative align-middle justify-center w-full">
                   <p className="absolute bottom-0 text-center text-sm font-extrabold tracking-widest w-full z-10">
@@ -180,23 +220,12 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                   />
                 </div>
               )}
-              <div className="w-full flex flex-row align-middle items-center justify-center gap-8">
+              <div className="w-full flex flex-row align-middle items-center justify-center gap-4">
                 <Button size="lg" color="danger" variant="flat" fullWidth onClick={handleCancel}>
                   <CloseIcon />
                 </Button>
-                <Tooltip content={publicPost ? 'public post' : 'private post'} color="primary">
-                  <div>
-                    <Switch
-                      color={publicPost ? 'primary' : 'default'}
-                      isSelected={publicPost}
-                      onValueChange={setPublicPost}
-                      size="lg"
-                      startContent={<EyeIcon />}
-                      endContent={<EyeSlashIcon />}
-                    />
-                  </div>
-                </Tooltip>
-                <Button color="primary" variant="solid" fullWidth onClick={submit} isDisabled={submitting}>
+
+                <Button size="lg" color="primary" variant="solid" fullWidth onClick={submit} isDisabled={submitting}>
                   {submitting ? 'Posting...' : <SendIcon />}
                 </Button>
               </div>

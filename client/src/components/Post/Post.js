@@ -36,6 +36,7 @@ import { ArrowsPointingOutIcon, ChatBubbleLeftRightIcon, XMarkIcon } from '@hero
 import { ArrowDownTrayIcon, ShareIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../Map/SnapMap'
 import { toast } from 'sonner'
+import Nsfw from '../../assets/icons/Nsfw'
 
 function Post({
   post,
@@ -49,6 +50,7 @@ function Post({
   isAuthenticated,
 }) {
   const [intPost, setIntPost] = React.useState(post)
+  const [revealed, setRevealed] = React.useState(!post.nsfw)
   const [isFollowed, setIsFollowed] = React.useState(defaultFollowed)
   const [selectedTab, setSelectedTab] = React.useState(defaultSelectedTab || 'photo')
   const [liked, setLiked] = React.useState(defaultLiked)
@@ -233,7 +235,7 @@ function Post({
             </Dropdown>
           )}
         </CardHeader>
-        <CardBody className="py-0 text-small text-default-500 overflow-hidden px-0" classNames={{}}>
+        <CardBody className="py-0 text-small text-default-500 overflow-hidden px-0">
           {intPost?.title && (
             <div className="mb-3 mx-3">
               <p className="leading-4 max-h-[65px] min-h-[20px] overflow-y-auto">{intPost?.title}</p>
@@ -263,18 +265,36 @@ function Post({
                 </div>
               }
             >
-              <div className="relative w-full h-full cursor-pointer [&>button]:hover:block max-h-[598px] overflow-y-hidden">
-                <Button
-                  size="sm"
-                  isIconOnly
-                  variant="flat"
-                  className="absolute hidden right-2 top-2 pointer-events-none"
-                >
-                  <ArrowsPointingOutIcon className="stroke-neutral-100/80 w-8 h-8" />
-                </Button>
+              <div className="relative w-full h-full cursor-pointer [&>div]:hover:flex max-h-[598px] overflow-y-hidden">
+                {revealed && (
+                  <>
+                    <div className="absolute hidden right-2 top-2 pointer-events-none z-10">
+                      <Button size="sm" isIconOnly variant="flat">
+                        <ArrowsPointingOutIcon className="stroke-neutral-100/80 w-8 h-8" />
+                      </Button>
+                    </div>
+                    {intPost.nsfw && (
+                      <div className="absolute hidden right-2 top-12 z-10">
+                        <Button size="sm" isIconOnly variant="flat" onClick={() => setRevealed(false)}>
+                          <EyeSlashIcon className="stroke-neutral-100/80 opacity-80 w-6 h-6" />
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )}
+                {!revealed && (
+                  <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <Button size="lg" isIconOnly variant="flat" className="">
+                      <Nsfw className="stroke-neutral-100/80 w-8 h-8 opacity-80" />
+                    </Button>
+                    <div className="text-md font-bold text-neutral-100 bg-default/40 p-1 rounded-lg">
+                      View NSFW Content
+                    </div>
+                  </div>
+                )}
                 <img
-                  onClick={() => onOpenModal(postImage)}
-                  className="object-cover w-full h-full"
+                  onClick={revealed ? () => onOpenModal(postImage) : () => setRevealed(true)}
+                  className={clsx('object-cover w-full h-full', { 'blur-md': intPost.nsfw && !revealed })}
                   alt="a post image"
                   src={postImage}
                 />
@@ -372,7 +392,7 @@ function Post({
                 content={intPost.public ? 'public post' : 'private post'}
               >
                 {intPost.public ? (
-                  <EyeIcon className="w-4  text-neutral-400" />
+                  <EyeIcon className="w-4 text-neutral-400" />
                 ) : (
                   <EyeSlashIcon className="w-4 text-neutral-400" />
                 )}

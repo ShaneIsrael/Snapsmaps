@@ -58,7 +58,7 @@ app.use(
       httpOnly: true,
       sameSite: true,
       secure: true,
-      maxAge: new Date(253402300799999), // Basically, never expire ever.
+      maxAge: new Date(253402300799999).getTime(), // Basically, never expire ever.
     },
   }),
 )
