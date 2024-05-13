@@ -287,7 +287,7 @@ function Post({
                     <Button size="lg" isIconOnly variant="flat" className="">
                       <Nsfw className="stroke-neutral-100/80 w-8 h-8 opacity-80" />
                     </Button>
-                    <div className="text-md font-bold text-neutral-100 bg-default/40 p-1 rounded-lg">
+                    <div className="text-md font-semibold text-neutral-100 bg-default/40 p-1 px-3 rounded-2xl">
                       View NSFW Content
                     </div>
                   </div>

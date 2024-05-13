@@ -49,6 +49,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
     setSelectedTab('photo')
     setSubmitting(false)
     setNsfw(false)
+    setPublicPost(true)
     setUploadProgress(0)
 
     if (imageData) {
@@ -158,7 +159,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
             <CardBody className="py-0 px-0 relative w-full h-full">
               <Tabs
                 aria-label="post tabs"
-                size="sm"
+                size="md"
                 color="primary"
                 radius="full"
                 selectedKey={selectedTab}
@@ -195,7 +196,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                   }
                   className="h-full"
                 >
-                  <div className="overflow-hidden h-full ">
+                  <div className="overflow-hidden h-full sm:h-[680px] ">
                     <SnapMap
                       markers={[{ lat: imageData?.gps.latitude, lng: imageData?.gps.longitude }]}
                       defaultZoom={16}
@@ -221,11 +222,11 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                 </div>
               )}
               <div className="w-full flex flex-row align-middle items-center justify-center gap-4">
-                <Button size="lg" color="danger" variant="flat" fullWidth onClick={handleCancel}>
+                <Button size="md" color="danger" variant="flat" fullWidth onClick={handleCancel}>
                   <CloseIcon />
                 </Button>
 
-                <Button size="lg" color="primary" variant="solid" fullWidth onClick={submit} isDisabled={submitting}>
+                <Button size="md" color="primary" variant="solid" fullWidth onClick={submit} isDisabled={submitting}>
                   {submitting ? 'Posting...' : <SendIcon />}
                 </Button>
               </div>
