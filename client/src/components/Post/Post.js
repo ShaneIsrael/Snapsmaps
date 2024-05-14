@@ -154,9 +154,8 @@ function Post({
   return (
     <>
       <Card
-        className={clsx('sm:w-full rounded-none bg-background border-none', {
+        className={clsx('sm:w-full rounded-none bg-background border-none sm:min-w-[450px]', {
           'w-screen': !isSingle,
-          'sm:min-w-[450px]': !isSingle,
         })}
       >
         <CardHeader className="justify-between p-0">
