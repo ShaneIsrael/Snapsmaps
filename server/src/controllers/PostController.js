@@ -2,8 +2,9 @@ const path = require('path')
 const sharp = require('sharp')
 const { v4: uuidv4 } = require('uuid')
 
+const { Op } = require('sequelize')
 const Models = require('../database/models')
-const { Post, User, PostComment, Image, PostLike, Follow } = Models
+const { Post, User, PostComment, Image, PostLike, Follow, sequelize } = Models
 const { uploadImage } = require('../services/UploadService')
 const { createPostNotifications } = require('../services/NotificationService')
 const { isFollowingUser } = require('../services/FollowService')
@@ -137,6 +138,29 @@ controller.deletePost = async (req, res, next) => {
     await post.destroy()
 
     return res.sendStatus(200)
+  } catch (err) {
+    next(err)
+  }
+}
+
+controller.getPostLikes = async (req, res, next) => {
+  try {
+    const { lastDate, id, pageSize } = req.query
+
+    if (!id) return res.status(400).send('an id is required')
+
+    const likes = await PostLike.findAll({
+      where: {
+        postId: id,
+        createdAt: {
+          [Op.lt]: lastDate || sequelize.fn('NOW'),
+        },
+      },
+      order: [['createdAt', 'desc']],
+      include: [{ model: User, include: [Image] }],
+      limit: pageSize,
+    })
+    res.status(200).send(likes)
   } catch (err) {
     next(err)
   }

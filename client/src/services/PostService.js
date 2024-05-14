@@ -22,6 +22,9 @@ class PostService {
   delete(id) {
     return Api().delete('/post', { params: { id } })
   }
+  getPostLikes(id, lastDate, pageSize = 25) {
+    return Api().get('/post/likes', { params: { id, lastDate, pageSize } })
+  }
 }
 
 const service = new PostService()

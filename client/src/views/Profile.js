@@ -72,7 +72,6 @@ function Profile({ isSelf, isMention }) {
 
   async function fetchHistory(mention) {
     try {
-      console.log(mention)
       const history = mention
         ? (await ProfileService.getMentionPostHistory(mention)).data
         : (await ProfileService.getPostHistory()).data
@@ -294,7 +293,7 @@ function Profile({ isSelf, isMention }) {
                     <>
                       <h4 className="text-2xl font-semibold leading-none text-default-600">{profile?.displayName}</h4>
                       <h5 className="text-md tracking-tight text-blue-400">@{profile?.mention}</h5>
-                      <p className="text-small tracking-tight text-default-500 mt-2 whitespace-pre-line">
+                      <p className="text-small tracking-normal text-default-600 mt-2 whitespace-pre-line">
                         {profile?.bio}
                       </p>
                     </>
@@ -338,7 +337,7 @@ function Profile({ isSelf, isMention }) {
                       <span className="text-md font-semibold text-default-600">posts</span>
                     </div>
                     <div
-                      className="flex flex-col items-center cursor-pointer"
+                      className="flex flex-col items-center cursor-pointer [&>*]:hover:text-blue-500"
                       onClick={() =>
                         navigate(mention ? `/user/${mention}/follows#followers` : '/profile/follows#followers')
                       }
@@ -347,7 +346,7 @@ function Profile({ isSelf, isMention }) {
                       <span className="text-md font-semibold text-default-600">followers</span>
                     </div>
                     <div
-                      className="flex flex-col items-center cursor-pointer"
+                      className="flex flex-col items-center cursor-pointer [&>*]:hover:text-blue-500"
                       onClick={() =>
                         navigate(mention ? `/user/${mention}/follows#following` : '/profile/follows#following')
                       }

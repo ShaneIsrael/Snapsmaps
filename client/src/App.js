@@ -9,29 +9,63 @@ import Profile from './views/Profile'
 import VerifyEmail from './views/VerifyEmail'
 import UserSearch from './views/UserSearch'
 import ProfileFollows from './views/ProfileFollows'
+import PostLikes from './views/PostLikes'
 
-const router = createBrowserRouter([{ path: '*', Component: Root }])
+const router = createBrowserRouter([
+  { path: '/user/*', Component: UserRoot },
+  { path: '/profile/*', Component: ProfileRoot },
+  { path: '/post/*', Component: PostRoot },
+  { path: '/search/*', Component: SearchRoot },
+  { path: '*', Component: Root },
+])
 
 function Root() {
-  const [appearance, setAppearance] = useState('dark')
-
-  const toggle = () => {
-    setAppearance(appearance === 'dark' ? 'light' : 'dark')
-  }
-
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/profile" element={<Profile isSelf />} />
-      <Route path="/profile/follows" element={<ProfileFollows />} />
-      <Route path="/search" element={<UserSearch />} />
-      <Route path="/user/:mention" element={<Profile isMention />} />
-      <Route path="/user/:mention/follows" element={<ProfileFollows />} />
-      <Route path="/user/:mention/:postId" element={<Profile isMention />} />
-      <Route path="/user/:mention/:postId/:tabId" element={<Profile isMention />} />
       <Route path="/verify/:email/:token" element={<VerifyEmail />} />
+      <Route path="*" element={<div>not found</div>} />
+    </Routes>
+  )
+}
+
+function UserRoot() {
+  return (
+    <Routes>
+      <Route path="/:mention" element={<Profile isMention />} />
+      <Route path="/:mention/follows" element={<ProfileFollows />} />
+      <Route path="/:mention/:postId" element={<Profile isMention />} />
+      <Route path="/:mention/:postId/:tabId" element={<Profile isMention />} />
+      <Route path="*" element={<div>not found</div>} />
+    </Routes>
+  )
+}
+
+function ProfileRoot() {
+  return (
+    <Routes>
+      <Route path="/" element={<Profile isSelf />} />
+      <Route path="/follows" element={<ProfileFollows />} />
+      <Route path="*" element={<div>not found</div>} />
+    </Routes>
+  )
+}
+
+function PostRoot() {
+  return (
+    <Routes>
+      <Route path="/:postId/likes" element={<PostLikes />} />
+      <Route path="*" element={<div>not found</div>} />
+    </Routes>
+  )
+}
+
+function SearchRoot() {
+  return (
+    <Routes>
+      <Route path="/" element={<UserSearch />} />
       <Route path="*" element={<div>not found</div>} />
     </Routes>
   )

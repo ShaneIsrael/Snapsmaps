@@ -31,8 +31,14 @@ import {
   EllipsisVerticalIcon,
   EyeIcon,
   EyeSlashIcon,
+  HeartIcon as HeartIconSolid,
 } from '@heroicons/react/24/solid'
-import { ArrowsPointingOutIcon, ChatBubbleLeftRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import {
+  ArrowsPointingOutIcon,
+  ChatBubbleLeftRightIcon,
+  XMarkIcon,
+  HeartIcon as HeartIconOutlined,
+} from '@heroicons/react/24/outline'
 import { ArrowDownTrayIcon, ShareIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../Map/SnapMap'
 import { toast } from 'sonner'
@@ -70,18 +76,6 @@ function Post({
       console.error(err)
     }
   }
-
-  // useEffect(() => {
-  //   async function checkIfLiked() {
-  //     if (isAuthenticated) {
-  //       const isLiked = (await LikeService.hasLikedPost(post?.id)).data
-  //       setLiked(isLiked)
-  //     }
-  //   }
-  //   if (user) {
-  //     checkIfLiked()
-  //   }
-  // }, [user])
 
   const handleLike = async () => {
     if (isAuthenticated) {
@@ -191,7 +185,7 @@ function Post({
                 {intPost?.user?.displayName}
               </h4>
 
-              <h5 className="text-small font-semibold tracking-tight text-default-400">@{intPost?.user?.mention}</h5>
+              <h5 className="text-small font-semibold tracking-normal text-slate-400">@{intPost?.user?.mention}</h5>
             </div>
           </div>
           {isAuthenticated && (
@@ -238,7 +232,9 @@ function Post({
         <CardBody className="py-0 text-small text-default-500 overflow-hidden px-0">
           {intPost?.title && (
             <div className="mb-3 mx-3">
-              <p className="leading-4 max-h-[65px] min-h-[20px] overflow-y-auto">{intPost?.title}</p>
+              <p className="text-default-600 font-semibold leading-4 max-h-[65px] min-h-[20px] overflow-y-auto">
+                {intPost?.title}
+              </p>
             </div>
           )}
           <Tabs
@@ -374,16 +370,26 @@ function Post({
         <CardFooter className="gap-3 pt-0">
           <div className="flex w-full flex-row justify-center items-center gap-4 px-2">
             <div className="flex gap-1 ">
-              {intPost?.likeCount > 0 && (
-                <p className="font-semibold text-default-400 text-small">{intPost?.likeCount}</p>
-              )}
               <p className=" text-default-500 text-small cursor-pointer" onClick={handleLike}>
-                <HandThumbUpIcon className={clsx('w-5 h-5', { 'fill-blue-500': liked, 'fill-neutral-400': !liked })} />
+                {liked ? (
+                  <HeartIconSolid className="w-5 h-5 fill-red-500" />
+                ) : (
+                  <HeartIconOutlined className="w-5 h-5 stroke-default-600" />
+                )}
               </p>
+              {intPost?.likeCount > 0 && (
+                <p
+                  className="font-semibold text-default-700 text-small cursor-pointer hover:text-blue-500"
+                  onClick={() => navigate(`/post/${intPost.id}/likes`)}
+                >
+                  {intPost?.likeCount}
+                  {intPost?.likeCount === 1 ? ' like' : ' likes'}
+                </p>
+              )}
             </div>
             <div className="flex-grow" />
-            <div className="flex gap-4">
-              <p className="text-small font-semibold leading-none text-default-500">{timeAgo}</p>
+            <div className="flex gap-2">
+              <p className="text-small font-semibold leading-none text-default-600 cursor-default">{timeAgo}</p>
               <Tooltip
                 classNames={{
                   content: 'dark text-neutral-400',
@@ -392,9 +398,9 @@ function Post({
                 content={intPost.public ? 'public post' : 'private post'}
               >
                 {intPost.public ? (
-                  <EyeIcon className="w-4 text-neutral-400" />
+                  <EyeIcon className="w-4 text-default-600" />
                 ) : (
-                  <EyeSlashIcon className="w-4 text-neutral-400" />
+                  <EyeSlashIcon className="w-4 text-default-600" />
                 )}
               </Tooltip>
             </div>
