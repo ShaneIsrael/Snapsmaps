@@ -207,7 +207,7 @@ function Profile({ isSelf, isMention }) {
             backdrop="blur"
             hideCloseButton
           >
-            <ModalContent className="sm:max-w-[375px] ">
+            <ModalContent className="overflow-hidden">
               {(onClose) => (
                 <Post
                   isSelf={isSelf}
