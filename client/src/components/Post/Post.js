@@ -354,7 +354,9 @@ function Post({
                     labelPlacement="outside"
                     placeholder="Write..."
                     value={comment}
-                    onChange={(event) => setComment(event.target.value)}
+                    onChange={(event) =>
+                      setComment(event.target.value.slice(0, process.env.REACT_APP_MAX_POST_COMMENT_LENGTH))
+                    }
                     maxRows={2}
                     onKeyDown={handleCommentKeydown}
                     className="max-w mt-2"

@@ -8,7 +8,7 @@ const { Post, User, PostComment, Image, PostLike, Follow, sequelize } = Models
 const { uploadImage } = require('../services/UploadService')
 const { createPostNotifications } = require('../services/NotificationService')
 const { isFollowingUser } = require('../services/FollowService')
-
+const { maxPostTitleLength } = require('../config').app
 const isProduction = process.env.NODE_ENV === 'production'
 
 const controller = {}
@@ -57,6 +57,8 @@ controller.create = async (req, res, next) => {
     const { image } = req.files
     const { title, nsfw, latitude, longitude, public } = req.body
 
+    if (typeof title !== 'string') return res.status(400).send('title must be a string.')
+
     if (!image || !latitude || !longitude || !/^image/.test(image.mimetype))
       return res.status(400).send('A post requires an image and a gps location.')
 
@@ -88,7 +90,7 @@ controller.create = async (req, res, next) => {
     )
     const postRow = await Post.create(
       {
-        title,
+        title: title.slice(0, maxPostTitleLength),
         public,
         nsfw,
         userId: req.session.user.id,

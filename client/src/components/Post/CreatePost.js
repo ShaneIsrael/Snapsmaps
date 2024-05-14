@@ -112,7 +112,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                 variant="bordered"
                 placeholder="Write something interesting..."
                 value={description}
-                onValueChange={setDescription}
+                onValueChange={(value) => setDescription(value.slice(0, process.env.REACT_APP_MAX_POST_TITLE_LENGTH))}
                 maxRows={2}
                 className="w-full"
                 classNames={{

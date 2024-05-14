@@ -305,7 +305,12 @@ function Profile({ isSelf, isMention }) {
                         variant="bordered"
                         placeholder="Name"
                         value={updatedProfileDetails?.displayName}
-                        onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, displayName: value }))}
+                        onValueChange={(value) =>
+                          setUpdatedProfileDetails((prev) => ({
+                            ...prev,
+                            displayName: value.slice(0, process.env.REACT_APP_MAX_DISPLAY_NAME_LENGTH),
+                          }))
+                        }
                         className="w-full"
                       />
                       <Input
@@ -314,7 +319,12 @@ function Profile({ isSelf, isMention }) {
                         variant="bordered"
                         placeholder="@mention"
                         value={updatedProfileDetails?.mention}
-                        onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, mention: value }))}
+                        onValueChange={(value) =>
+                          setUpdatedProfileDetails((prev) => ({
+                            ...prev,
+                            mention: value.slice(0, process.env.REACT_APP_MAX_MENTION_LENGTH),
+                          }))
+                        }
                         className="w-full"
                         isDisabled
                       />
@@ -322,7 +332,12 @@ function Profile({ isSelf, isMention }) {
                         variant="bordered"
                         placeholder="Bio"
                         value={updatedProfileDetails?.bio}
-                        onValueChange={(value) => setUpdatedProfileDetails((prev) => ({ ...prev, bio: value }))}
+                        onValueChange={(value) =>
+                          setUpdatedProfileDetails((prev) => ({
+                            ...prev,
+                            bio: value.slice(0, process.env.REACT_APP_MAX_PROFILE_BIO_LENGTH),
+                          }))
+                        }
                         rows={2}
                         maxRows={2}
                         className="w-full"

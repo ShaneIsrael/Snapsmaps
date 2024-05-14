@@ -6,6 +6,7 @@ const { isValidEmail } = require('../utils')
 const { Op } = require('sequelize')
 const logger = require('../utils/logger')
 const { sendVerificationEmail } = require('../services/EmailService')
+const { maxDisplayNameLength, maxMentionLength } = require('../config').app
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -24,12 +25,16 @@ controller.register = async (req, res, next) => {
 
     if (displayName.length < 5)
       return res.status(400).send({ field: 'displayName', message: 'Display name must be at least 5 characters.' })
-    if (displayName.length > 32)
-      return res.status(400).send({ field: 'displayName', message: 'Display name must be less than 32 characters' })
+    if (displayName.length > maxDisplayNameLength)
+      return res
+        .status(400)
+        .send({ field: 'displayName', message: `Display name must be less than ${maxDisplayNameLength} characters` })
     if (mention.length < 4)
       return res.status(400).send({ field: 'mention', message: 'mention must be at least 4 characters.' })
-    if (mention.length > 16)
-      return res.status(400).send({ field: 'mention', message: 'mention must be less than 16 characters.' })
+    if (mention.length > maxMentionLength)
+      return res
+        .status(400)
+        .send({ field: 'mention', message: `mention must be less than ${maxMentionLength} characters.` })
     if (mention.match(/\s/))
       return res.status(400).send({ field: 'mention', message: 'No spaces in mention names allowed.' })
     if (mention.match(/\@/))
@@ -41,6 +46,10 @@ controller.register = async (req, res, next) => {
         .send({ field: 'mention', message: 'Only letters, numbers, periods, and underscores allowed.' })
     if (password.length < 5)
       return res.status(400).send({ field: 'password', message: 'Password must be at least 5 characters.' })
+    if (password.length > maxPasswordLength)
+      return res
+        .status(400)
+        .send({ field: 'password', message: `Password must be less than ${maxPasswordLength} characters.` })
 
     const userLookup = await User.findOne({
       attributes: { include: ['email'] },

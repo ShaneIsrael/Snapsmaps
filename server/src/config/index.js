@@ -1,5 +1,13 @@
 module.exports = {
   environment: process.env.NODE_ENV || 'development',
+  app: {
+    maxPostTitleLength: 500,
+    maxPostCommentLength: 750,
+    maxProfileBioLength: 1000,
+    maxDisplayNameLength: 32,
+    maxMentionLength: 20,
+    maxPasswordLength: 64,
+  },
   development: {
     spaces: {
       edge: null,

@@ -2,18 +2,19 @@ const Models = require('../database/models')
 const { createPostCommentNotifications } = require('../services/NotificationService')
 const { PostComment } = Models
 const isProduction = process.env.NODE_ENV === 'production'
-
+const { maxPostCommentLength } = require('../config').app
 const controller = {}
 
 controller.create = async (req, res, next) => {
   try {
     const { postId, body } = req.body
     if (!postId) return res.status(400).send('a post id is required')
+    if (typeof body !== 'string') return res.status(400).send('body must be a string')
 
     const comment = await PostComment.create({
       userId: req.session.user.id,
       postId,
-      body,
+      body: body.slice(0, maxPostCommentLength),
     })
 
     createPostCommentNotifications(req.session.user.id, postId, comment.id)
