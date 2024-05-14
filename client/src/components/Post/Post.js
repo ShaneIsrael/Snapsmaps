@@ -280,7 +280,7 @@ function Post({
                 {!revealed && (
                   <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <Button size="lg" isIconOnly variant="flat" className="">
-                      <Nsfw className="stroke-neutral-100/80 w-8 h-8 opacity-80" />
+                      <Nsfw className="stroke-neutral-400/80 w-8 h-8 opacity-80" />
                     </Button>
                     <div className="text-md font-semibold text-neutral-100 bg-default/40 p-1 px-3 rounded-2xl">
                       View NSFW Content
@@ -289,7 +289,7 @@ function Post({
                 )}
                 <img
                   onClick={revealed ? () => onOpenModal(postImage) : () => setRevealed(true)}
-                  className={clsx('object-cover w-full h-full', { 'blur-md': intPost.nsfw && !revealed })}
+                  className={clsx('object-cover w-full h-full', { 'blur-lg': intPost.nsfw && !revealed })}
                   alt="a post image"
                   src={postImage}
                 />

@@ -167,7 +167,7 @@ controller.getPostHistory = async (req, res, next) => {
     const history = await Post.findAll({
       where: { userId: req.session.user.id },
       order: [['createdAt', 'desc']],
-      attributes: ['id'],
+      attributes: ['id', 'nsfw'],
       include: [{ model: Image, attributes: ['reference', 'latitude', 'longitude'] }],
     })
     res.status(200).send(history)

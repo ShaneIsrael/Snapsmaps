@@ -28,6 +28,8 @@ import Footer from '../components/Layout/Footer'
 import { toast } from 'sonner'
 import ProfilePageSkeleton from '../components/Skeletons/ProfilePageSkeleton'
 import PageLayout from '../components/Layout/PageLayout'
+import clsx from 'clsx'
+import Nsfw from '../assets/icons/Nsfw'
 
 function Profile({ isSelf, isMention }) {
   const postModal = useDisclosure()
@@ -386,15 +388,24 @@ function Profile({ isSelf, isMention }) {
               )}
             </div>
             <Divider className="my-5" />
-            <div className="grid grid-cols-[repeat(auto-fill,120px)] justify-center">
+            <div className="grid grid-cols-[repeat(auto-fill,124px)] justify-center">
               {postHistory.map((post) => (
-                <Image
-                  key={`post-history-${post.id}`}
-                  onClick={() => handleOpenModal(post.id)}
-                  alt="a history image"
-                  src={getAssetUrl() + post.image.reference}
-                  className="w-[120px] h-[120px] rounded-none border-1 border-black object-cover cursor-pointer"
-                />
+                <div className="relative w-[120px] h-[120px] cursor-pointer overflow-hidden">
+                  {post.nsfw && (
+                    <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                      <Button size="md" isIconOnly variant="flat" className="">
+                        <Nsfw className="stroke-neutral-400/80 w-6 h-6 opacity-60" />
+                      </Button>
+                    </div>
+                  )}
+                  <Image
+                    key={`post-history-${post.id}`}
+                    onClick={() => handleOpenModal(post.id)}
+                    alt="a history image"
+                    src={getAssetUrl() + post.image.reference}
+                    className={clsx('object-cover rounded-none', { 'blur-sm': post.nsfw })}
+                  />
+                </div>
               ))}
             </div>
           </div>
