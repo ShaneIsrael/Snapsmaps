@@ -6,7 +6,8 @@ const { isValidEmail } = require('../utils')
 const { Op } = require('sequelize')
 const logger = require('../utils/logger')
 const { sendVerificationEmail } = require('../services/EmailService')
-const { maxDisplayNameLength, maxMentionLength } = require('../config').app
+const { UserState } = require('../constants/UserState')
+const { maxDisplayNameLength, maxMentionLength, maxPasswordLength } = require('../config').app
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -115,6 +116,9 @@ controller.login = async (req, res, next) => {
       }
 
       if (await bcrypt.compare(password, user.password)) {
+        if (user.state === UserState.Banned) {
+          return res.status(401).send('Account has been banned.')
+        }
         req.session.user = user
         logger.info(`logging in user with email: ${user.email}`)
         return res

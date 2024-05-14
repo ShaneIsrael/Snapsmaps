@@ -37,7 +37,7 @@ controller.getById = async (req, res, next) => {
     })
     const isFollowing = await isFollowingUser(req.session.user, post.user.id)
 
-    if (!post.public && !isFollowing) {
+    if (!post.public && post.user.id !== req.session.user?.id && !isFollowing) {
       return res
         .status(401)
         .send('You are trying to view a private post. You must be a follower of the user to view their private posts.')

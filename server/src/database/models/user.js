@@ -1,5 +1,6 @@
 const { Model } = require('sequelize')
 const bcrypt = require('bcryptjs')
+const { UserState } = require('../../constants/UserState')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -79,6 +80,11 @@ module.exports = (sequelize, DataTypes) => {
       token: {
         type: DataTypes.STRING,
       },
+      state: {
+        type: DataTypes.ENUM,
+        values: Object.values(UserState),
+        defaultValue: UserState.Active,
+      },
     },
     {
       sequelize,
@@ -86,13 +92,23 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'user',
       defaultScope: {
         attributes: {
-          exclude: ['email', 'password', 'token', 'verified'],
+          exclude: ['email', 'password', 'token', 'verified', 'state'],
         },
       },
       scopes: {
         withPassword: {
           attributes: {
-            include: ['password'],
+            include: ['password', 'state'],
+          },
+        },
+        withState: {
+          attributes: {
+            include: ['state'],
+          },
+        },
+        withVerified: {
+          attributes: {
+            include: ['verified'],
           },
         },
       },

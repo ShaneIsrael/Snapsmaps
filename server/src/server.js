@@ -48,6 +48,12 @@ app.use(cookieParser())
 
 const sessionStore = new SequelizeStore({
   db: db.sequelize,
+  table: 'Sessions',
+  extendDefaultFields: (defaults, session) => ({
+    data: defaults.data,
+    expires: defaults.expires,
+    userId: session.user?.id,
+  }),
 })
 app.use(
   session({
