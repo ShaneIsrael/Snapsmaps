@@ -279,9 +279,9 @@ function Post({
                 {!revealed && (
                   <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <Button size="lg" isIconOnly variant="flat" className="">
-                      <Nsfw2 className="stroke-neutral-100/10 w-8 h-8 opacity-60" />
+                      <Nsfw2 className="stroke-neutral-100/10 w-8 h-8 opacity-70" />
                     </Button>
-                    <div className="text-md font-bold text-neutral-100/60 bg-default/40 p-1 px-3 rounded-2xl ">
+                    <div className="text-md font-bold text-neutral-100/70 bg-default/40 p-1 px-3 rounded-2xl ">
                       View NSFW Content
                     </div>
                   </div>

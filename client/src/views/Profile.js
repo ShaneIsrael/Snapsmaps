@@ -390,11 +390,11 @@ function Profile({ isSelf, isMention }) {
             <Divider className="my-5" />
             <div className="grid grid-cols-[repeat(auto-fill,124px)] justify-center">
               {postHistory.map((post) => (
-                <div className="relative w-[120px] h-[120px] cursor-pointer overflow-hidden">
+                <div className="relative cursor-pointer overflow-hidden">
                   {post.nsfw && (
                     <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                       <Button size="md" isIconOnly variant="flat" className="">
-                        <Nsfw2 className="stroke-neutral-100/10 w-6 h-6 opacity-60" />
+                        <Nsfw2 className="stroke-neutral-100/10 w-6 h-6 opacity-70" />
                       </Button>
                     </div>
                   )}
@@ -403,7 +403,7 @@ function Profile({ isSelf, isMention }) {
                     onClick={() => handleOpenModal(post.id)}
                     alt="a history image"
                     src={getAssetUrl() + post.image.reference}
-                    className={clsx('object-cover rounded-none', { 'blur-sm': post.nsfw })}
+                    className={clsx('w-[120px] h-[120px] object-cover rounded-none', { 'blur-sm': post.nsfw })}
                   />
                 </div>
               ))}
