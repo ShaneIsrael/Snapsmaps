@@ -66,12 +66,12 @@ controller.create = async (req, res, next) => {
     const fileContent = Buffer.from(image.data)
     if (!isProduction) {
       await sharp(fileContent)
-        .webp({ quality: 70 })
+        .webp({ quality: 85 })
         .rotate()
         .withMetadata()
         .toFile(path.join(process.cwd(), '/images', reference))
     } else {
-      const compressed = await sharp(fileContent).webp({ quality: 70 }).rotate().withMetadata().toBuffer()
+      const compressed = await sharp(fileContent).webp({ quality: 85 }).rotate().withMetadata().toBuffer()
       await uploadImage(compressed, reference, 'image/webp')
     }
 

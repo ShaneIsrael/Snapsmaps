@@ -42,6 +42,7 @@ import { ArrowDownTrayIcon, ShareIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../Map/SnapMap'
 import { toast } from 'sonner'
 import Nsfw2 from '../../assets/icons/Nsfw2'
+import ConfirmationDialog from '../Dialog/ConfirmationDialog'
 
 function Post({
   post,
@@ -61,6 +62,7 @@ function Post({
   const [liked, setLiked] = React.useState(defaultLiked)
   const [comment, setComment] = React.useState('')
   const [deleted, setDeleted] = React.useState(false)
+  const [confirmDelete, setConfirmDelete] = React.useState(false)
 
   const navigate = useNavigate()
 
@@ -99,13 +101,16 @@ function Post({
     }
   }
 
-  const handleDelete = async () => {
-    try {
-      await PostService.delete(post.id)
-      setDeleted(true)
-    } catch (err) {
-      console.error(err)
-    }
+  const handleDelete = () => {
+    setConfirmDelete(false)
+    setTimeout(async () => {
+      try {
+        await PostService.delete(post.id)
+        setDeleted(true)
+      } catch (err) {
+        console.error(err)
+      }
+    }, 750)
   }
 
   const handleCommentKeydown = (e) => {
@@ -152,6 +157,16 @@ function Post({
 
   return (
     <>
+      <ConfirmationDialog
+        open={confirmDelete}
+        title="Are you sure?"
+        body="This action is not reversible."
+        actionText="Delete Post"
+        actionColor="danger"
+        cancelColor="default"
+        onAction={handleDelete}
+        onCancel={() => setConfirmDelete(false)}
+      />
       <Card
         className={clsx('sm:w-full rounded-none bg-background border-none sm:min-w-[450px]', {
           'w-screen': !isSingle,
@@ -217,7 +232,7 @@ function Post({
                     key="delete"
                     className="text-danger"
                     color="danger"
-                    onClick={handleDelete}
+                    onClick={() => setConfirmDelete(true)}
                     startContent={<XMarkIcon className="h-4 w-4" />}
                   >
                     Delete Post

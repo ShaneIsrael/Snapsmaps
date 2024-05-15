@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Image, Modal, ModalContent, Spinner, Tab, Tabs, useDisclosure } from '@nextui-org/react'
-import { UserGroupIcon } from '@heroicons/react/24/solid'
+import { Button, Image, Modal, ModalContent, Spinner, Tab, Tabs, useDisclosure } from '@nextui-org/react'
+import { UserGroupIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { GlobeAmericasIcon } from '@heroicons/react/24/solid'
 import Feed from '../components/feed/Feed'
 import FeedWrapper from '../components/feed/FeedWrapper'
 import { useFeed } from '../hooks/useFeed'
 import PageLayout from '../components/Layout/PageLayout'
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 
 const SCROLL_DELTA = 15
 
@@ -77,15 +78,27 @@ const Dashboard = () => {
       {({ user, isAuthenticated }) => (
         <>
           <Modal
-            className="rounded-none h-fit w-fit "
+            className="rounded-none bg-opacity-0 h-fit w-fit"
             isOpen={isOpen}
             onClose={onClose}
             size="full"
             placement="center"
             backdrop="blur"
+            hideCloseButton
           >
-            <ModalContent className="h-fit w-fit">
-              {(onClose) => <Image className="rounded-none" onClick={onClose} alt="a post image" src={modalImage} />}
+            <ModalContent className="bg-opacity-0 h-fit w-fit">
+              {(onClose) => (
+                <TransformWrapper disablePadding smooth>
+                  <div className="relevant absolute top-2 right-2 z-10">
+                    <Button size="md" variant="flat" isIconOnly onClick={onClose}>
+                      <XMarkIcon className="text-neutral-50/70" />
+                    </Button>
+                  </div>
+                  <TransformComponent>
+                    <img className="object-cover" src={modalImage} alt="a post image" />
+                  </TransformComponent>
+                </TransformWrapper>
+              )}
             </ModalContent>
           </Modal>
 
