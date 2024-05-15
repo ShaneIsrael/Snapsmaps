@@ -27,6 +27,7 @@ import SnapMap from '../Map/SnapMap'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 import Nsfw from '../../assets/icons/Nsfw'
 import Sfw from '../../assets/icons/Sfw'
+import Nsfw2 from '../../assets/icons/Nsfw2'
 
 function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
   const abortControllerRef = useRef(new AbortController())
@@ -145,7 +146,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                         isSelected={nsfw}
                         onValueChange={setNsfw}
                         size="lg"
-                        startContent={<Nsfw />}
+                        startContent={<Nsfw2 />}
                         endContent={<Sfw />}
                       />
                     </div>
