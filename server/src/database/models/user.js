@@ -87,6 +87,13 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      hooks: {
+        afterUpdate: (user) => {
+          if (user.state === UserState.Banned) {
+            sequelize.models.Sessions.destroy({ where: { userId: user.id } })
+          }
+        },
+      },
       sequelize,
       paranoid: true,
       modelName: 'user',

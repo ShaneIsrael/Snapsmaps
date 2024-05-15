@@ -120,6 +120,7 @@ controller.login = async (req, res, next) => {
           return res.status(401).send('Account has been banned.')
         }
         req.session.user = user
+        req.session.cookie.expires = false
         logger.info(`logging in user with email: ${user.email}`)
         return res
           .cookie(

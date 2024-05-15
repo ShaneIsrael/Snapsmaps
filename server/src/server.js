@@ -64,7 +64,8 @@ app.use(
       httpOnly: true,
       sameSite: true,
       secure: true,
-      maxAge: new Date(253402300799999).getTime(), // Basically, never expire ever.
+      // maxAge: new Date(253402300799999).getTime(), // Basically, never expire ever.
+      maxAge: 60 * 60 * 100,
     },
   }),
 )
@@ -91,6 +92,7 @@ app.use(
 )
 
 // API Routes
+require('./routes/admin')(app)
 require('./routes/auth')(app)
 require('./routes/post')(app)
 require('./routes/feed')(app)
