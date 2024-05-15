@@ -26,7 +26,6 @@ import { CommentService, LikeService, PostService } from '../../services'
 import { formatDistanceStrict } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 import {
-  HandThumbUpIcon,
   ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid,
   EllipsisVerticalIcon,
   EyeIcon,
@@ -42,7 +41,7 @@ import {
 import { ArrowDownTrayIcon, ShareIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../Map/SnapMap'
 import { toast } from 'sonner'
-import Nsfw from '../../assets/icons/Nsfw'
+import Nsfw2 from '../../assets/icons/Nsfw2'
 
 function Post({
   post,
@@ -271,7 +270,7 @@ function Post({
                     {intPost.nsfw && (
                       <div className="absolute hidden right-2 top-12 z-10">
                         <Button size="sm" isIconOnly variant="flat" onClick={() => setRevealed(false)}>
-                          <EyeSlashIcon className="stroke-neutral-100/80 opacity-80 w-6 h-6" />
+                          <EyeSlashIcon className="text-neutral-100/80 opacity-80 w-6 h-6" />
                         </Button>
                       </div>
                     )}
@@ -280,9 +279,9 @@ function Post({
                 {!revealed && (
                   <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <Button size="lg" isIconOnly variant="flat" className="">
-                      <Nsfw className="stroke-neutral-400/80 w-8 h-8 opacity-80" />
+                      <Nsfw2 className="stroke-neutral-100/10 w-8 h-8 opacity-60" />
                     </Button>
-                    <div className="text-md font-semibold text-neutral-100 bg-default/40 p-1 px-3 rounded-2xl">
+                    <div className="text-md font-bold text-neutral-100/60 bg-default/40 p-1 px-3 rounded-2xl ">
                       View NSFW Content
                     </div>
                   </div>

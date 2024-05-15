@@ -29,7 +29,7 @@ import { toast } from 'sonner'
 import ProfilePageSkeleton from '../components/Skeletons/ProfilePageSkeleton'
 import PageLayout from '../components/Layout/PageLayout'
 import clsx from 'clsx'
-import Nsfw from '../assets/icons/Nsfw'
+import Nsfw2 from '../assets/icons/Nsfw2'
 
 function Profile({ isSelf, isMention }) {
   const postModal = useDisclosure()
@@ -394,7 +394,7 @@ function Profile({ isSelf, isMention }) {
                   {post.nsfw && (
                     <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                       <Button size="md" isIconOnly variant="flat" className="">
-                        <Nsfw className="stroke-neutral-400/80 w-6 h-6 opacity-60" />
+                        <Nsfw2 className="stroke-neutral-100/10 w-6 h-6 opacity-60" />
                       </Button>
                     </div>
                   )}
