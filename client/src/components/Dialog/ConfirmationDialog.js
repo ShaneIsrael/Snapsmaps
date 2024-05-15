@@ -13,7 +13,7 @@ function ConfirmationDialog({
   onCancel,
 }) {
   return (
-    <Modal isOpen={open} backdrop="opaque" className="dark bg-black " hideCloseButton>
+    <Modal isOpen={open} backdrop="blur" className="dark bg-slate-950 rounded-none sm:rounded-lg my-0" hideCloseButton>
       <ModalContent>
         {(onClose) => (
           <>
