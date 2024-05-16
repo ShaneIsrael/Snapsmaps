@@ -22,7 +22,7 @@ import { getAssetUrl, getSessionUser } from '../common/utils'
 import { PostService, ProfileService } from '../services'
 import ImageCropProvider from '../providers/ImageCropProvider'
 import ImageCrop from '../components/Cropper/ImageCrop'
-import { ArrowPathIcon } from '@heroicons/react/24/solid'
+import { ArrowPathIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../components/Map/SnapMap'
 import Footer from '../components/Layout/Footer'
 import { toast } from 'sonner'
@@ -30,6 +30,7 @@ import ProfilePageSkeleton from '../components/Skeletons/ProfilePageSkeleton'
 import PageLayout from '../components/Layout/PageLayout'
 import clsx from 'clsx'
 import Nsfw2 from '../assets/icons/Nsfw2'
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 function Profile({ isSelf, isMention }) {
   const postModal = useDisclosure()
@@ -195,9 +196,18 @@ function Profile({ isSelf, isMention }) {
           >
             <ModalContent className="w-fit h-fit ">
               {(onClose) => (
-                <>
-                  <Image className="rounded-none " onClick={imageModal.onClose} alt="a post image" src={modalImage} />
-                </>
+                <div className="max-h-[90vh]">
+                  <TransformWrapper disablePadding smooth>
+                    <div className="relevant absolute top-2 right-2 z-10">
+                      <Button size="md" variant="flat" isIconOnly onClick={imageModal.onClose}>
+                        <XMarkIcon className="text-neutral-50/70" />
+                      </Button>
+                    </div>
+                    <TransformComponent>
+                      <img className="object-cover" src={modalImage} alt="a post image" />
+                    </TransformComponent>
+                  </TransformWrapper>
+                </div>
               )}
             </ModalContent>
           </Modal>
@@ -223,6 +233,12 @@ function Profile({ isSelf, isMention }) {
                 />
               )}
             </ModalContent>
+            <Button
+              isIconOnly
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-50"
+            >
+              <XMarkIcon />
+            </Button>
           </Modal>
 
           <div className="flex-grow mx-0 pb-[50px] pt-20 overflow-y-auto">

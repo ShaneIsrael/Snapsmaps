@@ -274,7 +274,12 @@ function Post({
                 </div>
               }
             >
-              <div className="relative w-full h-full cursor-pointer [&>div]:hover:flex max-h-[598px] overflow-y-hidden">
+              <div
+                className={clsx('relative w-full h-full cursor-pointer [&>div]:hover:flex  overflow-y-hidden', {
+                  'max-h-[598px]': !isSingle,
+                  'max-h-[400px] overflow-y-scroll': isSingle,
+                })}
+              >
                 {revealed && (
                   <>
                     <div className="absolute hidden right-2 top-2 pointer-events-none z-10">
@@ -422,6 +427,7 @@ function Post({
           </div>
         </CardFooter>
       </Card>
+
       {!isSingle && <Divider />}
     </>
   )
