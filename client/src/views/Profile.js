@@ -199,7 +199,7 @@ function Profile({ isSelf, isMention }) {
             placement="center"
             backdrop="blur"
           >
-            <ModalContent className="w-fit h-fit ">
+            <ModalContent className="w-fit h-fit max-h-[95vh]">
               {(onClose) => (
                 <div className="max-h-[90vh]">
                   <TransformWrapper disablePadding smooth>
@@ -209,7 +209,7 @@ function Profile({ isSelf, isMention }) {
                       </Button>
                     </div>
                     <TransformComponent>
-                      <img className="object-cover" src={modalImage} alt="a post image" />
+                      <img className="object-fit" src={modalImage} alt="a post image" />
                     </TransformComponent>
                   </TransformWrapper>
                 </div>

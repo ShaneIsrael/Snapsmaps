@@ -86,7 +86,7 @@ const Dashboard = () => {
             backdrop="blur"
             hideCloseButton
           >
-            <ModalContent className="bg-opacity-0 h-fit w-fit">
+            <ModalContent className="bg-opacity-0 h-fit w-fit max-h-[95vh]">
               {(onClose) => (
                 <TransformWrapper disablePadding smooth>
                   <div className="relevant absolute top-2 right-2 z-10">
@@ -95,7 +95,7 @@ const Dashboard = () => {
                     </Button>
                   </div>
                   <TransformComponent>
-                    <img className="object-cover" src={modalImage} alt="a post image" />
+                    <img className="object-fit" src={modalImage} alt="a post image" />
                   </TransformComponent>
                 </TransformWrapper>
               )}
