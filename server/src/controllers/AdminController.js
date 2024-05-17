@@ -1,3 +1,4 @@
+const { admins } = require('../config')
 const { UserState } = require('../constants/UserState')
 const Models = require('../database/models')
 const { User, Post, PostComment, Image } = Models
@@ -34,6 +35,9 @@ controller.banUser = async (req, res, next) => {
   try {
     const user = await User.findOne({ where: { mention } })
     if (user) {
+      if (admins.includes(user.email)) {
+        return res.status(400).send('You cannot ban an admin.')
+      }
       user.state = UserState.Banned
       user.save()
       return res.sendStatus(200)
