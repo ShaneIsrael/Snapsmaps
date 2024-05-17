@@ -8,6 +8,7 @@ const { Post, User, PostComment, Image, PostLike, Follow, sequelize } = Models
 const { uploadImage } = require('../services/UploadService')
 const { createPostNotifications } = require('../services/NotificationService')
 const { isFollowingUser } = require('../services/FollowService')
+const { UserState } = require('../constants/UserState')
 const { maxPostTitleLength } = require('../config').app
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -41,6 +42,9 @@ controller.getById = async (req, res, next) => {
       return res
         .status(401)
         .send('You are trying to view a private post. You must be a follower of the user to view their private posts.')
+    }
+    if (post.user.state === UserState.Banned) {
+      return res.status(401).send('You cannot view the posts of a banned user.')
     }
 
     res.status(200).send(post)
@@ -163,17 +167,6 @@ controller.getPostLikes = async (req, res, next) => {
       limit: pageSize,
     })
     res.status(200).send(likes)
-  } catch (err) {
-    next(err)
-  }
-}
-
-controller.test = async (req, res, next) => {
-  try {
-    PostLike.create({
-      userId: 1,
-      postId: 1,
-    })
   } catch (err) {
     next(err)
   }

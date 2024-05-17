@@ -75,6 +75,7 @@ function Post({
       setComment('')
       const postData = (await PostService.get(post.id)).data
       setIntPost(postData)
+      setRevealed(!postData.nsfw)
     } catch (err) {
       console.error(err)
     }

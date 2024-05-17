@@ -13,9 +13,10 @@ import { getAssetUrl } from '../../common/utils'
 import clsx from 'clsx'
 import { formatDistanceStrict, subDays } from 'date-fns'
 import { EllipsisVerticalIcon } from '@heroicons/react/24/solid'
-import { CommentService } from '../../services'
+import { AdminService, CommentService } from '../../services'
 import { useNavigate } from 'react-router-dom'
 import ConfirmationDialog from '../Dialog/ConfirmationDialog'
+import { toast } from 'sonner'
 
 function Comment({ comment, user }) {
   const profileImage = comment?.user.image
@@ -35,11 +36,12 @@ function Comment({ comment, user }) {
   }
 
   const handleAdminDelete = async () => {
-    try {
-      console.log('admin delete comment')
-    } catch (err) {
-      console.error(err)
-    }
+    AdminService.deleteComment(comment.id)
+      .then(() => {
+        toast.info('Comment deleted')
+        setDeleted(true)
+      })
+      .catch(() => toast.error('error completing action'))
   }
 
   // dont show this comment anymore
