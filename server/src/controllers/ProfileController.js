@@ -7,6 +7,7 @@ const sharp = require('sharp')
 const { Op } = require('sequelize')
 const { createFollowNotification } = require('../services/NotificationService')
 const { isFollowingUser } = require('../services/FollowService')
+const { UserState } = require('../constants/UserState')
 const { maxProfileBioLength, maxDisplayNameLength } = require('../config').app
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -50,11 +51,13 @@ controller.getByMention = async (req, res, next) => {
     if (!mention) return res.status(400).send('a mention is required')
 
     const userRow = await User.findOne({
-      where: { mention, verified: true },
+      where: { mention, verified: true, state: { [Op.ne]: UserState.Banned } },
       include: [{ model: Image, attributes: ['reference'] }],
       raw: true,
       nest: true,
     })
+
+    if (!userRow) return res.status(400).send('user does not exist')
 
     let isFollowed = false
     // if authenticated and looking at a profile
@@ -186,7 +189,7 @@ controller.getMentionPostHistory = async (req, res, next) => {
 
     const userRow = await User.findOne({
       attributes: ['id'],
-      where: { mention, verified: true },
+      where: { mention, verified: true, state: { [Op.ne]: UserState.Banned } },
     })
 
     if (!userRow) {

@@ -22,7 +22,7 @@ import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
 import Comment from '../Comment/Comment'
 import { downloadFile, getAssetUrl } from '../../common/utils'
-import { CommentService, LikeService, PostService } from '../../services'
+import { AdminService, CommentService, LikeService, PostService } from '../../services'
 import { formatDistanceStrict } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -38,6 +38,7 @@ import {
   XMarkIcon,
   HeartIcon as HeartIconOutlined,
 } from '@heroicons/react/24/outline'
+import { GiThorHammer } from 'react-icons/gi'
 import { ArrowDownTrayIcon, ShareIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../Map/SnapMap'
 import { toast } from 'sonner'
@@ -63,6 +64,7 @@ function Post({
   const [comment, setComment] = React.useState('')
   const [deleted, setDeleted] = React.useState(false)
   const [confirmDelete, setConfirmDelete] = React.useState(false)
+  const [confirmAdminAction, setConfirmAdminAction] = React.useState({ open: false })
 
   const navigate = useNavigate()
 
@@ -155,6 +157,25 @@ function Post({
     }
   }
 
+  const handleAdminBanUser = () => {
+    AdminService.banUser(post.user.mention)
+      .then(() => toast.info('User banned successfully.'))
+      .catch(() => toast.error('error while attempting action'))
+  }
+  const handleAdminDeletePost = () => {
+    AdminService.deletePost(post.id)
+      .then(() => toast.info('Post deleted successfully.'))
+      .catch(() => toast.error('error while attempting action'))
+  }
+  const handleAdminSetPostNsfw = () => {
+    AdminService.markPostNSFW(post.id)
+      .then(() => {
+        reload()
+        toast.info('Post updated successfully')
+      })
+      .catch(() => toast.error('error while attempting action'))
+  }
+
   return (
     <>
       <ConfirmationDialog
@@ -167,6 +188,21 @@ function Post({
         onAction={handleDelete}
         onCancel={() => setConfirmDelete(false)}
       />
+      <ConfirmationDialog
+        open={confirmAdminAction.open}
+        title={confirmAdminAction.title}
+        body="Are you sure you want to execute this action?"
+        actionText="Yes"
+        cancelText="No"
+        actionColor="warning"
+        cancelColor="default"
+        onAction={() => {
+          confirmAdminAction.action()
+          setConfirmAdminAction({ open: false })
+        }}
+        onCancel={() => setConfirmAdminAction({ open: false })}
+      />
+
       <Card
         className={clsx('sm:w-full rounded-none bg-background border-none sm:min-w-[450px]', {
           'w-screen': !isSingle,
@@ -218,7 +254,7 @@ function Post({
                   Download photo
                 </DropdownItem>
                 <DropdownItem
-                  showDivider={isSelf}
+                  showDivider={isSelf || user?.isAdmin}
                   key="share"
                   className="text-neutral-100"
                   onClick={handleSharePost}
@@ -236,6 +272,58 @@ function Post({
                     startContent={<XMarkIcon className="h-4 w-4" />}
                   >
                     Delete Post
+                  </DropdownItem>
+                )}
+                {user?.isAdmin && !intPost.nsfw && !isSelf && (
+                  <DropdownItem
+                    key="adminSetPostNSFW"
+                    className="text-warning"
+                    color="warning"
+                    onClick={() =>
+                      setConfirmAdminAction({
+                        open: true,
+                        title: `Set post as NSFW`,
+                        action: handleAdminSetPostNsfw,
+                      })
+                    }
+                    startContent={<Nsfw2 className="h-4 w-4" />}
+                  >
+                    Mark as NSFW
+                  </DropdownItem>
+                )}
+                {user?.isAdmin && !isSelf && (
+                  <DropdownItem
+                    key="adminDeletePost"
+                    className="text-warning"
+                    color="warning"
+                    onClick={() =>
+                      setConfirmAdminAction({
+                        open: true,
+                        title: `Delete ${intPost?.user.mention}'s post`,
+                        action: handleAdminDeletePost,
+                      })
+                    }
+                    startContent={<XMarkIcon className="h-4 w-4" />}
+                  >
+                    Delete Post
+                  </DropdownItem>
+                )}
+                {user?.isAdmin && !isSelf && (
+                  <DropdownItem
+                    key="adminBanUser"
+                    className="text-warning"
+                    color="warning"
+                    hidden={!user?.isAdmin || isSelf}
+                    onClick={() =>
+                      setConfirmAdminAction({
+                        open: true,
+                        title: `Permanently Ban ${intPost?.user.mention}`,
+                        action: handleAdminBanUser,
+                      })
+                    }
+                    startContent={<GiThorHammer className="h-4 w-4" />}
+                  >
+                    Ban User
                   </DropdownItem>
                 )}
               </DropdownMenu>

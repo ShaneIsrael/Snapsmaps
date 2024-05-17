@@ -1,5 +1,6 @@
 const { Op } = require('sequelize')
 const Models = require('../database/models')
+const { UserState } = require('../constants/UserState')
 const { Post, PostComment, User, Image, Follow, PostLike, sequelize } = Models
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -23,8 +24,19 @@ controller.public = async (req, res, next) => {
       orQuery.push({ userId: req.session.user.id })
       include.push({ model: PostLike, where: { userId: req.session?.user?.id }, required: false })
     }
+    const bannedUserIds = (
+      await User.findAll({
+        attributes: ['id'],
+        where: {
+          state: UserState.Banned,
+        },
+        raw: true,
+      })
+    ).map((u) => u.id)
+
     const posts = await Post.findAll({
       where: {
+        userId: { [Op.notIn]: bannedUserIds },
         [Op.or]: orQuery,
         createdAt: {
           [Op.lt]: lastDate || sequelize.fn('NOW'),
@@ -57,10 +69,21 @@ controller.following = async (req, res, next) => {
     const followingIds = following.map((follow) => follow.followed.id)
     followingIds.push(req.session.user.id)
 
+    const bannedUserIds = (
+      await User.findAll({
+        attributes: ['id'],
+        where: {
+          state: UserState.Banned,
+        },
+        raw: true,
+      })
+    ).map((u) => u.id)
+
     const posts = await Post.findAll({
       where: {
         userId: {
           [Op.in]: followingIds,
+          [Op.notIn]: bannedUserIds,
         },
         createdAt: {
           [Op.lt]: lastDate || sequelize.fn('NOW'),
@@ -71,7 +94,11 @@ controller.following = async (req, res, next) => {
         [PostComment, 'createdAt', 'asc'],
       ],
       include: [
-        { model: User, attributes: ['displayName', 'mention'], include: [Image] },
+        {
+          model: User,
+          attributes: ['displayName', 'mention'],
+          include: [Image],
+        },
         Image,
         { model: PostComment, include: [{ model: User, include: [Image] }] },
         { model: PostLike, where: { userId: req.session?.user?.id }, required: false },

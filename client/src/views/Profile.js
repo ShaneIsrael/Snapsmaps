@@ -93,8 +93,13 @@ function Profile({ isSelf, isMention }) {
         await fetchHistory()
         setUpdatedProfileDetails(profile)
       } else {
-        profile = (await ProfileService.getProfileByMention(mention)).data
-        await fetchHistory(mention)
+        try {
+          profile = (await ProfileService.getProfileByMention(mention)).data
+          await fetchHistory(mention)
+        } catch (err) {
+          toast.error(err.response.data)
+          navigate('/')
+        }
       }
       setIsFollowed(profile.isFollowed)
       setProfile(profile)

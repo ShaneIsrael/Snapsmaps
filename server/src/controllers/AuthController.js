@@ -7,6 +7,7 @@ const { Op } = require('sequelize')
 const logger = require('../utils/logger')
 const { sendVerificationEmail } = require('../services/EmailService')
 const { UserState } = require('../constants/UserState')
+const { admins } = require('../config')
 const { maxDisplayNameLength, maxMentionLength, maxPasswordLength } = require('../config').app
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -119,6 +120,7 @@ controller.login = async (req, res, next) => {
         if (user.state === UserState.Banned) {
           return res.status(401).send('Account has been banned.')
         }
+        req.session.admin = admins.includes(user.email)
         req.session.user = user
         req.session.cookie.expires = false
         logger.info(`logging in user with email: ${user.email}`)
@@ -186,6 +188,7 @@ controller.hasSession = async (req, res, next) => {
           image: req.session.user.image,
           followersCount: req.session.user.followersCount,
           followingCount: req.session.user.followingCount,
+          isAdmin: req.session.admin,
         }),
         { sameSite: 'strict' },
       )
@@ -197,6 +200,7 @@ controller.hasSession = async (req, res, next) => {
         image: req.session.user.image,
         followersCount: req.session.user.followersCount,
         followingCount: req.session.user.followingCount,
+        isAdmin: req.session.admin,
       })
     }
   } catch (err) {

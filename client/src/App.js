@@ -10,12 +10,14 @@ import VerifyEmail from './views/VerifyEmail'
 import UserSearch from './views/UserSearch'
 import ProfileFollows from './views/ProfileFollows'
 import PostLikes from './views/PostLikes'
+import AdminDashboard from './views/AdminDashboard'
 
 const router = createBrowserRouter([
   { path: '/user/*', Component: UserRoot },
   { path: '/profile/*', Component: ProfileRoot },
   { path: '/post/*', Component: PostRoot },
   { path: '/search/*', Component: SearchRoot },
+  { path: '/admin/*', Component: AdminRoot },
   { path: '*', Component: Root },
 ])
 
@@ -66,6 +68,14 @@ function SearchRoot() {
   return (
     <Routes>
       <Route path="/" element={<UserSearch />} />
+      <Route path="*" element={<div>not found</div>} />
+    </Routes>
+  )
+}
+function AdminRoot() {
+  return (
+    <Routes>
+      <Route path="/" element={<AdminDashboard />} />
       <Route path="*" element={<div>not found</div>} />
     </Routes>
   )

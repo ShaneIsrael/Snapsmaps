@@ -1,5 +1,6 @@
 const { Op } = require('sequelize')
 const Models = require('../database/models')
+const { UserState } = require('../constants/UserState')
 const { User, Image, Notification, Post, PostComment, Follow } = Models
 
 const controller = {}
@@ -13,6 +14,7 @@ controller.search = async (req, res, next) => {
       attributes: ['displayName', 'mention', 'bio'],
       where: {
         verified: true,
+        state: { [Op.ne]: UserState.Banned },
         [Op.or]: {
           displayName: {
             [Op.iLike]: `%${query}%`,

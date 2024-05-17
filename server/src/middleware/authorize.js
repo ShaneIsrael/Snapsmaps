@@ -15,6 +15,7 @@ const authorize = (req, res, next) => {
         image: req.session.user.image,
         followersCount: req.session.user.followersCount,
         followingCount: req.session.user.followingCount,
+        isAdmin: req.session.admin,
       }),
       { sameSite: 'strict' },
     )
@@ -38,11 +39,11 @@ const requireSession = (req, res, next) => {
 }
 
 const verifyAdmin = (req, res, next) => {
-  const admin = req.session.user.admin
-
-  if (!admin) return res.sendStatus(401)
-
-  return next()
+  if (req.session.admin) {
+    return next()
+  } else {
+    return res.sendStatus(401)
+  }
 }
 
 module.exports = {
