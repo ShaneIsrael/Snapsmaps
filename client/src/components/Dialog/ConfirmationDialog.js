@@ -13,14 +13,19 @@ function ConfirmationDialog({
   onCancel,
 }) {
   return (
-    <Modal isOpen={open} backdrop="blur" className="dark bg-slate-950 rounded-none sm:rounded-lg my-0" hideCloseButton>
+    <Modal
+      isOpen={open}
+      backdrop="blur"
+      className="dark bg-slate-950 rounded-none sm:rounded-lg my-0 mx-0"
+      hideCloseButton
+    >
       <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader className="text-2xl text-default-900 pb-0">{title}</ModalHeader>
             {body && <ModalBody className="text-default-600">{body}</ModalBody>}
             <ModalFooter className="pt-0">
-              <Button color={cancelColor || 'danger'} variant="light" onPress={onCancel}>
+              <Button color={cancelColor || 'danger'} variant="bordered" onPress={onCancel}>
                 {cancelText || 'Cancel'}
               </Button>
               <Button color={actionColor || 'primary'} onPress={onAction}>
