@@ -100,8 +100,6 @@ controller.update = async (req, res, next) => {
     if (!displayName && !bio) {
       return res.status(400).send('no profile data provided')
     }
-    if (typeof bio !== 'string' || typeof displayName !== 'string')
-      return res.status(400).send('display name and bio must be strings')
 
     const userRow = await User.findOne({
       where: { id: req.session.user.id, verified: true },
@@ -152,6 +150,7 @@ controller.update = async (req, res, next) => {
         image: userRow.image,
         followersCount: userRow.followersCount,
         followingCount: userRow.followingCount,
+        isAdmin: req.session.admin,
       }),
       { sameSite: 'strict' },
     )

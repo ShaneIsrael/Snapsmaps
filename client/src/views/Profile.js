@@ -411,7 +411,7 @@ function Profile({ isSelf, isMention }) {
             <Divider className="my-5" />
             <div className="grid grid-cols-[repeat(auto-fill,124px)] justify-center">
               {postHistory.map((post) => (
-                <div className="relative cursor-pointer overflow-hidden">
+                <div key={`post-history-${post.id}`} className="relative cursor-pointer overflow-hidden">
                   {post.nsfw && (
                     <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                       <Button size="md" isIconOnly variant="flat" className="">
@@ -420,7 +420,6 @@ function Profile({ isSelf, isMention }) {
                     </div>
                   )}
                   <Image
-                    key={`post-history-${post.id}`}
                     onClick={() => handleOpenModal(post.id)}
                     alt="a history image"
                     src={getAssetUrl() + post.image.reference}
