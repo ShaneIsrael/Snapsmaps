@@ -205,7 +205,7 @@ function Profile({ isSelf, isMention }) {
                   <TransformWrapper disablePadding smooth>
                     <div className="relevant absolute top-2 right-2 z-10">
                       <Button size="md" variant="flat" isIconOnly onClick={imageModal.onClose}>
-                        <XMarkIcon className="text-neutral-50/70" />
+                        <XMarkIcon className="text-neutral-50/90" />
                       </Button>
                     </div>
                     <TransformComponent>

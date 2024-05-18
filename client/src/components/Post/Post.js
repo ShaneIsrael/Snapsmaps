@@ -372,8 +372,8 @@ function Post({
                 {revealed && (
                   <>
                     <div className="absolute hidden right-2 top-2 pointer-events-none z-10">
-                      <Button size="sm" isIconOnly variant="flat">
-                        <ArrowsPointingOutIcon className="stroke-neutral-100/80 w-8 h-8" />
+                      <Button size="sm" isIconOnly variant="light">
+                        <ArrowsPointingOutIcon className="stroke-neutral-100/90 w-8 h-8" />
                       </Button>
                     </div>
                     {intPost.nsfw && (

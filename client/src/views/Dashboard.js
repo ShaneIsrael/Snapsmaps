@@ -86,12 +86,12 @@ const Dashboard = () => {
             backdrop="blur"
             hideCloseButton
           >
-            <ModalContent className="bg-opacity-0 h-fit w-fit max-h-[95vh]">
+            <ModalContent className="bg-opacity-0 max-h-[95vh]">
               {(onClose) => (
                 <TransformWrapper disablePadding smooth>
                   <div className="relevant absolute top-2 right-2 z-10">
                     <Button size="md" variant="flat" isIconOnly onClick={onClose}>
-                      <XMarkIcon className="text-neutral-50/70" />
+                      <XMarkIcon className="text-neutral-50/90" />
                     </Button>
                   </div>
                   <TransformComponent>
