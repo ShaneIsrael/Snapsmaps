@@ -145,7 +145,9 @@ function Post({
   }
 
   const handleSharePost = async () => {
-    const shareLink = `${window.location.origin}/user/${intPost.user?.mention}/${intPost.id}`
+    // const shareLink = `${window.location.origin}/user/${intPost.user?.mention}/${intPost.id}`
+    const shareLink = `${window.location.origin}/share/post/${intPost.id}`
+
     try {
       if (canBrowserShareData({ url: shareLink })) {
         await navigator.share({ url: shareLink })

@@ -1,3 +1,4 @@
+const fs = require('fs')
 const validator = require('email-validator')
 
 module.exports = {
@@ -11,5 +12,14 @@ module.exports = {
       dd = dd * -1
     }
     return dd
+  },
+  readHTMLFile: (path, callback) => {
+    fs.readFile(path, { encoding: 'utf-8' }, (err, html) => {
+      if (err) {
+        callback(err)
+      } else {
+        callback(null, html)
+      }
+    })
   },
 }

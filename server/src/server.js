@@ -92,6 +92,7 @@ app.use(
 )
 
 // API Routes
+require('./routes/share')(app)
 require('./routes/admin')(app)
 require('./routes/auth')(app)
 require('./routes/post')(app)

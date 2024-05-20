@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer')
-const fs = require('fs')
 const handlebars = require('handlebars')
 const logger = require('../utils/logger')
+const { readHTMLFile } = require('../utils')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -14,16 +14,6 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASSWORD,
   },
 })
-
-const readHTMLFile = (path, callback) => {
-  fs.readFile(path, { encoding: 'utf-8' }, (err, html) => {
-    if (err) {
-      callback(err)
-    } else {
-      callback(null, html)
-    }
-  })
-}
 
 const service = {}
 
