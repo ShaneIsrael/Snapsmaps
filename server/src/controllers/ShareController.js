@@ -33,7 +33,7 @@ controller.post = async (req, res, next) => {
         }
         const template = handlebars.compile(html)
         const replacements = {
-          redirect_link: `https://snapsmaps.com/user/${post.user.mention}/${post.id}`,
+          redirect_link: `/user/${post.user.mention}/${post.id}`,
           image_url: `https://cdn.snapsmaps.com${post.image.reference}`,
           description: post.title,
         }
