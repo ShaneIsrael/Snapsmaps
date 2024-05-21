@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Snapsmaps</title>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -11,14 +10,15 @@
     <meta name="theme-color" content="#ffffff" />
     <meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="{{ description }}" />
     <meta name="keywords" content="photo, sharing, mapping, social media" />
+
+    <title>{{ description }}</title>
+    <meta name="description" content="{{ description }}" />
     <meta property="og:site_name" content="Snapsmaps" />
-    <meta property="og:title" content="Snapsmaps" />
+    <meta property="og:title" content="{{ description }}" />
     <meta property="og:type" content="image" data-react-helmet="true" />
     <meta property="og:url" content="{{ redirect_link }}" data-react-helmet="true" />
     <meta property="og:image" content="{{ image_url }}" data-react-helmet="true" />
-    <meta name="description" content="{{ description }}" />
     <meta name="twitter:title" content="Snapsmaps" />
     <meta name="twitter:description" content="{{ description }}" />
 
