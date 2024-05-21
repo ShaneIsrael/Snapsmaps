@@ -44,7 +44,7 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        'script-src': ["'self'", 'snapsmaps.com'],
+        'script-src': ["'self'", "'unsafe-inline'"],
       },
     },
   }),
