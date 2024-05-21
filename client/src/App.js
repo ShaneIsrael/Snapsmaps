@@ -48,7 +48,7 @@ function UserRoot() {
 function ProfileRoot() {
   return (
     <Routes>
-      <Route path="/" element={<Profile isSelf />} />
+      <Route path="/" element={<Profile isSelfProfile />} />
       <Route path="/follows" element={<ProfileFollows />} />
       <Route path="*" element={<div>not found</div>} />
     </Routes>

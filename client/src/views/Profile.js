@@ -32,10 +32,10 @@ import clsx from 'clsx'
 import Nsfw2 from '../assets/icons/Nsfw2'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
-function Profile({ isSelf, isMention }) {
+function Profile({ isSelfProfile, isMention }) {
   const postModal = useDisclosure()
   const imageModal = useDisclosure()
-
+  const [isSelf, setIsSelf] = React.useState(isSelfProfile)
   const [isFollowed, setIsFollowed] = React.useState(false)
   const [post, setPost] = React.useState()
   const [selectedPostTab, setSelectedPostTab] = React.useState('photo')
@@ -160,7 +160,7 @@ function Profile({ isSelf, isMention }) {
 
   React.useEffect(() => {
     if (isMention && sessionUser?.mention === mention) {
-      navigate('/profile')
+      setIsSelf(true)
     }
   }, [isMention, mention])
 

@@ -42,6 +42,7 @@ controller.post = async (req, res, next) => {
           nonce,
         }
         const htmlToSend = template(replacements)
+        res.setHeader('Content-Type', 'text/html')
         res.setHeader('Content-Security-Policy', `script-src 'nonce-${nonce}'`)
         res.send(Buffer.from(htmlToSend))
       })
