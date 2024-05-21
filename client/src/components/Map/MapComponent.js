@@ -82,7 +82,12 @@ function MapComponent({ markers, defaultZoom, streetViewControl }) {
       ]}
     >
       {markers.map((marker, index) => (
-        <Marker key={index} position={marker} onClick={marker.onClick} />
+        <Marker
+          key={index}
+          animation={marker.highlight ? google.maps.Animation.BOUNCE : ''}
+          position={marker}
+          onClick={marker.onClick}
+        />
       ))}
     </Map>
   )

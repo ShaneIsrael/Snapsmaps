@@ -44,6 +44,7 @@ function Profile({ isSelfProfile, isMention }) {
   const [editMode, setEditMode] = React.useState(false)
   const [saving, setSaving] = React.useState(false)
   const [firstLoad, setFirstLoad] = React.useState(true)
+  const [postHistoryHoverId, setPostHistoryHoverId] = React.useState(null)
 
   const { mention, postId, tabId } = useParams()
 
@@ -404,14 +405,20 @@ function Profile({ isSelfProfile, isMention }) {
                     onClick: () => handleOpenModal(post.id),
                     lat: post.image.latitude,
                     lng: post.image.longitude,
+                    highlight: post.id === postHistoryHoverId,
                   }))}
                 />
               )}
             </div>
             <Divider className="my-5" />
-            <div className="grid grid-cols-[repeat(auto-fill,124px)] justify-center">
+            <div className="grid grid-cols-[repeat(auto-fill,120px)] justify-center gap-1">
               {postHistory.map((post) => (
-                <div key={`post-history-${post.id}`} className="relative cursor-pointer overflow-hidden">
+                <div
+                  key={`post-history-${post.id}`}
+                  className="relative cursor-pointer overflow-hidden"
+                  onMouseEnter={() => setPostHistoryHoverId(post.id)}
+                  onMouseLeave={() => setPostHistoryHoverId(null)}
+                >
                   {post.nsfw && (
                     <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                       <Button size="md" isIconOnly variant="flat" className="">
