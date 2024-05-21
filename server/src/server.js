@@ -44,11 +44,12 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        'script-src': ["'self'", 'example.com'],
+        'script-src': ["'self'", 'snapsmaps.com'],
       },
     },
   }),
 )
+
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cookieParser())

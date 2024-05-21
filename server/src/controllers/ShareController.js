@@ -35,6 +35,7 @@ controller.post = async (req, res, next) => {
         const replacements = {
           redirect_link: `/user/${post.user.mention}/${post.id}`,
           image_url: `https://cdn.snapsmaps.com${post.image.reference}`,
+          title: `${post.user.displayName} • @${post.user.mention}`,
           description: post.title,
         }
         const htmlToSend = template(replacements)

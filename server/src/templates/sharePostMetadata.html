@@ -12,14 +12,15 @@
     <meta name="theme-color" content="#000000" />
     <meta name="keywords" content="photo, sharing, mapping, social media" />
 
-    <title>{{ description }}</title>
+    <title>{{ title }}</title>
     <meta name="description" content="{{ description }}" />
     <meta property="og:site_name" content="Snapsmaps" />
-    <meta property="og:title" content="{{ description }}" data-react-helmet="true" />
-    <meta property="og:type" content="image" data-react-helmet="true" />
+    <meta property="og:title" content="{{ title }}" data-react-helmet="true" />
+    <meta property="og:description" content="{{ description }}" data-react-helmet="true" />
+    <meta property="og:type" content="website" data-react-helmet="true" />
     <meta property="og:url" content="{{ redirect_link }}" data-react-helmet="true" />
     <meta property="og:image" content="{{ image_url }}" data-react-helmet="true" />
-    <meta name="twitter:title" content="Snapsmaps" />
+    <meta name="twitter:title" content="{{ title }}" />
     <meta name="twitter:description" content="{{ description }}" />
 
     <link rel="manifest" href="/manifest.json" />
