@@ -40,15 +40,7 @@ app.use(
   }),
 )
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        'script-src': ["'self'", "'unsafe-inline'"],
-      },
-    },
-  }),
-)
+app.use(helmet())
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())

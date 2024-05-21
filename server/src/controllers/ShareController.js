@@ -1,5 +1,5 @@
 const handlebars = require('handlebars')
-const { v4: uuidv4 } = require('uuid')
+const crypto = require('crypto')
 const Models = require('../database/models')
 const { readHTMLFile } = require('../utils')
 const { User, Post, PostComment, Image } = Models
@@ -33,7 +33,7 @@ controller.post = async (req, res, next) => {
           return
         }
         const template = handlebars.compile(html)
-        const nonce = uuidv4()
+        const nonce = crypto.randomBytes(16).toString('hex')
         const replacements = {
           redirect_link: `/user/${post.user.mention}/${post.id}`,
           image_url: `https://cdn.snapsmaps.com${post.image.reference}`,
