@@ -122,7 +122,8 @@ controller.login = async (req, res, next) => {
         }
         req.session.admin = admins.includes(user.email)
         req.session.user = user
-        req.session.cookie.expires = false
+        // req.session.cookie.expires = false
+        req.session.cookie.maxAge = new Date(253402300799999).getTime() // Basically, never expire ever.
         logger.info(`logging in user with email: ${user.email}`)
         return res
           .cookie(
