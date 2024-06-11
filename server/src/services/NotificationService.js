@@ -1,6 +1,7 @@
+const { Op } = require('sequelize')
 const logger = require('../utils/logger')
 const Models = require('../database/models')
-const { Follow, Notification, Post, User } = Models
+const { Follow, Notification, Post, User, PostComment } = Models
 const service = {}
 
 service.createPostNotifications = async (fromUserId, postId, body) => {
@@ -40,6 +41,37 @@ service.createPostCommentNotifications = async (fromUserId, postId, postCommentI
           postCommentId,
         })
       }
+    }
+  } catch (err) {
+    logger.error(err)
+  }
+}
+
+service.createPostDiscussionNotifications = async (fromUserId, postId, postCommentId, body) => {
+  try {
+    const post = await Post.findOne({ where: { id: postId }, attributes: ['userId'], raw: true })
+    const forUsers = await PostComment.findAll({
+      attributes: ['userId'],
+      group: ['userId'],
+      where: {
+        postId,
+        userId: {
+          [Op.notIn]: [fromUserId, post.userId],
+        },
+      },
+      raw: true,
+    })
+    if (forUsers) {
+      forUsers.forEach(({ userId }) =>
+        Notification.create({
+          userId,
+          fromUserId,
+          postId,
+          postCommentId,
+          body,
+          title: 'responded',
+        }),
+      )
     }
   } catch (err) {
     logger.error(err)

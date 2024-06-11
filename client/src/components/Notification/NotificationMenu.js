@@ -8,7 +8,35 @@ function NotificationMenu({ trigger, notifications, onMenuClosed }) {
   const navigate = useNavigate()
 
   function createItem(notification) {
-    if (notification.postComment) {
+    if (notification.title) {
+      return (
+        <DropdownItem
+          key={notification.id}
+          onClick={() => navigate(`/user/${notification.post.user.mention}/${notification.post.id}/comments`)}
+          textValue={`${notification.fromUser.mention} ${notification.title}`}
+          description={
+            <p className="overflow-hidden w-56 text-blue-500 text-nowrap truncate">{notification.postComment.body}</p>
+          }
+          startContent={
+            <div>
+              <Avatar
+                as="button"
+                className="transition-transform w-7 h-7"
+                color={notification.fromUser.image ? 'default' : 'primary'}
+                size="sm"
+                src={notification.fromUser.image ? getAssetUrl() + notification.fromUser.image.reference : ''}
+              />
+            </div>
+          }
+          className={clsx('text-default-500', { 'opacity-60': notification.read })}
+        >
+          <>
+            <p className="inline text-default-900 font-semibold">{notification.fromUser.mention} </p>
+            {notification.title}
+          </>
+        </DropdownItem>
+      )
+    } else if (notification.postComment) {
       return (
         <DropdownItem
           key={notification.id}

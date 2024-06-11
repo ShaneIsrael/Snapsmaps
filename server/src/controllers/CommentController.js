@@ -1,5 +1,5 @@
 const Models = require('../database/models')
-const { createPostCommentNotifications } = require('../services/NotificationService')
+const { createPostCommentNotifications, createPostDiscussionNotifications } = require('../services/NotificationService')
 const { PostComment } = Models
 const isProduction = process.env.NODE_ENV === 'production'
 const { maxPostCommentLength } = require('../config').app
@@ -18,6 +18,7 @@ controller.create = async (req, res, next) => {
     })
 
     createPostCommentNotifications(req.session.user.id, postId, comment.id)
+    createPostDiscussionNotifications(req.session.user.id, postId, comment.id, body)
 
     res.status(201).send(comment)
   } catch (err) {
