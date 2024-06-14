@@ -193,27 +193,29 @@ function Profile({ isSelfProfile, isMention }) {
       {({ user, isAuthenticated }) => (
         <>
           <Modal
-            className="rounded-none transform-gpu w-fit h-fit "
             isOpen={imageModal.isOpen}
             onClose={imageModal.onClose}
             size="full"
             placement="center"
             backdrop="blur"
+            hideCloseButton
           >
-            <ModalContent className="w-fit h-fit max-h-[95vh]">
+            <ModalContent className="bg-opacity-0">
               {(onClose) => (
-                <div className="max-h-[90vh]">
-                  <TransformWrapper disablePadding smooth>
-                    <div className="relevant absolute top-2 right-2 z-10">
-                      <Button size="md" variant="flat" isIconOnly onClick={imageModal.onClose}>
-                        <XMarkIcon className="text-neutral-50/90" />
-                      </Button>
-                    </div>
+                <>
+                  <div className="relevant absolute top-2 right-2 z-10">
+                    <Button size="md" variant="flat" isIconOnly onClick={onClose}>
+                      <XMarkIcon className="text-neutral-50/90" />
+                    </Button>
+                  </div>
+                  <TransformWrapper defaultScale={1}>
                     <TransformComponent>
-                      <img className="object-fit" src={modalImage} alt="a post image" />
+                      <div className="w-screen h-screen flex justify-center">
+                        <img className="object-contain" src={modalImage} alt="a post image" />
+                      </div>
                     </TransformComponent>
                   </TransformWrapper>
-                </div>
+                </>
               )}
             </ModalContent>
           </Modal>

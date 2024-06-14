@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Button, Image, Modal, ModalContent, Spinner, Tab, Tabs, useDisclosure } from '@nextui-org/react'
+import { Button, Image, Modal, ModalBody, ModalContent, Spinner, Tab, Tabs, useDisclosure } from '@nextui-org/react'
 import { UserGroupIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { GlobeAmericasIcon } from '@heroicons/react/24/solid'
 import Feed from '../components/feed/Feed'
@@ -77,27 +77,23 @@ const Dashboard = () => {
     <PageLayout onHome={handleHomeClicked} onSubmit={handlePostCreated} showNav={showNav} fullwidth>
       {({ user, isAuthenticated }) => (
         <>
-          <Modal
-            className="rounded-none bg-opacity-0 h-fit w-fit"
-            isOpen={isOpen}
-            onClose={onClose}
-            size="full"
-            placement="center"
-            backdrop="blur"
-            hideCloseButton
-          >
-            <ModalContent className="bg-opacity-0 max-h-[95vh]">
+          <Modal isOpen={isOpen} onClose={onClose} size="full" placement="center" backdrop="blur" hideCloseButton>
+            <ModalContent className="bg-opacity-0">
               {(onClose) => (
-                <TransformWrapper disablePadding smooth>
+                <>
                   <div className="relevant absolute top-2 right-2 z-10">
                     <Button size="md" variant="flat" isIconOnly onClick={onClose}>
                       <XMarkIcon className="text-neutral-50/90" />
                     </Button>
                   </div>
-                  <TransformComponent>
-                    <img className="object-fit" src={modalImage} alt="a post image" />
-                  </TransformComponent>
-                </TransformWrapper>
+                  <TransformWrapper defaultScale={1}>
+                    <TransformComponent>
+                      <div className="w-screen h-screen flex justify-center">
+                        <img className="object-contain" src={modalImage} alt="a post image" />
+                      </div>
+                    </TransformComponent>
+                  </TransformWrapper>
+                </>
               )}
             </ModalContent>
           </Modal>
