@@ -75,7 +75,11 @@ controller.create = async (req, res, next) => {
         .withMetadata()
         .toFile(path.join(process.cwd(), '/images', reference))
     } else {
-      const compressed = await sharp(fileContent).webp({ quality: 85 }).rotate().withMetadata().toBuffer()
+      const compressed = await sharp(fileContent)
+        .webp({ quality: req.session.admin ? 100 : 85 })
+        .rotate()
+        .withMetadata()
+        .toBuffer()
       await uploadImage(compressed, reference, 'image/webp')
     }
 
