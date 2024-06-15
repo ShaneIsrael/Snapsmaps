@@ -1,5 +1,5 @@
-import firebase from 'firebase/compat/app'
-import 'firebase/compat/messaging'
+import { initializeApp } from 'firebase/app'
+import { getMessaging } from 'firebase/messaging'
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -10,6 +10,6 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 }
 
-firebase.initializeApp(firebaseConfig)
+const app = initializeApp(firebaseConfig)
 
-export const messaging = firebase.messaging()
+export const messaging = getMessaging(app)

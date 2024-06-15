@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { createBrowserRouter, RouterProvider, Navigate, Route, Routes } from 'react-router-dom'
 
 import Login from './views/Login'
@@ -11,6 +11,9 @@ import UserSearch from './views/UserSearch'
 import ProfileFollows from './views/ProfileFollows'
 import PostLikes from './views/PostLikes'
 import AdminDashboard from './views/AdminDashboard'
+import { messaging } from './firebase/firebaseConfig'
+import { onMessage } from 'firebase/messaging'
+import { toast } from 'sonner'
 
 const router = createBrowserRouter([
   { path: '/user/*', Component: UserRoot },
@@ -82,6 +85,11 @@ function AdminRoot() {
 }
 
 function App() {
+  onMessage(messaging, (payload) => {
+    console.log(payload)
+    const { notification } = payload
+    console.log(notification)
+  })
   return <RouterProvider router={router} />
 }
 
