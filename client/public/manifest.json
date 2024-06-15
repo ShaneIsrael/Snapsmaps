@@ -24,5 +24,9 @@
   "background_color": "#ffffff",
   "dir": "auto",
   "scope": "https://snapsmaps.com",
-  "orientation": "portrait-primary"
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "categories": ["photo", "social", "travel"],
+  "description": "Easily share photos with a map pin to friends and family.",
+  "id": "GcsRdT!73i%x9yP2hkTpCW"
 }
