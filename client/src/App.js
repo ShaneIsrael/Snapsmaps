@@ -12,8 +12,7 @@ import ProfileFollows from './views/ProfileFollows'
 import PostLikes from './views/PostLikes'
 import AdminDashboard from './views/AdminDashboard'
 
-import { toast } from 'sonner'
-import Notification from './firebase/Notification'
+import PushNotificationHandler from './firebase/Notification'
 
 const router = createBrowserRouter([
   { path: '/user/*', Component: UserRoot },
@@ -87,7 +86,7 @@ function AdminRoot() {
 function App() {
   return (
     <>
-      <Notification />
+      <PushNotificationHandler />
       <RouterProvider router={router} />
     </>
   )

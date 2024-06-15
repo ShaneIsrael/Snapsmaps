@@ -34,7 +34,7 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.onload = () => {
-          navigator.serviceWorker.register('/firebase-messaging-sw.js', { type: 'module' })
+          navigator.serviceWorker.register('firebase-messaging-sw.js')
         }
       }
     </script>

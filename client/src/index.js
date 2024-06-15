@@ -5,6 +5,7 @@ import App from './App'
 import './index.css'
 import 'react-lazy-load-image-component/src/effects/blur.css'
 import 'react-lazy-load-image-component/src/effects/opacity.css'
+import { getToken } from 'firebase/messaging'
 const rootElement = document.getElementById('root')
 const root = createRoot(rootElement)
 

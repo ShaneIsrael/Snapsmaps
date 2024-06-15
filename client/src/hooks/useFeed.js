@@ -36,7 +36,7 @@ const useFeed = (type) => {
         const feed =
           type === 'world' ? (await FeedService.getPublicFeed()).data : (await FeedService.getFollowingFeed()).data
         setPosts(feed)
-        setLastDate(feed[feed.length - 1].createdAt)
+        setLastDate(feed[feed.length - 1]?.createdAt)
       }
     } catch (err) {
       console.error(err)
