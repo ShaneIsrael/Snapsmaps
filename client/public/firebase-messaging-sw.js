@@ -1,9 +1,6 @@
-// This a service worker file for receiving push notifitications.
-// See `Access registration token section` @ https://firebase.google.com/docs/cloud-messaging/js/client#retrieve-the-current-registration-token
-
-// Scripts for firebase and firebase messaging
-importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js')
-importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js')
+// // This a service worker file for receiving push notifitications.
+import { initializeApp } from 'firebase/app'
+import { getMessaging } from 'firebase/messaging'
 
 // Initialize the Firebase app in the service worker by passing the generated config
 const firebaseConfig = {
@@ -16,20 +13,33 @@ const firebaseConfig = {
   measurementId: 'G-JWP8XMG97T',
 }
 
-firebase.initializeApp(firebaseConfig)
+initializeApp(firebaseConfig)
 
 // Retrieve firebase messaging
-const messaging = firebase.messaging()
+const messaging = getMessaging()
 
 // Handle incoming messages while the app is not in focus (i.e in the background, hidden behind other tabs, or completely closed).
 messaging.onBackgroundMessage(function (payload) {
   console.log('Received background message ', payload)
   // Customize notification here
-  const notification = payload.notification || payload.data
+  const notification = payload.data
   const notificationTitle = notification.title
   const notificationOptions = {
     body: notification.body,
+    icon: '/favicon-32x32.png',
+    badge: '/favicon-32x32.png',
   }
 
   self.registration.showNotification(notificationTitle, notificationOptions)
+})
+
+self.addEventListener('notificationclick', (event) => {
+  if (event.notification.data && event.notification.data.link) {
+    self.clients.openWindow(event.notification.data.link)
+  } else {
+    self.clients.openWindow(event.currentTarget.origin)
+  }
+
+  // close notification after click
+  event.notification.close()
 })
