@@ -23,8 +23,9 @@ const Notification = () => {
 
   onMessageListener()
     .then((payload) => {
-      console.log(payload)
-      setNotification({ title: payload?.notification?.title, body: payload?.notification?.body })
+      const notification = payload.notification || payload.data
+      console.log(notification)
+      setNotification({ title: notification?.title, body: notification?.body })
     })
     .catch((err) => console.log('failed: ', err))
 }

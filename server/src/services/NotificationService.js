@@ -62,14 +62,14 @@ service.createPostDiscussionNotifications = async (fromUserId, postId, postComme
       where: {
         postId,
         userId: {
-          [Op.notIn]: [fromUserId, post.userId],
+          [Op.notIn]: [fromUserId],
         },
       },
       raw: true,
     })
     if (forUsers) {
-      forUsers.forEach(
-        ({ userId }) =>
+      forUsers.forEach(({ userId }) => {
+        if (post.userId !== fromUserId) {
           Notification.create({
             userId,
             fromUserId,
@@ -77,16 +77,17 @@ service.createPostDiscussionNotifications = async (fromUserId, postId, postComme
             postCommentId,
             body,
             title: 'responded',
-          }),
-        User.findByPk(userId).then((user) => {
-          sendPushNotification(
-            userId,
-            'Discussion Response',
-            'somebody responded to a discussion you are in.',
-            `/user/${user.mention}/${postId}/comments`,
-          )
-        }),
-      )
+          })
+          User.findByPk(userId).then((user) => {
+            sendPushNotification(
+              userId,
+              'Discussion Response',
+              'somebody responded to a discussion you are in.',
+              `/user/${user.mention}/${postId}/comments`,
+            )
+          })
+        }
+      })
     }
   } catch (err) {
     logger.error(err)
@@ -110,23 +111,25 @@ service.createFollowNotification = async (fromUserId, forUserId, followId) => {
 
 function sendPushNotification(userId, title, body, link) {
   User.findByPk(userId).then((user) => {
-    const message = {
-      data: {
-        title,
-        body,
-        link,
-      },
-      token: user.pushToken,
+    if (user.pushToken) {
+      const message = {
+        data: {
+          title,
+          body,
+          link,
+        },
+        token: user.pushToken,
+      }
+      admin
+        .messaging()
+        .send(message)
+        .then((response) => {
+          console.log('Successfully sent message:', response)
+        })
+        .catch((error) => {
+          console.error('Error sending message:', error)
+        })
     }
-    admin
-      .messaging()
-      .send(message)
-      .then((response) => {
-        console.log('Successfully sent message:', response)
-      })
-      .catch((error) => {
-        console.error('Error sending message:', error)
-      })
   })
 }
 
