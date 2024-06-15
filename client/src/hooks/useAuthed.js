@@ -43,9 +43,9 @@ const useAuthed = () => {
     const checkAuthStatus = async () => {
       try {
         const session = (await AuthService.hasSession()).data
-        if (!!session) {
-          requestPermission()
-        }
+        // if (!!session) {
+        //   requestPermission()
+        // }
         setIsAuthenticated(!!session)
         setUser(session ? session : null)
       } catch (err) {
