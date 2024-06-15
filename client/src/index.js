@@ -1,5 +1,5 @@
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import { createRoot } from 'react-dom/client'
-
 import { NextUIProvider } from '@nextui-org/react'
 import { Toaster } from 'sonner'
 import App from './App'
@@ -29,3 +29,5 @@ root.render(
     </main>
   </NextUIProvider>,
 )
+
+serviceWorkerRegistration.register()
