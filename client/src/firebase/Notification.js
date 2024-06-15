@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { requestForToken, onMessageListener } from './firebase'
+import { toast } from 'sonner'
 
 const Notification = () => {
   const [notification, setNotification] = useState({ title: '', body: '' })
@@ -24,7 +25,7 @@ const Notification = () => {
   onMessageListener()
     .then((payload) => {
       const notification = payload.notification || payload.data
-      console.log(notification)
+      toast.info(notification?.title)
       setNotification({ title: notification?.title, body: notification?.body })
     })
     .catch((err) => console.log('failed: ', err))
