@@ -12,7 +12,7 @@ import ProfileFollows from './views/ProfileFollows'
 import PostLikes from './views/PostLikes'
 import AdminDashboard from './views/AdminDashboard'
 
-import PushNotificationHandler from './firebase/Notification'
+import PushNotificationHandler from './firebase/PushNotificationHandler'
 
 const router = createBrowserRouter([
   { path: '/user/*', Component: UserRoot },
