@@ -11,9 +11,9 @@ import UserSearch from './views/UserSearch'
 import ProfileFollows from './views/ProfileFollows'
 import PostLikes from './views/PostLikes'
 import AdminDashboard from './views/AdminDashboard'
-import { messaging } from './firebase/firebaseConfig'
-import { onMessage } from 'firebase/messaging'
+
 import { toast } from 'sonner'
+import Notification from './firebase/Notification'
 
 const router = createBrowserRouter([
   { path: '/user/*', Component: UserRoot },
@@ -85,12 +85,12 @@ function AdminRoot() {
 }
 
 function App() {
-  onMessage(messaging, (payload) => {
-    console.log(payload)
-    const { notification } = payload
-    console.log(notification)
-  })
-  return <RouterProvider router={router} />
+  return (
+    <>
+      <Notification />
+      <RouterProvider router={router} />
+    </>
+  )
 }
 
 export default App

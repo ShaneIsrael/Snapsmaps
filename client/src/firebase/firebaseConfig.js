@@ -2,12 +2,13 @@ import { initializeApp } from 'firebase/app'
 import { getMessaging } from 'firebase/messaging'
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  apiKey: 'AIzaSyDA3axtx7R-dr0jQJ_OJjaqJG_3Jt4widA',
+  authDomain: 'snapsmaps-bdb45.firebaseapp.com',
+  projectId: 'snapsmaps-bdb45',
+  storageBucket: 'snapsmaps-bdb45.appspot.com',
+  messagingSenderId: '1037697565957',
+  appId: '1:1037697565957:web:7f09be62d787b47d04e36c',
+  measurementId: 'G-JWP8XMG97T',
 }
 
 const app = initializeApp(firebaseConfig)
