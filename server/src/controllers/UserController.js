@@ -83,4 +83,15 @@ controller.readNotifications = async (req, res, next) => {
   }
 }
 
+controller.updatePushToken = async (req, res, next) => {
+  try {
+    const { token } = req.body
+    await User.update({ pushToken: token }, { where: { id: req.session.user.id } })
+    req.session.user.pushToken = token
+    res.sendStatus(201)
+  } catch (err) {
+    next(err)
+  }
+}
+
 module.exports = controller

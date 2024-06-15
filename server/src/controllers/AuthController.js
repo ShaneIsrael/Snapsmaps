@@ -189,6 +189,7 @@ controller.hasSession = async (req, res, next) => {
           image: req.session.user.image,
           followersCount: req.session.user.followersCount,
           followingCount: req.session.user.followingCount,
+          pushToken: req.session.user.pushToken,
           isAdmin: req.session.admin,
         }),
         { sameSite: 'strict' },
@@ -201,6 +202,7 @@ controller.hasSession = async (req, res, next) => {
         image: req.session.user.image,
         followersCount: req.session.user.followersCount,
         followingCount: req.session.user.followingCount,
+        pushToken: req.session.user.pushToken,
         isAdmin: req.session.admin,
       })
     }

@@ -2,6 +2,12 @@ const { Op } = require('sequelize')
 const logger = require('../utils/logger')
 const Models = require('../database/models')
 const { Follow, Notification, Post, User, PostComment } = Models
+const admin = require('firebase-admin')
+const serviceAccount = require('../config/prod_snapsmaps_firebase_service_account_key.json')
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+})
+
 const service = {}
 
 service.createPostNotifications = async (fromUserId, postId, body) => {
@@ -62,14 +68,23 @@ service.createPostDiscussionNotifications = async (fromUserId, postId, postComme
       raw: true,
     })
     if (forUsers) {
-      forUsers.forEach(({ userId }) =>
-        Notification.create({
-          userId,
-          fromUserId,
-          postId,
-          postCommentId,
-          body,
-          title: 'responded',
+      forUsers.forEach(
+        ({ userId }) =>
+          Notification.create({
+            userId,
+            fromUserId,
+            postId,
+            postCommentId,
+            body,
+            title: 'responded',
+          }),
+        User.findByPk(userId).then((user) => {
+          sendPushNotification(
+            userId,
+            'Discussion Response',
+            'somebody responded to a discussion you are in.',
+            `/user/${user.mention}/${postId}/comments`,
+          )
         }),
       )
     }
@@ -91,6 +106,28 @@ service.createFollowNotification = async (fromUserId, forUserId, followId) => {
   } catch (err) {
     logger.error(err)
   }
+}
+
+function sendPushNotification(userId, title, body, link) {
+  User.findByPk(userId).then((user) => {
+    const message = {
+      data: {
+        title,
+        body,
+        link,
+      },
+      token: user.pushToken,
+    }
+    admin
+      .messaging()
+      .send(message)
+      .then((response) => {
+        console.log('Successfully sent message:', response)
+      })
+      .catch((error) => {
+        console.error('Error sending message:', error)
+      })
+  })
 }
 
 module.exports = service

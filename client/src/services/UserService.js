@@ -15,6 +15,9 @@ class UserService {
   readNotifications() {
     return Api().put('/user/notifications')
   }
+  updatePushNotificationToken(token) {
+    return Api().put('/user/push/token', { token })
+  }
 }
 
 const service = new UserService()

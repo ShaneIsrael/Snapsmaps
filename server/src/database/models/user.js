@@ -80,6 +80,9 @@ module.exports = (sequelize, DataTypes) => {
       token: {
         type: DataTypes.STRING,
       },
+      pushToken: {
+        type: DataTypes.STRING,
+      },
       state: {
         type: DataTypes.ENUM,
         values: Object.values(UserState),
@@ -99,7 +102,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'user',
       defaultScope: {
         attributes: {
-          exclude: ['email', 'password', 'token', 'verified', 'state'],
+          exclude: ['email', 'password', 'token', 'verified', 'pushToken', 'state'],
         },
       },
       scopes: {
