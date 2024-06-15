@@ -177,8 +177,10 @@ controller.verifyEmail = async (req, res, next) => {
 
 controller.hasSession = async (req, res, next) => {
   try {
-    if (!req.session.user) return res.status(200).send(false)
-    else {
+    if (!req.session.user) {
+      req.session.fcmToken = null
+      return res.status(200).send(false)
+    } else {
       res.cookie(
         'user',
         JSON.stringify({
@@ -212,7 +214,8 @@ controller.hasSession = async (req, res, next) => {
 }
 
 controller.logout = async (req, res, next) => {
-  req.session.destroy(() => logger.info(`User ${req.session?.user?.mention} has logged out.`))
+  const message = `User ${req.session?.user?.mention} has logged out.`
+  req.session.destroy(() => logger.info(message))
   res.clearCookie('user')
   return res.status(200).json({ message: 'Successfully logged out!' })
 }

@@ -80,9 +80,6 @@ module.exports = (sequelize, DataTypes) => {
       token: {
         type: DataTypes.STRING,
       },
-      pushToken: {
-        type: DataTypes.STRING,
-      },
       state: {
         type: DataTypes.ENUM,
         values: Object.values(UserState),

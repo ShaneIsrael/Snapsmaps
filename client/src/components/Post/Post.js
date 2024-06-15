@@ -72,7 +72,6 @@ function Post({
 
   async function reload() {
     try {
-      setComment('')
       const postData = (await PostService.get(post.id)).data
       setIntPost(postData)
       setRevealed(!postData.nsfw)
@@ -95,12 +94,10 @@ function Post({
 
   const submitComment = async () => {
     if (isAuthenticated) {
-      try {
-        await CommentService.createPostComment(post.id, comment)
-        reload()
-      } catch (err) {
-        console.error(err)
-      }
+      CommentService.createPostComment(post.id, comment)
+        .then(() => reload())
+        .catch((err) => console.error(err))
+      setComment('')
     }
   }
 

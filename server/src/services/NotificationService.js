@@ -1,7 +1,7 @@
 const { Op } = require('sequelize')
 const logger = require('../utils/logger')
 const Models = require('../database/models')
-const { Follow, Notification, Post, User, PostComment } = Models
+const { Follow, Notification, Post, User, PostComment, Sessions, Image } = Models
 const admin = require('firebase-admin')
 const serviceAccount = require('../config/prod_snapsmaps_firebase_service_account_key.json')
 admin.initializeApp({
@@ -55,6 +55,12 @@ service.createPostCommentNotifications = async (fromUserId, postId, postCommentI
 
 service.createPostDiscussionNotifications = async (fromUserId, postId, postCommentId, body) => {
   try {
+    const fromUserComment = await PostComment.findOne({
+      where: {
+        id: postCommentId,
+      },
+      include: [{ model: User, include: [Image] }],
+    })
     const post = await Post.findOne({ where: { id: postId }, attributes: ['userId'], raw: true })
     const forUsers = await PostComment.findAll({
       attributes: ['userId'],
@@ -78,6 +84,12 @@ service.createPostDiscussionNotifications = async (fromUserId, postId, postComme
             body,
             title: 'responded',
           })
+          sendPushNotification(
+            userId,
+            fromUserComment.user,
+            `${fromUserComment.user.displayName} responded`,
+            fromUserComment.body,
+          )
         }
       })
     }
@@ -101,27 +113,17 @@ service.createFollowNotification = async (fromUserId, forUserId, followId) => {
   }
 }
 
-function sendPushNotification(userId, title, body, link) {
-  User.findByPk(userId).then((user) => {
-    if (user.pushToken) {
-      const message = {
-        data: {
-          title,
-          body,
-          link,
-        },
-        token: user.pushToken,
-      }
-      admin
-        .messaging()
-        .send(message)
-        .then((response) => {
-          console.log('Successfully sent message:', response)
-        })
-        .catch((error) => {
-          console.error('Error sending message:', error)
-        })
-    }
+function sendPushNotification(userId, fromUser, title, body, link) {
+  Sessions.findAll({ where: { userId, fcmToken: { [Op.ne]: null } }, attributes: ['fcmToken'] }).then((sessions) => {
+    const messages = sessions.map((session) => ({
+      data: {
+        title,
+        body,
+        badge: fromUser.image?.reference || '',
+      },
+      token: session.fcmToken,
+    }))
+    messages.forEach((message) => admin.messaging().send(message))
   })
 }
 

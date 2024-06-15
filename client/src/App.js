@@ -87,7 +87,7 @@ function AdminRoot() {
 function App() {
   return (
     <>
-      {/* <Notification /> */}
+      <Notification />
       <RouterProvider router={router} />
     </>
   )

@@ -53,6 +53,7 @@ const sessionStore = new SequelizeStore({
     data: defaults.data,
     expires: defaults.expires,
     userId: session.user?.id,
+    fcmToken: session.fcmToken,
   }),
 })
 app.use(

@@ -26,8 +26,8 @@ messaging.onBackgroundMessage(function (payload) {
   const notificationTitle = notification.title
   const notificationOptions = {
     body: notification.body,
-    icon: '/favicon-32x32.png',
-    badge: '/favicon-32x32.png',
+    icon: 'https://cdn.snapsmaps.com' + notification.badge,
+    badge: 'https://cdn.snapsmaps.com' + notification.badge,
   }
 
   self.registration.showNotification(notificationTitle, notificationOptions)

@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       expires: DataTypes.DATE,
       data: DataTypes.TEXT,
       userId: DataTypes.INTEGER,
+      fcmToken: DataTypes.STRING,
     },
     {
       modelName: 'Sessions',

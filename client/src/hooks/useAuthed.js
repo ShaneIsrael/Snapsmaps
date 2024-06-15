@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import AuthService from '../services/AuthService'
 import { UserService } from '../services'
 import { toast } from 'sonner'
-import { getToken, onMessage } from 'firebase/messaging'
+import { deleteToken, getToken, onMessage } from 'firebase/messaging'
 import { messaging } from '../firebase/firebaseConfig'
 
 const useAuthed = () => {
@@ -14,7 +14,6 @@ const useAuthed = () => {
     const token = await getToken(messaging, {
       vapidKey: process.env.REACT_APP_FIREBASE_WEB_PUSH_KEY,
     })
-    console.log(token)
     await UserService.updatePushNotificationToken(token)
   }
   async function requestPermission() {
@@ -43,9 +42,12 @@ const useAuthed = () => {
     const checkAuthStatus = async () => {
       try {
         const session = (await AuthService.hasSession()).data
-        // if (!!session) {
-        //   requestPermission()
-        // }
+        if (!!session) {
+          requestPermission()
+        }
+        if (!session) {
+          await deleteToken(messaging)
+        }
         setIsAuthenticated(!!session)
         setUser(session ? session : null)
       } catch (err) {
