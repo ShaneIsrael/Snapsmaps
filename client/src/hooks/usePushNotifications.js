@@ -1,7 +1,7 @@
+import { toast } from 'sonner'
 import { deleteToken, getToken } from 'firebase/messaging'
 import { UserService } from '../services'
 import { messaging } from '../firebase/firebaseConfig'
-
 const usePushNotifications = () => {
   async function updatePushToken() {
     const token = await getToken(messaging, {

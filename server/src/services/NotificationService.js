@@ -12,6 +12,7 @@ const service = {}
 
 service.createPostNotifications = async (fromUserId, postId, body) => {
   try {
+    const fromUser = await User.findOne({ where: { id: fromUserId }, include: [Image] })
     const follows = await Follow.findAll({
       where: {
         followedUserId: fromUserId,
@@ -28,6 +29,9 @@ service.createPostNotifications = async (fromUserId, postId, body) => {
       body,
     }))
     await Notification.bulkCreate(bulkInsert)
+    follows.forEach((follow) => {
+      sendPushNotification(follow.follower.id, fromUser, `${fromUser.displayName} posted a new Snapmap.`)
+    })
   } catch (err) {
     logger.error(err)
   }
@@ -36,6 +40,12 @@ service.createPostNotifications = async (fromUserId, postId, body) => {
 service.createPostCommentNotifications = async (fromUserId, postId, postCommentId) => {
   try {
     const forUser = await Post.findOne({ where: { id: postId }, attributes: ['userId'], raw: true })
+    const fromUserComment = await PostComment.findOne({
+      where: {
+        id: postCommentId,
+      },
+      include: [{ model: User, include: [Image] }],
+    })
 
     if (forUser) {
       // Dont create notifications for yourself
@@ -46,6 +56,12 @@ service.createPostCommentNotifications = async (fromUserId, postId, postCommentI
           postId,
           postCommentId,
         })
+        sendPushNotification(
+          forUser.userId,
+          fromUserComment.user,
+          `${fromUserComment.user.displayName} replied`,
+          fromUserComment.body,
+        )
       }
     }
   } catch (err) {
@@ -62,35 +78,46 @@ service.createPostDiscussionNotifications = async (fromUserId, postId, postComme
       include: [{ model: User, include: [Image] }],
     })
     const post = await Post.findOne({ where: { id: postId }, attributes: ['userId'], raw: true })
+
+    // Send notification to post creator
+    Notification.create({
+      userId: post.userId,
+      fromUserId,
+      postId,
+      postCommentId,
+      body,
+      title: 'replied',
+    })
+
+    // Send to all users who commented on the post (excluding post creator)
     const forUsers = await PostComment.findAll({
       attributes: ['userId'],
       group: ['userId'],
       where: {
         postId,
         userId: {
-          [Op.notIn]: [fromUserId],
+          [Op.notIn]: [fromUserId, post.userId],
         },
       },
       raw: true,
     })
+
     if (forUsers) {
       forUsers.forEach(({ userId }) => {
-        if (post.userId !== fromUserId) {
-          Notification.create({
-            userId,
-            fromUserId,
-            postId,
-            postCommentId,
-            body,
-            title: 'responded',
-          })
-          sendPushNotification(
-            userId,
-            fromUserComment.user,
-            `${fromUserComment.user.displayName} responded`,
-            fromUserComment.body,
-          )
-        }
+        Notification.create({
+          userId,
+          fromUserId,
+          postId,
+          postCommentId,
+          body,
+          title: 'said...',
+        })
+        sendPushNotification(
+          userId,
+          fromUserComment.user,
+          `${fromUserComment.user.displayName} said...`,
+          fromUserComment.body,
+        )
       })
     }
   } catch (err) {
@@ -100,6 +127,7 @@ service.createPostDiscussionNotifications = async (fromUserId, postId, postComme
 
 service.createFollowNotification = async (fromUserId, forUserId, followId) => {
   try {
+    const fromUser = await User.findOne({ where: { id: fromUserId }, include: [Image] })
     // Dont create notifications for yourself
     if (fromUserId !== forUserId) {
       await Notification.create({
@@ -107,6 +135,7 @@ service.createFollowNotification = async (fromUserId, forUserId, followId) => {
         fromUserId,
         followId,
       })
+      sendPushNotification(forUserId, fromUser, `${fromUser.displayName} followed you.`)
     }
   } catch (err) {
     logger.error(err)
@@ -117,8 +146,8 @@ function sendPushNotification(userId, fromUser, title, body, link) {
   Sessions.findAll({ where: { userId, fcmToken: { [Op.ne]: null } }, attributes: ['fcmToken'] }).then((sessions) => {
     const messages = sessions.map((session) => ({
       data: {
-        title,
-        body,
+        title: title || '',
+        body: body || '',
         badge: fromUser.image?.reference || '',
       },
       token: session.fcmToken,
