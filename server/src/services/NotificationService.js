@@ -78,14 +78,6 @@ service.createPostDiscussionNotifications = async (fromUserId, postId, postComme
             body,
             title: 'responded',
           })
-          User.findByPk(userId).then((user) => {
-            sendPushNotification(
-              userId,
-              'Discussion Response',
-              'somebody responded to a discussion you are in.',
-              `/user/${user.mention}/${postId}/comments`,
-            )
-          })
         }
       })
     }
