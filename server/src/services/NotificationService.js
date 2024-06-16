@@ -79,16 +79,6 @@ service.createPostDiscussionNotifications = async (fromUserId, postId, postComme
     })
     const post = await Post.findOne({ where: { id: postId }, attributes: ['userId'], raw: true })
 
-    // Send notification to post creator
-    Notification.create({
-      userId: post.userId,
-      fromUserId,
-      postId,
-      postCommentId,
-      body,
-      title: 'replied',
-    })
-
     // Send to all users who commented on the post (excluding post creator)
     const forUsers = await PostComment.findAll({
       attributes: ['userId'],
