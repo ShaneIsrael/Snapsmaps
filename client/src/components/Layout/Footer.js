@@ -123,8 +123,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
                   isBordered
                   as="button"
                   className="transition-transform w-7 h-7"
-                  color={user?.image ? 'default' : 'primary'}
-                  size="sm"
+                  color={user?.image ? 'primary' : 'default'}
                   src={user?.image ? getAssetUrl() + user.image.reference : ''}
                 />
               </DropdownTrigger>
