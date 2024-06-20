@@ -212,7 +212,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 <>
                   <div className="relevant absolute top-2 right-2 z-10">
                     <Button size="md" variant="flat" isIconOnly onClick={onClose}>
-                      <XMarkIcon className="text-neutral-50/90" />
+                      <XMarkIcon className="text-neutral-50/90  h-7 w-7" />
                     </Button>
                   </div>
                   <TransformWrapper defaultScale={1}>

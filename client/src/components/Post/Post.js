@@ -44,6 +44,7 @@ import SnapMap from '../Map/SnapMap'
 import { toast } from 'sonner'
 import Nsfw2 from '../../assets/icons/Nsfw2'
 import ConfirmationDialog from '../Dialog/ConfirmationDialog'
+import WritePostComment from '../Comment/WritePostComment'
 
 const Post = React.memo(
   ({
@@ -57,6 +58,7 @@ const Post = React.memo(
     user,
     isAuthenticated,
   }) => {
+    const commentsWrapperRef = React.useRef(null)
     const [intPost, setIntPost] = useState(post)
     const [revealed, setRevealed] = useState(!post.nsfw)
     const [isFollowed, setIsFollowed] = useState(defaultFollowed)
@@ -93,18 +95,6 @@ const Post = React.memo(
       }
     }, [isAuthenticated, post.id, reload])
 
-    const submitComment = useCallback(async () => {
-      if (isAuthenticated) {
-        try {
-          await CommentService.createPostComment(post.id, comment)
-          reload()
-          setComment('')
-        } catch (err) {
-          console.error(err)
-        }
-      }
-    }, [isAuthenticated, post.id, comment, reload])
-
     const handleDelete = useCallback(async () => {
       setConfirmDelete(false)
       setTimeout(async () => {
@@ -117,20 +107,17 @@ const Post = React.memo(
       }, 750)
     }, [post.id])
 
-    const handleCommentKeydown = useCallback(
-      (e) => {
-        if (e.key === 'Enter' && comment) {
-          submitComment()
-        }
-      },
-      [comment, submitComment],
-    )
-
     useEffect(() => {
       if (selectedTab === 'comments') {
         reload()
       }
     }, [selectedTab, reload])
+
+    useEffect(() => {
+      if (commentsWrapperRef.current) {
+        commentsWrapperRef.current.scrollTo(0, commentsWrapperRef.current.scrollHeight)
+      }
+    }, [intPost])
 
     const hasProfileImage = !!intPost?.user?.image
     const timeAgo = formatDistanceStrict(new Date(intPost.createdAt), new Date(), { addSuffix: true })
@@ -442,7 +429,7 @@ const Post = React.memo(
               >
                 <div className="h-[365px] min-w-[284px] flex flex-col  px-2">
                   {intPost.postComments.length > 0 && (
-                    <div className="h-full overflow-y-auto">
+                    <div ref={commentsWrapperRef} className="h-full overflow-y-auto">
                       <div className="flex flex-col gap-2">
                         {intPost.postComments.map((comment) => (
                           <Comment key={`post-${post.id}-comment-${comment.id}`} comment={comment} user={user} />
@@ -457,23 +444,7 @@ const Post = React.memo(
                       </h2>
                     </div>
                   )}
-                  {isAuthenticated && (
-                    <Textarea
-                      variant="flat"
-                      labelPlacement="outside"
-                      placeholder="Write..."
-                      value={comment}
-                      onChange={(event) =>
-                        setComment(event.target.value.slice(0, process.env.REACT_APP_MAX_POST_COMMENT_LENGTH))
-                      }
-                      maxRows={2}
-                      onKeyDown={handleCommentKeydown}
-                      className="max-w mt-2"
-                      classNames={{
-                        inputWrapper: 'rounded-md',
-                      }}
-                    />
-                  )}
+                  {isAuthenticated && <WritePostComment postId={intPost.id} onSubmit={reload} />}
                 </div>
               </Tab>
             </Tabs>
