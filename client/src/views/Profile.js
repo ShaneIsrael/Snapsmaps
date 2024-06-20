@@ -14,7 +14,7 @@ import {
   DropdownItem,
   Skeleton,
 } from '@nextui-org/react'
-import React from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import Appbar from '../components/Layout/Appbar'
 import Post from '../components/Post/Post'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -32,49 +32,56 @@ import clsx from 'clsx'
 import Nsfw2 from '../assets/icons/Nsfw2'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
-function Profile({ isSelfProfile, isMention }) {
+const Profile = React.memo(({ isSelfProfile, isMention }) => {
   const postModal = useDisclosure()
   const imageModal = useDisclosure()
-  const [isSelf, setIsSelf] = React.useState(isSelfProfile)
-  const [isFollowed, setIsFollowed] = React.useState(false)
-  const [post, setPost] = React.useState()
-  const [selectedPostTab, setSelectedPostTab] = React.useState('photo')
-  const [postHistory, setPostHistory] = React.useState([])
-  const [modalImage, setModalImage] = React.useState()
-  const [editMode, setEditMode] = React.useState(false)
-  const [saving, setSaving] = React.useState(false)
-  const [firstLoad, setFirstLoad] = React.useState(true)
-  const [postHistoryHoverId, setPostHistoryHoverId] = React.useState(null)
+  const [isSelf, setIsSelf] = useState(isSelfProfile)
+  const [isFollowed, setIsFollowed] = useState(false)
+  const [post, setPost] = useState()
+  const [selectedPostTab, setSelectedPostTab] = useState('photo')
+  const [postHistory, setPostHistory] = useState([])
+  const [modalImage, setModalImage] = useState()
+  const [editMode, setEditMode] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [firstLoad, setFirstLoad] = useState(true)
+  const [postHistoryHoverId, setPostHistoryHoverId] = useState(null)
 
   const { mention, postId, tabId } = useParams()
 
   const navigate = useNavigate()
 
-  const [profile, setProfile] = React.useState()
+  const [profile, setProfile] = useState()
 
-  const [updatedProfileDetails, setUpdatedProfileDetails] = React.useState({
+  const [updatedProfileDetails, setUpdatedProfileDetails] = useState({
     displayName: '',
     mention: '',
     bio: '',
     image: '',
   })
 
-  const handleOpenModal = async (id, tab) => {
-    try {
-      const post = (await PostService.get(id)).data
-      setPost(post)
-      setSelectedPostTab(tab || 'photo')
-      postModal.onOpen()
-    } catch (err) {
-      toast.error(err.response?.data)
-    }
-  }
-  const handleOpenImageModal = (image) => {
-    setModalImage(image)
-    imageModal.onOpen()
-  }
+  const handleOpenModal = useCallback(
+    async (id, tab) => {
+      try {
+        const post = (await PostService.get(id)).data
+        setPost(post)
+        setSelectedPostTab(tab || 'photo')
+        postModal.onOpen()
+      } catch (err) {
+        toast.error(err.response?.data)
+      }
+    },
+    [postModal],
+  )
 
-  async function fetchHistory(mention) {
+  const handleOpenImageModal = useCallback(
+    (image) => {
+      setModalImage(image)
+      imageModal.onOpen()
+    },
+    [imageModal],
+  )
+
+  const fetchHistory = useCallback(async (mention) => {
     try {
       const history = mention
         ? (await ProfileService.getMentionPostHistory(mention)).data
@@ -84,9 +91,9 @@ function Profile({ isSelfProfile, isMention }) {
     } catch (err) {
       console.error(err)
     }
-  }
+  }, [])
 
-  async function fetch() {
+  const fetch = useCallback(async () => {
     try {
       let profile
       if (!mention) {
@@ -108,9 +115,9 @@ function Profile({ isSelfProfile, isMention }) {
       console.error(err)
     }
     setFirstLoad(false)
-  }
+  }, [mention, fetchHistory, navigate])
 
-  const handleUpdateProfile = async () => {
+  const handleUpdateProfile = useCallback(async () => {
     try {
       setSaving(true)
       await ProfileService.update(updatedProfileDetails)
@@ -120,9 +127,9 @@ function Profile({ isSelfProfile, isMention }) {
     }
     setSaving(false)
     setEditMode(false)
-  }
+  }, [updatedProfileDetails, fetch])
 
-  const handleFollow = async () => {
+  const handleFollow = useCallback(async () => {
     try {
       await ProfileService.follow(mention)
       fetch()
@@ -131,8 +138,9 @@ function Profile({ isSelfProfile, isMention }) {
         toast.error(err.response?.data)
       }
     }
-  }
-  const handleUnfollow = async () => {
+  }, [mention, fetch])
+
+  const handleUnfollow = useCallback(async () => {
     try {
       await ProfileService.unfollow(mention)
       fetch()
@@ -141,29 +149,28 @@ function Profile({ isSelfProfile, isMention }) {
         toast.error(err.response.data)
       }
     }
-  }
+  }, [mention, fetch])
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetch()
-  }, [mention])
+  }, [mention, fetch])
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function openPost() {
       if (postId) {
         await handleOpenModal(postId, tabId)
       }
-      // navigate(`/user/${mention}`)
     }
     openPost()
-  }, [postId, tabId])
+  }, [postId, tabId, handleOpenModal])
 
   const sessionUser = getSessionUser()
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isMention && sessionUser?.mention === mention) {
       setIsSelf(true)
     }
-  }, [isMention, mention])
+  }, [isMention, mention, sessionUser?.mention])
 
   if (firstLoad) {
     return (
@@ -442,6 +449,6 @@ function Profile({ isSelfProfile, isMention }) {
       )}
     </PageLayout>
   )
-}
+})
 
 export default Profile
