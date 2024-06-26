@@ -2,7 +2,7 @@ import React from 'react'
 import Post from '../Post/Post'
 import { Spinner } from '@nextui-org/react'
 
-function Feed({ loading, posts, onOpenPostImage, user, isAuthenticated }) {
+function Feed({ loading, posts, onOpenPostImage, user, isAuthenticated, ...rest }) {
   if (loading)
     return (
       <div className="flex w-full justify-center">
@@ -18,6 +18,7 @@ function Feed({ loading, posts, onOpenPostImage, user, isAuthenticated }) {
       onOpenModal={onOpenPostImage}
       user={user}
       isAuthenticated={isAuthenticated}
+      {...rest}
     />
   ))
 }

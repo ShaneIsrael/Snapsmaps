@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useRef } from 'react'
 import { Textarea } from '@nextui-org/react'
 import { CommentService } from '../../services'
 import { useAuthed } from '../../hooks/useAuthed'

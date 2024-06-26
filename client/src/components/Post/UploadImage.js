@@ -5,7 +5,7 @@ import { toast } from 'sonner'
 import CameraIcon from '../../assets/icons/CameraIcon'
 import FolderIcon from '../../assets/icons/FolderIcon'
 
-function UploadImage({ onImageUploaded, mode }) {
+function UploadImage({ onImageUploaded, mode, exifOnly }) {
   const fileInput = useRef(null)
 
   const handleFileChange = async (e) => {
@@ -28,11 +28,15 @@ function UploadImage({ onImageUploaded, mode }) {
     let gps
     try {
       gps = await exifr.gps(file)
-    } catch (err) {}
-    if (!gps?.latitude || !gps?.longitude) {
-      if (!navigator.geolocation) {
-        toast.warning('Geolocation is not supported by your browser.')
+    } catch (err) {
+      if (exifOnly) {
+        return toast.error(
+          'Selected image does not have gps exif data. Try selecting the image by browsing directly to it by selecting "browse..." from the file pickers hamburger menu.',
+          { duration: 7500 },
+        )
       }
+    }
+    if (!gps?.latitude || !gps?.longitude) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           if (position?.coords) {

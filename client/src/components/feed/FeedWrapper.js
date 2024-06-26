@@ -1,11 +1,15 @@
 import React from 'react'
 
-function FeedWrapper({ size, children }) {
+const FeedWrapper = ({ size, children }, ref) => {
   return (
-    <div className="flex flex-col scroll-smooth sm:max-w-[450px] items-center gap-2 pb-[40px]" style={{ height: size }}>
+    <div
+      ref={ref}
+      className="flex flex-col scroll-smooth sm:max-w-[450px] items-center gap-2 pb-[40px]"
+      style={{ height: size }}
+    >
       {children}
     </div>
   )
 }
 
-export default FeedWrapper
+export default React.forwardRef(FeedWrapper)

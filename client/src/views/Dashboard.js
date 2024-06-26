@@ -12,6 +12,7 @@ const SCROLL_DELTA = 15
 
 const Dashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const feedRef = useRef()
   const [modalImage, setModalImage] = useState()
   const [lastScrollY, setLastScrollY] = useState(window.scrollY)
   const [showNav, setShowNav] = useState(true)
@@ -73,6 +74,8 @@ const Dashboard = () => {
     refreshFeed(newPost)
   }
 
+  console.log(feedRef)
+
   return (
     <PageLayout onHome={handleHomeClicked} onSubmit={handlePostCreated} showNav={showNav} fullwidth>
       {({ user, isAuthenticated }) => (
@@ -118,7 +121,7 @@ const Dashboard = () => {
                   </div>
                 }
               >
-                <FeedWrapper>
+                <FeedWrapper ref={feedRef}>
                   <Feed
                     posts={worldFeed.posts}
                     loading={worldFeed.isRefreshing}

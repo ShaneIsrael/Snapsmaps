@@ -31,12 +31,29 @@ import NotificationMenu from '../Notification/NotificationMenu'
 
 function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, user, isAuthenticated }) {
   const [uploadedImageData, setUploadedImageData] = useState()
+  const [exifOnly, setExifOnly] = useState(false)
   const notifications = useNotifications()
   const captureDeviceSelect = useDisclosure()
 
   const navigate = useNavigate()
 
   const { logout } = useAuth()
+
+  async function handleNewPost() {
+    if (navigator.geolocation) {
+      const { state } = await navigator.permissions.query({ name: 'geolocation' })
+      if (state === 'granted' || state === 'prompt') {
+        captureDeviceSelect.onOpen()
+      } else {
+        toast.warning(
+          'GPS location is required to post. Please enable location data in your browsers permission settings and try again.',
+        )
+      }
+    } else {
+      setExifOnly(true)
+      captureDeviceSelect.onOpen()
+    }
+  }
 
   return (
     <>
@@ -49,8 +66,8 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
         hideCloseButton
       >
         <ModalContent className="flex flex-row justify-center items-center pt-8 pb-8 gap-4 sm:m-0">
-          <UploadImage onImageUploaded={setUploadedImageData} mode="camera" />
-          <UploadImage onImageUploaded={setUploadedImageData} />
+          <UploadImage onImageUploaded={setUploadedImageData} mode="camera" exifOnly={exifOnly} />
+          <UploadImage onImageUploaded={setUploadedImageData} exifOnly={exifOnly} />
         </ModalContent>
       </Modal>
 
@@ -91,7 +108,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
             onClick={(e) => {
               if (isAuthenticated) {
                 e.stopPropagation()
-                captureDeviceSelect.onOpen()
+                handleNewPost()
               } else {
                 toast.info('You must be logged in to do that.')
               }
