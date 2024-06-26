@@ -74,8 +74,6 @@ const Dashboard = () => {
     refreshFeed(newPost)
   }
 
-  console.log(feedRef)
-
   return (
     <PageLayout onHome={handleHomeClicked} onSubmit={handlePostCreated} showNav={showNav} fullwidth>
       {({ user, isAuthenticated }) => (

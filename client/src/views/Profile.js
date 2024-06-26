@@ -59,27 +59,21 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
     image: '',
   })
 
-  const handleOpenModal = useCallback(
-    async (id, tab) => {
-      try {
-        const post = (await PostService.get(id)).data
-        setPost(post)
-        setSelectedPostTab(tab || 'photo')
-        postModal.onOpen()
-      } catch (err) {
-        toast.error(err.response?.data)
-      }
-    },
-    [postModal],
-  )
+  const handleOpenModal = useCallback(async (id, tab) => {
+    try {
+      const post = (await PostService.get(id)).data
+      setPost(post)
+      setSelectedPostTab(tab || 'photo')
+      postModal.onOpen()
+    } catch (err) {
+      toast.error(err.response?.data)
+    }
+  }, [])
 
-  const handleOpenImageModal = useCallback(
-    (image) => {
-      setModalImage(image)
-      imageModal.onOpen()
-    },
-    [imageModal],
-  )
+  const handleOpenImageModal = useCallback((image) => {
+    setModalImage(image)
+    imageModal.onOpen()
+  }, [])
 
   const fetchHistory = useCallback(async (mention) => {
     try {
@@ -150,6 +144,12 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
       }
     }
   }, [mention, fetch])
+
+  useEffect(() => {
+    if (post && postId && !postModal.isOpen) {
+      navigate(`/user/${post.user.mention}`)
+    }
+  }, [postModal.isOpen])
 
   useEffect(() => {
     fetch()
