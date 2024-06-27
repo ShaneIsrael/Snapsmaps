@@ -27,6 +27,13 @@ if (!isProduction) {
   fs.mkdirSync(path.join(imagesDir, '/post'), { recursive: true })
   fs.mkdirSync(path.join(imagesDir, '/profile'), { recursive: true })
   app.use(express.static(imagesDir))
+} else {
+  app.use((req, res, next) => {
+    if (req.hostname === 'www.snapsmaps.com') {
+      return res.redirect(301, `https://${req.hostname}${req.url}`)
+    }
+    next()
+  })
 }
 
 app.set('trust proxy', true)
