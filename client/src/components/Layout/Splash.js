@@ -29,7 +29,7 @@ const Splash = ({ children }) => {
   return (
     <div className="h-screen md:p-4 bg-gray-950">
       <div className="flex flex-col h-full md:flex-row items-center justify-center align-middle w-full gap-5 md:gap-0">
-        <div className="flex flex-col h-full w-full items-center justify-center md:items-end md:bg-gray-950 md:pr-4 max-w-[692px]">
+        <div className="flex flex-col h-full w-full items-center justify-center md:items-end md:bg-gray-950 md:pr-4 max-w-[520px]">
           <div className="relative h-[200%] w-full overflow-hidden md:block">
             <img src={splash1} className="w-full h-full object-cover" />
             <div className="absolute md:-bottom-[450px]  w-[150%] bg-gray-950 skew-y-[15deg] -bottom-[400px] h-[500px]" />
@@ -41,13 +41,13 @@ const Splash = ({ children }) => {
           </div>
         </div>
 
-        <div className="flex-col gap-4  h-full w-full items-center justify-center bg-gray-950 hidden md:flex">
+        <div className="flex-col gap-4 h-full w-full items-center justify-center bg-gray-950 hidden md:flex max-w-[520px]">
           <div className="relative h-[200%] w-full overflow-hidden md:block">
-            <img src={splash3} className="w-full h-full object-cover blur-sm overflow-hidden" />
+            <img src={splash3} className="w-full h-full object-cover overflow-hidden" />
             <div className="absolute w-[150%] bg-gray-950 -skew-y-[30deg] -bottom-[400px] h-[785px] " />
           </div>
           <div className="relative h-[200%] w-full overflow-hidden md:block">
-            <img src={splash4} className="w-full h-full object-cover blur-sm overflow-hidden" />
+            <img src={splash4} className="w-full h-full object-cover overflow-hidden" />
             <div className="absolute -top-[400px] h-[785px] w-[150%] bg-gray-950 skew-y-[30deg]" />
           </div>
 

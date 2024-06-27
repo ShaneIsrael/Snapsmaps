@@ -74,6 +74,7 @@ function SearchRoot() {
     </Routes>
   )
 }
+
 function AdminRoot() {
   return (
     <Routes>
