@@ -1,10 +1,6 @@
 import React from 'react'
 
 import logo from '../../assets/logo/dark/logo_with_wordmark.svg'
-import splash1 from '../../assets/splash/splash-1.webp'
-import splash2 from '../../assets/splash/splash-2.webp'
-import splash3 from '../../assets/splash/splash-3.webp'
-import splash4 from '../../assets/splash/splash-4.webp'
 import { useAuthed } from '../../hooks/useAuthed'
 
 function shuffle(array) {
@@ -17,31 +13,47 @@ function shuffle(array) {
   }
 }
 
-const SPLASH_IMAGES = [splash1, splash2, splash3, splash4]
-shuffle(SPLASH_IMAGES)
+const SPLASH_IMAGE_INDEXES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+shuffle(SPLASH_IMAGE_INDEXES)
 
 const Splash = ({ children }) => {
   const { loading, isAuthenticated } = useAuthed()
 
   if (loading) return <div />
 
+  const splash1 = `https://cdn.snapsmaps.com/assets/splash/splash-${SPLASH_IMAGE_INDEXES[0]}.webp`
+  const splash2 = `https://cdn.snapsmaps.com/assets/splash/splash-${SPLASH_IMAGE_INDEXES[1]}.webp`
+  const splash3 = `https://cdn.snapsmaps.com/assets/splash/splash-${SPLASH_IMAGE_INDEXES[2]}.webp`
+  const splash4 = `https://cdn.snapsmaps.com/assets/splash/splash-${SPLASH_IMAGE_INDEXES[3]}.webp`
+
   return (
-    <div className="h-screen md:p-4 bg-zinc-950">
+    <div className="h-screen md:p-4 bg-gray-950">
       <div className="flex flex-col h-full md:flex-row items-center justify-center align-middle w-full gap-5 md:gap-0">
-        <div className="flex flex-col h-full w-full items-center justify-center md:items-end md:bg-zinc-950 md:pr-4 max-w-[692px]">
+        <div className="flex flex-col h-full w-full items-center justify-center md:items-end md:bg-gray-950 md:pr-4 max-w-[692px]">
           <div className="relative h-[200%] w-full overflow-hidden md:block">
-            <img src={SPLASH_IMAGES[0]} className="w-full h-full object-cover" />
-            <div className="absolute md:-bottom-[450px]  w-[150%] bg-zinc-950 skew-y-[15deg] -bottom-[400px] h-[500px]" />
+            <img src={splash1} className="w-full h-full object-cover" />
+            <div className="absolute md:-bottom-[450px]  w-[150%] bg-gray-950 skew-y-[15deg] -bottom-[400px] h-[500px]" />
           </div>
           <img src={logo} className="max-h-[60px] sm:max-h-[80px] my-4 hidden md:block" />
           <div className="relative h-[200%] w-full overflow-hidden md:block">
-            <div className="absolute md:-top-[450px] -top-[400px] h-[500px] w-[150%] bg-zinc-950 -skew-y-[15deg]" />
-            <img src={SPLASH_IMAGES[1]} className="w-full h-full object-cover " />
+            <div className="absolute md:-top-[450px] -top-[400px] h-[500px] w-[150%] bg-gray-950 -skew-y-[15deg]" />
+            <img src={splash2} className="w-full h-full object-cover " />
           </div>
         </div>
-        <div className="flex-col gap-4  h-full w-full items-center justify-center md:bg-gradient-to-tr md:from-sky-900 md:to-purple-900 md:px-4 hidden md:flex">
-          {children}
+
+        <div className="flex-col gap-4  h-full w-full items-center justify-center bg-gray-950 hidden md:flex">
+          <div className="relative h-[200%] w-full overflow-hidden md:block">
+            <img src={splash3} className="w-full h-full object-cover blur-sm overflow-hidden" />
+            <div className="absolute w-[150%] bg-gray-950 -skew-y-[30deg] -bottom-[400px] h-[785px] " />
+          </div>
+          <div className="relative h-[200%] w-full overflow-hidden md:block">
+            <img src={splash4} className="w-full h-full object-cover blur-sm overflow-hidden" />
+            <div className="absolute -top-[400px] h-[785px] w-[150%] bg-gray-950 skew-y-[30deg]" />
+          </div>
+
+          <div className="absolute flex w-[350px] flex-col gap-4 items-center justify-center ">{children}</div>
         </div>
+
         <div className="absolute flex w-[350px] flex-col gap-4 items-center justify-center md:hidden">
           <img src={logo} className="max-h-[70px] mb-8" />
           {children}
