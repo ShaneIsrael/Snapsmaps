@@ -76,7 +76,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
         onOpen={captureDeviceSelect.onClose}
         onCancel={() => setUploadedImageData(null)}
         onSubmitted={(post) => {
-          navigate('/')
+          navigate('/feed')
           handleOnSubmit(post)
         }}
       />
@@ -193,13 +193,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
                   <ArrowLeftEndOnRectangleIcon className="fill-red-600" width="32" height="32" />
                 </Button>
               ) : (
-                <Button
-                  isIconOnly
-                  size="sm"
-                  variant="light"
-                  className="cursor-pointer"
-                  onClick={() => navigate('/login')}
-                >
+                <Button isIconOnly size="sm" variant="light" className="cursor-pointer" onClick={() => navigate('/')}>
                   <ArrowRightEndOnRectangleIcon width="32" height="32" />
                 </Button>
               )}

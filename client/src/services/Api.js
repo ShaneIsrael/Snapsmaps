@@ -22,7 +22,7 @@ instance.interceptors.response.use(
   (error) => {
     if (!axios.isCancel(error)) {
       if (error.response?.status === 403) {
-        window.location.href = '/login'
+        window.location.href = '/'
       }
       return Promise.reject(error)
     }

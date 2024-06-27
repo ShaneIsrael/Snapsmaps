@@ -39,14 +39,14 @@ const Login = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/')
+      navigate('/feed')
     }
   }, [isAuthenticated])
 
   const handleLogin = async () => {
     try {
       await login(email, password)
-      navigate('/')
+      navigate('/feed')
     } catch (err) {
       if (err.response?.data) {
         setError(err.response.data)
@@ -127,7 +127,7 @@ const Login = () => {
         color="primary"
         variant="solid"
         className="w-full max-w-[360px] bg-slate-900 border-medium border-neutral-300 font-semibold"
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/feed')}
       >
         Continue as Guest
       </Button>

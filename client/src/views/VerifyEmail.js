@@ -18,7 +18,7 @@ const VerifyEmail = (props) => {
         await AuthService.verify(email, token)
         setVerifiedMessage('Your account has been verified, redirecting...')
         sleep(2500).then(() => {
-          navigate('/login')
+          navigate('/')
         })
       } catch (err) {
         setVerifiedMessage('Unable to verify, please check your verification link and try again.')

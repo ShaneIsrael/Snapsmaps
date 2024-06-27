@@ -26,8 +26,8 @@ const router = createBrowserRouter([
 function Root() {
   return (
     <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
+      <Route path="/feed" element={<Dashboard />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/verify/:email/:token" element={<VerifyEmail />} />
       <Route path="*" element={<div>not found</div>} />

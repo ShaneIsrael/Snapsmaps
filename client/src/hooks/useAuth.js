@@ -10,7 +10,7 @@ const useAuth = () => {
       await AuthService.logout()
       // remove this client from firebase messaging
       removeToken()
-      navigate('/login')
+      navigate('/')
     } catch (err) {
       throw err
     }

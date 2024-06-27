@@ -91,7 +91,7 @@ const Signup = () => {
     try {
       const resp = (await AuthService.register(email, displayName, mention, password)).data
       toast.success(resp, { duration: 5000 })
-      navigate('/login')
+      navigate('/')
     } catch (err) {
       console.log(err)
       if (err?.response?.status === 500) {
@@ -105,7 +105,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/')
+      navigate('/feed')
     }
   }, [isAuthenticated])
 
@@ -190,7 +190,7 @@ const Signup = () => {
             <Button color="primary" variant="solid" className="w-full" isDisabled={!formValid()} onClick={submit}>
               Sign up
             </Button>
-            <Link onClick={() => navigate('/login')} className="cursor-pointer text-sm">
+            <Link onClick={() => navigate('/')} className="cursor-pointer text-sm">
               Already have an account?
             </Link>
           </div>

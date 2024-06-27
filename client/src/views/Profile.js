@@ -100,7 +100,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
           await fetchHistory(mention)
         } catch (err) {
           toast.error(err.response.data)
-          navigate('/')
+          navigate('/feed')
         }
       }
       setIsFollowed(profile.isFollowed)
@@ -176,12 +176,16 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
     return (
       <ProfilePageSkeleton
         appbar={
-          <Appbar noProfile backButton={() => navigate('/')} pageName={<Skeleton className="rounded-md w-28 h-6" />} />
+          <Appbar
+            noProfile
+            backButton={() => navigate('/feed')}
+            pageName={<Skeleton className="rounded-md w-28 h-6" />}
+          />
         }
         footer={
           <Footer
-            handleOnHome={() => navigate('/')}
-            handleOnSubmit={() => navigate('/')}
+            handleOnHome={() => navigate('/feed')}
+            handleOnSubmit={() => navigate('/feed')}
             noProfile={!sessionUser}
             hideProfileSelect
           />
@@ -193,7 +197,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
   return (
     <PageLayout
       noProfile
-      backButton={() => navigate('/')}
+      backButton={() => navigate('/feed')}
       pageName={profile?.mention}
       hideProfileSelect={!mention || mention === sessionUser?.mention}
     >

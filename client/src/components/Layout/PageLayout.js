@@ -36,8 +36,8 @@ function PageLayout({
         />
         {children({ loading, user, isAuthenticated })}
         <Footer
-          handleOnHome={onHome || (() => navigate('/'))}
-          handleOnSubmit={onSubmit || (() => navigate('/'))}
+          handleOnHome={onHome || (() => navigate('/feed'))}
+          handleOnSubmit={onSubmit || (() => navigate('/feed'))}
           noProfile={!isAuthenticated}
           user={user}
           isAuthenticated={isAuthenticated}

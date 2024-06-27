@@ -8,7 +8,7 @@ function AdminDashboard() {
 
   useEffect(() => {
     if (!loading && !isAdmin) {
-      navigate('/')
+      navigate('/feed')
     }
   }, [loading])
 
