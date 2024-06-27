@@ -4,7 +4,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Link } 
 
 import { useAuth } from '../hooks/useAuth'
 import { useAuthed } from '../hooks/useAuthed'
-import logo from '../assets/logo/dark/logo_with_wordmark.svg'
+import Splash from '../components/Layout/Splash'
 
 const inputStyles = {
   label: 'text-black/50 dark:text-white/90',
@@ -62,87 +62,76 @@ const Login = () => {
     }
   }
 
-  if (loading) return <div />
-
   return (
-    <div className="h-screen pt-5 md:pt-0 bg-gradient-to-tr from-sky-900 to-purple-900">
-      <div className="flex flex-col md:h-full md:flex-row items-center justify-center align-middle w-full px-4 md:px-0 gap-5 md:gap-0">
-        <div className="flex h-full w-full items-center justify-center md:justify-end md:bg-slate-950 md:px-4">
-          {/* <h1 className="text-center text-neutral-200 tracking-wider text-7xl font-semibold font-vibes">Snapsmaps</h1> */}
-          <img src={logo} className="max-h-[60px] sm:max-h-[80px]" />
-        </div>
-        <div className="flex flex-col gap-8  h-full w-full items-center justify-center md:bg-gradient-to-tr md:from-sky-900 md:to-purple-900 md:px-4">
-          <Card className="w-full md:w-96 bg-background/50 ">
-            <CardHeader className="p-4">
-              <h2 className="font-bold text-xl">Sign-in</h2>
-            </CardHeader>
-            <Divider />
-            <CardBody>
-              <div className="flex flex-col w-full gap-2">
-                <Input
-                  type="email"
-                  label="Email"
-                  variant="flat"
-                  value={email}
-                  onValueChange={setEmail}
-                  onKeyDown={handleKeyDown}
-                  className="w-full"
-                  classNames={inputStyles}
-                />
+    <Splash>
+      <Card className="w-full md:w-96 bg-slate-950/80 border-neutral-100 border-small">
+        <CardHeader className="p-4">
+          <h2 className="font-bold text-xl">Sign-in</h2>
+        </CardHeader>
+        <Divider />
+        <CardBody>
+          <div className="flex flex-col w-full gap-2">
+            <Input
+              type="email"
+              label="Email"
+              variant="flat"
+              value={email}
+              onValueChange={setEmail}
+              onKeyDown={handleKeyDown}
+              className="w-full"
+              classNames={inputStyles}
+            />
 
-                <Input
-                  type="password"
-                  label="Password"
-                  variant="flat"
-                  value={password}
-                  onValueChange={setPassword}
-                  onKeyDown={handleKeyDown}
-                  className="w-full"
-                  classNames={inputStyles}
-                />
-              </div>
-              {error && (
-                <div className="flex justify-center w-full mt-2 p-2 rounded-lg bg-red-600 bg-opacity-40 text-neutral-50 font-semibold border-medium border-red-600">
-                  {error}
-                </div>
-              )}
-            </CardBody>
-            <Divider />
-            <CardFooter>
-              <div className="flex flex-wrap gap-2 justify-center w-full">
-                <Button
-                  color="primary"
-                  variant="solid"
-                  className="w-full"
-                  isDisabled={!email || !password}
-                  onClick={handleLogin}
-                >
-                  Sign in
-                </Button>
-
-                <Link onClick={() => navigate('/signup')} className="cursor-pointer text-sm">
-                  Don't have an account?
-                </Link>
-              </div>
-            </CardFooter>
-          </Card>
-          <div className="flex w-full max-w-[360px] justify-evenly items-center">
-            <div className="h-[1px] border-b-1 border-neutral-100 opacity-25 w-full" />
-            <h2 className="mx-2 opacity-50 font-bold text-lg">OR</h2>
-            <div className="h-[1px] border-b-1 border-neutral-100 opacity-25 w-full" />
+            <Input
+              type="password"
+              label="Password"
+              variant="flat"
+              value={password}
+              onValueChange={setPassword}
+              onKeyDown={handleKeyDown}
+              className="w-full"
+              classNames={inputStyles}
+            />
           </div>
-          <Button
-            color="primary"
-            variant="solid"
-            className="w-full max-w-[360px] bg-slate-900 border-medium border-neutral-300 font-semibold"
-            onClick={() => navigate('/')}
-          >
-            Continue as Guest
-          </Button>
-          <div className="absolute bottom-1 text-xs opacity-40">© 2024 Snapsmaps by Shane Israel</div>
-        </div>
+          {error && (
+            <div className="flex justify-center w-full mt-2 p-2 rounded-lg bg-red-600 bg-opacity-40 text-neutral-50 font-semibold border-medium border-red-600">
+              {error}
+            </div>
+          )}
+        </CardBody>
+        <Divider />
+        <CardFooter>
+          <div className="flex flex-wrap gap-2 justify-center w-full">
+            <Button
+              color="primary"
+              variant="solid"
+              className="w-full"
+              isDisabled={!email || !password}
+              onClick={handleLogin}
+            >
+              Sign in
+            </Button>
+
+            <Link onClick={() => navigate('/signup')} className="cursor-pointer text-sm">
+              Don't have an account?
+            </Link>
+          </div>
+        </CardFooter>
+      </Card>
+      <div className="flex w-full max-w-[360px] justify-evenly items-center">
+        <div className="h-[1px] border-b-1 border-neutral-100 w-full" />
+        <h2 className="mx-2  font-bold text-lg">OR</h2>
+        <div className="h-[1px] border-b-1 border-neutral-100 w-full" />
       </div>
-    </div>
+      <Button
+        color="primary"
+        variant="solid"
+        className="w-full max-w-[360px] bg-slate-900 border-medium border-neutral-300 font-semibold"
+        onClick={() => navigate('/')}
+      >
+        Continue as Guest
+      </Button>
+    </Splash>
   )
 }
 
