@@ -46,7 +46,6 @@ const Dashboard = () => {
       }
       setLastScrollY(window.scrollTop)
 
-      // handle paging
       const bottom = Math.round(e.target.scrollHeight - e.target.scrollTop) === Math.round(e.target.clientHeight)
       if (bottom) {
         selectedFeed === 'world' ? worldFeed.nextPage() : followingFeed.nextPage()
