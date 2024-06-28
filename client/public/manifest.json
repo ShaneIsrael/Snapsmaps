@@ -18,7 +18,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "https://snapsmaps.com/login",
+  "start_url": "https://snapsmaps.com",
   "launch_handler": ["focus-existing", "auto"],
   "display": "fullscreen",
   "theme_color": "#000000",
