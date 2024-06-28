@@ -2,9 +2,8 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Link } from '@nextui-org/react'
 
-import { useAuth } from '../hooks/useAuth'
-import { useAuthed } from '../hooks/useAuthed'
-import Splash from '../components/Layout/Splash'
+import { useAuth } from '../../hooks/useAuth'
+import { useAuthed } from '../../hooks/useAuthed'
 
 const inputStyles = {
   label: 'text-black/50 dark:text-white/90',
@@ -29,7 +28,7 @@ const inputStyles = {
   ],
 }
 
-const Login = () => {
+const Login = ({ onSignup }) => {
   const navigate = useNavigate()
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
@@ -63,7 +62,7 @@ const Login = () => {
   }
 
   return (
-    <Splash>
+    <>
       <Card className="w-full md:w-96 bg-slate-950/80 border-neutral-100 border-small">
         <CardHeader className="p-4">
           <h2 className="font-bold text-xl">Sign-in</h2>
@@ -112,7 +111,7 @@ const Login = () => {
               Sign in
             </Button>
 
-            <Link onClick={() => navigate('/signup')} className="cursor-pointer text-sm">
+            <Link onClick={onSignup} className="cursor-pointer text-sm">
               Don't have an account?
             </Link>
           </div>
@@ -131,7 +130,7 @@ const Login = () => {
       >
         Continue as Guest
       </Button>
-    </Splash>
+    </>
   )
 }
 

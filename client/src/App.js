@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { createBrowserRouter, RouterProvider, Navigate, Route, Routes } from 'react-router-dom'
 
-import Login from './views/Login'
-
 import Dashboard from './views/Dashboard'
-import Signup from './views/Signup'
+import Signup from './components/Signup/Signup'
 import Profile from './views/Profile'
 import VerifyEmail from './views/VerifyEmail'
 import UserSearch from './views/UserSearch'
@@ -13,6 +11,7 @@ import PostLikes from './views/PostLikes'
 import AdminDashboard from './views/AdminDashboard'
 
 import PushNotificationHandler from './firebase/PushNotificationHandler'
+import Landing from './views/Landing'
 
 const router = createBrowserRouter([
   { path: '/user/*', Component: UserRoot },
@@ -26,9 +25,8 @@ const router = createBrowserRouter([
 function Root() {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<Landing />} />
       <Route path="/feed" element={<Dashboard />} />
-      <Route path="/signup" element={<Signup />} />
       <Route path="/verify/:email/:token" element={<VerifyEmail />} />
       <Route path="*" element={<div>not found</div>} />
     </Routes>

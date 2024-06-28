@@ -2,10 +2,8 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Link } from '@nextui-org/react'
 import { toast } from 'sonner'
-import { AuthService } from '../services'
-import logo from '../assets/logo/dark/logo_with_wordmark.svg'
-import { useAuthed } from '../hooks/useAuthed'
-import Splash from '../components/Layout/Splash'
+import { AuthService } from '../../services'
+import { useAuthed } from '../../hooks/useAuthed'
 
 const inputStyles = {
   label: 'text-black/50 dark:text-white/90',
@@ -29,7 +27,7 @@ const inputStyles = {
   ],
 }
 
-const Signup = () => {
+const Signup = ({ onLogin }) => {
   const navigate = useNavigate()
   const [email, setEmail] = React.useState('')
   const [displayName, setDisplayName] = React.useState('')
@@ -110,93 +108,91 @@ const Signup = () => {
   }, [isAuthenticated])
 
   return (
-    <Splash>
-      <Card className="w-full md:w-96 bg-slate-950/80 border-neutral-100 border-small">
-        <CardHeader className="p-4">
-          <h2 className="font-bold text-xl">Create an account</h2>
-        </CardHeader>
-        <Divider />
-        <CardBody>
-          <div className="flex flex-col w-full gap-2">
-            <Input
-              type="email"
-              label="Email"
-              variant="flat"
-              value={email}
-              size="sm"
-              isInvalid={!!isInvalidEmail}
-              errorMessage={isInvalidEmail}
-              color={getColor(email, !!isInvalidEmail)}
-              onValueChange={setEmail}
-              className="w-full"
-              classNames={inputStyles}
-            />
-            <Input
-              type="text"
-              label="Display name"
-              variant="flat"
-              size="sm"
-              value={displayName}
-              isInvalid={!!isInvalidDn}
-              errorMessage={isInvalidDn}
-              color={getColor(displayName, !!isInvalidDn)}
-              onValueChange={setDisplayName}
-              className="w-full"
-              classNames={inputStyles}
-            />
-            <Input
-              type="text"
-              label="@ mention"
-              variant="flat"
-              size="sm"
-              value={mention}
-              isInvalid={!!isInvalidMention}
-              errorMessage={isInvalidMention}
-              color={getColor(mention, !!isInvalidMention)}
-              onValueChange={setMention}
-              className="w-full"
-              classNames={inputStyles}
-            />
-            <Input
-              type="password"
-              label="Password"
-              variant="flat"
-              size="sm"
-              value={password}
-              isInvalid={!!isInvalidPassword}
-              color={getColor(password, !!isInvalidPassword)}
-              onValueChange={setPassword}
-              className="w-full"
-              classNames={inputStyles}
-            />
-            <Input
-              type="password"
-              label="Confirm password"
-              variant="flat"
-              size="sm"
-              value={password2}
-              isInvalid={!!isInvalidPassword}
-              errorMessage={isInvalidPassword}
-              color={getColor(password2, !!isInvalidPassword)}
-              onValueChange={setPassword2}
-              className="w-full"
-              classNames={inputStyles}
-            />
-          </div>
-        </CardBody>
-        <Divider />
-        <CardFooter>
-          <div className="flex flex-wrap gap-2 justify-center w-full">
-            <Button color="primary" variant="solid" className="w-full" isDisabled={!formValid()} onClick={submit}>
-              Sign up
-            </Button>
-            <Link onClick={() => navigate('/')} className="cursor-pointer text-sm">
-              Already have an account?
-            </Link>
-          </div>
-        </CardFooter>
-      </Card>
-    </Splash>
+    <Card className="w-full md:w-96 bg-slate-950/80 border-neutral-100 border-small">
+      <CardHeader className="p-4">
+        <h2 className="font-bold text-xl">Create an account</h2>
+      </CardHeader>
+      <Divider />
+      <CardBody>
+        <div className="flex flex-col w-full gap-2">
+          <Input
+            type="email"
+            label="Email"
+            variant="flat"
+            value={email}
+            size="sm"
+            isInvalid={!!isInvalidEmail}
+            errorMessage={isInvalidEmail}
+            color={getColor(email, !!isInvalidEmail)}
+            onValueChange={setEmail}
+            className="w-full"
+            classNames={inputStyles}
+          />
+          <Input
+            type="text"
+            label="Display name"
+            variant="flat"
+            size="sm"
+            value={displayName}
+            isInvalid={!!isInvalidDn}
+            errorMessage={isInvalidDn}
+            color={getColor(displayName, !!isInvalidDn)}
+            onValueChange={setDisplayName}
+            className="w-full"
+            classNames={inputStyles}
+          />
+          <Input
+            type="text"
+            label="@ mention"
+            variant="flat"
+            size="sm"
+            value={mention}
+            isInvalid={!!isInvalidMention}
+            errorMessage={isInvalidMention}
+            color={getColor(mention, !!isInvalidMention)}
+            onValueChange={setMention}
+            className="w-full"
+            classNames={inputStyles}
+          />
+          <Input
+            type="password"
+            label="Password"
+            variant="flat"
+            size="sm"
+            value={password}
+            isInvalid={!!isInvalidPassword}
+            color={getColor(password, !!isInvalidPassword)}
+            onValueChange={setPassword}
+            className="w-full"
+            classNames={inputStyles}
+          />
+          <Input
+            type="password"
+            label="Confirm password"
+            variant="flat"
+            size="sm"
+            value={password2}
+            isInvalid={!!isInvalidPassword}
+            errorMessage={isInvalidPassword}
+            color={getColor(password2, !!isInvalidPassword)}
+            onValueChange={setPassword2}
+            className="w-full"
+            classNames={inputStyles}
+          />
+        </div>
+      </CardBody>
+      <Divider />
+      <CardFooter>
+        <div className="flex flex-wrap gap-2 justify-center w-full">
+          <Button color="primary" variant="solid" className="w-full" isDisabled={!formValid()} onClick={submit}>
+            Sign up
+          </Button>
+          <Link onClick={onLogin} className="cursor-pointer text-sm">
+            Already have an account?
+          </Link>
+        </div>
+      </CardFooter>
+    </Card>
   )
 }
 
