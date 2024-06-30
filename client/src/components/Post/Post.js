@@ -346,7 +346,7 @@ const Post = React.memo(
               <Tab
                 key={`photo`}
                 title={
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center">
                     <PhotoIcon className={clsx({ 'fill-green-500': selectedTab !== `photo` })} />
                     <span></span>
                   </div>

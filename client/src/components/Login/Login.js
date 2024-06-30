@@ -63,7 +63,7 @@ const Login = ({ onSignup }) => {
 
   return (
     <>
-      <Card className="w-full md:w-96 bg-slate-950/80 border-neutral-100 border-small">
+      <Card className="w-full md:w-96 bg-slate-950 border-neutral-100 border-small">
         <CardHeader className="p-4">
           <h2 className="font-bold text-xl">Sign-in</h2>
         </CardHeader>

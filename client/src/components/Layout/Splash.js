@@ -1,6 +1,9 @@
 import React from 'react'
 
 import logo from '../../assets/logo/dark/logo_with_wordmark.svg'
+import logo_no_wordmark from '../../assets/logo/dark/logo.svg'
+import wordmark from '../../assets/logo/dark/wordmark_no_slogan.svg'
+
 import { useAuthed } from '../../hooks/useAuthed'
 
 function shuffle(array) {
@@ -27,11 +30,11 @@ const Splash = ({ children }) => {
   const splash4 = `https://cdn.snapsmaps.com/assets/splash/splash-${SPLASH_IMAGE_INDEXES[3]}.webp`
 
   return (
-    <div className="h-screen md:p-4 bg-gray-950">
+    <div className="h-screen md:px-2 md:pt-2 md:pb-4 bg-gray-950">
       <div className="flex flex-col h-full md:flex-row items-center justify-center align-middle w-full gap-5 md:gap-0">
-        <div className="flex flex-col h-full w-full items-center justify-center md:items-end md:bg-gray-950 md:pr-4 max-w-[520px]">
+        <div className="flex flex-col h-full w-full items-center justify-center md:items-end md:bg-gray-950 md:pr-2 max-w-[520px]">
           <div className="relative h-[200%] w-full overflow-hidden md:block">
-            <img src={splash1} className="w-full h-full object-cover" />
+            <img src={splash1} className="h-full w-full object-cover" />
             <div className="absolute md:-bottom-[450px]  w-[150%] bg-gray-950 skew-y-[15deg] -bottom-[400px] h-[500px]" />
           </div>
           <img src={logo} className="max-h-[60px] sm:max-h-[80px] my-4 hidden md:block" />
@@ -55,7 +58,8 @@ const Splash = ({ children }) => {
         </div>
 
         <div className="absolute flex w-[350px] flex-col gap-4 items-center justify-center md:hidden">
-          <img src={logo} className="max-h-[70px] mb-8" />
+          <img src={logo_no_wordmark} className="max-h-[60px]" />
+          <img src={wordmark} className="h-[30px]" />
           {children}
         </div>
         <div className="absolute bottom-0 text-xs opacity-40">© 2024 Snapsmaps by Shane Israel</div>
