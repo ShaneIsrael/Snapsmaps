@@ -21,6 +21,10 @@ body,
   border: 2px solid rgba(255, 255, 255, 0.5) !important;
 }
 
+.ReactCollapse--collapse {
+  transition: height 500ms;
+}
+
 #header-shape-gradient {
   --color-stop: #9350ff;
   --color-bot: #0787ff;

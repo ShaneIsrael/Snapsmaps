@@ -14,6 +14,7 @@ import {
   DropdownItem,
   Skeleton,
 } from '@nextui-org/react'
+import { Collapse } from 'react-collapse'
 import React, { useState, useCallback, useEffect } from 'react'
 import Appbar from '../components/Layout/Appbar'
 import Post from '../components/Post/Post'
@@ -22,7 +23,7 @@ import { getAssetUrl, getSessionUser } from '../common/utils'
 import { PostService, ProfileService } from '../services'
 import ImageCropProvider from '../providers/ImageCropProvider'
 import ImageCrop from '../components/Cropper/ImageCrop'
-import { ArrowPathIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import { ArrowPathIcon, XMarkIcon, MapIcon, ArrowDownIcon } from '@heroicons/react/24/solid'
 import SnapMap from '../components/Map/SnapMap'
 import Footer from '../components/Layout/Footer'
 import { toast } from 'sonner'
@@ -44,6 +45,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
   const [editMode, setEditMode] = useState(false)
   const [saving, setSaving] = useState(false)
   const [firstLoad, setFirstLoad] = useState(true)
+  const [mapOpened, setMapOpened] = useState(false)
   const [postHistoryHoverId, setPostHistoryHoverId] = useState(null)
 
   const { mention, postId, tabId } = useParams()
@@ -410,20 +412,35 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 </div>
               </div>
             </div>
-            <Divider className="my-5" />
-            <div className="flex flex-row h-64">
-              {postHistory.length > 0 && (
-                <SnapMap
-                  markers={postHistory.map((post) => ({
-                    onClick: () => handleOpenModal(post.id),
-                    lat: post.image.latitude,
-                    lng: post.image.longitude,
-                    highlight: post.id === postHistoryHoverId,
-                  }))}
-                />
-              )}
+            <Divider className="mt-5 mb-2" />
+            <div className="flex w-full justify-center">
+              <Button
+                isIconOnly
+                variant="faded"
+                color="default"
+                size="md"
+                aria-label="Open Map"
+                onClick={() => setMapOpened((prev) => !prev)}
+                className={clsx('rotate-180 -mb-5 z-10', { 'rotate-0 ': mapOpened })}
+              >
+                <ArrowDownIcon />
+              </Button>
             </div>
-            <Divider className="my-5" />
+            <Collapse isOpened={mapOpened}>
+              <div className="flex flex-row h-96">
+                {postHistory.length > 0 && (
+                  <SnapMap
+                    markers={postHistory.map((post) => ({
+                      onClick: () => handleOpenModal(post.id),
+                      lat: post.image.latitude,
+                      lng: post.image.longitude,
+                      highlight: post.id === postHistoryHoverId,
+                    }))}
+                  />
+                )}
+              </div>
+            </Collapse>
+            <Divider className={clsx('my-5', { 'mt-7': !mapOpened })} />
             <div className="grid grid-cols-[repeat(auto-fill,120px)] justify-center gap-1">
               {postHistory.map((post) => (
                 <div
