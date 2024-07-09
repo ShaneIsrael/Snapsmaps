@@ -45,7 +45,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
   const [editMode, setEditMode] = useState(false)
   const [saving, setSaving] = useState(false)
   const [firstLoad, setFirstLoad] = useState(true)
-  const [mapOpened, setMapOpened] = useState(false)
+  const [mapOpened, setMapOpened] = useState(true)
   const [postHistoryHoverId, setPostHistoryHoverId] = useState(null)
 
   const { mention, postId, tabId } = useParams()
