@@ -449,8 +449,8 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 <div
                   key={`post-history-${post.id}`}
                   className="relative cursor-pointer overflow-hidden"
-                  // onMouseEnter={() => setPostHistoryHoverId(post.id)}
-                  // onMouseLeave={() => setPostHistoryHoverId(null)}
+                  onMouseEnter={() => setPostHistoryHoverId(post.id)}
+                  onMouseLeave={() => setPostHistoryHoverId(null)}
                 >
                   {post.nsfw && (
                     <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -462,7 +462,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                   <img
                     onClick={() => handleOpenModal(post.id)}
                     alt="a history image"
-                    src={getAssetUrl() + post.image.reference}
+                    // src={getAssetUrl() + post.image.reference}
                     className={clsx('w-[120px] h-[120px] object-cover rounded-none', { 'blur-sm': post.nsfw })}
                   />
                 </div>
