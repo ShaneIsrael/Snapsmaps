@@ -445,7 +445,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
               </>
             )}
 
-            <div className="grid grid-cols-[repeat(auto-fill,120px)] justify-center gap-1">
+            {/* <div className="grid grid-cols-[repeat(auto-fill,120px)] justify-center gap-1">
               {postHistory.map((post) => (
                 <div
                   key={`post-history-${post.id}`}
@@ -468,7 +468,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                   />
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </>
       )}
