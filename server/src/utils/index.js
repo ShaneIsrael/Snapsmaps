@@ -29,24 +29,24 @@ module.exports = {
     })
   },
   createThumbnails: async () => {
-    const images = await Image.findAll()
-    for (const image of images) {
-      logger.info(`creating thumbnail for ${image.reference}`)
-      const thumbReference = `/thumb/120x120/${image.reference.split('/')[2]}`
-      const input = (await axios({ url: 'https://cdn.snapsmaps.com' + image.reference, responseType: 'arraybuffer' }))
-        .data
-      const thumbnail = await sharp(input)
-        .resize({
-          fit: sharp.fit.cover,
-          width: 120,
-          height: 120,
-        })
-        .webp({ quality: 70 })
-        .rotate()
-        .withMetadata()
-        .toBuffer()
-      await uploadImage(thumbnail, thumbReference, 'image/webp')
-    }
-    logger.info('-- DONE CREATING THUMBNAILS --')
+    // const images = await Image.findAll()
+    // for (const image of images) {
+    //   logger.info(`creating thumbnail for ${image.reference}`)
+    //   const thumbReference = `/thumb/120x120/${image.reference.split('/')[2]}`
+    //   const input = (await axios({ url: 'https://cdn.snapsmaps.com' + image.reference, responseType: 'arraybuffer' }))
+    //     .data
+    //   const thumbnail = await sharp(input)
+    //     .resize({
+    //       fit: sharp.fit.cover,
+    //       width: 120,
+    //       height: 120,
+    //     })
+    //     .webp({ quality: 70 })
+    //     .rotate()
+    //     .withMetadata()
+    //     .toBuffer()
+    //   await uploadImage(thumbnail, thumbReference, 'image/webp')
+    // }
+    // logger.info('-- DONE CREATING THUMBNAILS --')
   },
 }

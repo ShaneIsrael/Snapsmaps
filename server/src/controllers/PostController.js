@@ -87,7 +87,7 @@ controller.create = async (req, res, next) => {
           width: 120,
           height: 120,
         })
-        .webp({ quality: 70 })
+        .webp({ quality: 85 })
         .rotate()
         .withMetadata()
         .toBuffer()

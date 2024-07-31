@@ -118,10 +118,7 @@ app.use((err, req, res, next) => {
 })
 
 if (isProduction) {
-  app.listen(PORT, () => {
-    logger.info(`Server listening on port ${PORT}`)
-    createThumbnails()
-  })
+  app.listen(PORT, () => logger.info(`Server listening on port ${PORT}`))
 } else {
   logger.info(
     `HTTPS Dev server running. Make sure you manually navigate to https://localhost:3001 and 'accept the risk' so that the frontend can talk over https to the server`,
