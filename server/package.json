@@ -40,7 +40,7 @@
     "winston": "^3.10.0"
   },
   "devDependencies": {
-    "axios": "^1.6.8",
+    "axios": "^1.7.2",
     "nodemon": "^3.0.1",
     "sequelize-cli": "^6.6.1"
   }

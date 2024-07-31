@@ -67,6 +67,7 @@ controller.create = async (req, res, next) => {
       return res.status(400).send('A post requires an image and a gps location.')
 
     const reference = `/post/${uuidv4().replace(/-/gi, '')}.webp`
+    const thumbReference = `/thumb/120x120/${uuidv4().replace(/-/gi, '')}.webp`
     const fileContent = Buffer.from(image.data)
     if (!isProduction) {
       await sharp(fileContent)
@@ -80,12 +81,18 @@ controller.create = async (req, res, next) => {
         .rotate()
         .withMetadata()
         .toBuffer()
+      const thumbnail = await sharp(fileContent)
+        .resize({
+          fit: sharp.fit.cover,
+          width: 120,
+          height: 120,
+        })
+        .webp({ quality: 70 })
+        .rotate()
+        .withMetadata()
+        .toBuffer()
+      await uploadImage(thumbnail, thumbReference, 'image/webp')
       await uploadImage(compressed, reference, 'image/webp')
-    }
-
-    try {
-    } catch (err) {
-      throw err
     }
     const imageRow = await Image.create(
       {
