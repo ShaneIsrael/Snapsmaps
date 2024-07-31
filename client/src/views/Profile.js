@@ -459,11 +459,12 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                       </Button>
                     </div>
                   )}
-                  <img
+                  <Image
                     onClick={() => handleOpenModal(post.id)}
                     alt="a history image"
-                    // src={getAssetUrl() + post.image.reference}
+                    src={getAssetUrl() + post.image.reference}
                     className={clsx('w-[120px] h-[120px] object-cover rounded-none', { 'blur-sm': post.nsfw })}
+                    loading="lazy"
                   />
                 </div>
               ))}
