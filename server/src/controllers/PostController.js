@@ -75,6 +75,16 @@ controller.create = async (req, res, next) => {
         .rotate()
         .withMetadata()
         .toFile(path.join(process.cwd(), '/images', reference))
+      await sharp(fileContent)
+        .resize({
+          fit: sharp.fit.cover,
+          width: 120,
+          height: 120,
+        })
+        .webp({ quality: 85 })
+        .rotate()
+        .withMetadata()
+        .toFile(path.join(process.cwd(), '/images/thumb/120x120', thumbReference))
     } else {
       const compressed = await sharp(fileContent)
         .webp({ quality: req.session.admin ? 100 : 85 })
