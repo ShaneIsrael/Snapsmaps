@@ -413,34 +413,37 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
               </div>
             </div>
             <Divider className="mt-5 mb-2" />
-            <div className="flex w-full justify-center">
-              <Button
-                isIconOnly
-                variant="faded"
-                color="default"
-                size="md"
-                aria-label="Open Map"
-                onClick={() => setMapOpened((prev) => !prev)}
-                className={clsx('rotate-180 -mb-5 z-10', { 'rotate-0 ': mapOpened })}
-              >
-                <ArrowDownIcon />
-              </Button>
-            </div>
-            <Collapse isOpened={mapOpened}>
-              <div className="flex flex-row h-96">
-                {postHistory.length > 0 && (
-                  <SnapMap
-                    markers={postHistory.map((post) => ({
-                      onClick: () => handleOpenModal(post.id),
-                      lat: post.image.latitude,
-                      lng: post.image.longitude,
-                      highlight: post.id === postHistoryHoverId,
-                    }))}
-                  />
-                )}
-              </div>
-            </Collapse>
-            <Divider className={clsx('my-5', { 'mt-7': !mapOpened })} />
+            {postHistory.length > 0 && (
+              <>
+                <div className="flex w-full justify-center">
+                  <Button
+                    isIconOnly
+                    variant="faded"
+                    color="default"
+                    size="md"
+                    aria-label="Open Map"
+                    onClick={() => setMapOpened((prev) => !prev)}
+                    className={clsx('rotate-180 -mb-5 z-10', { 'rotate-0 ': mapOpened })}
+                  >
+                    <ArrowDownIcon className="h-7 w-7" />
+                  </Button>
+                </div>
+                <Collapse isOpened={mapOpened}>
+                  <div className="flex flex-row h-96">
+                    <SnapMap
+                      markers={postHistory.map((post) => ({
+                        onClick: () => handleOpenModal(post.id),
+                        lat: post.image.latitude,
+                        lng: post.image.longitude,
+                        highlight: post.id === postHistoryHoverId,
+                      }))}
+                    />
+                  </div>
+                </Collapse>
+                <Divider className={clsx('my-5', { 'mt-7': !mapOpened })} />
+              </>
+            )}
+
             <div className="grid grid-cols-[repeat(auto-fill,120px)] justify-center gap-1">
               {postHistory.map((post) => (
                 <div

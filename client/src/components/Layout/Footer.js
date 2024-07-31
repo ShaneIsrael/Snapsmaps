@@ -40,7 +40,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
   const { logout } = useAuth()
 
   async function handleNewPost() {
-    if (navigator.geolocation) {
+    if (navigator?.geolocation) {
       const { state } = await navigator.permissions.query({ name: 'geolocation' })
       if (state === 'granted' || state === 'prompt') {
         captureDeviceSelect.onOpen()

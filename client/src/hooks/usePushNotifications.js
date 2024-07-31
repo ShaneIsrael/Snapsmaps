@@ -7,7 +7,6 @@ const usePushNotifications = () => {
     const token = await getToken(messaging, {
       vapidKey: 'BNsIQTaw-15kRT9i3ZyX4SSTDdoaAq9IJpOcP2lEeXD8fqHJmYqmXwcX_pXdNdq7C8H2Oeq44zQf0fjMTeZx7B8',
     })
-    console.log('fcm: ' + token)
     await UserService.updatePushNotificationToken(token)
   }
 
