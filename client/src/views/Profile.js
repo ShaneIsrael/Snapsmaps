@@ -14,6 +14,7 @@ import {
   DropdownItem,
   Skeleton,
 } from '@nextui-org/react'
+import LazyLoad from 'react-lazyload'
 import { Collapse } from 'react-collapse'
 import React, { useState, useCallback, useEffect } from 'react'
 import Appbar from '../components/Layout/Appbar'
@@ -459,13 +460,15 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                       </Button>
                     </div>
                   )}
-                  <Image
-                    onClick={() => handleOpenModal(post.id)}
-                    alt="a history image"
-                    src={getAssetUrl() + post.image.reference}
-                    className={clsx('w-[120px] h-[120px] object-cover rounded-none', { 'blur-sm': post.nsfw })}
-                    loading="lazy"
-                  />
+                  <LazyLoad height={120} once>
+                    <img
+                      onClick={() => handleOpenModal(post.id)}
+                      alt="a history image"
+                      src={getAssetUrl() + post.image.reference}
+                      className={clsx('w-[120px] h-[120px] object-cover rounded-none', { 'blur-sm': post.nsfw })}
+                      loading="lazy"
+                    />
+                  </LazyLoad>
                 </div>
               ))}
             </div>
