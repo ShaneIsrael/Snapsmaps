@@ -18,6 +18,14 @@
       "type": "image/png"
     }
   ],
+  "screenshots": [
+    {
+      "src": "/screenshots/richer-install-mobile-screenshot.png",
+      "sizes": "1440x2690",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
   "start_url": "https://snapsmaps.com",
   "launch_handler": ["focus-existing", "auto"],
   "display": "fullscreen",

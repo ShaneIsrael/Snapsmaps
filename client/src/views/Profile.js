@@ -459,7 +459,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                       </Button>
                     </div>
                   )}
-                  <Image
+                  <img
                     onClick={() => handleOpenModal(post.id)}
                     alt="a history image"
                     src={getAssetUrl() + post.image.reference}
