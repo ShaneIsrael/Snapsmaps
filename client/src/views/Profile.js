@@ -430,22 +430,21 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 </div>
                 <Collapse isOpened={mapOpened}>
                   <div className="flex flex-row h-96">
-                    {/* <SnapMap
+                    <SnapMap
                       markers={postHistory.map((post) => ({
                         onClick: () => handleOpenModal(post.id),
                         lat: post.image.latitude,
                         lng: post.image.longitude,
                         highlight: post.id === postHistoryHoverId,
                       }))}
-                    /> */}
-                    temporarily removed
+                    />
                   </div>
                 </Collapse>
                 <Divider className={clsx('my-5', { 'mt-7': !mapOpened })} />
               </>
             )}
 
-            {/* <div className="grid grid-cols-[repeat(auto-fill,120px)] justify-center gap-1">
+            <div className="flex flex-wrap justify-center gap-1">
               {postHistory.map((post) => (
                 <div
                   key={`post-history-${post.id}`}
@@ -468,7 +467,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                   />
                 </div>
               ))}
-            </div> */}
+            </div>
           </div>
         </>
       )}
