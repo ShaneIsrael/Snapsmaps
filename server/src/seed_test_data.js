@@ -299,7 +299,11 @@ async function seedPosts() {
     userRows.forEach(async (userRow) => {
       const seed = uuidv4().replace(/-/gi, '')
       const postImageReference = '/post/seeded_' + seed + '.jpg'
-      downloadImage(`https://picsum.photos/seed/${seed}/1920/1080`, path.join(IMAGES_ROOT, postImageReference))
+      await downloadImage(`https://picsum.photos/seed/${seed}/1920/1080`, path.join(IMAGES_ROOT, postImageReference))
+      fs.copyFileSync(
+        path.join(IMAGES_ROOT, postImageReference),
+        path.join(IMAGES_ROOT, '/thumb/120x120', postImageReference.split('/')[2]),
+      )
       const postImageRow = await Image.create({
         userId: userRow.id,
         reference: postImageReference,
