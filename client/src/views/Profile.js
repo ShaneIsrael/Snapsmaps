@@ -77,7 +77,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
     imageModal.onOpen()
   }, [])
 
-  const fetchHistory = useCallback(async (mention) => {
+  const fetchHistory = async (mention) => {
     try {
       const history = mention
         ? (await ProfileService.getMentionPostHistory(mention)).data
@@ -87,9 +87,9 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
     } catch (err) {
       console.error(err)
     }
-  }, [])
+  }
 
-  const fetch = useCallback(async () => {
+  const fetch = async () => {
     try {
       let profile
       if (!mention) {
@@ -111,9 +111,9 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
       console.error(err)
     }
     setFirstLoad(false)
-  }, [mention, fetchHistory, navigate])
+  }
 
-  const handleUpdateProfile = useCallback(async () => {
+  const handleUpdateProfile = async () => {
     try {
       setSaving(true)
       await ProfileService.update(updatedProfileDetails)
@@ -123,9 +123,9 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
     }
     setSaving(false)
     setEditMode(false)
-  }, [updatedProfileDetails, fetch])
+  }
 
-  const handleFollow = useCallback(async () => {
+  const handleFollow = async () => {
     try {
       await ProfileService.follow(mention)
       fetch()
@@ -134,9 +134,9 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
         toast.error(err.response?.data)
       }
     }
-  }, [mention, fetch])
+  }
 
-  const handleUnfollow = useCallback(async () => {
+  const handleUnfollow = async () => {
     try {
       await ProfileService.unfollow(mention)
       fetch()
@@ -145,7 +145,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
         toast.error(err.response.data)
       }
     }
-  }, [mention, fetch])
+  }
 
   useEffect(() => {
     if (post && postId && !postModal.isOpen) {

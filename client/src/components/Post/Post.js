@@ -73,7 +73,7 @@ const Post = React.memo(
 
     const postImage = getAssetUrl() + intPost?.image?.reference
 
-    const reload = useCallback(async () => {
+    const reload = async () => {
       try {
         const postData = (await PostService.get(post.id)).data
         setIntPost(postData)
@@ -81,9 +81,9 @@ const Post = React.memo(
       } catch (err) {
         console.error(err)
       }
-    }, [post.id])
+    }
 
-    const handleLike = useCallback(async () => {
+    const handleLike = async () => {
       if (isAuthenticated) {
         try {
           await LikeService.likePost(post.id)
@@ -93,9 +93,9 @@ const Post = React.memo(
           console.log(err)
         }
       }
-    }, [isAuthenticated, post.id, reload])
+    }
 
-    const handleDelete = useCallback(async () => {
+    const handleDelete = async () => {
       setConfirmDelete(false)
       setTimeout(async () => {
         try {
@@ -105,7 +105,7 @@ const Post = React.memo(
           console.error(err)
         }
       }, 750)
-    }, [post.id])
+    }
 
     useEffect(() => {
       if (selectedTab === 'comments') {
@@ -124,14 +124,14 @@ const Post = React.memo(
 
     if (deleted) return null
 
-    const canBrowserShareData = useCallback((data) => {
+    const canBrowserShareData = (data) => {
       if (!navigator.share || !navigator.canShare) {
         return false
       }
       return navigator.canShare(data)
-    }, [])
+    }
 
-    const handleSharePost = useCallback(async () => {
+    const handleSharePost = async () => {
       const shareLink = `${window.location.origin}/share/post/${intPost.id}`
       try {
         if (canBrowserShareData({ url: shareLink })) {
@@ -143,28 +143,28 @@ const Post = React.memo(
       } catch (err) {
         console.error(err)
       }
-    }, [intPost.id, canBrowserShareData])
+    }
 
-    const handleAdminBanUser = useCallback(() => {
+    const handleAdminBanUser = () => {
       AdminService.banUser(post.user.mention)
         .then(() => toast.info('User banned successfully.'))
         .catch(() => toast.error('Error while attempting action'))
-    }, [post.user.mention])
+    }
 
-    const handleAdminDeletePost = useCallback(() => {
+    const handleAdminDeletePost = () => {
       AdminService.deletePost(post.id)
         .then(() => toast.info('Post deleted successfully.'))
         .catch(() => toast.error('Error while attempting action'))
-    }, [post.id])
+    }
 
-    const handleAdminSetPostNsfw = useCallback(() => {
+    const handleAdminSetPostNsfw = () => {
       AdminService.markPostNSFW(post.id)
         .then(() => {
           reload()
           toast.info('Post updated successfully')
         })
         .catch(() => toast.error('Error while attempting action'))
-    }, [post.id, reload])
+    }
 
     return (
       <>
