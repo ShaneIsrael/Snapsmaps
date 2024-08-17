@@ -155,7 +155,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
 
   useEffect(() => {
     fetch()
-  }, [mention, fetch])
+  }, [mention])
 
   useEffect(() => {
     async function openPost() {
