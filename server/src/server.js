@@ -35,9 +35,9 @@ app.set('trust proxy', true)
 
 app.use(
   morgan('combined', {
-    skip(req, res) {
-      return isProduction ? res.statusCode >= 200 : res.statusCode >= 500
-    },
+   // skip(req, res) {
+   //   return isProduction ? res.statusCode >= 200 : res.statusCode >= 500
+   // },
     stream: logger.stream,
   }),
 )
