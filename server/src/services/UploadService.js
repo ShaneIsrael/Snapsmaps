@@ -1,4 +1,5 @@
 const aws = require('aws-sdk')
+const logger = require('../utils/logger')
 const fs = require('fs')
 
 const { environment } = require('../config')
@@ -30,6 +31,7 @@ service.uploadImage = async (fileContent, path, contentType) => {
   }
 
   const resp = await s3.upload(params).promise()
+  logger.info(resp)
   return resp
 }
 
