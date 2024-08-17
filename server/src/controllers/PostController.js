@@ -66,8 +66,9 @@ controller.create = async (req, res, next) => {
     if (!image || !latitude || !longitude || !/^image/.test(image.mimetype))
       return res.status(400).send('A post requires an image and a gps location.')
 
-    const reference = `/post/${uuidv4().replace(/-/gi, '')}.webp`
-    const thumbReference = `/thumb/120x120/${uuidv4().replace(/-/gi, '')}.webp`
+    const uuid = uuidv4().replace(/-/gi, '')
+    const reference = `/post/${uuid}.webp`
+    const thumbReference = `/thumb/120x120/${uuid}.webp`
     const fileContent = Buffer.from(image.data)
     if (!isProduction) {
       await sharp(fileContent)
