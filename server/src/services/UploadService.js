@@ -1,5 +1,4 @@
 const aws = require('aws-sdk')
-const logger = require('../utils/logger')
 const fs = require('fs')
 
 const { environment } = require('../config')
@@ -18,7 +17,7 @@ if (environment === 'production') {
 
 const service = {}
 
-service.uploadImage = async (fileContent, path, contentType) => {
+service.uploadImage = (fileContent, path, contentType) => {
   // remove any forward slash from the beginning of the path to prevent
   // a root directory being created in the S3 storage.
   const mutatedPath = path.replace(/^\//, '')
@@ -30,9 +29,7 @@ service.uploadImage = async (fileContent, path, contentType) => {
     ContentType: contentType,
   }
 
-  const resp = await s3.upload(params).promise()
-  logger.info(resp)
-  return resp
+  return s3.upload(params).promise()
 }
 
 module.exports = service
