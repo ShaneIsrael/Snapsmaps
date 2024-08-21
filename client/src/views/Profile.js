@@ -32,6 +32,7 @@ import PageLayout from '../components/Layout/PageLayout'
 import clsx from 'clsx'
 import Nsfw2 from '../assets/icons/Nsfw2'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
+import { useAuthed } from '../hooks/useAuthed'
 
 const Profile = React.memo(({ isSelfProfile, isMention }) => {
   const postModal = useDisclosure()
@@ -49,6 +50,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
   const [postHistoryHoverId, setPostHistoryHoverId] = useState(null)
 
   const { mention, postId, tabId } = useParams()
+  const { isAuthenticated } = useAuthed()
 
   const navigate = useNavigate()
 
@@ -281,6 +283,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 )}
 
                 {!isSelf &&
+                  isAuthenticated &&
                   (isFollowed ? (
                     <Dropdown className="dark min-w-0 p-[1px] w-[100px]">
                       <DropdownTrigger>

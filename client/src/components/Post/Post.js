@@ -111,7 +111,7 @@ const Post = React.memo(
       if (selectedTab === 'comments') {
         reload()
       }
-    }, [selectedTab, reload])
+    }, [selectedTab])
 
     useEffect(() => {
       if (commentsWrapperRef.current) {
