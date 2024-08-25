@@ -46,7 +46,8 @@ const Dashboard = () => {
       }
       setLastScrollY(window.scrollTop)
 
-      const bottom = Math.round(e.target.scrollHeight - e.target.scrollTop) === Math.round(e.target.clientHeight)
+      const bottom = Math.round(e.target.scrollHeight - e.target.scrollTop) >== Math.round(e.target.clientHeight - 50)
+      console.log(e.target.scrollHeight - e.target.scrollTop, e.target.clientHeight)
       if (bottom) {
         selectedFeed === 'world' ? worldFeed.nextPage() : followingFeed.nextPage()
       }
