@@ -46,8 +46,8 @@ const Dashboard = () => {
       }
       setLastScrollY(window.scrollTop)
 
-      const bottom = Math.round(e.target.scrollHeight - e.target.scrollTop) === Math.round(e.target.clientHeight)
-      if (bottom) {
+      const bottom = Math.round(e.target.scrollHeight - e.target.scrollTop) <= Math.round(e.target.clientHeight + 50)
+      if (bottom && !worldFeed.isPageLoading && !followingFeed.isPageLoading) {
         selectedFeed === 'world' ? worldFeed.nextPage() : followingFeed.nextPage()
       }
     },
