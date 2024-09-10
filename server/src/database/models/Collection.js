@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(User)
       this.belongsTo(Image)
     }
-  }/Users/shane/git/snapsmaps/server
+  }
   Collection.init(
     {
       userId: {
