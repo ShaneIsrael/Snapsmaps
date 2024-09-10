@@ -55,17 +55,17 @@ function Collection() {
         <>
           <div className="relative flex justify-center w-full h-36">
             <div className="w-full max-w-[1000px] ">
-              <div className="absolute w-full max-w-[1000px] bottom-0 flex items-end text-4xl font-lobster pl-2 pb-2 pt-2 rounded-b-xl bg-black/50">
+              <div className="absolute w-full max-w-[1000px] bottom-0 flex items-end text-4xl font-lobster pl-2 pb-2 pt-2 bg-black/50">
                 {collection?.title}
               </div>
               <img
                 src={getAssetUrl() + collection?.image.reference}
-                className={clsx('object-cover w-full h-full rounded-b-xl')}
+                className={clsx('object-cover w-full h-full')}
                 loading="lazy"
               />
             </div>
           </div>
-          <div className="mt-2 border-b-large border-gray-600" />
+          <div className="border-b-medium border-white" />
           <div className="flex flex-col items-center gap-2 max-h-screen overflow-y-scroll py-2">
             {images &&
               images.map((image, index) => (
