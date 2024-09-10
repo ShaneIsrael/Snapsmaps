@@ -22,6 +22,9 @@ class CollectionService {
   delete(id) {
     return Api().delete('/collection', { params: { id } })
   }
+  removeItem(id) {
+    return Api().delete('/collection/item', { params: { id } })
+  }
 }
 
 const service = new CollectionService()

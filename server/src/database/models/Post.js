@@ -10,10 +10,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       const { User, Image, PostComment, PostLike } = models
-      this.belongsTo(User)
-      this.belongsTo(Image)
       this.hasMany(PostComment, { onDelete: 'CASCADE', hooks: true })
       this.hasMany(PostLike, { onDelete: 'CASCADE', hooks: true })
+      this.belongsTo(User)
+      this.belongsTo(Image)
     }
   }
   Post.init(

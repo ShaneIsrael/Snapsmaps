@@ -436,6 +436,8 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 <CollectionItem
                   key={`collection-${collection.id}`}
                   collection={collection}
+                  isAuthenticated={isAuthenticated}
+                  isSelf={isSelf}
                   onClick={() =>
                     isMention
                       ? navigate(`/user/${mention}/collection/${collection.id}`)

@@ -10,9 +10,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       const { User, Image, CollectionPostLink } = models
+      this.hasMany(CollectionPostLink, { onDelete: 'cascade', hooks: true })
       this.belongsTo(User)
       this.belongsTo(Image)
-      this.hasMany(CollectionPostLink, { onDelete: 'CASCADE', hooks: true })
     }
   }
   Collection.init(
@@ -44,7 +44,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      paranoid: true,
       modelName: 'collection',
       defaultScope: {
         attributes: {

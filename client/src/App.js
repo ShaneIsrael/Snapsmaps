@@ -52,7 +52,7 @@ function ProfileRoot() {
     <Routes>
       <Route path="/" element={<Profile isSelfProfile />} />
       <Route path="/follows" element={<ProfileFollows />} />
-      <Route path="/collection/:collectionId" element={<Collection />} />
+      <Route path="/collection/:collectionId" element={<Collection isSelfProfile />} />
       <Route path="*" element={<div>not found</div>} />
     </Routes>
   )

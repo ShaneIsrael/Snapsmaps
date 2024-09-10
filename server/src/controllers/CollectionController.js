@@ -144,10 +144,33 @@ controller.deleteCollection = async (req, res, next) => {
     const collection = await Collection.findOne({ where: { id }, attributes: ['id', 'userId'] })
 
     if (collection.userId !== req.session.user.id) {
-      return res.status(400).send('only the owner of a post can delete a post')
+      return res.status(400).send('only the owner of a collection can delete a collection')
     }
 
     await collection.destroy()
+
+    return res.sendStatus(200)
+  } catch (err) {
+    next(err)
+  }
+}
+
+controller.removeCollectionItem = async (req, res, next) => {
+  try {
+    const { id } = req.query
+    if (!id) return res.status(400).send('an id is required')
+
+    const collectionItem = await CollectionPostLink.findOne({
+      where: { id },
+      attributes: ['id'],
+      include: [{ model: Collection, attributes: ['userId'] }],
+    })
+
+    if (collectionItem.collection.userId !== req.session.user.id) {
+      return res.status(400).send('only the owner of a collection item can remove a collection item')
+    }
+
+    await collectionItem.destroy()
 
     return res.sendStatus(200)
   } catch (err) {

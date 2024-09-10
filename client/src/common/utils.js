@@ -124,4 +124,11 @@ export const downloadFile = async (reference) => {
   document.body.removeChild(link)
 }
 
+export const canBrowserShareData = (data) => {
+  if (!navigator.share || !navigator.canShare) {
+    return false
+  }
+  return navigator.canShare(data)
+}
+
 export default getCroppedImg

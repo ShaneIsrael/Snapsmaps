@@ -8,9 +8,11 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 
 import { getAssetUrl } from '../common/utils'
 import clsx from 'clsx'
-import { Divider } from '@nextui-org/react'
+import { Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
+import ConfirmationDialog from '../components/Dialog/ConfirmationDialog'
+import { EllipsisVerticalIcon, XMarkIcon } from '@heroicons/react/24/solid'
 
-function Collection() {
+function Collection({ isSelfProfile }) {
   const location = useLocation()
   const { mention, collectionId } = useParams()
   const [collection, setCollection] = useState()
@@ -19,6 +21,19 @@ function Collection() {
 
   const navigate = useNavigate()
   const [loading, setLoading] = React.useState(false)
+
+  const [removeItem, setRemoveItem] = useState()
+  const [allRemovedItems, setAllRemovedItems] = useState([])
+
+  const handleRemoveItem = async () => {
+    try {
+      await CollectionService.removeItem(removeItem)
+      setAllRemovedItems((prev) => [...prev, removeItem])
+    } catch (err) {
+      console.error(err)
+    }
+    setRemoveItem(null)
+  }
 
   async function fetch() {
     setLoading(true)
@@ -36,36 +51,32 @@ function Collection() {
     fetch()
   }, [mention, collectionId])
 
-  const handleImageClick = (index, item) => {
-    setIndex(index)
-    setLightboxOpen(true)
-  }
-
   const images = collection?.collectionPostLinks
     .map((cpl) => ({
+      id: cpl.id,
       postId: cpl.post.id,
       src: getAssetUrl() + cpl.post.image.reference,
       title: cpl.post.title,
     }))
+    .filter((img) => !allRemovedItems.includes(img.id))
     .sort((a, b) => a.postId - b.postId)
 
+  console.log(images)
   return (
-    <PageLayout noProfile fullwidth backButton={() => navigate(-1)} showNav={false}>
+    <PageLayout noProfile fullwidth backButton={() => navigate(-1)} pageName={collection?.title}>
       {({ user, isAuthenticated }) => (
         <>
-          <div className="relative flex justify-center w-full h-36">
-            <div className="w-full max-w-[1000px] ">
-              <div className="absolute w-full max-w-[1000px] bottom-0 flex items-end text-4xl font-lobster pl-2 pb-2 pt-2 bg-black/50">
-                {collection?.title}
-              </div>
-              <img
-                src={getAssetUrl() + collection?.image.reference}
-                className={clsx('object-cover w-full h-full')}
-                loading="lazy"
-              />
-            </div>
-          </div>
-          <div className="border-b-medium border-white" />
+          <ConfirmationDialog
+            open={!!removeItem}
+            title="Are you sure?"
+            body="This action is not reversible."
+            actionText="Remove Collection Item"
+            actionColor="danger"
+            cancelColor="default"
+            onAction={handleRemoveItem}
+            onCancel={() => setRemoveItem(null)}
+          />
+          <div className="border-b border-solid border-white pt-[65px]" />
           <div className="flex flex-col items-center gap-2 max-h-screen overflow-y-scroll py-2">
             {images &&
               images.map((image, index) => (
@@ -73,6 +84,26 @@ function Collection() {
                   key={`collection-photo-${index}`}
                   className="relative w-[90%] min-w-[370px] max-w-[495px] h-fit rounded-xl border-solid border-neutral-300 border-large"
                 >
+                  {isAuthenticated && isSelfProfile && (
+                    <Dropdown className="dark absolute min-w-0 p-[1px] w-fit bg-black -left-32">
+                      <DropdownTrigger>
+                        <Button variant="light" size="sm" className="absolute top-0 right-0" isIconOnly>
+                          <EllipsisVerticalIcon className="w-5 h-5" />
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu aria-label="collection item actions">
+                        <DropdownItem
+                          key="delete"
+                          className="text-danger"
+                          color="danger"
+                          onClick={() => setRemoveItem(image.id)}
+                          startContent={<XMarkIcon className="h-4 w-4" />}
+                        >
+                          Remove Item
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
+                  )}
                   <div className="absolute w-full bottom-0 flex items-end text-md font-bold pl-1 pr-1 pb-1 pt-1 rounded-b-xl bg-black/45 leading-tight">
                     {image.title}
                   </div>

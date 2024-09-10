@@ -21,7 +21,7 @@ import {
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
 import Comment from '../Comment/Comment'
-import { downloadFile, getAssetUrl } from '../../common/utils'
+import { canBrowserShareData, downloadFile, getAssetUrl } from '../../common/utils'
 import { AdminService, CommentService, LikeService, PostService } from '../../services'
 import { formatDistanceStrict } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
@@ -123,13 +123,6 @@ const Post = React.memo(
     const timeAgo = formatDistanceStrict(new Date(intPost.createdAt), new Date(), { addSuffix: true })
 
     if (deleted) return null
-
-    const canBrowserShareData = (data) => {
-      if (!navigator.share || !navigator.canShare) {
-        return false
-      }
-      return navigator.canShare(data)
-    }
 
     const handleSharePost = async () => {
       const shareLink = `${window.location.origin}/share/post/${intPost.id}`
