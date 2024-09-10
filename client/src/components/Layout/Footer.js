@@ -23,17 +23,22 @@ import {
   ArrowRightEndOnRectangleIcon,
   MagnifyingGlassIcon,
   UserIcon,
+  SquaresPlusIcon,
+  PlusIcon,
 } from '@heroicons/react/24/outline'
 import { toast } from 'sonner'
 import { ReactComponent as Logo } from '../../assets/logo/dark/logo.svg'
 import { useNotifications } from '../../hooks/useNotifications'
 import NotificationMenu from '../Notification/NotificationMenu'
+import CreateCollection from '../Collection/CreateCollection'
 
 function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, user, isAuthenticated }) {
   const [uploadedImageData, setUploadedImageData] = useState()
   const [exifOnly, setExifOnly] = useState(false)
   const notifications = useNotifications()
   const captureDeviceSelect = useDisclosure()
+  const [postChoiceOpen, setPostChoiceOpen] = useState(false)
+  const [createCollectionOpen, setCreateCollectionOpen] = useState(false)
 
   const navigate = useNavigate()
 
@@ -54,20 +59,58 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
       captureDeviceSelect.onOpen()
     }
   }
+  async function handlePostChoice() {
+    setPostChoiceOpen(true)
+  }
 
   return (
     <>
       <Modal
-        className="dark p-0 m-0 rounded-b-none"
+        className="dark p-0 m-0 rounded-b-none  bg-transparent/90"
         isOpen={captureDeviceSelect.isOpen}
         onClose={captureDeviceSelect.onClose}
         placement="bottom"
-        backdrop="blur"
+        backdrop="transparent"
         hideCloseButton
       >
         <ModalContent className="flex flex-row justify-center items-center pt-8 pb-8 gap-4 sm:m-0">
           <UploadImage onImageUploaded={setUploadedImageData} mode="camera" exifOnly={exifOnly} />
           <UploadImage onImageUploaded={setUploadedImageData} exifOnly={exifOnly} />
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        className="p-0 m-0 rounded-b-none bg-transparent/90"
+        isOpen={postChoiceOpen}
+        onClose={() => setPostChoiceOpen(false)}
+        placement="bottom"
+        backdrop="transparent"
+        hideCloseButton
+      >
+        <ModalContent className="flex flex-collumn justify-center items-center pt-8 pb-8 gap-4 sm:m-0 ">
+          <Button
+            color="primary"
+            variant="shadow"
+            startContent={<PlusIcon className="h-6 w-6" />}
+            onClick={() => {
+              setPostChoiceOpen(false)
+              handleNewPost()
+            }}
+          >
+            New Post
+            <div className="mr-[26px]" />
+          </Button>
+          <Button
+            color="primary"
+            variant="shadow"
+            startContent={<SquaresPlusIcon className="h-6 w-6" />}
+            onClick={() => {
+              setPostChoiceOpen(false)
+              setCreateCollectionOpen(true)
+            }}
+          >
+            New Collection
+          </Button>
         </ModalContent>
       </Modal>
 
@@ -80,6 +123,12 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
           handleOnSubmit(post)
         }}
       />
+      <CreateCollection
+        open={createCollectionOpen}
+        onClose={() => setCreateCollectionOpen(false)}
+        onSubmitted={handleOnSubmit}
+      />
+
       <footer
         onClick={(e) => e.stopPropagation()}
         className="sticky bottom-0 py-1.5 z-10 flex mt-auto w-full h-auto items-center justify-center inset-x-0 border-t border-divider bg-background"
@@ -108,7 +157,8 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
             onClick={(e) => {
               if (isAuthenticated) {
                 e.stopPropagation()
-                handleNewPost()
+                // handleNewPost()
+                handlePostChoice()
               } else {
                 toast.info('You must be logged in to do that.')
               }

@@ -27,6 +27,7 @@ if (!isProduction) {
   const imagesDir = path.join(process.cwd(), '/images')
   fs.mkdirSync(path.join(imagesDir, '/post'), { recursive: true })
   fs.mkdirSync(path.join(imagesDir, '/profile'), { recursive: true })
+  fs.mkdirSync(path.join(imagesDir, '/collection'), { recursive: true })
   fs.mkdirSync(path.join(imagesDir, '/thumb/120x120'), { recursive: true })
   app.use(express.static(imagesDir))
 }
@@ -104,6 +105,7 @@ require('./routes/like')(app)
 require('./routes/profile')(app)
 require('./routes/comment')(app)
 require('./routes/user')(app)
+require('./routes/collection')(app)
 require('./routes/test')(app)
 require('./routes')(app)
 

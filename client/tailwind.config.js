@@ -7,6 +7,7 @@ export default {
     extend: {
       fontFamily: {
         vibes: 'GreatVibes',
+        lobster: 'Lobster',
       },
     },
   },

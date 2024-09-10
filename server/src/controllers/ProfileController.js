@@ -1,6 +1,6 @@
 const path = require('path')
 const Models = require('../database/models')
-const { User, Image, Post, Follow, sequelize } = Models
+const { User, Image, Post, Follow, Collection, CollectionPostLink, sequelize } = Models
 const { v4: uuidv4 } = require('uuid')
 const { uploadImage } = require('../services/UploadService')
 const sharp = require('sharp')
@@ -169,10 +169,30 @@ controller.getPostHistory = async (req, res, next) => {
     const history = await Post.findAll({
       where: { userId: req.session.user.id },
       order: [['createdAt', 'desc']],
-      attributes: ['id', 'nsfw'],
+      attributes: ['id', 'title', 'nsfw'],
       include: [{ model: Image, attributes: ['reference', 'latitude', 'longitude'] }],
     })
     res.status(200).send(history)
+  } catch (err) {
+    next(err)
+  }
+}
+
+/**
+ * Gets the current sessions users collections
+ */
+controller.getCollections = async (req, res, next) => {
+  try {
+    const collections = await Collection.findAll({
+      where: { userId: req.session.user.id },
+      order: [['createdAt', 'desc']],
+      attributes: ['id', 'title', 'public'],
+      include: [
+        { model: Image, attributes: ['reference'] },
+        { model: CollectionPostLink, include: [{ model: Post, include: [Image] }] },
+      ],
+    })
+    res.status(200).send(collections)
   } catch (err) {
     next(err)
   }
@@ -215,6 +235,49 @@ controller.getMentionPostHistory = async (req, res, next) => {
       ],
     })
     res.status(200).send(posts)
+  } catch (err) {
+    next(err)
+  }
+}
+
+/**
+ * Gets the mention referenced users collections
+ */
+controller.getMentionCollections = async (req, res, next) => {
+  try {
+    const { mention } = req.query
+    if (!mention) return res.status(400).send('a mention is required')
+
+    const userRow = await User.findOne({
+      attributes: ['id'],
+      where: { mention, verified: true, state: { [Op.ne]: UserState.Banned } },
+    })
+
+    if (!userRow) {
+      return res.status(400).send('No user by that mention exists.')
+    }
+
+    const isFollowing = await isFollowingUser(req.session.user, userRow.id)
+
+    let whereStatement = { userId: userRow.id, public: true }
+    if (isFollowing) {
+      whereStatement = {
+        userId: userRow.id,
+        [Op.or]: [{ public: true }, { public: false }],
+      }
+    }
+
+    const collections = await Collection.findAll({
+      where: whereStatement,
+      order: [['createdAt', 'desc']],
+      attributes: ['id', 'title', 'public'],
+      include: [
+        { model: Image, attributes: ['reference'] },
+        { model: CollectionPostLink, include: [{ model: Post, include: [Image] }] },
+      ],
+    })
+
+    res.status(200).send(collections)
   } catch (err) {
     next(err)
   }

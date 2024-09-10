@@ -12,6 +12,7 @@ import AdminDashboard from './views/AdminDashboard'
 
 import PushNotificationHandler from './firebase/PushNotificationHandler'
 import Landing from './views/Landing'
+import Collection from './views/Collection'
 
 const router = createBrowserRouter([
   { path: '/user/*', Component: UserRoot },
@@ -38,6 +39,7 @@ function UserRoot() {
     <Routes>
       <Route path="/:mention" element={<Profile isMention />} />
       <Route path="/:mention/follows" element={<ProfileFollows />} />
+      <Route path="/:mention/collection/:collectionId" element={<Collection />} />
       <Route path="/:mention/:postId" element={<Profile isMention />} />
       <Route path="/:mention/:postId/:tabId" element={<Profile isMention />} />
       <Route path="*" element={<div>not found</div>} />
@@ -50,6 +52,7 @@ function ProfileRoot() {
     <Routes>
       <Route path="/" element={<Profile isSelfProfile />} />
       <Route path="/follows" element={<ProfileFollows />} />
+      <Route path="/collection/:collectionId" element={<Collection />} />
       <Route path="*" element={<div>not found</div>} />
     </Routes>
   )

@@ -33,6 +33,7 @@ import clsx from 'clsx'
 import Nsfw2 from '../assets/icons/Nsfw2'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { useAuthed } from '../hooks/useAuthed'
+import CollectionItem from '../components/Collection/CollectionItem'
 
 const Profile = React.memo(({ isSelfProfile, isMention }) => {
   const postModal = useDisclosure()
@@ -42,6 +43,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
   const [post, setPost] = useState()
   const [selectedPostTab, setSelectedPostTab] = useState('photo')
   const [postHistory, setPostHistory] = useState([])
+  const [collections, setCollections] = useState([])
   const [modalImage, setModalImage] = useState()
   const [editMode, setEditMode] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -90,6 +92,17 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
       console.error(err)
     }
   }
+  const fetchCollections = async (mention) => {
+    try {
+      const response = mention
+        ? (await ProfileService.getMentionCollections(mention)).data
+        : (await ProfileService.getCollections()).data
+
+      setCollections(response)
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   const fetch = async () => {
     try {
@@ -97,11 +110,13 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
       if (!mention) {
         profile = (await ProfileService.getAuthedProfile()).data
         await fetchHistory()
+        await fetchCollections()
         setUpdatedProfileDetails(profile)
       } else {
         try {
           profile = (await ProfileService.getProfileByMention(mention)).data
           await fetchHistory(mention)
+          await fetchCollections(mention)
         } catch (err) {
           toast.error(err.response.data)
           navigate('/feed')
@@ -415,6 +430,47 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 </div>
               </div>
             </div>
+            <Divider className="my-5" />
+            <div className="flex flex-wrap justify-center gap-2">
+              {collections.map((collection) => (
+                <CollectionItem
+                  key={`collection-${collection.id}`}
+                  collection={collection}
+                  onClick={() =>
+                    isMention
+                      ? navigate(`/user/${mention}/collection/${collection.id}`)
+                      : navigate(`/profile/collection/${collection.id}`)
+                  }
+                />
+              ))}
+            </div>
+            <Divider className="mt-5 mb-5" />
+
+            <div className="flex flex-wrap justify-center gap-1">
+              {postHistory.map((post) => (
+                <div
+                  key={`post-history-${post.id}`}
+                  className="relative cursor-pointer overflow-hidden"
+                  onMouseEnter={() => setPostHistoryHoverId(post.id)}
+                  onMouseLeave={() => setPostHistoryHoverId(null)}
+                >
+                  {post.nsfw && (
+                    <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                      <Button size="md" isIconOnly variant="flat" className="">
+                        <Nsfw2 className="stroke-neutral-100/10 w-6 h-6 opacity-70" />
+                      </Button>
+                    </div>
+                  )}
+                  <Image
+                    onClick={() => handleOpenModal(post.id)}
+                    alt="a history image"
+                    src={getAssetUrl() + '/thumb/120x120/' + post.image.reference.split('/')[2]}
+                    className={clsx('w-[120px] h-[120px] object-cover rounded-none', { 'blur-sm': post.nsfw })}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
             <Divider className="mt-5 mb-2" />
             {postHistory.length > 0 && (
               <>
@@ -446,32 +502,6 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 <Divider className={clsx('my-5', { 'mt-7': !mapOpened })} />
               </>
             )}
-
-            <div className="flex flex-wrap justify-center gap-1">
-              {postHistory.map((post) => (
-                <div
-                  key={`post-history-${post.id}`}
-                  className="relative cursor-pointer overflow-hidden"
-                  onMouseEnter={() => setPostHistoryHoverId(post.id)}
-                  onMouseLeave={() => setPostHistoryHoverId(null)}
-                >
-                  {post.nsfw && (
-                    <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                      <Button size="md" isIconOnly variant="flat" className="">
-                        <Nsfw2 className="stroke-neutral-100/10 w-6 h-6 opacity-70" />
-                      </Button>
-                    </div>
-                  )}
-                  <Image
-                    onClick={() => handleOpenModal(post.id)}
-                    alt="a history image"
-                    src={getAssetUrl() + '/thumb/120x120/' + post.image.reference.split('/')[2]}
-                    className={clsx('w-[120px] h-[120px] object-cover rounded-none', { 'blur-sm': post.nsfw })}
-                    loading="lazy"
-                  />
-                </div>
-              ))}
-            </div>
           </div>
         </>
       )}

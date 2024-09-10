@@ -16,6 +16,12 @@ class ProfileService {
   getMentionPostHistory(mention) {
     return Api().get('/profile/history/mention', { params: { mention } })
   }
+  getCollections() {
+    return Api().get('/profile/collections')
+  }
+  getMentionCollections(mention) {
+    return Api().get('/profile/collections/mention', { params: { mention } })
+  }
   follow(mention) {
     return Api().post('/profile/follow', { mention })
   }

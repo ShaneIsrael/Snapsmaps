@@ -8,6 +8,12 @@
   /* other formats include: 'woff2', 'truetype, 'opentype',
                             'embedded-opentype', and 'svg' */
 }
+@font-face {
+  font-family: 'Lobster';
+  src: local('Lobster'), url(./assets/fonts/Lobster.ttf) format('truetype');
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
 
 html,
 body,

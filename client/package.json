@@ -18,9 +18,12 @@
     "firebase": "^10.12.2",
     "framer-motion": "10.12.16",
     "google-map-react": "^2.2.1",
+    "imagesloaded": "^5.0.0",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^3.1.2",
+    "lightgallery": "^2.7.2",
     "lodash": "^4.17.21",
+    "masonry-layout": "^4.2.2",
     "react": "^18.2.0",
     "react-collapse": "^5.1.1",
     "react-device-detect": "^2.2.3",
@@ -31,7 +34,8 @@
     "react-router-dom": "^6.14.2",
     "react-scripts": "5.0.1",
     "react-zoom-pan-pinch": "^3.4.4",
-    "sonner": "^1.4.41"
+    "sonner": "^1.4.41",
+    "yet-another-react-lightbox": "^3.21.4"
   },
   "scripts": {
     "start": "HTTPS=true react-scripts start",

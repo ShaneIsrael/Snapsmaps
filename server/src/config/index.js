@@ -7,6 +7,7 @@ module.exports = {
     maxDisplayNameLength: 32,
     maxMentionLength: 20,
     maxPasswordLength: 64,
+    maxCollectionTitleLength: 20,
   },
   admins: ['shanemisrael@gmail.com', 'sethwelch85@gmail.com'],
   development: {
