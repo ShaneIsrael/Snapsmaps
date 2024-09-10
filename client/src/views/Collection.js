@@ -41,10 +41,13 @@ function Collection() {
     setLightboxOpen(true)
   }
 
-  const images = collection?.collectionPostLinks.map((cpl) => ({
-    src: getAssetUrl() + cpl.post.image.reference,
-    title: cpl.post.title,
-  }))
+  const images = collection?.collectionPostLinks
+    .map((cpl) => ({
+      postId: cpl.post.id,
+      src: getAssetUrl() + cpl.post.image.reference,
+      title: cpl.post.title,
+    }))
+    .sort((a, b) => a.postId - b.postId)
 
   return (
     <PageLayout noProfile fullwidth backButton={() => navigate(-1)} showNav={false}>
@@ -52,7 +55,7 @@ function Collection() {
         <>
           <div className="relative flex justify-center w-full h-36">
             <div className="w-full max-w-[1000px] ">
-              <div className="absolute w-full max-w-[1000px] bottom-0 flex items-end text-5xl font-lobster pl-2 pb-2 pt-2 rounded-b-xl bg-black/50">
+              <div className="absolute w-full max-w-[1000px] bottom-0 flex items-end text-4xl font-lobster pl-2 pb-2 pt-2 rounded-b-xl bg-black/50">
                 {collection?.title}
               </div>
               <img
