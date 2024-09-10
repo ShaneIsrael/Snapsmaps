@@ -57,7 +57,7 @@ function CollectionItem({ collection, onClick, isAuthenticated, isSelf }) {
         onClick={onClick}
       >
         {isAuthenticated && (
-          <Dropdown className="dark absolute min-w-0 p-[1px] w-fit bg-black -left-28">
+          <Dropdown className="dark absolute min-w-0 p-[1px] w-fit bg-black -left-36">
             <DropdownTrigger>
               <Button variant="light" size="sm" className="absolute top-0 right-0" isIconOnly>
                 <EllipsisVerticalIcon className="w-5 h-5" />
