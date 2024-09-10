@@ -66,7 +66,7 @@ function Collection() {
             </div>
           </div>
           <div className="mt-2 border-b-large border-gray-600" />
-          <div className="flex flex-wrap justify-center gap-2 max-h-screen  overflow-y-scroll py-2">
+          <div className="flex flex-col items-center gap-2 max-h-screen overflow-y-scroll py-2">
             {images &&
               images.map((image, index) => (
                 <div
