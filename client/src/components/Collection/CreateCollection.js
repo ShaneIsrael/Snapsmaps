@@ -6,10 +6,6 @@ import {
   CardHeader,
   Modal,
   ModalContent,
-  Tab,
-  Tabs,
-  Textarea,
-  useDisclosure,
   Progress,
   Switch,
   Tooltip,
@@ -17,19 +13,13 @@ import {
 } from '@nextui-org/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { TbPhotoPlus } from 'react-icons/tb'
-import { MapPinIcon } from '../../assets/icons/MapPinIcon'
 import clsx from 'clsx'
 import CloseIcon from '../../assets/icons/CloseIcon'
 import SendIcon from '../../assets/icons/SendIcon'
-import { CollectionService, PostService, ProfileService } from '../../services'
+import { CollectionService, ProfileService } from '../../services'
 import { toast } from 'sonner'
-import SnapMap from '../Map/SnapMap'
 import { EyeIcon, EyeSlashIcon, PlusIcon } from '@heroicons/react/24/solid'
-import Nsfw from '../../assets/icons/Nsfw'
-import Sfw from '../../assets/icons/Sfw'
-import Nsfw2 from '../../assets/icons/Nsfw2'
 import { XCircleIcon } from '@heroicons/react/24/outline'
 import SelectCollectionItem from './SelectCollectionItem'
 import { getAssetUrl } from '../../common/utils'
@@ -99,7 +89,7 @@ function CreateCollection({ open, onClose, onSubmitted }) {
           abortControllerRef.current.signal,
         )
       ).data
-      onSubmitted()
+      onSubmitted(() => navigate)
       toast.success(`${title} collection has been created.`)
     } catch (err) {
       if (err.response?.status === 413) {

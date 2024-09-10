@@ -59,10 +59,9 @@ controller.create = async (req, res, next) => {
   try {
     const { image } = req.files
     const { title, public } = req.body
-    const items = req.body['items[]']
+    const items = Array.isArray(req.body['items[]']) ? req.body['items[]'] : [req.body['items[]']]
 
     if (typeof title !== 'string') return res.status(400).send('title must be a string.')
-    if (typeof items !== 'object') return res.status(400).send('items must be an object.')
     if (items.length === 0) return res.status(400).send('a collection must include at least one item.')
 
     if (!image || !/^image/.test(image.mimetype)) return res.status(400).send('A collection requires an image')
@@ -83,6 +82,7 @@ controller.create = async (req, res, next) => {
         .rotate()
         .withMetadata()
         .toBuffer()
+
       await uploadImage(compressed, reference, 'image/webp')
     }
     const imageRow = await Image.create(
@@ -126,7 +126,7 @@ controller.create = async (req, res, next) => {
         where: { id: collectionRow.id },
         include: [{ model: User, attributes: ['displayName', 'mention'], include: [Image] }, Image],
       })
-      res.status(201).send(createdCollection)
+      return res.status(201).send(createdCollection)
     }
     await t.rollback()
     return res.status(400).send('your collection items included an item that is not valid')
