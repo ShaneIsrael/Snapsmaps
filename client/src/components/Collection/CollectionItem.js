@@ -13,7 +13,7 @@ function CollectionItem({ collection, onClick }) {
       </div>
       <img
         src={getAssetUrl() + collection.image.reference}
-        className={clsx('object-cover rounded-xl w-full h-full')}
+        className={clsx('object-cover rounded-lg w-full h-full')}
         loading="lazy"
       />
     </div>
