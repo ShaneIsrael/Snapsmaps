@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Button, Image, Modal, ModalBody, ModalContent, Spinner, Tab, Tabs, useDisclosure } from '@nextui-org/react'
+import { Button, Modal, ModalContent, Spinner, Tab, Tabs, useDisclosure } from '@nextui-org/react'
 import { UserGroupIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { GlobeAmericasIcon } from '@heroicons/react/24/solid'
 import Feed from '../components/Feed/Feed'

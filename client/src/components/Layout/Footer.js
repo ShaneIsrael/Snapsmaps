@@ -123,11 +123,13 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
           handleOnSubmit(post)
         }}
       />
-      <CreateCollection
-        open={createCollectionOpen}
-        onClose={() => setCreateCollectionOpen(false)}
-        onSubmitted={() => navigate('/profile')}
-      />
+      {isAuthenticated && (
+        <CreateCollection
+          open={createCollectionOpen}
+          onClose={() => setCreateCollectionOpen(false)}
+          onSubmitted={() => navigate('/profile')}
+        />
+      )}
 
       <footer
         onClick={(e) => e.stopPropagation()}

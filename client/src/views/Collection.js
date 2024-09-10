@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { CollectionService, ProfileService } from '../services'
+import { CollectionService } from '../services'
 import PageLayout from '../components/Layout/PageLayout'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'

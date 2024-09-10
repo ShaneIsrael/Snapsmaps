@@ -7,9 +7,9 @@ const useAuth = () => {
   const { removeToken } = usePushNotifications()
   const logout = async () => {
     try {
-      await AuthService.logout()
       // remove this client from firebase messaging
       removeToken()
+      await AuthService.logout()
       navigate('/')
     } catch (err) {
       throw err
