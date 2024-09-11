@@ -13,6 +13,7 @@ import AdminDashboard from './views/AdminDashboard'
 import PushNotificationHandler from './firebase/PushNotificationHandler'
 import Landing from './views/Landing'
 import Collection from './views/Collection'
+import NotFound from './views/NotFound'
 
 const router = createBrowserRouter([
   { path: '/user/*', Component: UserRoot },
@@ -29,7 +30,9 @@ function Root() {
       <Route path="/" element={<Landing />} />
       <Route path="/feed" element={<Dashboard />} />
       <Route path="/verify/:email/:token" element={<VerifyEmail />} />
-      <Route path="*" element={<div>not found</div>} />
+      <Route path="/404/post" element={<NotFound object="post" />} />
+      <Route path="/404/collection" element={<NotFound object="collection" />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }

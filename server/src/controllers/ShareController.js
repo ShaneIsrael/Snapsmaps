@@ -23,7 +23,7 @@ controller.post = async (req, res, next) => {
     })
 
     if (!post) {
-      return res.sendStatus(404)
+      return res.redirect('/404/post')
     }
 
     try {
@@ -64,7 +64,7 @@ controller.collection = async (req, res, next) => {
     })
 
     if (!collection) {
-      return res.sendStatus(404)
+      return res.redirect('/404/collection')
     }
 
     try {
