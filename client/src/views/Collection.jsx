@@ -37,6 +37,7 @@ function Collection({ isSelfProfile }) {
 
   const [removeItem, setRemoveItem] = useState()
   const [allRemovedItems, setAllRemovedItems] = useState([])
+  const [loadedImages, setLoadedImages] = useState([])
 
   const [selectedTab, setSelectedTab] = useState('gallery')
   const [tabContainerOffset, setTabContainerOffset] = useState(0)
@@ -160,7 +161,12 @@ function Collection({ isSelfProfile }) {
                             </DropdownMenu>
                           </Dropdown>
                         )}
-                        <div className="absolute w-full bottom-0 flex items-end text-md font-bold pl-1 pr-1 pb-1 pt-1 rounded-b-xl bg-black/45 leading-tight">
+                        <div
+                          className={clsx(
+                            'absolute w-full bottom-0 flex items-end text-md font-bold pl-1 pr-1 pb-1 pt-1 rounded-b-xl bg-black/45 leading-tight',
+                            { hidden: !loadedImages.includes(image.id) },
+                          )}
+                        >
                           {image.title}
                         </div>
                         <img
@@ -171,6 +177,7 @@ function Collection({ isSelfProfile }) {
                             setLightboxOpen(true)
                           }}
                           loading="lazy"
+                          onLoad={() => setLoadedImages((prev) => [...prev, image.id])}
                         />
                       </div>
                     ))
