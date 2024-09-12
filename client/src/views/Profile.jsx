@@ -253,7 +253,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
             className="dark m-0"
             isOpen={postModal.isOpen}
             onClose={postModal.onClose}
-            placement="center"
+            placement="top"
             backdrop="blur"
             hideCloseButton
           >
