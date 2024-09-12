@@ -8,9 +8,12 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 
 import { getAssetUrl } from '../common/utils'
 import clsx from 'clsx'
-import { Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
+import { Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Tab, Tabs } from '@nextui-org/react'
 import ConfirmationDialog from '../components/Dialog/ConfirmationDialog'
 import { EllipsisVerticalIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import { MapPinIcon } from '../assets/icons/MapPinIcon'
+import { PhotoIcon } from '../assets/icons/PhotoIcon'
+import SnapMap from '../components/Map/SnapMap'
 
 function Collection({ isSelfProfile }) {
   const location = useLocation()
@@ -24,6 +27,8 @@ function Collection({ isSelfProfile }) {
 
   const [removeItem, setRemoveItem] = useState()
   const [allRemovedItems, setAllRemovedItems] = useState([])
+
+  const [selectedTab, setSelectedTab] = useState('gallery')
 
   const handleRemoveItem = async () => {
     try {
@@ -51,17 +56,25 @@ function Collection({ isSelfProfile }) {
     fetch()
   }, [mention, collectionId])
 
-  const images = collection?.collectionPostLinks
-    .map((cpl) => ({
-      id: cpl.id,
-      postId: cpl.post.id,
-      src: getAssetUrl() + cpl.post.image.reference,
-      title: cpl.post.title,
-    }))
-    .filter((img) => !allRemovedItems.includes(img.id))
-    .sort((a, b) => a.postId - b.postId)
+  const viewableItems = collection?.collectionPostLinks
+    .filter((cpl) => !allRemovedItems.includes(cpl.id))
+    .sort((a, b) => a.post.id - b.post.id)
 
-  console.log(images)
+  const images = viewableItems?.map((item) => ({
+    id: item.id,
+    postId: item.post.id,
+    src: getAssetUrl() + item.post.image.reference,
+    title: item.post.title,
+  }))
+
+  const mapMarkers = viewableItems?.map((item, index) => ({
+    lat: item.post.image.latitude,
+    lng: item.post.image.longitude,
+    onClick: () => {
+      setIndex(index)
+      setLightboxOpen(true)
+    },
+  }))
   return (
     <PageLayout noProfile fullwidth backButton={() => navigate(-1)} pageName={collection?.title}>
       {({ user, isAuthenticated }) => (
@@ -77,47 +90,81 @@ function Collection({ isSelfProfile }) {
             onCancel={() => setRemoveItem(null)}
           />
           <div className="border-b border-solid border-white pt-[65px]" />
-          <div className="flex flex-col items-center gap-2 max-h-screen overflow-y-scroll py-2">
-            {images &&
-              images.map((image, index) => (
-                <div
-                  key={`collection-photo-${index}`}
-                  className="relative w-[90%] min-w-[370px] max-w-[495px] h-fit rounded-xl border-solid border-neutral-300 border-large"
-                >
-                  {isAuthenticated && isSelfProfile && (
-                    <Dropdown className="dark absolute min-w-0 p-[1px] w-fit bg-black -left-32">
-                      <DropdownTrigger>
-                        <Button variant="light" size="sm" className="absolute top-0 right-0" isIconOnly>
-                          <EllipsisVerticalIcon className="w-5 h-5" />
-                        </Button>
-                      </DropdownTrigger>
-                      <DropdownMenu aria-label="collection item actions">
-                        <DropdownItem
-                          key="delete"
-                          className="text-danger"
-                          color="danger"
-                          onClick={() => setRemoveItem(image.id)}
-                          startContent={<XMarkIcon className="h-4 w-4" />}
-                        >
-                          Remove Item
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
-                  )}
-                  <div className="absolute w-full bottom-0 flex items-end text-md font-bold pl-1 pr-1 pb-1 pt-1 rounded-b-xl bg-black/45 leading-tight">
-                    {image.title}
+          <div className="flex flex-col items-center mt-2">
+            <Tabs
+              key="collection-tabs"
+              size="lg"
+              variant="underlined"
+              aria-label="Collection tabs"
+              onSelectionChange={setSelectedTab}
+              className="block "
+            >
+              <Tab
+                key="gallery"
+                title={
+                  <div className="flex items-center space-x-2">
+                    <PhotoIcon className={clsx({ 'fill-green-500': selectedTab !== `gallery` })} />
+                    <span>Gallery</span>
                   </div>
-                  <img
-                    src={image.src}
-                    className="object-cover rounded-lg "
-                    onClick={() => {
-                      setIndex(index)
-                      setLightboxOpen(true)
-                    }}
-                    loading="lazy"
-                  />
+                }
+              >
+                <div className="flex flex-col items-center gap-2 max-h-screen overflow-y-scroll py-2">
+                  {images &&
+                    images.map((image, index) => (
+                      <div
+                        key={`collection-photo-${index}`}
+                        className="relative w-[90%] min-w-[370px] max-w-[495px] h-fit rounded-xl border-solid border-neutral-300 border-large"
+                      >
+                        {isAuthenticated && isSelfProfile && (
+                          <Dropdown className="dark absolute min-w-0 p-[1px] w-fit bg-black -left-32">
+                            <DropdownTrigger>
+                              <Button variant="light" size="sm" className="absolute top-0 right-0" isIconOnly>
+                                <EllipsisVerticalIcon className="w-5 h-5" />
+                              </Button>
+                            </DropdownTrigger>
+                            <DropdownMenu aria-label="collection item actions">
+                              <DropdownItem
+                                key="delete"
+                                className="text-danger"
+                                color="danger"
+                                onClick={() => setRemoveItem(image.id)}
+                                startContent={<XMarkIcon className="h-4 w-4" />}
+                              >
+                                Remove Item
+                              </DropdownItem>
+                            </DropdownMenu>
+                          </Dropdown>
+                        )}
+                        <div className="absolute w-full bottom-0 flex items-end text-md font-bold pl-1 pr-1 pb-1 pt-1 rounded-b-xl bg-black/45 leading-tight">
+                          {image.title}
+                        </div>
+                        <img
+                          src={image.src}
+                          className="object-cover rounded-lg "
+                          onClick={() => {
+                            setIndex(index)
+                            setLightboxOpen(true)
+                          }}
+                          loading="lazy"
+                        />
+                      </div>
+                    ))}
                 </div>
-              ))}
+              </Tab>
+              <Tab
+                key="map"
+                title={
+                  <div className="flex items-center space-x-2">
+                    <MapPinIcon className={clsx({ 'fill-red-500': selectedTab !== `map` })} />
+                    <span>Map</span>
+                  </div>
+                }
+              >
+                <div className="overflow-hidden h-screen w-screen">
+                  <SnapMap markers={mapMarkers} streetViewControl />
+                </div>
+              </Tab>
+            </Tabs>
           </div>
 
           <Lightbox
