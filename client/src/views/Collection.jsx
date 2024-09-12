@@ -29,8 +29,8 @@ function Collection({ isSelfProfile }) {
   const [allRemovedItems, setAllRemovedItems] = useState([])
 
   const [selectedTab, setSelectedTab] = useState('gallery')
-  const [mapContainerOffset, setMapContainerOffset] = useState(0)
-  const mapContainerRef = React.useRef()
+  const [tabContainerOffset, setTabContainerOffset] = useState(0)
+  const tabContainerRef = React.useRef()
 
   const handleRemoveItem = async () => {
     try {
@@ -59,10 +59,10 @@ function Collection({ isSelfProfile }) {
   }, [mention, collectionId])
 
   useEffect(() => {
-    if (mapContainerRef.current) {
-      setMapContainerOffset(mapContainerRef.current?.offsetTop + 60)
+    if (tabContainerRef.current) {
+      setTabContainerOffset(tabContainerRef.current?.offsetTop + 45)
     }
-  }, [mapContainerRef.current])
+  }, [tabContainerRef.current])
 
   const viewableItems = collection?.collectionPostLinks
     .filter((cpl) => !allRemovedItems.includes(cpl.id))
@@ -99,14 +99,14 @@ function Collection({ isSelfProfile }) {
             onCancel={() => setRemoveItem(null)}
           />
           <div className="border-b border-solid border-white pt-[65px]" />
-          <div className="flex flex-col items-center mt-2">
+          <div className="flex flex-col items-center mt-2 overflow-hidden">
             <Tabs
               key="collection-tabs"
               size="lg"
               variant="underlined"
               aria-label="Collection tabs"
               onSelectionChange={setSelectedTab}
-              className="block "
+              className="block"
             >
               <Tab
                 key="gallery"
@@ -117,7 +117,13 @@ function Collection({ isSelfProfile }) {
                   </div>
                 }
               >
-                <div className="flex flex-col items-center gap-2 max-h-screen overflow-y-scroll py-2">
+                <div
+                  ref={tabContainerRef}
+                  className="flex flex-col items-center gap-2 overflow-y-scroll py-2"
+                  style={{
+                    height: `calc(100vh - ${tabContainerOffset}px)`,
+                  }}
+                >
                   {images &&
                     images.map((image, index) => (
                       <div
@@ -170,10 +176,10 @@ function Collection({ isSelfProfile }) {
                 }
               >
                 <div
-                  ref={mapContainerRef}
+                  ref={tabContainerRef}
                   className={`overflow-hidden w-screen`}
                   style={{
-                    height: `calc(100vh - ${mapContainerOffset}px)`,
+                    height: `calc(100vh - ${tabContainerOffset}px)`,
                   }}
                 >
                   <SnapMap markers={mapMarkers} streetViewControl />
