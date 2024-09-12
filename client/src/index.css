@@ -14,6 +14,18 @@
   /* other formats include: 'woff2', 'truetype, 'opentype',
                             'embedded-opentype', and 'svg' */
 }
+@font-face {
+  font-family: 'LobsterTwo';
+  src: local('LobsterTwo-Regular'), url(./assets/fonts/LobsterTwo-Regular.ttf) format('truetype');
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
+@font-face {
+  font-family: 'LobsterTwoBold';
+  src: local('LobsterTwo-Bold'), url(./assets/fonts/LobsterTwo-Bold.ttf) format('truetype');
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}
 
 html,
 body,

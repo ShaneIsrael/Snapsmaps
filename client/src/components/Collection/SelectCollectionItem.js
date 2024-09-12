@@ -66,7 +66,7 @@ function SelectCollectionItem({ open, onClose, onSelect, currentSelectedItems })
         {() => (
           <Card className="h-full w-full rounded-none bg-black">
             <CardHeader className="flex flex-col items-center gap-2 pt-1">
-              <h2 className="font-bold text-2xl">Select Item to Add</h2>
+              <h2 className="font-bold text-2xl">Add / Remove Items</h2>
             </CardHeader>
             <CardBody className="pb-2 pt-0 px-4">
               <div className=" flex flex-wrap gap-1">{getSelectionItems()}</div>

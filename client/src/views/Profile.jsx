@@ -490,7 +490,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                   </Button>
                 </div>
                 <Collapse isOpened={mapOpened}>
-                  <div className="flex flex-row h-96">
+                  <div className="flex flex-row h-[500px]">
                     <SnapMap
                       markers={postHistory.map((post) => ({
                         onClick: () => handleOpenModal(post.id),
@@ -501,7 +501,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                     />
                   </div>
                 </Collapse>
-                <Divider className={clsx('my-5', { 'mt-7': !mapOpened })} />
+                {/* <Divider className={clsx('my-5', { 'mt-7': !mapOpened })} /> */}
               </>
             )}
           </div>

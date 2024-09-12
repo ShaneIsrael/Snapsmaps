@@ -29,6 +29,8 @@ function Collection({ isSelfProfile }) {
   const [allRemovedItems, setAllRemovedItems] = useState([])
 
   const [selectedTab, setSelectedTab] = useState('gallery')
+  const [mapContainerOffset, setMapContainerOffset] = useState(0)
+  const mapContainerRef = React.useRef()
 
   const handleRemoveItem = async () => {
     try {
@@ -56,6 +58,12 @@ function Collection({ isSelfProfile }) {
     fetch()
   }, [mention, collectionId])
 
+  useEffect(() => {
+    if (mapContainerRef.current) {
+      setMapContainerOffset(mapContainerRef.current?.offsetTop + 60)
+    }
+  }, [mapContainerRef.current])
+
   const viewableItems = collection?.collectionPostLinks
     .filter((cpl) => !allRemovedItems.includes(cpl.id))
     .sort((a, b) => a.post.id - b.post.id)
@@ -75,6 +83,7 @@ function Collection({ isSelfProfile }) {
       setLightboxOpen(true)
     },
   }))
+
   return (
     <PageLayout noProfile fullwidth backButton={() => navigate(-1)} pageName={collection?.title}>
       {({ user, isAuthenticated }) => (
@@ -160,20 +169,25 @@ function Collection({ isSelfProfile }) {
                   </div>
                 }
               >
-                <div className="overflow-hidden h-screen w-screen">
+                <div
+                  ref={mapContainerRef}
+                  className={`overflow-hidden w-screen`}
+                  style={{
+                    height: `calc(100vh - ${mapContainerOffset}px)`,
+                  }}
+                >
                   <SnapMap markers={mapMarkers} streetViewControl />
                 </div>
               </Tab>
             </Tabs>
+            <Lightbox
+              plugins={[Zoom]}
+              open={lightboxOpen}
+              close={() => setLightboxOpen(false)}
+              index={index}
+              slides={images}
+            />
           </div>
-
-          <Lightbox
-            plugins={[Zoom]}
-            open={lightboxOpen}
-            close={() => setLightboxOpen(false)}
-            index={index}
-            slides={images}
-          />
         </>
       )}
     </PageLayout>

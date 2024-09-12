@@ -196,7 +196,7 @@ function CreateCollection({ open, onClose, onSubmitted }) {
               </CardHeader>
               <CardBody className="pb-2 pt-0 px-4 relative w-full h-full">
                 <div className="relative w-full rounded-xl border border-solid border-neutral-200 h-48 bg-gray-900 [&>div>button]:hover:flex">
-                  <div className="absolute w-full h-fit flex justify-center pt-5 ">
+                  <div className="absolute w-full h-full flex justify-center items-center ">
                     {!headerImageData && (
                       <Tooltip content="Upload header photo" placement="bottom" color="default">
                         <Button
@@ -226,7 +226,7 @@ function CreateCollection({ open, onClose, onSubmitted }) {
                     )}
                   </div>
                   {title && (
-                    <div className="absolute w-full bottom-0 flex items-end text-4xl font-lobster pl-2 pb-2 pt-2 rounded-b-xl bg-black/50">
+                    <div className="absolute w-fit top-0 flex items-end text-2xl font-lobsterTwo px-2 py-1 rounded-tl-xl rounded-br-xl bg-black/55">
                       {title}
                     </div>
                   )}

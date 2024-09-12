@@ -8,6 +8,8 @@ export default {
       fontFamily: {
         vibes: 'GreatVibes',
         lobster: 'Lobster',
+        lobsterTwo: 'LobsterTwo',
+        lobsterTwoBold: 'LobsterTwoBold',
       },
     },
   },
