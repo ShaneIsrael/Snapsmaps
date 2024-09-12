@@ -43,8 +43,10 @@ function ProfilePageSkeleton({ appbar, footer }) {
             </div>
           </div>
           <Divider className="my-5" />
-          <div className="flex flex-row h-64">
-            <Skeleton className="w-full h-full" />
+          <div className="flex flex-wrap justify-center gap-2">
+            <Skeleton className="h-40 max-w-[478px] w-full" />
+            <Skeleton className="h-40 max-w-[478px] w-full" />
+            <Skeleton className="h-40 max-w-[478px] w-full" />
           </div>
           <Divider className="my-5" />
           <div className="grid grid-cols-[repeat(auto-fill,120px)] justify-center">
@@ -52,6 +54,10 @@ function ProfilePageSkeleton({ appbar, footer }) {
             <Skeleton className="w-[120px] h-[120px] border-1 border-black" />
             <Skeleton className="w-[120px] h-[120px] border-1 border-black" />
             <Skeleton className="w-[120px] h-[120px] border-1 border-black" />
+          </div>
+          <Divider className="my-5" />
+          <div className="flex flex-row h-64">
+            <Skeleton className="w-full h-full" />
           </div>
         </div>
         {appbar}
