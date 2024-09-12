@@ -8,7 +8,17 @@ import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 
 import { getAssetUrl } from '../common/utils'
 import clsx from 'clsx'
-import { Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Tab, Tabs } from '@nextui-org/react'
+import {
+  Button,
+  Divider,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Spinner,
+  Tab,
+  Tabs,
+} from '@nextui-org/react'
 import ConfirmationDialog from '../components/Dialog/ConfirmationDialog'
 import { EllipsisVerticalIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { MapPinIcon } from '../assets/icons/MapPinIcon'
@@ -124,7 +134,7 @@ function Collection({ isSelfProfile }) {
                     height: `calc(100vh - ${tabContainerOffset}px)`,
                   }}
                 >
-                  {images &&
+                  {images ? (
                     images.map((image, index) => (
                       <div
                         key={`collection-photo-${index}`}
@@ -163,7 +173,12 @@ function Collection({ isSelfProfile }) {
                           loading="lazy"
                         />
                       </div>
-                    ))}
+                    ))
+                  ) : (
+                    <div className="w-full flex p-4 justify-center items-center">
+                      <Spinner size="lg" />
+                    </div>
+                  )}
                 </div>
               </Tab>
               <Tab
