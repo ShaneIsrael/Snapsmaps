@@ -4,9 +4,8 @@ const logger = require('../utils/logger')
 const Models = require('../database/models')
 const { Follow, Notification, Post, User, PostComment, Sessions, Image } = Models
 const admin = require('firebase-admin')
-const serviceAccount = isProduction
-  ? JSON.parse(process.env.FIREBASE_CONFIG)
-  : require('../config/local_snapsmaps_firebase_service_account_key.json')
+const { production, development } = require('../config')
+const serviceAccount = isProduction ? production.firebase : development.firebase
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 })
