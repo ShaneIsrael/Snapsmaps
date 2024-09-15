@@ -1,9 +1,12 @@
+const isProduction = NODE_ENV === 'production'
 const { Op } = require('sequelize')
 const logger = require('../utils/logger')
 const Models = require('../database/models')
 const { Follow, Notification, Post, User, PostComment, Sessions, Image } = Models
 const admin = require('firebase-admin')
-const serviceAccount = require('../config/prod_snapsmaps_firebase_service_account_key.json')
+const serviceAccount = isProduction
+  ? JSON.parse(process.env.FIREBASE_CONFIG)
+  : require('../config/local_snapsmaps_firebase_service_account_key.json')
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 })
