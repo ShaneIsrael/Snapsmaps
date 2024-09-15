@@ -6,9 +6,12 @@ const { Follow, Notification, Post, User, PostComment, Sessions, Image } = Model
 const admin = require('firebase-admin')
 const { production, development } = require('../config')
 const serviceAccount = isProduction ? production.firebase : development.firebase
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-})
+
+if (isProduction) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  })
+}
 
 const service = {}
 
@@ -135,17 +138,19 @@ service.createFollowNotification = async (fromUserId, forUserId, followId) => {
 }
 
 function sendPushNotification(userId, fromUser, title, body, link) {
-  Sessions.findAll({ where: { userId, fcmToken: { [Op.ne]: null } }, attributes: ['fcmToken'] }).then((sessions) => {
-    const messages = sessions.map((session) => ({
-      data: {
-        title: title || '',
-        body: body || '',
-        badge: fromUser.image?.reference || '',
-      },
-      token: session.fcmToken,
-    }))
-    messages.forEach((message) => admin.messaging().send(message))
-  })
+  if (isProduction) {
+    Sessions.findAll({ where: { userId, fcmToken: { [Op.ne]: null } }, attributes: ['fcmToken'] }).then((sessions) => {
+      const messages = sessions.map((session) => ({
+        data: {
+          title: title || '',
+          body: body || '',
+          badge: fromUser.image?.reference || '',
+        },
+        token: session.fcmToken,
+      }))
+      messages.forEach((message) => admin.messaging().send(message))
+    })
+  }
 }
 
 module.exports = service

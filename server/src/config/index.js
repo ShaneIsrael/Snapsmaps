@@ -36,7 +36,9 @@ module.exports = {
       type: 'service_account',
       project_id: process.env.FIREBASE_PROJECT_ID,
       private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
-      private_key: process.env.FIREBASE_PRIVATE_KEY,
+      private_key:
+        process.env.FIREBASE_PRIVATE_KEY_BASE_64 &&
+        Buffer.from(process.env.FIREBASE_PRIVATE_KEY_BASE_64, 'base64').toString('ascii'),
       client_email: process.env.FIREBASE_CLIENT_EMAIL,
       client_id: process.env.FIREBASE_CLIENT_ID,
       auth_uri: 'https://accounts.google.com/o/oauth2/auth',
