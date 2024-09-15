@@ -1,4 +1,4 @@
-const isProduction = NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV === 'production'
 const { Op } = require('sequelize')
 const logger = require('../utils/logger')
 const Models = require('../database/models')
