@@ -59,12 +59,14 @@ controller.create = async (req, res, next) => {
   let createdPost
   try {
     const { image } = req.files
-    const { title, nsfw, latitude, longitude, public } = req.body
+    const { title, nsfw, latitude, longitude, public, locationEnabled } = req.body
 
     if (typeof title !== 'string') return res.status(400).send('title must be a string.')
 
-    if (!image || !latitude || !longitude || !/^image/.test(image.mimetype))
-      return res.status(400).send('A post requires an image and a gps location.')
+    if (!image || !/^image/.test(image.mimetype)) return res.status(400).send('A post requires an image.')
+
+    if (locationEnabled === 'true' && (!latitude || !longitude))
+      return res.status(400).send('Location data is required for a location enabled post.')
 
     const uuid = uuidv4().replace(/-/gi, '')
     const reference = `/post/${uuid}.webp`
@@ -85,7 +87,7 @@ controller.create = async (req, res, next) => {
         .webp({ quality: 85 })
         .rotate()
         .withMetadata()
-        .toFile(path.join(process.cwd(), '/images/thumb/120x120', thumbReference))
+        .toFile(path.join(process.cwd(), '/images', thumbReference))
     } else {
       const compressed = await sharp(fileContent)
         .webp({ quality: req.session.admin ? 100 : 85 })

@@ -69,6 +69,8 @@ const Post = React.memo(
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [confirmAdminAction, setConfirmAdminAction] = useState({ open: false })
 
+    const hasLocationData = post?.image?.latitude && post?.image?.longitude
+
     const navigate = useNavigate()
 
     const postImage = getAssetUrl() + intPost?.image?.reference
@@ -385,23 +387,25 @@ const Post = React.memo(
                   />
                 </div>
               </Tab>
-              <Tab
-                key={`map`}
-                title={
-                  <div className="flex items-center space-x-2">
-                    <MapPinIcon className={clsx({ 'fill-red-500': selectedTab !== `map` })} />
-                    <span></span>
+              {hasLocationData && (
+                <Tab
+                  key={`map`}
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <MapPinIcon className={clsx({ 'fill-red-500': selectedTab !== `map` })} />
+                      <span></span>
+                    </div>
+                  }
+                >
+                  <div className="overflow-hidden h-[365px] min-w-[284px]">
+                    <SnapMap
+                      markers={[{ lat: intPost?.image?.latitude, lng: intPost?.image?.longitude }]}
+                      defaultZoom={14}
+                      streetViewControl
+                    />
                   </div>
-                }
-              >
-                <div className="overflow-hidden h-[365px] min-w-[284px]">
-                  <SnapMap
-                    markers={[{ lat: intPost?.image?.latitude, lng: intPost?.image?.longitude }]}
-                    defaultZoom={14}
-                    streetViewControl
-                  />
-                </div>
-              </Tab>
+                </Tab>
+              )}
               <Tab
                 key={`comments`}
                 title={

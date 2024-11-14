@@ -430,7 +430,6 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 </div>
               </div>
             </div>
-            <Divider className="my-5" />
             <div className="flex flex-wrap justify-center gap-2">
               {collections.map((collection) => (
                 <CollectionItem
@@ -492,12 +491,14 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 <Collapse isOpened={mapOpened}>
                   <div className="flex flex-row h-[500px]">
                     <SnapMap
-                      markers={postHistory.map((post) => ({
-                        onClick: () => handleOpenModal(post.id),
-                        lat: post.image.latitude,
-                        lng: post.image.longitude,
-                        highlight: post.id === postHistoryHoverId,
-                      }))}
+                      markers={postHistory
+                        .filter((post) => post.image.latitude && post.image.longitude)
+                        .map((post) => ({
+                          onClick: () => handleOpenModal(post.id),
+                          lat: post.image.latitude,
+                          lng: post.image.longitude,
+                          highlight: post.id === postHistoryHoverId,
+                        }))}
                     />
                   </div>
                 </Collapse>

@@ -24,8 +24,7 @@ import SendIcon from '../../assets/icons/SendIcon'
 import { PostService } from '../../services'
 import { toast } from 'sonner'
 import SnapMap from '../Map/SnapMap'
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
-import Nsfw from '../../assets/icons/Nsfw'
+import { EyeIcon, EyeSlashIcon, NoSymbolIcon } from '@heroicons/react/24/solid'
 import Sfw from '../../assets/icons/Sfw'
 import Nsfw2 from '../../assets/icons/Nsfw2'
 
@@ -37,6 +36,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
   const [publicPost, setPublicPost] = useState(true)
   const [nsfw, setNsfw] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [locationEnabled, setLocationEnabled] = useState(true)
   const [uploadProgress, setUploadProgress] = useState(0)
 
   // abort the post upload if unmounted
@@ -45,13 +45,18 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
     return () => controller.abort()
   }, [])
 
-  useEffect(() => {
+  function reset() {
     setDescription('')
     setSelectedTab('photo')
     setSubmitting(false)
     setNsfw(false)
     setPublicPost(true)
+    setLocationEnabled(true)
     setUploadProgress(0)
+  }
+
+  useEffect(() => {
+    reset()
 
     if (imageData) {
       newPostModal.onOpen()
@@ -76,8 +81,9 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
           description,
           publicPost,
           nsfw,
-          imageData.gps,
+          locationEnabled ? imageData.gps : { longitude: null, latitude: null },
           imageData.file,
+          locationEnabled,
           (progress) => setUploadProgress(progress),
           abortControllerRef.current.signal,
         )
@@ -139,6 +145,20 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                     </div>
                   </Tooltip>
                   <div className="h-[31px] w-[3px] bg-neutral-700 mr-2 rounded-2xl" />
+
+                  <Tooltip content={!locationEnabled ? 'location disabled' : 'location enabled'} color="primary">
+                    <div>
+                      <Switch
+                        color={locationEnabled ? 'primary' : 'default'}
+                        isSelected={locationEnabled}
+                        onValueChange={setLocationEnabled}
+                        size="lg"
+                        startContent={<MapPinIcon />}
+                        endContent={<NoSymbolIcon />}
+                      />
+                    </div>
+                  </Tooltip>
+                  <div className="h-[31px] w-[3px] bg-neutral-700 mr-2 rounded-2xl" />
                   <Tooltip content={!nsfw ? 'safe for work' : 'not safe for work'} color="danger">
                     <div>
                       <Switch
@@ -187,23 +207,25 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                     className={clsx('object-cover w-full h-full', { 'blur-md': nsfw })}
                   />
                 </Tab>
-                <Tab
-                  key="map"
-                  title={
-                    <div className="flex items-center space-x-2">
-                      <MapPinIcon className={clsx({ 'fill-red-500': selectedTab !== 'map' })} />
-                      <span></span>
+                {locationEnabled && (
+                  <Tab
+                    key="map"
+                    title={
+                      <div className="flex items-center space-x-2">
+                        <MapPinIcon className={clsx({ 'fill-red-500': selectedTab !== 'map' })} />
+                        <span></span>
+                      </div>
+                    }
+                    className="h-full"
+                  >
+                    <div className="overflow-hidden h-full sm:h-[680px] ">
+                      <SnapMap
+                        markers={[{ lat: imageData?.gps.latitude, lng: imageData?.gps.longitude }]}
+                        defaultZoom={16}
+                      />
                     </div>
-                  }
-                  className="h-full"
-                >
-                  <div className="overflow-hidden h-full sm:h-[680px] ">
-                    <SnapMap
-                      markers={[{ lat: imageData?.gps.latitude, lng: imageData?.gps.longitude }]}
-                      defaultZoom={16}
-                    />
-                  </div>
-                </Tab>
+                  </Tab>
+                )}
               </Tabs>
             </CardBody>
             <CardFooter className="flex flex-col px-4 pt-2 pb-5 gap-2">
