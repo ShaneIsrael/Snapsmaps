@@ -430,6 +430,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 </div>
               </div>
             </div>
+            {collections && collections.length > 0 && <Divider className="my-5" />}
             <div className="flex flex-wrap justify-center gap-2">
               {collections.map((collection) => (
                 <CollectionItem
