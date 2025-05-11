@@ -2,15 +2,14 @@ const path = require('path')
 const sharp = require('sharp')
 const { v4: uuidv4 } = require('uuid')
 
-const { Op } = require('sequelize')
 const Models = require('../database/models')
 const { Post, User, Collection, CollectionPostLink, Image, PostLike } = Models
 const { uploadImage } = require('../services/UploadService')
-const { createPostNotifications } = require('../services/NotificationService')
 const { isFollowingUser } = require('../services/FollowService')
 const { UserState } = require('../constants/UserState')
 const { maxCollectionTitleLength } = require('../config').app
-const isProduction = process.env.NODE_ENV === 'production'
+
+const { contentRoot, isProduction } = require('../config')
 
 const controller = {}
 
@@ -70,21 +69,13 @@ controller.create = async (req, res, next) => {
     const reference = `/collection/${uuid}.webp`
     // const thumbReference = `/thumb/120x120/${uuid}.webp`
     const fileContent = Buffer.from(image.data)
-    if (!isProduction) {
-      await sharp(fileContent)
-        .webp({ quality: 85 })
-        .rotate()
-        .withMetadata()
-        .toFile(path.join(process.cwd(), '/images', reference))
-    } else {
-      const compressed = await sharp(fileContent)
-        .webp({ quality: req.session.admin ? 100 : 85 })
-        .rotate()
-        .withMetadata()
-        .toBuffer()
 
-      await uploadImage(compressed, reference, 'image/webp')
-    }
+    await sharp(fileContent)
+      .webp({ quality: 100 })
+      .rotate()
+      .withMetadata()
+      .toFile(path.join(contentRoot, '/images', reference))
+
     const imageRow = await Image.create(
       {
         userId: req.session.user.id,

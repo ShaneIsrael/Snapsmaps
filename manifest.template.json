@@ -1,0 +1,35 @@
+{
+  "short_name": "${SITE_SHORT_NAME}",
+  "name": "${SITE_NAME}",
+  "start_url": "${START_URL}",
+  "theme_color": "${THEME_COLOR}",
+  "background_color": "${BACKGROUND_COLOR}",
+  "scope": "${SCOPE}",
+  "description": "${DESCRIPTION}",
+  "id": "${MANIFEST_ID}",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/richer-install-mobile-screenshot.png",
+      "sizes": "1440x2690",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}

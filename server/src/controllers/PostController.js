@@ -10,7 +10,7 @@ const { createPostNotifications } = require('../services/NotificationService')
 const { isFollowingUser } = require('../services/FollowService')
 const { UserState } = require('../constants/UserState')
 const { maxPostTitleLength } = require('../config').app
-const isProduction = process.env.NODE_ENV === 'production'
+const { contentRoot } = require('../config')
 
 const controller = {}
 
@@ -72,41 +72,23 @@ controller.create = async (req, res, next) => {
     const reference = `/post/${uuid}.webp`
     const thumbReference = `/thumb/120x120/${uuid}.webp`
     const fileContent = Buffer.from(image.data)
-    if (!isProduction) {
-      await sharp(fileContent)
-        .webp({ quality: 85 })
-        .rotate()
-        .withMetadata()
-        .toFile(path.join(process.cwd(), '/images', reference))
-      await sharp(fileContent)
-        .resize({
-          fit: sharp.fit.cover,
-          width: 120,
-          height: 120,
-        })
-        .webp({ quality: 85 })
-        .rotate()
-        .withMetadata()
-        .toFile(path.join(process.cwd(), '/images', thumbReference))
-    } else {
-      const compressed = await sharp(fileContent)
-        .webp({ quality: req.session.admin ? 100 : 85 })
-        .rotate()
-        .withMetadata()
-        .toBuffer()
-      const thumbnail = await sharp(fileContent)
-        .resize({
-          fit: sharp.fit.cover,
-          width: 120,
-          height: 120,
-        })
-        .webp({ quality: 85 })
-        .rotate()
-        .withMetadata()
-        .toBuffer()
-      await uploadImage(thumbnail, thumbReference, 'image/webp')
-      await uploadImage(compressed, reference, 'image/webp')
-    }
+
+    await sharp(fileContent)
+      .webp({ quality: 100 })
+      .rotate()
+      .withMetadata()
+      .toFile(path.join(contentRoot, '/images', reference))
+    await sharp(fileContent)
+      .resize({
+        fit: sharp.fit.cover,
+        width: 120,
+        height: 120,
+      })
+      .webp({ quality: 100 })
+      .rotate()
+      .withMetadata()
+      .toFile(path.join(contentRoot, '/images', thumbReference))
+
     const imageRow = await Image.create(
       {
         userId: req.session.user.id,

@@ -3,7 +3,7 @@ const Models = require('../database/models')
 const { UserState } = require('../constants/UserState')
 const { Post, PostComment, User, Image, Follow, PostLike, sequelize } = Models
 
-const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV !== 'development'
 
 const controller = {}
 

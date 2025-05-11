@@ -1,14 +1,10 @@
 import AuthService from '../services/AuthService'
 import { useNavigate } from 'react-router-dom'
-import { usePushNotifications } from './usePushNotifications'
 
 const useAuth = () => {
   const navigate = useNavigate()
-  const { removeToken } = usePushNotifications()
   const logout = async () => {
     try {
-      // remove this client from firebase messaging
-      removeToken()
       await AuthService.logout()
       navigate('/')
     } catch (err) {

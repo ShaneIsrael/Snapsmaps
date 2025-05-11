@@ -2,6 +2,6 @@
 
 nginx -g 'daemon on;'
 
-cd /app
-
-npm run migrate && node /app/src/server.js
+node /generateManifest.js
+node /generateMeta.js
+cd /app && npm run migrate && node /app/src/server.js

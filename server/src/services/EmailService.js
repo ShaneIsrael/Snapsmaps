@@ -3,7 +3,7 @@ const handlebars = require('handlebars')
 const logger = require('../utils/logger')
 const { readHTMLFile } = require('../utils')
 
-const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV !== 'development'
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
