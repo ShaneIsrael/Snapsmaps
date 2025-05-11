@@ -2,8 +2,8 @@ const fs = require("fs");
 const path = require("path");
 
 // Load environment variables
-const indexPath = path.join(__dirname, "public", "/app/build/index.html");
-const outputPath = path.join(__dirname, "public", "/app/build/index.html");
+const indexPath = path.join(__dirname, "/app/build/index.html");
+const outputPath = path.join(__dirname, "/app/build/index.html");
 
 // Read the index.html file
 let indexHtml = fs.readFileSync(indexPath, "utf8");

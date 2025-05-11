@@ -2,10 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const manifestTemplatePath = path.join(__dirname, "/manifest.template.json");
-const manifestOutputPath = path.join(
-  __dirname,
-  "/app/build/public/manifest.json"
-);
+const manifestOutputPath = path.join(__dirname, "/app/build/manifest.json");
 
 const template = fs.readFileSync(manifestTemplatePath, "utf8");
 
