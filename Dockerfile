@@ -37,12 +37,6 @@ COPY server/src ./src
 COPY server/.sequelizerc .
 
 
-# Create content folders
-RUN mkdir -p /content/images/post
-RUN mkdir -p /content/images/collection
-RUN mkdir -p /content/images/profile
-RUN mkdir -p /content/images/thumb/120x120
-
 EXPOSE 80
 ENV NODE_ENV=production
 

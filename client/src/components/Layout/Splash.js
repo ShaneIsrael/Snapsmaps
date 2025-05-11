@@ -26,10 +26,10 @@ const Splash = ({ children }) => {
 
   if (loading) return <div />
 
-  const splash1 = `${url}/assets/splash/splash-${SPLASH_IMAGE_INDEXES[0]}.webp`
-  const splash2 = `${url}/assets/splash/splash-${SPLASH_IMAGE_INDEXES[1]}.webp`
-  const splash3 = `${url}/assets/splash/splash-${SPLASH_IMAGE_INDEXES[2]}.webp`
-  const splash4 = `${url}/assets/splash/splash-${SPLASH_IMAGE_INDEXES[3]}.webp`
+  const splash1 = import(`../../assets/splash/splash-${SPLASH_IMAGE_INDEXES[0]}.webp`)
+  const splash2 = import(`../../assets/splash/splash-${SPLASH_IMAGE_INDEXES[1]}.webp`)
+  const splash3 = import(`../../assets/splash/splash-${SPLASH_IMAGE_INDEXES[2]}.webp`)
+  const splash4 = import(`../../assets/splash/splash-${SPLASH_IMAGE_INDEXES[3]}.webp`)
 
   return (
     <div className="h-screen md:px-2 md:pt-2 md:pb-4 bg-gray-950">
@@ -64,7 +64,6 @@ const Splash = ({ children }) => {
           <img src={wordmark} className="h-[30px]" />
           {children}
         </div>
-        <div className="absolute bottom-0 text-xs opacity-40">© 2024 Snapsmaps by Shane Israel</div>
       </div>
     </div>
   )

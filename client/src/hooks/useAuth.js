@@ -13,10 +13,8 @@ const useAuth = () => {
   }
 
   const login = async (email, password) => {
-    const { requestPermission } = usePushNotifications()
     try {
       await AuthService.login(email, password)
-      requestPermission()
     } catch (err) {
       throw err
     }
