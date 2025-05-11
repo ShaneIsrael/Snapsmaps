@@ -3,10 +3,13 @@ import Cookies from 'js-cookie'
 import _ from 'lodash'
 
 export const getUrl = () => {
-  if (window.location.hostname.indexOf('localhost') >= 0)
-    return `${window.location.protocol}//${window.location.hostname}:${3001}`
+  const { protocol, hostname, port } = window.location
 
-  return `${window.location.protocol}//${window.location.hostname}`
+  if (hostname.indexOf('localhost') >= 0) {
+    return `${protocol}//${hostname}:3001`
+  }
+
+  return port ? `${protocol}//${hostname}:${port}` : `${protocol}//${hostname}`
 }
 
 export const getAssetUrl = () => {
