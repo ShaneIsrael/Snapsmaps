@@ -5,8 +5,40 @@ import logo_no_wordmark from '../../assets/logo/dark/logo.svg'
 import wordmark from '../../assets/logo/dark/wordmark_no_slogan.svg'
 
 import { useAuthed } from '../../hooks/useAuthed'
-import { getUrl } from '../../common/utils'
 
+import splash1 from '../../assets/splash/splash-1.webp'
+import splash2 from '../../assets/splash/splash-2.webp'
+import splash3 from '../../assets/splash/splash-3.webp'
+import splash4 from '../../assets/splash/splash-4.webp'
+import splash5 from '../../assets/splash/splash-5.webp'
+import splash6 from '../../assets/splash/splash-6.webp'
+import splash7 from '../../assets/splash/splash-7.webp'
+import splash8 from '../../assets/splash/splash-8.webp'
+import splash9 from '../../assets/splash/splash-9.webp'
+import splash10 from '../../assets/splash/splash-10.webp'
+import splash11 from '../../assets/splash/splash-11.webp'
+import splash12 from '../../assets/splash/splash-12.webp'
+import splash13 from '../../assets/splash/splash-13.webp'
+import splash14 from '../../assets/splash/splash-14.webp'
+
+const SPLASH_IMAGES = [
+  splash1,
+  splash2,
+  splash3,
+  splash4,
+  splash5,
+  splash6,
+  splash7,
+  splash8,
+  splash9,
+  splash10,
+  splash11,
+  splash12,
+  splash13,
+  splash14,
+]
+
+// Shuffle function
 function shuffle(array) {
   let currentIndex = array.length
 
@@ -17,19 +49,17 @@ function shuffle(array) {
   }
 }
 
-const SPLASH_IMAGE_INDEXES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-shuffle(SPLASH_IMAGE_INDEXES)
+shuffle(SPLASH_IMAGES)
 
 const Splash = ({ children }) => {
-  const { loading, isAuthenticated } = useAuthed()
-  const url = getUrl()
+  const { loading } = useAuthed()
 
   if (loading) return <div />
 
-  const splash1 = import(`../../assets/splash/splash-${SPLASH_IMAGE_INDEXES[0]}.webp`)
-  const splash2 = import(`../../assets/splash/splash-${SPLASH_IMAGE_INDEXES[1]}.webp`)
-  const splash3 = import(`../../assets/splash/splash-${SPLASH_IMAGE_INDEXES[2]}.webp`)
-  const splash4 = import(`../../assets/splash/splash-${SPLASH_IMAGE_INDEXES[3]}.webp`)
+  const splash1 = SPLASH_IMAGES[0]
+  const splash2 = SPLASH_IMAGES[1]
+  const splash3 = SPLASH_IMAGES[2]
+  const splash4 = SPLASH_IMAGES[3]
 
   return (
     <div className="h-screen md:px-2 md:pt-2 md:pb-4 bg-gray-950">
