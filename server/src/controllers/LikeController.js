@@ -1,6 +1,6 @@
 const Models = require('../database/models')
 const { PostLike } = Models
-const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV !== 'development'
 
 const controller = {}
 

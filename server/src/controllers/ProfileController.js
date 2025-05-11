@@ -9,7 +9,7 @@ const { createFollowNotification } = require('../services/NotificationService')
 const { isFollowingUser } = require('../services/FollowService')
 const { UserState } = require('../constants/UserState')
 const { maxProfileBioLength, maxDisplayNameLength } = require('../config').app
-const isProduction = process.env.NODE_ENV === 'production'
+const { contentRoot, isProduction } = require('../config')
 
 const COOKIE_PARAMS = {
   maxAge: 24 * 60 * 60 * 1000,
@@ -115,16 +115,11 @@ controller.update = async (req, res, next) => {
         const reference = `/profile/${uuidv4().replace(/-/gi, '')}.webp`
 
         const fileContent = Buffer.from(image.data)
-        if (!isProduction) {
-          await sharp(fileContent)
-            .rotate()
-            .webp({ quality: 70 })
-            .withMetadata()
-            .toFile(path.join(process.cwd(), '/images', reference))
-        } else {
-          const compressed = await sharp(fileContent).webp({ quality: 70 }).rotate().withMetadata().toBuffer()
-          await uploadImage(compressed, reference, 'image/webp')
-        }
+        await sharp(fileContent)
+          .rotate()
+          .webp({ quality: 70 })
+          .withMetadata()
+          .toFile(path.join(contentRoot, '/images', reference))
 
         const imageRow = await Image.create({
           userId: req.session.user.id,

@@ -1,6 +1,7 @@
 # build environment
 FROM node:20.12-alpine3.18 as build
 WORKDIR .
+
 ENV PATH node_modules/.bin:$PATH
 COPY client/package.json ./
 COPY client/package-lock.json ./
@@ -19,6 +20,9 @@ RUN mkdir /var/cache/nginx
 COPY --from=build /build /app/build
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY entrypoint.sh /
+COPY generateMeta.js /
+COPY generateManifest.js /
+COPY manifest.template.json /
 
 # Create app directory
 WORKDIR /app
@@ -31,6 +35,13 @@ RUN npm install -g sequelize-cli
 # Move source
 COPY server/src ./src
 COPY server/.sequelizerc .
+
+
+# Create content folders
+RUN mkdir -p /content/images/post
+RUN mkdir -p /content/images/collection
+RUN mkdir -p /content/images/profile
+RUN mkdir -p /content/images/thumb/120x120
 
 EXPOSE 80
 ENV NODE_ENV=production

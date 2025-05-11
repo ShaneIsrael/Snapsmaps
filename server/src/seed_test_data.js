@@ -270,6 +270,25 @@ const downloadImage = (url, savePath) =>
   )
 
 async function seedProfiles() {
+  const adminRow = await User.create({
+    displayName: 'Admin User',
+    email: 'admin@example.com',
+    mention: 'admin',
+    bio: 'Admin account for local development',
+    password: 'password',
+    verified: true,
+  })
+  adminUser = (await (await fetch('https://randomuser.me/api/')).json()).results[0]
+  const adminProfileImageRef = '/profile/seeded_' + uuidv4().replace(/-/gi, '') + '.jpg'
+  downloadImage(adminUser.picture.medium, path.join(IMAGES_ROOT, profileImageReference))
+  const adminImageRow = await Image.create({
+    userId: adminRow.id,
+    reference: adminProfileImageRef,
+  })
+  adminRow.imageId = adminImageRow.id
+  adminRow.save()
+  await sleep(100)
+  
   for (let i = 0; i < USER_COUNT; i++) {
     const user = (await (await fetch('https://randomuser.me/api/')).json()).results[0]
     const profileImageReference = '/profile/seeded_' + uuidv4().replace(/-/gi, '') + '.jpg'

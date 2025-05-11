@@ -10,7 +10,7 @@ const { UserState } = require('../constants/UserState')
 const { admins } = require('../config')
 const { maxDisplayNameLength, maxMentionLength, maxPasswordLength } = require('../config').app
 
-const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV !== 'development'
 
 const controller = {}
 

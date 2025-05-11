@@ -16,10 +16,9 @@ require('dotenv').config()
 const app = express()
 const logger = require('./utils/logger')
 const db = require('./database/models')
-const { createThumbnails } = require('./utils')
 
 const { NODE_ENV } = process.env
-const isProduction = NODE_ENV === 'production'
+const isProduction = NODE_ENV !== 'development'
 
 const PORT = isProduction ? 8080 : 3001
 
@@ -88,8 +87,8 @@ app.use(
 
 app.use(
   fileUpload({
-    limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
-    responseOnLimit: 'Images must be under 10MB in size.',
+    limits: { fileSize: process.env.MAX_UPLOAD_SIZE_IN_MB * 1024 * 1024 },
+    responseOnLimit: `Images must be under ${process.env.MAX_UPLOAD_SIZE_IN_MB}MB in size.`,
     abortOnLimit: true,
     logger: logger,
   }),

@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { createBrowserRouter, RouterProvider, Navigate, Route, Routes } from 'react-router-dom'
+import React from 'react'
+import { createBrowserRouter, RouterProvider, Route, Routes } from 'react-router-dom'
 
 import Dashboard from './views/Dashboard'
-import Signup from './components/Signup/Signup'
 import Profile from './views/Profile'
 import VerifyEmail from './views/VerifyEmail'
 import UserSearch from './views/UserSearch'
@@ -10,7 +9,6 @@ import ProfileFollows from './views/ProfileFollows'
 import PostLikes from './views/PostLikes'
 import AdminDashboard from './views/AdminDashboard'
 
-import PushNotificationHandler from './firebase/PushNotificationHandler'
 import Landing from './views/Landing'
 import Collection from './views/Collection'
 import NotFound from './views/NotFound'
@@ -91,7 +89,6 @@ function AdminRoot() {
 function App() {
   return (
     <>
-      <PushNotificationHandler />
       <RouterProvider router={router} />
     </>
   )

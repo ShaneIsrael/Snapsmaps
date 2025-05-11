@@ -3,17 +3,14 @@ import Cookies from 'js-cookie'
 import _ from 'lodash'
 
 export const getUrl = () => {
-  if (window.location.hostname.indexOf('localhost') >= 0) return `${window.location.protocol}//localhost:3001`
-  if (window.location.hostname.indexOf('snapsmaps') >= 0)
-    return `${window.location.protocol}//${window.location.hostname}`
+  if (window.location.hostname.indexOf('localhost') >= 0)
+    return `${window.location.protocol}//${window.location.hostname}:${3001}`
 
-  return `${window.location.protocol}//${window.location.hostname}:${3001}`
+  return `${window.location.protocol}//${window.location.hostname}`
 }
 
 export const getAssetUrl = () => {
-  if (window.location.hostname.indexOf('snapsmaps') === -1) return getUrl()
-
-  return 'https://cdn.snapsmaps.com'
+  return getUrl()
 }
 
 export const getSessionUser = () => {
