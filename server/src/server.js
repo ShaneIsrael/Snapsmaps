@@ -74,7 +74,11 @@ app.use(
 )
 
 // CORS middleware
-const allowedDomains = isProduction ? [process.env.DOMAIN, ...process.env.ALLOWED_DOMAINS] : ['http://localhost:3000']
+const allowedDomains = isProduction
+  ? [process.env.DOMAIN, ...process.env.ALLOWED_DOMAINS.split(',')]
+  : ['http://localhost:3000']
+
+logger.info(`Allowed domains: ${allowedDomains}`)
 
 app.use(
   cors({
