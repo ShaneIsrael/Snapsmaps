@@ -4,7 +4,6 @@ const Models = require('../database/models')
 const sharp = require('sharp')
 const axios = require('axios')
 const logger = require('./logger')
-const { uploadImage } = require('../services/UploadService')
 const { Post, User, PostComment, Image, PostLike, Follow, sequelize } = Models
 
 module.exports = {

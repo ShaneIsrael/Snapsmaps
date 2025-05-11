@@ -5,7 +5,6 @@ const { v4: uuidv4 } = require('uuid')
 const { Op } = require('sequelize')
 const Models = require('../database/models')
 const { Post, User, PostComment, Image, PostLike, Follow, sequelize } = Models
-const { uploadImage } = require('../services/UploadService')
 const { createPostNotifications } = require('../services/NotificationService')
 const { isFollowingUser } = require('../services/FollowService')
 const { UserState } = require('../constants/UserState')

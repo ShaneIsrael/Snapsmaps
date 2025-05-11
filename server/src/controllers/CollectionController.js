@@ -4,7 +4,6 @@ const { v4: uuidv4 } = require('uuid')
 
 const Models = require('../database/models')
 const { Post, User, Collection, CollectionPostLink, Image, PostLike } = Models
-const { uploadImage } = require('../services/UploadService')
 const { isFollowingUser } = require('../services/FollowService')
 const { UserState } = require('../constants/UserState')
 const { maxCollectionTitleLength } = require('../config').app

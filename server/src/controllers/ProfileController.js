@@ -2,7 +2,6 @@ const path = require('path')
 const Models = require('../database/models')
 const { User, Image, Post, Follow, Collection, CollectionPostLink, sequelize } = Models
 const { v4: uuidv4 } = require('uuid')
-const { uploadImage } = require('../services/UploadService')
 const sharp = require('sharp')
 const { Op } = require('sequelize')
 const { createFollowNotification } = require('../services/NotificationService')
