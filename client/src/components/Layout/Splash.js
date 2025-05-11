@@ -5,6 +5,7 @@ import logo_no_wordmark from '../../assets/logo/dark/logo.svg'
 import wordmark from '../../assets/logo/dark/wordmark_no_slogan.svg'
 
 import { useAuthed } from '../../hooks/useAuthed'
+import { getUrl } from '../../common/utils'
 
 function shuffle(array) {
   let currentIndex = array.length
@@ -21,13 +22,14 @@ shuffle(SPLASH_IMAGE_INDEXES)
 
 const Splash = ({ children }) => {
   const { loading, isAuthenticated } = useAuthed()
+  const url = getUrl()
 
   if (loading) return <div />
 
-  const splash1 = `https://cdn.snapsmaps.com/assets/splash/splash-${SPLASH_IMAGE_INDEXES[0]}.webp`
-  const splash2 = `https://cdn.snapsmaps.com/assets/splash/splash-${SPLASH_IMAGE_INDEXES[1]}.webp`
-  const splash3 = `https://cdn.snapsmaps.com/assets/splash/splash-${SPLASH_IMAGE_INDEXES[2]}.webp`
-  const splash4 = `https://cdn.snapsmaps.com/assets/splash/splash-${SPLASH_IMAGE_INDEXES[3]}.webp`
+  const splash1 = `${url}/assets/splash/splash-${SPLASH_IMAGE_INDEXES[0]}.webp`
+  const splash2 = `${url}/assets/splash/splash-${SPLASH_IMAGE_INDEXES[1]}.webp`
+  const splash3 = `${url}/assets/splash/splash-${SPLASH_IMAGE_INDEXES[2]}.webp`
+  const splash4 = `${url}/assets/splash/splash-${SPLASH_IMAGE_INDEXES[3]}.webp`
 
   return (
     <div className="h-screen md:px-2 md:pt-2 md:pb-4 bg-gray-950">

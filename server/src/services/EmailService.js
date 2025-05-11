@@ -27,6 +27,7 @@ service.sendVerificationEmail = async (email, token, name) => {
       const template = handlebars.compile(html)
       const replacements = {
         verification_link: `${process.env.DOMAIN}/verify/${email}/${token}`,
+        domain: process.env.DOMAIN,
       }
       const htmlToSend = template(replacements)
       try {

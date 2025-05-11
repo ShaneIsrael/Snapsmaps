@@ -36,7 +36,7 @@ controller.post = async (req, res, next) => {
         const nonce = crypto.randomBytes(16).toString('hex')
         const replacements = {
           redirect_link: `/user/${post.user.mention}/${post.id}`,
-          image_url: `https://cdn.snapsmaps.com${post.image.reference}`,
+          image_url: `${process.env.DOMAIN}${post.image.reference}`,
           title: `${post.user.displayName} • @${post.user.mention}`,
           description: post.title,
           nonce,
@@ -77,7 +77,7 @@ controller.collection = async (req, res, next) => {
         const nonce = crypto.randomBytes(16).toString('hex')
         const replacements = {
           redirect_link: `/user/${collection.user.mention}/collection/${collection.id}`,
-          image_url: `https://cdn.snapsmaps.com${collection.image.reference}`,
+          image_url: `${process.env.DOMAIN}${collection.image.reference}`,
           title: `${collection.title} • @${collection.user.mention}`,
           description: `A photo collection created by ${collection.user.displayName}`,
           nonce,
