@@ -39,6 +39,7 @@ controller.post = async (req, res, next) => {
           image_url: `${process.env.DOMAIN}${post.image.reference}`,
           title: `${post.user.displayName} • @${post.user.mention}`,
           description: post.title,
+          site_name: process.env.SITE_NAME,
           nonce,
         }
         const htmlToSend = template(replacements)
@@ -80,6 +81,7 @@ controller.collection = async (req, res, next) => {
           image_url: `${process.env.DOMAIN}${collection.image.reference}`,
           title: `${collection.title} • @${collection.user.mention}`,
           description: `A photo collection created by ${collection.user.displayName}`,
+          site_name: process.env.SITE_NAME,
           nonce,
         }
         const htmlToSend = template(replacements)

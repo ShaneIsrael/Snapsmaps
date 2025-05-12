@@ -24,6 +24,10 @@ COPY generateMeta.js /
 COPY generateManifest.js /
 COPY manifest.template.json /
 
+# Copy Assets
+COPY assets/logo_with_wordmark.png /content/images/assets
+COPY assets/logo_with_wordmark.svg /content/images/assets
+
 # Create app directory
 WORKDIR /app
 

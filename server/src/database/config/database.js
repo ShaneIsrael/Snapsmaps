@@ -29,21 +29,15 @@ module.exports = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT || 5432,
     dialect: 'postgres',
-    // ssl: true,
-    // dialectOptions: {
-    //   ssl: {
-    //     ca: process.env.PROD_DB_CA_CERT,
-    //   },
-    // },
     options: {
       timezone: 'utc',
       logging: false,
-      // pool: {
-      //   max: process.env.PROD_DB_POOL_SIZE_PER_NODE ? Number(process.env.PROD_DB_POOL_SIZE_PER_NODE) : 10,
-      //   min: 0,
-      //   acquire: 30000,
-      //   idle: 10000,
-      // },
+      pool: {
+        max: 10,
+        min: 0,
+        acquire: 30000,
+        idle: 10000,
+      },
     },
   },
 }
