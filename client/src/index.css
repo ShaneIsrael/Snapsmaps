@@ -27,6 +27,9 @@
                             'embedded-opentype', and 'svg' */
 }
 
+html {
+  background: #020617;
+}
 html,
 body,
 #root {

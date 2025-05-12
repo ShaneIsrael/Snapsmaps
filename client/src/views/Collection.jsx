@@ -117,8 +117,7 @@ function Collection({ isSelfProfile }) {
             index={index}
             slides={mappedImages}
           />
-          <div className="border-b border-solid border-white pt-[65px]" />
-          <div className="mt-2 px-4 bg-background w-full max-w-[1000px] mx-auto">
+          <div className="mt-2 px-4 pt-[65px] bg-background w-full max-w-[1000px] mx-auto">
             <Tabs
               key="collection-tabs"
               size="md"
@@ -136,68 +135,70 @@ function Collection({ isSelfProfile }) {
                   </div>
                 }
               >
-                <ResponsiveMasonry
-                  columnsCountBreakPoints={{ 480: 1, 750: 3, 900: 4 }}
-                  gutterBreakpoints={{ 480: '12px', 750: '16px', 900: '24px' }}
-                >
-                  <Masonry>
-                    {mappedImages?.map((image, index) => (
-                      <div className="relative group">
-                        <div
-                          key={`collection-photo-${index}`}
-                          className="relative rounded-lg border-solid border-neutral-300 border-small cursor-pointer"
-                        >
-                          {isAuthenticated && isSelfProfile && (
-                            <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                              <Dropdown className="dark absolute min-w-0 p-[1px] w-fit bg-black -left-32 ">
-                                <DropdownTrigger>
-                                  <Button variant="light" size="sm" className="absolute top-0 right-0" isIconOnly>
-                                    <EllipsisVerticalIcon className="w-5 h-5" />
-                                  </Button>
-                                </DropdownTrigger>
-                                <DropdownMenu aria-label="collection item actions">
-                                  <DropdownItem
-                                    key="delete"
-                                    className="text-danger"
-                                    color="danger"
-                                    onClick={() => setRemoveItem(image.id)}
-                                    startContent={<XMarkIcon className="h-4 w-4" />}
-                                  >
-                                    Remove Item
-                                  </DropdownItem>
-                                </DropdownMenu>
-                              </Dropdown>
-                            </div>
-                          )}
+                <div className="h-[calc(100vh-160px)] overflow-y-auto">
+                  <ResponsiveMasonry
+                    columnsCountBreakPoints={{ 480: 1, 750: 3, 900: 4 }}
+                    gutterBreakpoints={{ 480: '12px', 750: '16px', 900: '24px' }}
+                  >
+                    <Masonry>
+                      {mappedImages?.map((image, index) => (
+                        <div className="relative group">
+                          <div
+                            key={`collection-photo-${index}`}
+                            className="relative rounded-lg border-solid border-neutral-300 border-small cursor-pointer"
+                          >
+                            {isAuthenticated && isSelfProfile && (
+                              <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Dropdown className="dark absolute min-w-0 p-[1px] w-fit bg-black -left-32 ">
+                                  <DropdownTrigger>
+                                    <Button variant="light" size="sm" className="absolute top-0 right-0" isIconOnly>
+                                      <EllipsisVerticalIcon className="w-5 h-5" />
+                                    </Button>
+                                  </DropdownTrigger>
+                                  <DropdownMenu aria-label="collection item actions">
+                                    <DropdownItem
+                                      key="delete"
+                                      className="text-danger"
+                                      color="danger"
+                                      onClick={() => setRemoveItem(image.id)}
+                                      startContent={<XMarkIcon className="h-4 w-4" />}
+                                    >
+                                      Remove Item
+                                    </DropdownItem>
+                                  </DropdownMenu>
+                                </Dropdown>
+                              </div>
+                            )}
 
-                          {image.title && (
-                            <div
-                              className={clsx(
-                                'absolute w-full bottom-0 flex items-end text-xs  pl-1 pr-1 pb-1 pt-1 rounded-b-xl bg-black/75 leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300',
-                                { hidden: !loadedImages.includes(image.id) },
-                              )}
-                            >
-                              {image.title}
-                            </div>
-                          )}
+                            {image.title && (
+                              <div
+                                className={clsx(
+                                  'absolute w-full bottom-0 flex items-end text-xs  pl-1 pr-1 pb-1 pt-1 rounded-b-xl bg-black/75 leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300',
+                                  { hidden: !loadedImages.includes(image.id) },
+                                )}
+                              >
+                                {image.title}
+                              </div>
+                            )}
 
-                          <div className="aspect-w-1 aspect-h-1 w-full">
-                            <img
-                              src={image.src}
-                              className="w-full rounded-lg block"
-                              onClick={() => {
-                                setIndex(index)
-                                setLightboxOpen(true)
-                              }}
-                              loading="lazy"
-                              onLoad={() => setLoadedImages((prev) => [...prev, image.id])}
-                            />
+                            <div className="aspect-w-1 aspect-h-1 w-full">
+                              <img
+                                src={image.src}
+                                className="w-full rounded-lg block"
+                                onClick={() => {
+                                  setIndex(index)
+                                  setLightboxOpen(true)
+                                }}
+                                loading="lazy"
+                                onLoad={() => setLoadedImages((prev) => [...prev, image.id])}
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </Masonry>
-                </ResponsiveMasonry>
+                      ))}
+                    </Masonry>
+                  </ResponsiveMasonry>
+                </div>
               </Tab>
               <Tab
                 key="map"
