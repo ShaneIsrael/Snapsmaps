@@ -19,43 +19,43 @@ indexHtml = indexHtml
   .replace(
     /<meta name="description" content=".*?" \/>/,
     `<meta name="description" content="${
-      process.env.DESCRIPTION || "Default description"
+      process.env.DESCRIPTION || "Don't just snap it, map it."
     }" />`
   )
   .replace(
     /<meta property="og:site_name" content=".*?" \/>/,
     `<meta property="og:site_name" content="${
-      process.env.SITE_NAME || "Default Site Name"
+      process.env.SITE_NAME || "Snapsmaps"
     }" />`
   )
   .replace(
     /<meta property="og:title" content=".*?" \/>/,
     `<meta property="og:title" content="${
-      process.env.SITE_NAME || "Default Site Name"
+      process.env.SITE_NAME || "Snapsmaps"
     }" />`
   )
   .replace(
     /<meta property="og:url" content=".*?" \/>/,
     `<meta property="og:url" content="${
-      process.env.START_URL || "https://default.url"
+      process.env.START_URL || "https://mydomain.tld"
     }" />`
   )
   .replace(
     /<meta property="og:description" content=".*?" \/>/,
     `<meta property="og:description" content="${
-      process.env.DESCRIPTION || "Default description"
+      process.env.DESCRIPTION || "Don't just snap it, map it."
     }" />`
   )
   .replace(
     /<meta name="twitter:title" content=".*?" \/>/,
     `<meta name="twitter:title" content="${
-      process.env.SITE_NAME || "Default Site Name"
+      process.env.SITE_NAME || "Snapsmaps"
     }" />`
   )
   .replace(
     /<meta name="twitter:description" content=".*?" \/>/,
     `<meta name="twitter:description" content="${
-      process.env.DESCRIPTION || "Default description"
+      process.env.DESCRIPTION || "Don't just snap it, map it."
     }" />`
   );
 
