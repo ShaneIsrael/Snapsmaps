@@ -25,6 +25,7 @@ import { EllipsisVerticalIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { MapPinIcon } from '../assets/icons/MapPinIcon'
 import { PhotoIcon } from '../assets/icons/PhotoIcon'
 import SnapMap from '../components/Map/SnapMap'
+import LazyImage from '../components/Collection/LazyImage'
 
 function Collection({ isSelfProfile }) {
   const { mention, collectionId } = useParams()
@@ -37,7 +38,6 @@ function Collection({ isSelfProfile }) {
 
   const [removeItem, setRemoveItem] = useState()
   const [allRemovedItems, setAllRemovedItems] = useState([])
-  const [loadedImages, setLoadedImages] = useState([])
 
   const [selectedTab, setSelectedTab] = useState('gallery')
   const [tabContainerOffset, setTabContainerOffset] = useState(0)
@@ -174,7 +174,6 @@ function Collection({ isSelfProfile }) {
                               <div
                                 className={clsx(
                                   'absolute w-full bottom-0 flex items-end text-xs  pl-1 pr-1 pb-1 pt-1 rounded-b-xl bg-black/75 leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300',
-                                  { hidden: !loadedImages.includes(image.id) },
                                 )}
                               >
                                 {image.title}
@@ -182,15 +181,11 @@ function Collection({ isSelfProfile }) {
                             )}
 
                             <div className="aspect-w-1 aspect-h-1 w-full">
-                              <img
-                                src={image.src}
-                                className="w-full rounded-lg block"
-                                onClick={() => {
-                                  setIndex(index)
-                                  setLightboxOpen(true)
-                                }}
-                                loading="lazy"
-                                onLoad={() => setLoadedImages((prev) => [...prev, image.id])}
+                              <LazyImage
+                                image={image}
+                                setIndex={(index) => setIndex(index)}
+                                setLightboxOpen={setLightboxOpen}
+                                index={index}
                               />
                             </div>
                           </div>
