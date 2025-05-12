@@ -66,8 +66,7 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: true,
-      secure: true,
-      // maxAge: new Date(253402300799999).getTime(), // Basically, never expire ever.
+      secure: process.env.SECURE_COOKIES === 'true',
       maxAge: 60 * 60 * 100,
     },
   }),
