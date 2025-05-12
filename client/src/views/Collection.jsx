@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { CollectionService } from '../services'
 import PageLayout from '../components/Layout/PageLayout'
 import Lightbox from 'yet-another-react-lightbox'
 import 'yet-another-react-lightbox/styles.css'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
+import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 
 import { getAssetUrl } from '../common/utils'
 import clsx from 'clsx'
@@ -26,7 +27,6 @@ import { PhotoIcon } from '../assets/icons/PhotoIcon'
 import SnapMap from '../components/Map/SnapMap'
 
 function Collection({ isSelfProfile }) {
-  const location = useLocation()
   const { mention, collectionId } = useParams()
   const [collection, setCollection] = useState()
   const [index, setIndex] = useState()
@@ -58,6 +58,7 @@ function Collection({ isSelfProfile }) {
     try {
       const response = (await CollectionService.get(collectionId)).data
       setCollection(response)
+      setImages(response.images || [])
     } catch (err) {
       console.error(err)
     }
@@ -67,7 +68,7 @@ function Collection({ isSelfProfile }) {
   useEffect(() => {
     setLoading(false)
     fetch()
-  }, [mention, collectionId])
+  }, [collectionId])
 
   useEffect(() => {
     if (tabContainerRef.current) {
@@ -79,7 +80,7 @@ function Collection({ isSelfProfile }) {
     .filter((cpl) => !allRemovedItems.includes(cpl.id))
     .sort((a, b) => a.post.id - b.post.id)
 
-  const images = viewableItems?.map((item) => ({
+  const mappedImages = viewableItems?.map((item) => ({
     id: item.id,
     postId: item.post.id,
     src: getAssetUrl() + item.post.image.reference,
@@ -109,11 +110,18 @@ function Collection({ isSelfProfile }) {
             onAction={handleRemoveItem}
             onCancel={() => setRemoveItem(null)}
           />
+          <Lightbox
+            plugins={[Zoom]}
+            open={lightboxOpen}
+            close={() => setLightboxOpen(false)}
+            index={index}
+            slides={mappedImages}
+          />
           <div className="border-b border-solid border-white pt-[65px]" />
-          <div className="flex flex-col items-center mt-2 overflow-hidden">
+          <div className="mt-2 px-4 bg-background w-full max-w-[1000px] mx-auto">
             <Tabs
               key="collection-tabs"
-              size="lg"
+              size="md"
               variant="underlined"
               aria-label="Collection tabs"
               onSelectionChange={setSelectedTab}
@@ -128,51 +136,55 @@ function Collection({ isSelfProfile }) {
                   </div>
                 }
               >
-                <div
-                  ref={tabContainerRef}
-                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 overflow-y-scroll"
+                <ResponsiveMasonry
+                  columnsCountBreakPoints={{ 480: 1, 750: 3, 900: 4 }}
+                  gutterBreakpoints={{ 480: '12px', 750: '16px', 900: '24px' }}
                 >
-                  {images ? (
-                    images.map((image, index) => (
+                  <Masonry>
+                    {mappedImages?.map((image, index) => (
                       <div className="relative group">
                         <div
                           key={`collection-photo-${index}`}
-                          className="relative rounded-xl border-solid border-neutral-300 border-large"
+                          className="relative rounded-lg border-solid border-neutral-300 border-small cursor-pointer"
                         >
                           {isAuthenticated && isSelfProfile && (
-                            <Dropdown className="dark absolute min-w-0 p-[1px] w-fit bg-black -left-32">
-                              <DropdownTrigger>
-                                <Button variant="light" size="sm" className="absolute top-0 right-0" isIconOnly>
-                                  <EllipsisVerticalIcon className="w-5 h-5" />
-                                </Button>
-                              </DropdownTrigger>
-                              <DropdownMenu aria-label="collection item actions">
-                                <DropdownItem
-                                  key="delete"
-                                  className="text-danger"
-                                  color="danger"
-                                  onClick={() => setRemoveItem(image.id)}
-                                  startContent={<XMarkIcon className="h-4 w-4" />}
-                                >
-                                  Remove Item
-                                </DropdownItem>
-                              </DropdownMenu>
-                            </Dropdown>
+                            <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                              <Dropdown className="dark absolute min-w-0 p-[1px] w-fit bg-black -left-32 ">
+                                <DropdownTrigger>
+                                  <Button variant="light" size="sm" className="absolute top-0 right-0" isIconOnly>
+                                    <EllipsisVerticalIcon className="w-5 h-5" />
+                                  </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu aria-label="collection item actions">
+                                  <DropdownItem
+                                    key="delete"
+                                    className="text-danger"
+                                    color="danger"
+                                    onClick={() => setRemoveItem(image.id)}
+                                    startContent={<XMarkIcon className="h-4 w-4" />}
+                                  >
+                                    Remove Item
+                                  </DropdownItem>
+                                </DropdownMenu>
+                              </Dropdown>
+                            </div>
                           )}
 
-                          <div
-                            className={clsx(
-                              'absolute w-full bottom-0 flex items-end text-xs font-bold pl-1 pr-1 pb-1 pt-1 rounded-b-xl bg-black/75 leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300',
-                              { hidden: !loadedImages.includes(image.id) },
-                            )}
-                          >
-                            {image.title}
-                          </div>
+                          {image.title && (
+                            <div
+                              className={clsx(
+                                'absolute w-full bottom-0 flex items-end text-xs  pl-1 pr-1 pb-1 pt-1 rounded-b-xl bg-black/75 leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300',
+                                { hidden: !loadedImages.includes(image.id) },
+                              )}
+                            >
+                              {image.title}
+                            </div>
+                          )}
 
                           <div className="aspect-w-1 aspect-h-1 w-full">
                             <img
                               src={image.src}
-                              className="object-cover rounded-lg w-full h-full"
+                              className="w-full rounded-lg block"
                               onClick={() => {
                                 setIndex(index)
                                 setLightboxOpen(true)
@@ -183,11 +195,9 @@ function Collection({ isSelfProfile }) {
                           </div>
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <p>No images available</p>
-                  )}
-                </div>
+                    ))}
+                  </Masonry>
+                </ResponsiveMasonry>
               </Tab>
               <Tab
                 key="map"
@@ -200,7 +210,6 @@ function Collection({ isSelfProfile }) {
               >
                 <div
                   ref={tabContainerRef}
-                  className={`overflow-hidden w-screen`}
                   style={{
                     height: `calc(100vh - ${tabContainerOffset}px)`,
                   }}
@@ -209,13 +218,6 @@ function Collection({ isSelfProfile }) {
                 </div>
               </Tab>
             </Tabs>
-            <Lightbox
-              plugins={[Zoom]}
-              open={lightboxOpen}
-              close={() => setLightboxOpen(false)}
-              index={index}
-              slides={images}
-            />
           </div>
         </>
       )}
