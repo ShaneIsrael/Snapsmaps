@@ -117,7 +117,7 @@ function Collection({ isSelfProfile }) {
             index={index}
             slides={mappedImages}
           />
-          <div className="mt-2 px-4 pt-[65px] bg-background w-full max-w-[1000px] mx-auto">
+          <div className="mt-2 px-4 pt-[65px] bg-background w-full max-w-[1500px] mx-auto">
             <Tabs
               key="collection-tabs"
               size="md"
