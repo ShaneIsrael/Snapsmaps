@@ -75,7 +75,7 @@ app.use(
 // CORS middleware
 const allowedDomains = isProduction
   ? [process.env.DOMAIN, ...process.env.ALLOWED_DOMAINS.split(',')]
-  : ['http://localhost:3000']
+  : ['http://localhost:3000', 'https://localhost:3000']
 
 logger.info(`Allowed domains: ${allowedDomains}`)
 
@@ -133,8 +133,8 @@ if (isProduction) {
     `HTTPS Dev server running. Make sure you manually navigate to https://localhost:3001 and 'accept the risk' so that the frontend can talk over https to the server`,
   )
   const httpsOptions = {
-    key: fs.readFileSync(path.join(process.cwd(), '/config/localdev/cert.key')),
-    cert: fs.readFileSync(path.join(process.cwd(), '/config/localdev/cert.crt')),
+    key: fs.readFileSync(path.join(process.cwd(), '/config/localdev/localhost.key')),
+    cert: fs.readFileSync(path.join(process.cwd(), '/config/localdev/localhost.crt')),
   }
   https.createServer(httpsOptions, app).listen(PORT)
 }

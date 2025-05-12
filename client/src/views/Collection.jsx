@@ -130,61 +130,62 @@ function Collection({ isSelfProfile }) {
               >
                 <div
                   ref={tabContainerRef}
-                  className="flex flex-col items-center gap-2 overflow-y-scroll py-2"
-                  style={{
-                    height: `calc(100vh - ${tabContainerOffset}px)`,
-                  }}
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 overflow-y-scroll"
                 >
                   {images ? (
                     images.map((image, index) => (
-                      <div
-                        key={`collection-photo-${index}`}
-                        className="relative w-[90%] min-w-[370px] max-w-[495px] h-fit rounded-xl border-solid border-neutral-300 border-large"
-                      >
-                        {isAuthenticated && isSelfProfile && (
-                          <Dropdown className="dark absolute min-w-0 p-[1px] w-fit bg-black -left-32">
-                            <DropdownTrigger>
-                              <Button variant="light" size="sm" className="absolute top-0 right-0" isIconOnly>
-                                <EllipsisVerticalIcon className="w-5 h-5" />
-                              </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu aria-label="collection item actions">
-                              <DropdownItem
-                                key="delete"
-                                className="text-danger"
-                                color="danger"
-                                onClick={() => setRemoveItem(image.id)}
-                                startContent={<XMarkIcon className="h-4 w-4" />}
-                              >
-                                Remove Item
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </Dropdown>
-                        )}
+                      <div className="relative group">
                         <div
-                          className={clsx(
-                            'absolute w-full bottom-0 flex items-end text-md font-bold pl-1 pr-1 pb-1 pt-1 rounded-b-xl bg-black/45 leading-tight',
-                            { hidden: !loadedImages.includes(image.id) },
-                          )}
+                          key={`collection-photo-${index}`}
+                          className="relative rounded-xl border-solid border-neutral-300 border-large"
                         >
-                          {image.title}
+                          {isAuthenticated && isSelfProfile && (
+                            <Dropdown className="dark absolute min-w-0 p-[1px] w-fit bg-black -left-32">
+                              <DropdownTrigger>
+                                <Button variant="light" size="sm" className="absolute top-0 right-0" isIconOnly>
+                                  <EllipsisVerticalIcon className="w-5 h-5" />
+                                </Button>
+                              </DropdownTrigger>
+                              <DropdownMenu aria-label="collection item actions">
+                                <DropdownItem
+                                  key="delete"
+                                  className="text-danger"
+                                  color="danger"
+                                  onClick={() => setRemoveItem(image.id)}
+                                  startContent={<XMarkIcon className="h-4 w-4" />}
+                                >
+                                  Remove Item
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </Dropdown>
+                          )}
+
+                          <div
+                            className={clsx(
+                              'absolute w-full bottom-0 flex items-end text-xs font-bold pl-1 pr-1 pb-1 pt-1 rounded-b-xl bg-black/75 leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-300',
+                              { hidden: !loadedImages.includes(image.id) },
+                            )}
+                          >
+                            {image.title}
+                          </div>
+
+                          <div className="aspect-w-1 aspect-h-1 w-full">
+                            <img
+                              src={image.src}
+                              className="object-cover rounded-lg w-full h-full"
+                              onClick={() => {
+                                setIndex(index)
+                                setLightboxOpen(true)
+                              }}
+                              loading="lazy"
+                              onLoad={() => setLoadedImages((prev) => [...prev, image.id])}
+                            />
+                          </div>
                         </div>
-                        <img
-                          src={image.src}
-                          className="object-cover rounded-lg "
-                          onClick={() => {
-                            setIndex(index)
-                            setLightboxOpen(true)
-                          }}
-                          loading="lazy"
-                          onLoad={() => setLoadedImages((prev) => [...prev, image.id])}
-                        />
                       </div>
                     ))
                   ) : (
-                    <div className="w-full flex p-4 justify-center items-center">
-                      <Spinner size="lg" />
-                    </div>
+                    <p>No images available</p>
                   )}
                 </div>
               </Tab>

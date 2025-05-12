@@ -280,7 +280,7 @@ async function seedProfiles() {
   })
   adminUser = (await (await fetch('https://randomuser.me/api/')).json()).results[0]
   const adminProfileImageRef = '/profile/seeded_' + uuidv4().replace(/-/gi, '') + '.jpg'
-  downloadImage(adminUser.picture.medium, path.join(IMAGES_ROOT, profileImageReference))
+  downloadImage(adminUser.picture.medium, path.join(IMAGES_ROOT, adminProfileImageRef))
   const adminImageRow = await Image.create({
     userId: adminRow.id,
     reference: adminProfileImageRef,
@@ -288,7 +288,7 @@ async function seedProfiles() {
   adminRow.imageId = adminImageRow.id
   adminRow.save()
   await sleep(100)
-  
+
   for (let i = 0; i < USER_COUNT; i++) {
     const user = (await (await fetch('https://randomuser.me/api/')).json()).results[0]
     const profileImageReference = '/profile/seeded_' + uuidv4().replace(/-/gi, '') + '.jpg'
@@ -431,6 +431,9 @@ async function main() {
     logger.info('*************************************')
     logger.info('-- Log into any user with --')
     logger.info('email: first.last@example.com')
+    logger.info('password: password')
+    logger.info('-- Log into admin with --')
+    logger.info('email: admin@example.com')
     logger.info('password: password')
     logger.info('*************************************')
   } catch (err) {
