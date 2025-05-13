@@ -9,7 +9,7 @@ module.exports = {
     maxPasswordLength: 64,
     maxCollectionTitleLength: 35,
   },
-  admins: process.env.ADMINS,
+  admins: process.env.ADMINS?.split(','),
   contentRoot: process.env.NODE_ENV !== 'development' ? '/content' : process.cwd(),
   smtpHost: process.env.SMTP_HOST,
   smtpPort: process.env.SMTP_PORT,

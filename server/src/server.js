@@ -101,6 +101,18 @@ app.use(
   }),
 )
 
+app.use((req, res, next) => {
+  const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY
+  if (googleMapsApiKey) {
+    res.cookie('GoogleMapsApiKey', googleMapsApiKey, {
+      httpOnly: false,
+      secure: isProduction,
+      sameSite: 'Lax',
+    })
+  }
+  next()
+})
+
 // API Routes
 require('./routes/share')(app)
 require('./routes/admin')(app)
