@@ -87,7 +87,7 @@ function CollectionItem({ collection, onClick, isAuthenticated, isSelf }) {
             </DropdownMenu>
           </Dropdown>
         )}
-        <div className="absolute w-fit top-0 flex items-end text-2xl font-lobsterTwo px-2 py-1 rounded-tl-xl rounded-br-xl bg-black/55">
+        <div className="absolute w-fit top-0 flex items-end text-2xl font-lobsterTwo px-2 py-1 rounded-tl-xl rounded-br-xl bg-black/75">
           {collection.title}
         </div>
         <img

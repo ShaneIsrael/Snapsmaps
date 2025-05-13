@@ -5,26 +5,18 @@
 @font-face {
   font-family: 'GreatVibes';
   src: local('GreatVibes'), url(./assets/fonts/GreatVibes.otf) format('opentype');
-  /* other formats include: 'woff2', 'truetype, 'opentype',
-                            'embedded-opentype', and 'svg' */
 }
 @font-face {
   font-family: 'Lobster';
   src: local('Lobster'), url(./assets/fonts/Lobster.ttf) format('truetype');
-  /* other formats include: 'woff2', 'truetype, 'opentype',
-                            'embedded-opentype', and 'svg' */
 }
 @font-face {
   font-family: 'LobsterTwo';
   src: local('LobsterTwo-Regular'), url(./assets/fonts/LobsterTwo-Regular.ttf) format('truetype');
-  /* other formats include: 'woff2', 'truetype, 'opentype',
-                            'embedded-opentype', and 'svg' */
 }
 @font-face {
   font-family: 'LobsterTwoBold';
   src: local('LobsterTwo-Bold'), url(./assets/fonts/LobsterTwo-Bold.ttf) format('truetype');
-  /* other formats include: 'woff2', 'truetype, 'opentype',
-                            'embedded-opentype', and 'svg' */
 }
 
 html {
@@ -50,11 +42,6 @@ body,
   --color-stop: #9350ff;
   --color-bot: #0787ff;
 }
-
-/* #header-shape-gradient {
-  --color-stop: #ff0800;
-  --color-bot: #300505;
-} */
 
 .gradient-bg {
   fill: url(#header-shape-gradient) #fff;

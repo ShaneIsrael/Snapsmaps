@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import UploadImage from '../Post/UploadImage'
 import CreatePost from '../Post/CreatePost'
 import {
@@ -14,10 +14,12 @@ import {
   Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
+import { FaGithub } from 'react-icons/fa'
+
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { getAssetUrl } from '../../common/utils'
-import { BellIcon, EnvelopeIcon, HomeIcon } from '@heroicons/react/24/outline'
+import { BellIcon, HomeIcon } from '@heroicons/react/24/outline'
 import {
   ArrowLeftEndOnRectangleIcon,
   ArrowRightEndOnRectangleIcon,
@@ -217,18 +219,16 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
                 )}
                 <DropdownItem
                   key="feedback"
-                  href="mailto:shane@snapsmaps.com"
-                  startContent={<EnvelopeIcon className="w-5 h-5 text-default-500 pointer-events-none flex-shrink-0" />}
+                  href="https://github.com/ShaneIsrael/Snapsmaps"
+                  startContent={<FaGithub className="w-5 h-5" />}
                 >
-                  Send Feedback
+                  Project Home
                 </DropdownItem>
                 <DropdownItem
                   key="logout"
                   color="danger"
                   onClick={logout}
-                  startContent={
-                    <ArrowLeftEndOnRectangleIcon className="w-5 h-5 text-default-500 pointer-events-none flex-shrink-0" />
-                  }
+                  startContent={<ArrowLeftEndOnRectangleIcon className="w-5 h-5 pointer-events-none flex-shrink-0" />}
                 >
                   Log Out
                 </DropdownItem>

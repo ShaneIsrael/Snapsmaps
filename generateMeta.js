@@ -19,7 +19,8 @@ indexHtml = indexHtml
   .replace(
     /<meta name="description" content=".*?" \/>/,
     `<meta name="description" content="${
-      process.env.DESCRIPTION || "Don't just snap it, map it."
+      process.env.DESCRIPTION ||
+      "Easily share photos with a map pin to friends and family."
     }" />`
   )
   .replace(
@@ -43,7 +44,8 @@ indexHtml = indexHtml
   .replace(
     /<meta property="og:description" content=".*?" \/>/,
     `<meta property="og:description" content="${
-      process.env.DESCRIPTION || "Don't just snap it, map it."
+      process.env.DESCRIPTION ||
+      "Easily share photos with a map pin to friends and family."
     }" />`
   )
   .replace(
@@ -55,7 +57,8 @@ indexHtml = indexHtml
   .replace(
     /<meta name="twitter:description" content=".*?" \/>/,
     `<meta name="twitter:description" content="${
-      process.env.DESCRIPTION || "Don't just snap it, map it."
+      process.env.DESCRIPTION ||
+      "Easily share photos with a map pin to friends and family."
     }" />`
   );
 
