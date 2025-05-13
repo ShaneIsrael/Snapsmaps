@@ -448,7 +448,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
             </div>
             <Divider className="mt-5 mb-5" />
 
-            <div className="max-h-[610px] flex flex-wrap justify-center gap-1 overflow-y-scroll">
+            <div className="flex flex-wrap justify-center gap-1">
               {postHistory.map((post) => (
                 <div
                   key={`post-history-${post.id}`}
