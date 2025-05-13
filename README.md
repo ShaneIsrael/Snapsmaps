@@ -40,6 +40,9 @@
     <li>
       <a href="#about-the-project">About The Project</a>
     </li>
+        <li>
+      <a href="#features">Features</a>
+    </li>
   </ol>
 </details>
 
@@ -48,6 +51,19 @@
 # About The Project
 
 In 2024 I had a trip planned to go to Japan. I am not on most social medias where many of my family members are so I wanted an easy way to share photos with them combined with the gps location of where I was currently at when I took that photo. I thought it could be a cool way for them to follow me along on my trip. So I spent 3 months building Snapsmaps. I then went on my trip in August for a grand total of 22 days. I always planned to make it self-hostable and open source for everyone and I finally got around to doing that.
+
+# Features
+
+- Fully optimized for mobile devices
+- Social media profile functionality
+- Basic notification system
+- Photo collections
+- User follow system
+- Secure, email-verified account registration
+- NSFW submission tagging
+- Admin tooling
+- Limited guest access (no account required)
+- Seamless post and collection sharing with OpenGraph metadata integration
 
 # Contributing
 

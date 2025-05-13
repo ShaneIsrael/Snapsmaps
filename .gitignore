@@ -4,3 +4,5 @@ server/db-data/
 server/.env
 server/images
 client/node_modules/
+db-data/
+snapsmaps/content/

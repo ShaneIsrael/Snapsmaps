@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: postgres:16.0-alpine
+    container_name: snapsmaps-postgres-db
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=snapsmaps
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+
+  snapsmaps:
+    image: shaneisrael/snapsmaps:latest
+    container_name: snapsmaps
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      # SERVER SETTINGS
+      NODE_ENV: "production"
+      DOMAIN: "https://mylivedomain.tld"
+      SECRET_KEY: "some-random-generated-secret-string"
+      MAX_UPLOAD_SIZE_IN_MB: "10"
+      ADMINS: "myaccountemail@domain.com,mytrustworthyfriend@domain.com"
+      ALLOWED_DOMAINS: "http://localhost:3000,https://localhost:3000,https://mylivedomain.tld" # CORS domains
+      SECURE_COOKIES: "true" # Set to false if using http
+      # DATABASE SETTINGS
+      DB_USERNAME: "postgres"
+      DB_PASSWORD: "postgres"
+      DB_NAME: "snapsmaps"
+      DB_HOST: "localhost"
+      DB_PORT: "5432"
+      # REQUIRED FOR USER CREATION
+      SMTP_USER: ""
+      SMTP_HOST: ""
+      SMTP_PORT: "465"
+      SMTP_EMAIL: ""
+      SMTP_PASSWORD: ""
+      # SITE MANIFEST / METADATA SETTINGS
+      START_URL: "https://mylivedomain.tld" # Used in site manifest
+      SCOPE: "https://mylivedomain.tld" # Used in site manifest
+      SITE_NAME: "Snapsmaps" # Used in site manifest
+      SITE_SHORT_NAME: "Snapsmaps" # User in site manifest
+      MANIFEST_ID: "some-random-generated-unique-string" # Used in site manifest
+      DESCRIPTION: "Easily share photos with a map pin to friends and family."
+    ports:
+      - "8888:80"
+    volumes:
+      - ./snapsmaps/images:/content/images:rw # The directory where user images are stored
