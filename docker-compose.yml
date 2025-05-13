@@ -27,7 +27,7 @@ services:
       ADMINS: "myaccountemail@domain.com,mytrustworthyfriend@domain.com"
       ALLOWED_DOMAINS: "http://localhost:3000,https://localhost:3000,https://mylivedomain.tld" # CORS domains
       SECURE_COOKIES: "true" # Set to false if using http
-      GOOGLE_MAPS_API_KEY: "your-google-maps-api-key" # Required for map functionality
+      GOOGLE_MAPS_API_KEY: "your-google-maps-api-key" # Required for map functionality https://developers.google.com/maps/documentation/javascript/get-api-key
       # DATABASE SETTINGS
       DB_USERNAME: "postgres"
       DB_PASSWORD: "postgres"
