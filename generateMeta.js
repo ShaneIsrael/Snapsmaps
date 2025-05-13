@@ -13,7 +13,7 @@ indexHtml = indexHtml
   .replace(
     /<meta name="theme-color" content=".*?" \/>/,
     `<meta name="theme-color" content="${
-      process.env.THEME_COLOR || "#000000"
+      process.env.THEME_COLOR || "#020617"
     }" />`
   )
   .replace(

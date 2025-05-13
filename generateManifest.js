@@ -10,8 +10,8 @@ const manifest = template
   .replace("${SITE_SHORT_NAME}", process.env.SHORT_NAME || "Snapsmaps")
   .replace("${SITE_NAME}", process.env.NAME || "Snapsmaps")
   .replace("${START_URL}", process.env.START_URL || "https://mydomain.tld")
-  .replace("${THEME_COLOR}", process.env.THEME_COLOR || "#000000")
-  .replace("${BACKGROUND_COLOR}", process.env.BACKGROUND_COLOR || "#ffffff")
+  .replace("${THEME_COLOR}", process.env.THEME_COLOR || "#020617")
+  .replace("${BACKGROUND_COLOR}", process.env.BACKGROUND_COLOR || "#020617")
   .replace("${SCOPE}", process.env.SCOPE || "https://mydomain.tld")
   .replace(
     "${DESCRIPTION}",
