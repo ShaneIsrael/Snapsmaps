@@ -59,6 +59,7 @@ In 2024 I had a trip planned to go to Japan. I am not on most social medias wher
 - Basic notification system
 - Photo collections
 - User follow system
+- Comment functionality
 - Secure, email-verified account registration
 - NSFW submission tagging
 - Admin tooling

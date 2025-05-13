@@ -32,7 +32,7 @@ services:
       DB_USERNAME: "postgres"
       DB_PASSWORD: "postgres"
       DB_NAME: "snapsmaps"
-      DB_HOST: "localhost"
+      DB_HOST: "postgres"
       DB_PORT: "5432"
       # REQUIRED FOR USER CREATION
       SMTP_USER: ""
