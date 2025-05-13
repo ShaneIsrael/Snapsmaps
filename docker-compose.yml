@@ -21,11 +21,11 @@ services:
     environment:
       # SERVER SETTINGS
       NODE_ENV: "production"
-      DOMAIN: "https://mylivedomain.tld"
+      DOMAIN: "http://localhost:8888/" # The domain where the app is hosted
       SECRET_KEY: "some-random-generated-secret-string"
       MAX_UPLOAD_SIZE_IN_MB: "10"
       ADMINS: "myaccountemail@domain.com,mytrustworthyfriend@domain.com"
-      ALLOWED_DOMAINS: "http://localhost:3000,https://localhost:3000,https://mylivedomain.tld" # CORS domains
+      ALLOWED_DOMAINS: "http://localhost:8888/,https://mylivedomain.tld" # CORS domains
       SECURE_COOKIES: "true" # Set to false if using http
       GOOGLE_MAPS_API_KEY: "your-google-maps-api-key" # Required for map functionality https://developers.google.com/maps/documentation/javascript/get-api-key
       # DATABASE SETTINGS
@@ -41,8 +41,8 @@ services:
       SMTP_EMAIL: ""
       SMTP_PASSWORD: ""
       # SITE MANIFEST / METADATA SETTINGS
-      START_URL: "https://mylivedomain.tld" # Used in site manifest
-      SCOPE: "https://mylivedomain.tld" # Used in site manifest
+      START_URL: "http://localhost:8888/" # Used in site manifest
+      SCOPE: "http://localhost:8888/" # Used in site manifest
       SITE_NAME: "Snapsmaps" # Used in site manifest
       SITE_SHORT_NAME: "Snapsmaps" # User in site manifest
       MANIFEST_ID: "some-random-generated-unique-string" # Used in site manifest
