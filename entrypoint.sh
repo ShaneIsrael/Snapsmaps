@@ -5,9 +5,9 @@ nginx -g 'daemon on;'
 node /generateManifest.js
 node /generateMeta.js
 
-mkdir -p /images/post
-mkdir -p /images/profile
-mkdir -p /images/collection
-mkdir -p /images/thumb/120x120
+mkdir -p /content/images/post
+mkdir -p /content/images/profile
+mkdir -p /content/images/collection
+mkdir -p /content/images/thumb/120x120
 
 cd /app && npm run migrate && node /app/src/server.js
