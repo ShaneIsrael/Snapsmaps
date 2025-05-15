@@ -107,7 +107,7 @@ function Collection({ isSelfProfile }) {
             index={index}
             slides={mappedImages}
           />
-          <div className="mt-2 px-4 pt-[65px] bg-background w-full max-w-[1500px] mx-auto">
+          <div className="px-4 pt-[65px] bg-background w-full max-w-[1500px] mx-auto">
             <Tabs
               key="collection-tabs"
               size="md"
@@ -124,8 +124,9 @@ function Collection({ isSelfProfile }) {
                     <span>Gallery</span>
                   </div>
                 }
+                className="py-0"
               >
-                <div className="h-[calc(100vh-160px)] overflow-y-auto">
+                <div className="h-[calc(100vh-155px)] overflow-y-auto pt-2">
                   <ResponsiveMasonry
                     columnsCountBreakPoints={{ 480: 1, 750: 3, 900: 4 }}
                     gutterBreakpoints={{ 480: '12px', 750: '16px', 900: '24px' }}
@@ -194,12 +195,14 @@ function Collection({ isSelfProfile }) {
                     <span>Map</span>
                   </div>
                 }
+                className="py-0"
               >
                 <div
                   ref={tabContainerRef}
                   style={{
                     height: `calc(100vh - ${tabContainerOffset}px)`,
                   }}
+                  className="pt-2"
                 >
                   <SnapMap markers={mapMarkers} streetViewControl />
                 </div>
