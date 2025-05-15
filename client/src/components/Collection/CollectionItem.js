@@ -6,6 +6,7 @@ import { EllipsisVerticalIcon, ShareIcon, XMarkIcon } from '@heroicons/react/24/
 import { toast } from 'sonner'
 import ConfirmationDialog from '../Dialog/ConfirmationDialog'
 import { CollectionService } from '../../services'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 function CollectionItem({ collection, onClick, isAuthenticated, isSelf }) {
   const [confirmDelete, setConfirmDelete] = useState(false)
@@ -39,6 +40,9 @@ function CollectionItem({ collection, onClick, isAuthenticated, isSelf }) {
     }, 750)
   }
 
+  const collectionImage = getAssetUrl() + collection.image.reference
+  const collectionImageLowq = getAssetUrl() + collection.image.reference.split('.')[0] + '.lowq.webp'
+
   return (
     <>
       <ConfirmationDialog
@@ -53,7 +57,7 @@ function CollectionItem({ collection, onClick, isAuthenticated, isSelf }) {
       />
 
       <div
-        className="relative rounded-xl border-medium border-solid border-neutral-200 h-40 max-w-[478px] w-full bg-gray-900 cursor-pointer"
+        className="relative rounded-xl border-medium border-solid border-neutral-200 h-40 max-w-[478px] w-full bg-gray-900 cursor-pointer overflow-hidden"
         onClick={onClick}
       >
         {isAuthenticated && (
@@ -87,13 +91,14 @@ function CollectionItem({ collection, onClick, isAuthenticated, isSelf }) {
             </DropdownMenu>
           </Dropdown>
         )}
-        <div className="absolute w-fit top-0 flex items-end text-2xl font-lobsterTwo px-2 py-1 rounded-tl-xl rounded-br-xl bg-black/75">
+        <div className="absolute w-fit top-0 flex items-end text-2xl font-lobsterTwo px-2 py-1 rounded-tl-xl rounded-br-xl bg-black/75 z-10">
           {collection.title}
         </div>
-        <img
-          src={getAssetUrl() + collection.image.reference}
-          className={clsx('object-cover rounded-lg w-full h-full')}
-          loading="lazy"
+        <LazyLoadImage
+          placeholderSrc={collectionImageLowq}
+          effect="blur"
+          src={collectionImage}
+          className="rounded-lg"
         />
       </div>
     </>

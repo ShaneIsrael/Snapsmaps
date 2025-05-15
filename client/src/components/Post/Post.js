@@ -45,6 +45,7 @@ import { toast } from 'sonner'
 import Nsfw2 from '../../assets/icons/Nsfw2'
 import ConfirmationDialog from '../Dialog/ConfirmationDialog'
 import WritePostComment from '../Comment/WritePostComment'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 const Post = React.memo(
   ({
@@ -74,6 +75,7 @@ const Post = React.memo(
     const navigate = useNavigate()
 
     const postImage = getAssetUrl() + intPost?.image?.reference
+    const postImageLowq = getAssetUrl() + intPost?.image?.reference.split('.')[0] + '.lowq.webp'
 
     const reload = async () => {
       try {
@@ -379,11 +381,15 @@ const Post = React.memo(
                       </div>
                     </div>
                   )}
-                  <img
-                    onClick={revealed ? () => onOpenModal(postImage) : () => setRevealed(true)}
-                    className={clsx('object-cover w-full h-full', { 'blur-lg': intPost.nsfw && !revealed })}
-                    alt="a post image"
+                  <LazyLoadImage
+                    placeholderSrc={postImageLowq}
+                    effect="blur"
                     src={postImage}
+                    className={clsx({ 'blur-lg': intPost.nsfw && !revealed })}
+                    onClick={revealed ? () => onOpenModal(postImage) : () => setRevealed(true)}
+                    wrapperProps={{
+                      style: { transitionDuration: '0.6s' },
+                    }}
                   />
                 </div>
               </Tab>

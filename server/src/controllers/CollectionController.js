@@ -66,14 +66,30 @@ controller.create = async (req, res, next) => {
 
     const uuid = uuidv4().replace(/-/gi, '')
     const reference = `/collection/${uuid}.webp`
-    // const thumbReference = `/thumb/120x120/${uuid}.webp`
+    const lowqReference = `/collection/${uuid}.lowq.webp`
     const fileContent = Buffer.from(image.data)
 
-    await sharp(fileContent)
+    const sharpInstance = sharp(fileContent)
+
+    // Generate the full-quality image
+    await sharpInstance
+      .clone()
       .webp({ quality: 100 })
       .rotate()
       .withMetadata()
       .toFile(path.join(contentRoot, '/images', reference))
+
+    // Generate the low-quality image
+    const metadata = await sharpInstance.metadata()
+    if (metadata.width > 400) {
+      await sharpInstance
+        .clone()
+        .resize({ width: 400 })
+        .webp({ quality: 50 })
+        .toFile(path.join(contentRoot, '/images', lowqReference))
+    } else {
+      await sharpInstance.clone().webp({ quality: 50 }).toFile(path.join(contentRoot, '/images', lowqReference))
+    }
 
     const imageRow = await Image.create(
       {
