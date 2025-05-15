@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { CollectionService } from '../services'
 import PageLayout from '../components/Layout/PageLayout'
@@ -48,7 +48,6 @@ function Collection({ isSelfProfile }) {
     try {
       const response = (await CollectionService.get(collectionId)).data
       setCollection(response)
-      setImages(response.images || [])
     } catch (err) {
       console.error(err)
     }
