@@ -34,6 +34,7 @@ import Nsfw2 from '../assets/icons/Nsfw2'
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { useAuthed } from '../hooks/useAuthed'
 import CollectionItem from '../components/Collection/CollectionItem'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 const Profile = React.memo(({ isSelfProfile, isMention }) => {
   const postModal = useDisclosure()
@@ -463,12 +464,12 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                       </Button>
                     </div>
                   )}
-                  <img
-                    onClick={() => handleOpenModal(post.id)}
+                  <LazyLoadImage
                     alt="a history image"
+                    effect="blur"
                     src={getAssetUrl() + '/thumb/120x120/' + post.image.reference.split('/')[2]}
                     className={clsx('w-[120px] h-[120px] object-cover rounded-none', { 'blur-sm': post.nsfw })}
-                    loading="lazy"
+                    onClick={() => handleOpenModal(post.id)}
                   />
                 </div>
               ))}

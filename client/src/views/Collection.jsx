@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { CollectionService } from '../services'
 import PageLayout from '../components/Layout/PageLayout'
 import Lightbox from 'yet-another-react-lightbox'
@@ -9,23 +9,13 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 
 import { getAssetUrl } from '../common/utils'
 import clsx from 'clsx'
-import {
-  Button,
-  Divider,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-  Spinner,
-  Tab,
-  Tabs,
-} from '@nextui-org/react'
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Tab, Tabs } from '@nextui-org/react'
 import ConfirmationDialog from '../components/Dialog/ConfirmationDialog'
 import { EllipsisVerticalIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { MapPinIcon } from '../assets/icons/MapPinIcon'
 import { PhotoIcon } from '../assets/icons/PhotoIcon'
 import SnapMap from '../components/Map/SnapMap'
-import LazyImage from '../components/Collection/LazyImage'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 function Collection({ isSelfProfile }) {
   const { mention, collectionId } = useParams()
@@ -84,6 +74,7 @@ function Collection({ isSelfProfile }) {
     id: item.id,
     postId: item.post.id,
     src: getAssetUrl() + item.post.image.reference,
+    lowqSrc: getAssetUrl() + item.post.image.reference.split('.')[0] + '.lowq.webp',
     title: item.post.title,
   }))
 
@@ -145,7 +136,7 @@ function Collection({ isSelfProfile }) {
                         <div className="relative group">
                           <div
                             key={`collection-photo-${index}`}
-                            className="relative rounded-lg border-solid border-neutral-300 border-small cursor-pointer"
+                            className="relative rounded-lg border-solid border-neutral-300 border-small cursor-pointer overflow-hidden"
                           >
                             {isAuthenticated && isSelfProfile && (
                               <div className="opacity-0 group-hover:opacity-100 transition-opacity">
@@ -180,14 +171,15 @@ function Collection({ isSelfProfile }) {
                               </div>
                             )}
 
-                            <div className="aspect-w-1 aspect-h-1 w-full">
-                              <LazyImage
-                                image={image}
-                                setIndex={(index) => setIndex(index)}
-                                setLightboxOpen={setLightboxOpen}
-                                index={index}
-                              />
-                            </div>
+                            <LazyLoadImage
+                              placeholderSrc={image.lowqSrc}
+                              effect="blur"
+                              src={image.src}
+                              onClick={() => {
+                                setIndex(index)
+                                setLightboxOpen(true)
+                              }}
+                            />
                           </div>
                         </div>
                       ))}

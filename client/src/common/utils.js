@@ -6,6 +6,9 @@ export const getUrl = () => {
   const { protocol, hostname, port } = window.location
 
   if (hostname.indexOf('localhost') >= 0) {
+    if (port === '3000') {
+      return `${protocol}//${hostname}:3001`
+    }
     return `${protocol}//${hostname}:${port}`
   }
 
