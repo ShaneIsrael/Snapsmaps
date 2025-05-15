@@ -29,6 +29,7 @@ async function processImages() {
 
       if (['.webp', '.png', '.jpg', '.jpeg'].includes(ext)) {
         try {
+          // Verify the file is an actual image
           const metadata = await sharp(filePath).metadata()
           const shouldResize = metadata.width > resizeWidth
 
@@ -41,7 +42,7 @@ async function processImages() {
 
           await sharpInstance.webp({ quality }).toFile(compressedFilePath)
         } catch (err) {
-          logger.error(`Error compressing ${file}:`, err.message)
+          logger.error(`Skipping invalid image file: ${file} - ${err.message}`)
         }
       } else {
         logger.info(`Skipping non-image file: ${file}`)
