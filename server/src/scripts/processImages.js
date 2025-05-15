@@ -23,7 +23,7 @@ async function processImages() {
       const compressedFileName = `${baseName}.lowq.webp`
       const compressedFilePath = path.join(dir, compressedFileName)
 
-      if (compressedFileName === file || fs.existsSync(compressedFilePath)) {
+      if (fs.existsSync(compressedFilePath)) {
         continue
       }
 
