@@ -1,9 +1,7 @@
-const { Op } = require('sequelize')
-const Models = require('../database/models')
-const { UserState } = require('../constants/UserState')
+import { Op } from 'sequelize'
+import UserState from '../constants/UserState'
+import Models from '../database/models'
 const { Post, PostComment, User, Image, Follow, PostLike, sequelize } = Models
-
-const isProduction = process.env.NODE_ENV !== 'development'
 
 const controller = {}
 
@@ -111,4 +109,4 @@ controller.following = async (req, res, next) => {
   }
 }
 
-module.exports = controller
+export default controller

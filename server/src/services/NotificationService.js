@@ -1,6 +1,6 @@
-const { Op } = require('sequelize')
-const logger = require('../utils/logger')
-const Models = require('../database/models')
+import { Op } from 'sequelize'
+import Models from '../database/models'
+import logger from '../utils/logger'
 const { Follow, Notification, Post, User, PostComment } = Models
 
 const service = {}
@@ -66,8 +66,8 @@ service.createPostDiscussionNotifications = async (fromUserId, postId, postComme
     })
 
     if (forUsers) {
-      forUsers.forEach(({ userId }) => {
-        Notification.create({
+      for (const { userId } of forUsers) {
+        await Notification.create({
           userId,
           fromUserId,
           postId,
@@ -75,7 +75,7 @@ service.createPostDiscussionNotifications = async (fromUserId, postId, postComme
           body,
           title: 'said...',
         })
-      })
+      }
     }
   } catch (err) {
     logger.error(err)
@@ -97,4 +97,4 @@ service.createFollowNotification = async (fromUserId, forUserId, followId) => {
   }
 }
 
-module.exports = service
+export default service

@@ -1,6 +1,4 @@
-'use strict'
-
-module.exports = {
+export default {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn('users', 'pushToken')
     await queryInterface.addColumn('Sessions', 'fcmToken', {

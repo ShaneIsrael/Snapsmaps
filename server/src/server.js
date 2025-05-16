@@ -1,22 +1,27 @@
-const express = require('express')
-const session = require('express-session')
-const SequelizeStore = require('connect-session-sequelize')(session.Store)
-const fileUpload = require('express-fileupload')
-const https = require('https')
-const fs = require('fs')
-const path = require('path')
-const cors = require('cors')
-const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
-const helmet = require('helmet')
-const morgan = require('morgan')
+import fs from 'node:fs'
+import https from 'node:https'
+import path from 'node:path'
+import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
+import express from 'express'
+import fileUpload from 'express-fileupload'
+import session from 'express-session'
+import helmet from 'helmet'
+import morgan from 'morgan'
 
-require('dotenv').config()
+import SequelizeStoreInit from 'connect-session-sequelize'
+const SequelizeStore = SequelizeStoreInit(session.Store)
+
+import dotenv from 'dotenv'
+import db from './database/models/index'
+import logger from './utils/logger.js'
+
+import Routes from './routes/index.js'
+
+dotenv.config()
 
 const app = express()
-const logger = require('./utils/logger')
-const db = require('./database/models')
-
 const { NODE_ENV } = process.env
 const isProduction = NODE_ENV !== 'development'
 
@@ -81,7 +86,7 @@ logger.info(`Allowed domains: ${allowedDomains}`)
 
 app.use(
   cors({
-    origin: function (origin, callback) {
+    origin: (origin, callback) => {
       if (!origin || allowedDomains.includes(origin)) {
         callback(null, true)
       } else {
@@ -113,19 +118,7 @@ app.use((req, res, next) => {
   next()
 })
 
-// API Routes
-require('./routes/share')(app)
-require('./routes/admin')(app)
-require('./routes/auth')(app)
-require('./routes/post')(app)
-require('./routes/feed')(app)
-require('./routes/like')(app)
-require('./routes/profile')(app)
-require('./routes/comment')(app)
-require('./routes/user')(app)
-require('./routes/collection')(app)
-require('./routes/test')(app)
-require('./routes')(app)
+new Routes(app)
 
 // Error Handler
 app.use((err, req, res, next) => {
@@ -151,4 +144,4 @@ if (isProduction) {
   https.createServer(httpsOptions, app).listen(PORT)
 }
 
-module.exports = app
+export default app

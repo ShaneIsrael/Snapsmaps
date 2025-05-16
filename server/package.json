@@ -1,11 +1,12 @@
 {
   "name": "project",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "local": "export NODE_ENV=development && export PORT=3001 && nodemon src/server.js",
-    "seed": "export NODE_ENV=development && node src/seed_test_data.js",
+    "local": "export NODE_ENV=development && export PORT=3001 && nodemon --import=extensionless/register src/server.js",
+    "seed": "export NODE_ENV=development && node --import=extensionless/register src/seed_test_data.js",
     "migrate": "sequelize db:migrate",
     "undoMigrate": "sequelize db:migrate:undo"
   },
@@ -25,6 +26,7 @@
     "express": "^4.18.2",
     "express-fileupload": "^1.5.0",
     "express-session": "^1.18.0",
+    "extensionless": "^1.9.9",
     "handlebars": "^4.7.8",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.1",
@@ -32,7 +34,7 @@
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.13",
     "pg": "^8.11.1",
-    "sequelize": "^6.32.1",
+    "sequelize": "^6.37.7",
     "sharp": "^0.33.3",
     "short-unique-id": "^5.0.3",
     "uuid": "^9.0.1",

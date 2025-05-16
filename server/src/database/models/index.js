@@ -1,12 +1,15 @@
-const fs = require('fs')
-const path = require('path')
-const Sequelize = require('sequelize')
-const logger = require('../../utils/logger')
-const basename = path.basename(__filename)
+import { readdirSync } from 'node:fs'
+import { basename, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { DataTypes, Sequelize } from 'sequelize'
+import configFile from '../config/database.js'
 const env = process.env.NODE_ENV || 'development'
-const config = require(__dirname + '/../config/database')[env]
-const db = {}
+const config = configFile[env]
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const db = {}
 const sequelize = new Sequelize(config.database, config.username, config.password, {
   dialect: config.dialect,
   host: config.host,
@@ -15,33 +18,31 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
   ...config.options,
 })
 
-fs.readdirSync(__dirname)
-  .filter((file) => {
-    return file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
-  })
-  .forEach((file) => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes)
-    const name = model.name.charAt(0).toUpperCase() + model.name.slice(1)
-    db[name] = model
-  })
+const files = readdirSync(__dirname).filter(
+  (file) => file.indexOf('.') !== 0 && file !== basename(__filename) && file.slice(-3) === '.js',
+)
+const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1)
 
-Object.keys(db).forEach((modelName) => {
-  const name = modelName.charAt(0).toUpperCase() + modelName.slice(1)
-  if (db[name].associate) {
-    db[name].associate(db)
+await Promise.all(
+  files.map(async (file) => {
+    const model = await import(`./${file}`)
+    if (!model.default) {
+      return
+    }
+
+    const namedModel = model.default(sequelize, DataTypes)
+
+    db[capitalizeFirstLetter(namedModel.name)] = namedModel
+  }),
+)
+
+for (const modelName of Object.keys(db)) {
+  if (db[modelName].associate) {
+    db[modelName].associate(db)
   }
-})
-
-sequelize
-  .authenticate()
-  .then(() => {
-    logger.info('Database connection has been established successfully.')
-  })
-  .catch((error) => {
-    logger.error(error)
-  })
+}
 
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 
-module.exports = db
+export default db

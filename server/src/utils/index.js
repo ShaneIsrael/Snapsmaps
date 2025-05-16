@@ -1,19 +1,14 @@
-const fs = require('fs')
-const validator = require('email-validator')
-const Models = require('../database/models')
-const sharp = require('sharp')
-const axios = require('axios')
-const logger = require('./logger')
-const { Post, User, PostComment, Image, PostLike, Follow, sequelize } = Models
+import fs from 'node:fs'
+import validator from 'email-validator'
 
-module.exports = {
+export default {
   isValidEmail: (email) => validator.validate(email),
   capitalizeFirstLetter: (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1)
   },
   convertDMSToDD: (degrees, minutes, seconds, direction) => {
     let dd = degrees + minutes / 60 + seconds / (60 * 60)
-    if (direction == 'S' || direction == 'W') {
+    if (direction === 'S' || direction === 'W') {
       dd = dd * -1
     }
     return dd

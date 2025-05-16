@@ -1,4 +1,4 @@
-const { transports, createLogger, format } = require('winston')
+import { createLogger, format, transports } from 'winston'
 const { combine, splat, timestamp, printf } = format
 const environment = process.env.NODE_ENV || 'production'
 // define the custom settings for each transport (file, console)
@@ -67,4 +67,4 @@ logger.stream = {
   },
 }
 
-module.exports = logger
+export default logger

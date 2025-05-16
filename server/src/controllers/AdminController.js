@@ -1,8 +1,10 @@
-const { admins } = require('../config')
-const { UserState } = require('../constants/UserState')
-const Models = require('../database/models')
-const { User, Post, PostComment, Image } = Models
+import config from '../config'
+import UserState from '../constants/UserState'
+import Models from '../database/models'
+const { User, Post, PostComment } = Models
 const controller = {}
+
+const { admins } = config
 
 controller.deletePost = async (req, res, next) => {
   const { id } = req.query
@@ -61,11 +63,6 @@ controller.markPostNsfw = async (req, res, next) => {
     next(err)
   }
 }
-controller.hardDestroyImage = async (req, res, next) => {
-  try {
-  } catch (err) {
-    next(err)
-  }
-}
+controller.hardDestroyImage = async (req, res, next) => {}
 
-module.exports = controller
+export default controller

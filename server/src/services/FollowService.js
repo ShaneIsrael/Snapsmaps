@@ -1,5 +1,5 @@
-const logger = require('../utils/logger')
-const Models = require('../database/models')
+import Models from '../database/models'
+import logger from '../utils/logger'
 const { Follow } = Models
 const service = {}
 
@@ -17,4 +17,4 @@ service.isFollowingUser = async (sessionUser, targetUserId) => {
   return false
 }
 
-module.exports = service
+export default service

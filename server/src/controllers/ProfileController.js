@@ -1,22 +1,16 @@
-const path = require('path')
-const Models = require('../database/models')
+import path from 'node:path'
+import { Op } from 'sequelize'
+import sharp from 'sharp'
+import { v4 as uuidv4 } from 'uuid'
+import config from '../config'
+import UserState from '../constants/UserState'
+import Models from '../database/models'
+import followService from '../services/FollowService'
+import notificationService from '../services/NotificationService'
+
 const { User, Image, Post, Follow, Collection, CollectionPostLink, sequelize } = Models
-const { v4: uuidv4 } = require('uuid')
-const sharp = require('sharp')
-const { Op } = require('sequelize')
-const { createFollowNotification } = require('../services/NotificationService')
-const { isFollowingUser } = require('../services/FollowService')
-const { UserState } = require('../constants/UserState')
-const { maxProfileBioLength, maxDisplayNameLength } = require('../config').app
-const { contentRoot, isProduction } = require('../config')
-
-const COOKIE_PARAMS = {
-  maxAge: 24 * 60 * 60 * 1000,
-  httpOnly: true,
-  sameSite: 'Strict',
-  secure: true,
-}
-
+const { contentRoot, app } = config
+const { maxProfileBioLength, maxDisplayNameLength } = app
 const controller = {}
 
 controller.get = async (req, res, next) => {
@@ -61,7 +55,7 @@ controller.getByMention = async (req, res, next) => {
     let isFollowed = false
     // if authenticated and looking at a profile
     if (req.cookies.user && userRow) {
-      let viewingUser = JSON.parse(req.cookies.user)
+      const viewingUser = JSON.parse(req.cookies.user)
       if (viewingUser.email) {
         const viewingUserRow = await User.findOne({ attributes: ['id'], where: { email: viewingUser.email } })
         isFollowed =
@@ -209,7 +203,7 @@ controller.getMentionPostHistory = async (req, res, next) => {
       return res.status(400).send('No user by that mention exists.')
     }
 
-    const isFollowing = await isFollowingUser(req.session.user, userRow.id)
+    const isFollowing = await followService.isFollowingUser(req.session.user, userRow.id)
 
     let whereStatement = { userId: userRow.id, public: true }
     if (isFollowing) {
@@ -301,7 +295,7 @@ controller.followProfile = async (req, res, next) => {
     })
 
     if (created) {
-      createFollowNotification(req.session.user.id, mentionUser.id, follow.id)
+      notificationService.createFollowNotification(req.session.user.id, mentionUser.id, follow.id)
       return res.status(201).send(created)
     }
 
@@ -418,4 +412,4 @@ controller.getFollowing = async (req, res, next) => {
   }
 }
 
-module.exports = controller
+export default controller

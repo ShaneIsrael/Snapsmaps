@@ -1,6 +1,6 @@
-const path = require('path')
-const { convertDMSToDD } = require('../utils')
-const ExifImage = require('exif').ExifImage
+import path from 'node:path'
+import { ExifImage } from 'exif'
+import { convertDMSToDD } from '../utils'
 
 const controller = {}
 
@@ -34,4 +34,4 @@ controller.test = async (req, res, next) => {
   }
 }
 
-module.exports = controller
+export default controller

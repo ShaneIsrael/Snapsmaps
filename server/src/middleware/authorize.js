@@ -1,4 +1,4 @@
-const authorize = (req, res, next) => {
+export const authorize = (req, res, next) => {
   if (!req.session.user) {
     res.clearCookie('user')
     return res.sendStatus(403)
@@ -31,23 +31,14 @@ const authorize = (req, res, next) => {
  * user to be redirected. But we also can't process the requrest because we
  * require an authenticated session.
  */
-const requireSession = (req, res, next) => {
+export const requireSession = (req, res, next) => {
   if (!req.session.user) {
     return res.sendStatus(204)
   }
   next()
 }
 
-const verifyAdmin = (req, res, next) => {
-  if (req.session.admin) {
-    return next()
-  } else {
-    return res.sendStatus(401)
-  }
-}
-
-module.exports = {
-  authorize,
-  requireSession,
-  verifyAdmin,
+export const verifyAdmin = (req, res, next) => {
+  if (req.session.admin) return next()
+  return res.sendStatus(401)
 }

@@ -1,6 +1,5 @@
-'use strict'
-const { Model } = require('sequelize')
-module.exports = (sequelize, DataTypes) => {
+import { Model } from 'sequelize'
+export default (sequelize, DataTypes) => {
   class Notification extends Model {
     /**
      * Helper method for defining associations.
@@ -10,17 +9,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       const { User, Post, PostComment, Follow } = models
-      this.belongsTo(User, {
+      Notification.belongsTo(User, {
         foreignKey: 'userId',
         as: 'user',
       })
-      this.belongsTo(User, {
+      Notification.belongsTo(User, {
         foreignKey: 'fromUserId',
         as: 'fromUser',
       })
-      this.belongsTo(Post)
-      this.belongsTo(PostComment)
-      this.belongsTo(Follow)
+      Notification.belongsTo(Post)
+      Notification.belongsTo(PostComment)
+      Notification.belongsTo(Follow)
     }
   }
   Notification.init(

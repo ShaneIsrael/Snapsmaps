@@ -1,6 +1,5 @@
-'use strict'
-const { Model } = require('sequelize')
-module.exports = (sequelize, DataTypes) => {
+import { Model } from 'sequelize'
+export default (sequelize, DataTypes) => {
   class CollectionPostLink extends Model {
     /**
      * Helper method for defining associations.
@@ -10,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       const { Collection, Post } = models
-      this.belongsTo(Collection)
-      this.belongsTo(Post)
+      CollectionPostLink.belongsTo(Collection)
+      CollectionPostLink.belongsTo(Post)
     }
   }
   CollectionPostLink.init(

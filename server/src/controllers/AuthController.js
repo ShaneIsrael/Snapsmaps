@@ -1,14 +1,16 @@
-const bcrypt = require('bcryptjs')
-const { v4: uuidv4 } = require('uuid')
-const Models = require('../database/models')
+import bcrypt from 'bcryptjs'
+import { v4 as uuidv4 } from 'uuid'
+import Models from '../database/models'
 const { User, Image } = Models
-const { isValidEmail } = require('../utils')
-const { Op } = require('sequelize')
-const logger = require('../utils/logger')
-const { sendVerificationEmail } = require('../services/EmailService')
-const { UserState } = require('../constants/UserState')
-const { admins } = require('../config')
-const { maxDisplayNameLength, maxMentionLength, maxPasswordLength } = require('../config').app
+import { Op } from 'sequelize'
+import config from '../config'
+import UserState from '../constants/UserState'
+import emailService from '../services/EmailService'
+import utils from '../utils'
+import logger from '../utils/logger'
+const { isValidEmail } = utils
+const { admins } = config
+const { maxDisplayNameLength, maxMentionLength, maxPasswordLength } = config.app
 
 const isProduction = process.env.NODE_ENV !== 'development'
 
@@ -77,13 +79,13 @@ controller.register = async (req, res, next) => {
           displayName,
           password,
           token: isProduction ? token : null,
-          verified: isProduction ? false : true,
+          verified: !isProduction,
         },
         { transaction: t },
       )
 
       if (isProduction) {
-        await sendVerificationEmail(email.toLowerCase(), token, displayName)
+        await emailService.sendVerificationEmail(email.toLowerCase(), token, displayName)
       }
       await t.commit()
 
@@ -180,23 +182,10 @@ controller.hasSession = async (req, res, next) => {
     if (!req.session.user) {
       req.session.fcmToken = null
       return res.status(200).send(false)
-    } else {
-      res.cookie(
-        'user',
-        JSON.stringify({
-          email: req.session.user.email,
-          mention: req.session.user.mention,
-          displayName: req.session.user.displayName,
-          bio: req.session.user.bio,
-          image: req.session.user.image,
-          followersCount: req.session.user.followersCount,
-          followingCount: req.session.user.followingCount,
-          pushToken: req.session.user.pushToken,
-          isAdmin: req.session.admin,
-        }),
-        { sameSite: 'strict' },
-      )
-      res.status(200).send({
+    }
+    res.cookie(
+      'user',
+      JSON.stringify({
         email: req.session.user.email,
         mention: req.session.user.mention,
         displayName: req.session.user.displayName,
@@ -206,8 +195,20 @@ controller.hasSession = async (req, res, next) => {
         followingCount: req.session.user.followingCount,
         pushToken: req.session.user.pushToken,
         isAdmin: req.session.admin,
-      })
-    }
+      }),
+      { sameSite: 'strict' },
+    )
+    res.status(200).send({
+      email: req.session.user.email,
+      mention: req.session.user.mention,
+      displayName: req.session.user.displayName,
+      bio: req.session.user.bio,
+      image: req.session.user.image,
+      followersCount: req.session.user.followersCount,
+      followingCount: req.session.user.followingCount,
+      pushToken: req.session.user.pushToken,
+      isAdmin: req.session.admin,
+    })
   } catch (err) {
     next(err)
   }
@@ -220,4 +221,4 @@ controller.logout = async (req, res, next) => {
   return res.status(200).json({ message: 'Successfully logged out!' })
 }
 
-module.exports = controller
+export default controller

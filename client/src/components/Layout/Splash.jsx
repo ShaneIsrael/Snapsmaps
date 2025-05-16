@@ -16,6 +16,7 @@ const splash11 = '/assets/splash/splash-11.webp'
 const splash12 = '/assets/splash/splash-12.webp'
 const splash13 = '/assets/splash/splash-13.webp'
 const splash14 = '/assets/splash/splash-14.webp'
+
 import Logo from '../../assets/logo/dark/Logo'
 import WordmarkNoSlogan from '../../assets/logo/dark/WordmarkNoSlogan'
 import LogoWithWordmark from '../../assets/logo/dark/LogoWithWordmark'
@@ -44,7 +45,7 @@ function shuffle(array) {
   while (currentIndex != 0) {
     let randomIndex = Math.floor(Math.random() * currentIndex)
     currentIndex--
-    ;[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
+      ;[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
   }
 }
 

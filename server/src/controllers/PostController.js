@@ -1,16 +1,16 @@
-const path = require('path')
-const sharp = require('sharp')
-const { v4: uuidv4 } = require('uuid')
+import path from 'node:path'
+import { Op } from 'sequelize'
+import sharp from 'sharp'
+import { v4 as uuidv4 } from 'uuid'
+import config from '../config'
+import UserState from '../constants/UserState'
+import Models from '../database/models'
+import followService from '../services/FollowService'
+import notificationService from '../services/NotificationService'
 
-const { Op } = require('sequelize')
-const Models = require('../database/models')
-const { Post, User, PostComment, Image, PostLike, Follow, sequelize } = Models
-const { createPostNotifications } = require('../services/NotificationService')
-const { isFollowingUser } = require('../services/FollowService')
-const { UserState } = require('../constants/UserState')
-const { maxPostTitleLength } = require('../config').app
-const { contentRoot } = require('../config')
-
+const { Post, User, PostComment, Image, PostLike, sequelize } = Models
+const { app, contentRoot } = config
+const { maxPostTitleLength } = app
 const controller = {}
 
 controller.getById = async (req, res, next) => {
@@ -35,7 +35,7 @@ controller.getById = async (req, res, next) => {
       order: [[PostComment, 'createdAt', 'asc']],
       include,
     })
-    const isFollowing = await isFollowingUser(req.session.user, post.user.id)
+    const isFollowing = await followService.isFollowingUser(req.session.user, post.user.id)
 
     if (!post.public && post.user.id !== req.session.user?.id && !isFollowing) {
       return res
@@ -58,7 +58,7 @@ controller.create = async (req, res, next) => {
   let createdPost
   try {
     const { image } = req.files
-    const { title, nsfw, latitude, longitude, public, locationEnabled } = req.body
+    const { title, nsfw, latitude, longitude, public: isPublic, locationEnabled } = req.body
 
     if (typeof title !== 'string') return res.status(400).send('title must be a string.')
 
@@ -105,7 +105,10 @@ controller.create = async (req, res, next) => {
         .webp({ quality: 50 })
         .toFile(path.join(contentRoot, '/images', lowqReference))
     } else {
-      await sharpInstance.clone().webp({ quality: 50 }).toFile(path.join(contentRoot, '/images', lowqReference))
+      await sharpInstance
+        .clone()
+        .webp({ quality: 50 })
+        .toFile(path.join(contentRoot, '/images', lowqReference))
     }
 
     const imageRow = await Image.create(
@@ -120,7 +123,7 @@ controller.create = async (req, res, next) => {
     const postRow = await Post.create(
       {
         title: title.slice(0, maxPostTitleLength),
-        public,
+        public: isPublic,
         nsfw,
         userId: req.session.user.id,
         imageId: imageRow.id,
@@ -152,7 +155,7 @@ controller.create = async (req, res, next) => {
   /**
    * async create notifications for followers
    */
-  createPostNotifications(req.session.user.id, createdPost.id)
+  notificationService.createPostNotifications(req.session.user.id, createdPost.id)
 }
 
 controller.deletePost = async (req, res, next) => {
@@ -197,4 +200,4 @@ controller.getPostLikes = async (req, res, next) => {
   }
 }
 
-module.exports = controller
+export default controller

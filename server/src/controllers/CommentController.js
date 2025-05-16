@@ -1,8 +1,8 @@
-const Models = require('../database/models')
-const { createPostCommentNotifications, createPostDiscussionNotifications } = require('../services/NotificationService')
+import config from '../config'
+import Models from '../database/models'
+import notificationService from '../services/NotificationService'
 const { PostComment } = Models
-const isProduction = process.env.NODE_ENV !== 'development'
-const { maxPostCommentLength } = require('../config').app
+const { maxPostCommentLength } = config.app
 const controller = {}
 
 controller.create = async (req, res, next) => {
@@ -17,8 +17,8 @@ controller.create = async (req, res, next) => {
       body: body.slice(0, maxPostCommentLength),
     })
 
-    createPostCommentNotifications(req.session.user.id, postId, comment.id)
-    createPostDiscussionNotifications(req.session.user.id, postId, comment.id, body)
+    notificationService.createPostCommentNotifications(req.session.user.id, postId, comment.id)
+    notificationService.createPostDiscussionNotifications(req.session.user.id, postId, comment.id, body)
 
     res.status(201).send(comment)
   } catch (err) {
@@ -45,4 +45,4 @@ controller.deleteComment = async (req, res, next) => {
   }
 }
 
-module.exports = controller
+export default controller

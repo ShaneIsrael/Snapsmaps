@@ -1,7 +1,7 @@
-const fs = require('fs')
-const path = require('path')
-const sharp = require('sharp')
-const logger = require('../utils/logger')
+import fs from 'node:fs'
+import path from 'node:path'
+import sharp from 'sharp'
+import logger from '../utils/logger'
 
 const directories = ['/content/images/post', '/content/images/collection']
 

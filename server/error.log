@@ -1,0 +1,4 @@
+2025-05-16T20:19:23.208Z [error]: 500 - logger.error is not a function - /api/collection?id=2 - GET - undefined - TypeError: logger.error is not a function
+    at service.isFollowingUser (file:///Users/shane/git/snapsmaps/server/src/services/FollowService.js:15:12)
+    at controller.getById (file:///Users/shane/git/snapsmaps/server/src/controllers/CollectionController.js:35:45)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)

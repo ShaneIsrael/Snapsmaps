@@ -1,7 +1,14 @@
-const nodemailer = require('nodemailer')
-const handlebars = require('handlebars')
-const logger = require('../utils/logger')
-const { readHTMLFile } = require('../utils')
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import handlebars from 'handlebars'
+import nodemailer from 'nodemailer'
+import utils from '../utils'
+import logger from '../utils/logger'
+
+const { readHTMLFile } = utils
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const isProduction = process.env.NODE_ENV !== 'development'
 
@@ -19,7 +26,7 @@ const service = {}
 
 service.sendVerificationEmail = async (email, token, name) => {
   if (isProduction) {
-    readHTMLFile(__dirname + '/../templates/EmailVerification.html', async (err, html) => {
+    readHTMLFile(`${__dirname}/../templates/EmailVerification.html`, async (err, html) => {
       if (err) {
         console.log('error reading file', err)
         return
@@ -46,4 +53,4 @@ service.sendVerificationEmail = async (email, token, name) => {
   }
 }
 
-module.exports = service
+export default service

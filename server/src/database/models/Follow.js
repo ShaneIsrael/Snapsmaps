@@ -1,6 +1,5 @@
-'use strict'
-const { Model } = require('sequelize')
-module.exports = (sequelize, DataTypes) => {
+import { Model } from 'sequelize'
+export default (sequelize, DataTypes) => {
   class Follow extends Model {
     /**
      * Helper method for defining associations.
@@ -10,11 +9,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       const { User } = models
-      this.belongsTo(User, {
+      Follow.belongsTo(User, {
         foreignKey: 'followingUserId',
         as: 'follower',
       })
-      this.belongsTo(User, {
+      Follow.belongsTo(User, {
         foreignKey: 'followedUserId',
         as: 'followed',
       })

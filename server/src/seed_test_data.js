@@ -1,12 +1,12 @@
-const fs = require('fs')
-const axios = require('axios')
-const path = require('path')
-const Models = require('./database/models')
+import * as fs from 'node:fs'
+import * as path from 'node:path'
+import * as axios from 'axios'
+import * as Models from './database/models'
 
 const { User, Image, Post, PostComment, PostLike, Follow } = Models
-const { v4: uuidv4 } = require('uuid')
-const logger = require('./utils/logger')
-const { exit } = require('process')
+import { exit } from 'node:process'
+import { v4 as uuidv4 } from 'uuid'
+import * as logger from './utils/logger'
 
 const USER_COUNT = 10
 const MAX_POSTS_PER_USER = 5
@@ -17,18 +17,18 @@ const IMAGES_ROOT = path.join(__dirname, '../images')
 const sleep = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms))
 
 function getRandomGps() {
-  let u = Math.random()
-  let v = Math.random()
+  const u = Math.random()
+  const v = Math.random()
 
-  let latitude = Math.acos(u * 2 - 1) * (180 / Math.PI) - 90
-  let longitude = 360 * v - 180
+  const latitude = Math.acos(u * 2 - 1) * (180 / Math.PI) - 90
+  const longitude = 360 * v - 180
   return {
     latitude,
     longitude,
   }
 }
 
-var descriptions = [
+const descriptions = [
   'A serene beach at sunset, with colorful hues painting the sky.',
   'A majestic mountain peak covered in a blanket of snow.',
   'A bustling cityscape, filled with towering skyscrapers and twinkling lights.',
@@ -279,7 +279,7 @@ async function seedProfiles() {
     verified: true,
   })
   adminUser = (await (await fetch('https://randomuser.me/api/')).json()).results[0]
-  const adminProfileImageRef = '/profile/seeded_' + uuidv4().replace(/-/gi, '') + '.jpg'
+  const adminProfileImageRef = `/profile/seeded_${uuidv4().replace(/-/gi, '')}.jpg`
   downloadImage(adminUser.picture.medium, path.join(IMAGES_ROOT, adminProfileImageRef))
   const adminImageRow = await Image.create({
     userId: adminRow.id,
@@ -291,7 +291,7 @@ async function seedProfiles() {
 
   for (let i = 0; i < USER_COUNT; i++) {
     const user = (await (await fetch('https://randomuser.me/api/')).json()).results[0]
-    const profileImageReference = '/profile/seeded_' + uuidv4().replace(/-/gi, '') + '.jpg'
+    const profileImageReference = `/profile/seeded_${uuidv4().replace(/-/gi, '')}.jpg`
     downloadImage(user.picture.medium, path.join(IMAGES_ROOT, profileImageReference))
     const userRow = await User.create({
       displayName: `${user.name.first} ${user.name.last}`,
@@ -315,9 +315,9 @@ async function seedPosts() {
   // CREATE USER POSTS
   const userRows = await User.findAll({ raw: true })
   for (let i = 0; i < MAX_POSTS_PER_USER; i++) {
-    userRows.forEach(async (userRow) => {
+    for (const userRow of userRows) {
       const seed = uuidv4().replace(/-/gi, '')
-      const postImageReference = '/post/seeded_' + seed + '.jpg'
+      const postImageReference = `/post/seeded_${seed}.jpg`
       await downloadImage(`https://picsum.photos/seed/${seed}/1920/1080`, path.join(IMAGES_ROOT, postImageReference))
       fs.copyFileSync(
         path.join(IMAGES_ROOT, postImageReference),
@@ -328,13 +328,13 @@ async function seedPosts() {
         reference: postImageReference,
         ...getRandomGps(),
       })
-      const postRow = await Post.create({
+      await Post.create({
         userId: userRow.id,
         imageId: postImageRow.id,
         title: getRandomDescription(),
       })
       await sleep(1000)
-    })
+    }
   }
 }
 
@@ -344,12 +344,12 @@ async function seedComments() {
 
   const limits = {}
 
-  userRows.forEach((user) => {
+  for (const user of userRows) {
     limits[user.id] = {
       max: Math.floor(Math.random() * MAX_COMMENTS_PER_USER) + 1,
       current: 0,
     }
-  })
+  }
 
   let done = true
   do {

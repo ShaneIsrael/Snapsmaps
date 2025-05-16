@@ -1,6 +1,5 @@
-const Models = require('../database/models')
+import Models from '../database/models'
 const { PostLike } = Models
-const isProduction = process.env.NODE_ENV !== 'development'
 
 const controller = {}
 
@@ -43,4 +42,4 @@ controller.likePost = async (req, res, next) => {
   }
 }
 
-module.exports = controller
+export default controller

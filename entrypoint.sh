@@ -10,6 +10,6 @@ mkdir -p /content/images/thumb/120x120
 
 node /generateManifest.js
 node /generateMeta.js
-node /app/src/scripts/processImages.js
+node --import=extensionless/register /app/src/scripts/processImages.js
 
-cd /app && npm run migrate && node /app/src/server.js
+cd /app && npm run migrate && node --import=extensionless/register /app/src/server.js

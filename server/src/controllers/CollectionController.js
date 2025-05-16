@@ -1,14 +1,15 @@
-const path = require('path')
-const sharp = require('sharp')
-const { v4: uuidv4 } = require('uuid')
+import path from 'node:path'
+import sharp from 'sharp'
+import { v4 as uuidv4 } from 'uuid'
 
-const Models = require('../database/models')
-const { Post, User, Collection, CollectionPostLink, Image, PostLike } = Models
-const { isFollowingUser } = require('../services/FollowService')
-const { UserState } = require('../constants/UserState')
-const { maxCollectionTitleLength } = require('../config').app
+import config from '../config'
+import UserState from '../constants/UserState'
+import Models from '../database/models'
+import followService from '../services/FollowService'
 
-const { contentRoot, isProduction } = require('../config')
+const { app, contentRoot } = config
+const { maxCollectionTitleLength } = app
+const { Post, User, Collection, CollectionPostLink, Image } = Models
 
 const controller = {}
 
@@ -31,7 +32,7 @@ controller.getById = async (req, res, next) => {
       order: [[CollectionPostLink, 'createdAt', 'asc']],
       include,
     })
-    const isFollowing = await isFollowingUser(req.session.user, collection.user.id)
+    const isFollowing = await followService.isFollowingUser(req.session.user, collection.user.id)
 
     if (!collection.public && collection.user.id !== req.session.user?.id && !isFollowing) {
       return res
@@ -56,7 +57,7 @@ controller.create = async (req, res, next) => {
   let createdCollection
   try {
     const { image } = req.files
-    const { title, public } = req.body
+    const { title, public: isPublic } = req.body
     const items = Array.isArray(req.body['items[]']) ? req.body['items[]'] : [req.body['items[]']]
 
     if (typeof title !== 'string') return res.status(400).send('title must be a string.')
@@ -88,7 +89,10 @@ controller.create = async (req, res, next) => {
         .webp({ quality: 50 })
         .toFile(path.join(contentRoot, '/images', lowqReference))
     } else {
-      await sharpInstance.clone().webp({ quality: 50 }).toFile(path.join(contentRoot, '/images', lowqReference))
+      await sharpInstance
+        .clone()
+        .webp({ quality: 50 })
+        .toFile(path.join(contentRoot, '/images', lowqReference))
     }
 
     const imageRow = await Image.create(
@@ -101,7 +105,7 @@ controller.create = async (req, res, next) => {
     const collectionRow = await Collection.create(
       {
         title: title.slice(0, maxCollectionTitleLength),
-        public,
+        public: isPublic,
         userId: req.session.user.id,
         imageId: imageRow.id,
       },
@@ -184,4 +188,4 @@ controller.removeCollectionItem = async (req, res, next) => {
   }
 }
 
-module.exports = controller
+export default controller

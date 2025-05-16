@@ -1,8 +1,8 @@
-const logger = require('../../utils/logger')
+import dotenv from 'dotenv'
+import logger from '../../utils/logger.js'
+dotenv.config()
 
-require('dotenv').config()
-
-module.exports = {
+export default {
   development: {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,

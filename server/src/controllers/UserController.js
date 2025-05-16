@@ -1,6 +1,6 @@
-const { Op } = require('sequelize')
-const Models = require('../database/models')
-const { UserState } = require('../constants/UserState')
+import { Op } from 'sequelize'
+import UserState from '../constants/UserState'
+import Models from '../database/models'
 const { User, Image, Notification, Post, PostComment, Follow } = Models
 
 const controller = {}
@@ -93,4 +93,4 @@ controller.updatePushToken = async (req, res, next) => {
   }
 }
 
-module.exports = controller
+export default controller

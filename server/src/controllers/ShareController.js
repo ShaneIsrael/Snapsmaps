@@ -1,9 +1,14 @@
-const handlebars = require('handlebars')
-const crypto = require('crypto')
-const Models = require('../database/models')
-const { readHTMLFile } = require('../utils')
+import crypto from 'node:crypto'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import handlebars from 'handlebars'
+import Models from '../database/models'
+import utils from '../utils'
 const { User, Post, Collection, PostComment, Image } = Models
 const controller = {}
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 controller.post = async (req, res, next) => {
   const { id } = req.params
@@ -27,7 +32,7 @@ controller.post = async (req, res, next) => {
     }
 
     try {
-      readHTMLFile(__dirname + '/../templates/shareMetadata.html', async (err, html) => {
+      utils.readHTMLFile(`${__dirname}/../templates/shareMetadata.html`, async (err, html) => {
         if (err) {
           console.log('error reading file', err)
           return
@@ -69,7 +74,7 @@ controller.collection = async (req, res, next) => {
     }
 
     try {
-      readHTMLFile(__dirname + '/../templates/shareMetadata.html', async (err, html) => {
+      utils.readHTMLFile(`${__dirname}/../templates/shareMetadata.html`, async (err, html) => {
         if (err) {
           console.log('error reading file', err)
           return
@@ -97,4 +102,4 @@ controller.collection = async (req, res, next) => {
   }
 }
 
-module.exports = controller
+export default controller

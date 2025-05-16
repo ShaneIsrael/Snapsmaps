@@ -4,7 +4,6 @@
  * @returns
  */
 const publicCache = (timeInSeconds) => (req, res, next) => {
-  // will be cached by the browser and the Digital Ocean CDN
   res.header('Cache-Control', `public, max-age=${timeInSeconds}`)
   next()
 }
@@ -15,12 +14,11 @@ const publicCache = (timeInSeconds) => (req, res, next) => {
  * @returns
  */
 const privateCache = (timeInSeconds) => (req, res, next) => {
-  // will be cached by the browser and the Digital Ocean CDN
   res.header('Cache-Control', `private, max-age=${timeInSeconds}`)
   next()
 }
 
-module.exports = {
+export default {
   publicCache,
   privateCache,
 }

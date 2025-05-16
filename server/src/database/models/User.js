@@ -1,7 +1,7 @@
-const { Model } = require('sequelize')
-const bcrypt = require('bcryptjs')
-const { UserState } = require('../../constants/UserState')
-module.exports = (sequelize, DataTypes) => {
+import * as bcrypt from 'bcryptjs'
+import { Model } from 'sequelize'
+import UserState from '../../constants/UserState'
+export default (sequelize, DataTypes) => {
   class User extends Model {
     /**
      * Helper method for defining associations.
@@ -11,14 +11,14 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       const { Post, Image, PostComment, PostLike, Follow, Notification } = models
-      this.hasMany(Post, { onDelete: 'CASCADE', hooks: true })
-      this.hasMany(PostComment, { onDelete: 'CASCADE', hooks: true })
-      this.hasMany(PostLike, { onDelete: 'CASCADE', hooks: true })
-      this.hasMany(Follow, { onDelete: 'CASCADE', hooks: true, foreignKey: 'followingUserId', as: 'follower' })
-      this.hasMany(Follow, { onDelete: 'CASCADE', hooks: true, foreignKey: 'followedUserId', as: 'followed' })
-      this.belongsTo(Image, { onDelete: 'CASCADE', hooks: true })
-      this.hasMany(Notification, { onDelete: 'CASCADE', hooks: true, foreignKey: 'userId', as: 'user' })
-      this.hasMany(Notification, { onDelete: 'CASCADE', hooks: true, foreignKey: 'fromUserId', as: 'fromUser' })
+      User.hasMany(Post, { onDelete: 'CASCADE', hooks: true })
+      User.hasMany(PostComment, { onDelete: 'CASCADE', hooks: true })
+      User.hasMany(PostLike, { onDelete: 'CASCADE', hooks: true })
+      User.hasMany(Follow, { onDelete: 'CASCADE', hooks: true, foreignKey: 'followingUserId', as: 'follower' })
+      User.hasMany(Follow, { onDelete: 'CASCADE', hooks: true, foreignKey: 'followedUserId', as: 'followed' })
+      User.belongsTo(Image, { onDelete: 'CASCADE', hooks: true })
+      User.hasMany(Notification, { onDelete: 'CASCADE', hooks: true, foreignKey: 'userId', as: 'user' })
+      User.hasMany(Notification, { onDelete: 'CASCADE', hooks: true, foreignKey: 'fromUserId', as: 'fromUser' })
     }
   }
   User.init(
