@@ -41,4 +41,4 @@ jobs:
           platforms: linux/amd64
           file: Dockerfile
           context: .
-          tags: shaneisrael/fireshare:develop
+          tags: shaneisrael/snapsmaps:develop
