@@ -2,20 +2,20 @@ import React from 'react'
 
 import { useAuthed } from '../../hooks/useAuthed'
 
-const splash1 = new URL('../../assets/splash/splash-1.webp', import.meta.url).href
-const splash2 = new URL('../../assets/splash/splash-2.webp', import.meta.url).href
-const splash3 = new URL('../../assets/splash/splash-3.webp', import.meta.url).href
-const splash4 = new URL('../../assets/splash/splash-4.webp', import.meta.url).href
-const splash5 = new URL('../../assets/splash/splash-5.webp', import.meta.url).href
-const splash6 = new URL('../../assets/splash/splash-6.webp', import.meta.url).href
-const splash7 = new URL('../../assets/splash/splash-7.webp', import.meta.url).href
-const splash8 = new URL('../../assets/splash/splash-8.webp', import.meta.url).href
-const splash9 = new URL('../../assets/splash/splash-9.webp', import.meta.url).href
-const splash10 = new URL('../../assets/splash/splash-10.webp', import.meta.url).href
-const splash11 = new URL('../../assets/splash/splash-11.webp', import.meta.url).href
-const splash12 = new URL('../../assets/splash/splash-12.webp', import.meta.url).href
-const splash13 = new URL('../../assets/splash/splash-13.webp', import.meta.url).href
-const splash14 = new URL('../../assets/splash/splash-14.webp', import.meta.url).href
+const splash1 = '/assets/splash/splash-1.webp'
+const splash2 = '/assets/splash/splash-2.webp'
+const splash3 = '/assets/splash/splash-3.webp'
+const splash4 = '/assets/splash/splash-4.webp'
+const splash5 = '/assets/splash/splash-5.webp'
+const splash6 = '/assets/splash/splash-6.webp'
+const splash7 = '/assets/splash/splash-7.webp'
+const splash8 = '/assets/splash/splash-8.webp'
+const splash9 = '/assets/splash/splash-9.webp'
+const splash10 = '/assets/splash/splash-10.webp'
+const splash11 = '/assets/splash/splash-11.webp'
+const splash12 = '/assets/splash/splash-12.webp'
+const splash13 = '/assets/splash/splash-13.webp'
+const splash14 = '/assets/splash/splash-14.webp'
 import Logo from '../../assets/logo/dark/Logo'
 import WordmarkNoSlogan from '../../assets/logo/dark/WordmarkNoSlogan'
 import LogoWithWordmark from '../../assets/logo/dark/LogoWithWordmark'
