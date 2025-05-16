@@ -3,8 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import AuthService from '../services/AuthService'
 import { sleep } from '../common/utils'
 import clsx from 'clsx'
-import { Progress, Spinner } from '@nextui-org/react'
-import logo from '../assets/logo/dark/logo_with_wordmark.svg'
+import { Progress } from '@heroui/react'
+import LogoWithWordmark from '../assets/logo/dark/LogoWithWordmark'
 
 const VerifyEmail = (props) => {
   const { email, token } = useParams()
@@ -29,7 +29,7 @@ const VerifyEmail = (props) => {
 
   return (
     <div className="flex flex-col w-screen h-screen items-center gap-4 bg-gradient-to-tr from-sky-900 to-purple-900 pt-10">
-      <img src={logo} className="max-h-[70px]" />
+      <LogoWithWordmark className="max-h-[70px]" />
       {!verifiedMessage && (
         <>
           <div className="text-2xl font-semibold italic mt-5">Verifying your account...</div>

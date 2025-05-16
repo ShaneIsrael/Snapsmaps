@@ -1,4 +1,4 @@
-import { Avatar } from '@nextui-org/react'
+import { Avatar } from "@heroui/react"
 import React from 'react'
 import { getAssetUrl } from '../../common/utils'
 import { useNavigate } from 'react-router-dom'

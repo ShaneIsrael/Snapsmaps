@@ -4,7 +4,7 @@ import Appbar from './Appbar'
 import Footer from './Footer'
 import { useNavigate } from 'react-router-dom'
 import clsx from 'clsx'
-import { Spinner } from '@nextui-org/react'
+import { Spinner } from "@heroui/react"
 
 function PageLayout({
   showNav = true,

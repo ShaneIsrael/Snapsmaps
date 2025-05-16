@@ -1,4 +1,4 @@
-import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
+import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react"
 import React from 'react'
 import { getAssetUrl } from '../../common/utils'
 import clsx from 'clsx'

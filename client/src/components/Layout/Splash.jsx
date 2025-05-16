@@ -1,9 +1,5 @@
 import React from 'react'
 
-import logo from '../../assets/logo/dark/logo_with_wordmark.svg'
-import logo_no_wordmark from '../../assets/logo/dark/logo.svg'
-import wordmark from '../../assets/logo/dark/wordmark_no_slogan.svg'
-
 import { useAuthed } from '../../hooks/useAuthed'
 
 import splash1 from '../../assets/splash/splash-1.webp'
@@ -20,6 +16,9 @@ import splash11 from '../../assets/splash/splash-11.webp'
 import splash12 from '../../assets/splash/splash-12.webp'
 import splash13 from '../../assets/splash/splash-13.webp'
 import splash14 from '../../assets/splash/splash-14.webp'
+import Logo from '../../assets/logo/dark/Logo'
+import WordmarkNoSlogan from '../../assets/logo/dark/WordmarkNoSlogan'
+import LogoWithWordmark from '../../assets/logo/dark/LogoWithWordmark'
 
 const SPLASH_IMAGES = [
   splash1,
@@ -69,7 +68,7 @@ const Splash = ({ children }) => {
             <img src={splash1} className="h-full w-full object-cover" />
             <div className="absolute md:-bottom-[450px]  w-[150%] bg-gray-950 skew-y-[15deg] -bottom-[400px] h-[500px]" />
           </div>
-          <img src={logo} className="max-h-[60px] sm:max-h-[80px] my-4 hidden md:block" />
+          <LogoWithWordmark className="h-full max-h-[80px] my-4 hidden md:block" />
           <div className="relative h-[200%] w-full overflow-hidden md:block">
             <div className="absolute md:-top-[450px] -top-[400px] h-[500px] w-[150%] bg-gray-950 -skew-y-[15deg]" />
             <img src={splash2} className="w-full h-full object-cover " />
@@ -90,8 +89,8 @@ const Splash = ({ children }) => {
         </div>
 
         <div className="absolute flex w-[350px] flex-col gap-4 items-center justify-center md:hidden">
-          <img src={logo_no_wordmark} className="max-h-[60px]" />
-          <img src={wordmark} className="h-[30px]" />
+          <Logo className="max-h-[60px]" />
+          <WordmarkNoSlogan className="h-[30px]" />
           {children}
         </div>
       </div>

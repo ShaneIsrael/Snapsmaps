@@ -1,4 +1,4 @@
-import { Button, Divider } from '@nextui-org/react'
+import { Button, Divider } from "@heroui/react"
 import { readFile } from '../../common/utils'
 import { useImageCropContext } from '../../providers/ImageCropProvider'
 import Cropper from './Cropper'

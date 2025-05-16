@@ -8,7 +8,7 @@ import {
   Button,
   DropdownMenu,
   DropdownItem,
-} from '@nextui-org/react'
+} from "@heroui/react"
 import { getAssetUrl } from '../../common/utils'
 import clsx from 'clsx'
 import { formatDistanceStrict, subDays } from 'date-fns'

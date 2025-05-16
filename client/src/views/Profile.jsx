@@ -13,7 +13,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Skeleton,
-} from '@nextui-org/react'
+} from '@heroui/react'
 import { Collapse } from 'react-collapse'
 import React, { useState, useCallback, useEffect } from 'react'
 import Appbar from '../components/Layout/Appbar'
@@ -366,7 +366,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                         onValueChange={(value) =>
                           setUpdatedProfileDetails((prev) => ({
                             ...prev,
-                            displayName: value.slice(0, process.env.REACT_APP_MAX_DISPLAY_NAME_LENGTH),
+                            displayName: value.slice(0, import.meta.env.VITE_MAX_DISPLAY_NAME_LENGTH),
                           }))
                         }
                         className="w-full"
@@ -380,7 +380,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                         onValueChange={(value) =>
                           setUpdatedProfileDetails((prev) => ({
                             ...prev,
-                            mention: value.slice(0, process.env.REACT_APP_MAX_MENTION_LENGTH),
+                            mention: value.slice(0, import.meta.env.VITE_MAX_MENTION_LENGTH),
                           }))
                         }
                         className="w-full"
@@ -393,7 +393,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                         onValueChange={(value) =>
                           setUpdatedProfileDetails((prev) => ({
                             ...prev,
-                            bio: value.slice(0, process.env.REACT_APP_MAX_PROFILE_BIO_LENGTH),
+                            bio: value.slice(0, import.meta.env.VITE_MAX_PROFILE_BIO_LENGTH),
                           }))
                         }
                         rows={2}

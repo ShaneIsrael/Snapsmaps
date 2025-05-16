@@ -9,7 +9,7 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry'
 
 import { getAssetUrl } from '../common/utils'
 import clsx from 'clsx'
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Tab, Tabs } from '@nextui-org/react'
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Tab, Tabs } from "@heroui/react"
 import ConfirmationDialog from '../components/Dialog/ConfirmationDialog'
 import { EllipsisVerticalIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { MapPinIcon } from '../assets/icons/MapPinIcon'

@@ -17,7 +17,7 @@ import {
   DropdownItem,
   Divider,
   Tooltip,
-} from '@nextui-org/react'
+} from "@heroui/react"
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
 import { MapPinIcon } from '../../assets/icons/MapPinIcon'
 import Comment from '../Comment/Comment'

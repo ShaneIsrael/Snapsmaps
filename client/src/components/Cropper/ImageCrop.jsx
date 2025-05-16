@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import { readFile } from '../../common/utils'
 import ImageCropModalContent from './ImageCropModalContent'
 import { useImageCropContext } from '../../providers/ImageCropProvider'
-import { Avatar, Button, Modal, ModalContent, useDisclosure } from '@nextui-org/react'
+import { Avatar, Button, Modal, ModalContent, useDisclosure } from "@heroui/react"
 import { CameraAltIcon } from '../../assets/icons/CameraAltIcon'
 import { CameraIcon, FolderIcon } from '@heroicons/react/24/solid'
 

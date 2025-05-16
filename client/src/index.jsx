@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { NextUIProvider } from '@nextui-org/react'
+import { HeroUIProvider } from '@heroui/react'
 import { Toaster } from 'sonner'
 import App from './App'
 import './index.css'
@@ -10,10 +10,10 @@ const rootElement = document.getElementById('root')
 const root = createRoot(rootElement)
 
 root.render(
-  <NextUIProvider>
+  <HeroUIProvider>
     <main className="dark text-foreground bg-background">
       <Toaster position="top-center" richColors />
       <App />
     </main>
-  </NextUIProvider>,
+  </HeroUIProvider>,
 )

@@ -10,7 +10,7 @@ import {
   Switch,
   Tooltip,
   Input,
-} from '@nextui-org/react'
+} from '@heroui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { TbPhotoPlus } from 'react-icons/tb'
@@ -166,7 +166,7 @@ function CreateCollection({ open, onClose, onSubmitted }) {
                   placeholder="..."
                   label="Collection Title"
                   value={title}
-                  onValueChange={(value) => setTitle(value.slice(0, process.env.REACT_APP_MAX_COLLECTION_TITLE_LENGTH))}
+                  onValueChange={(value) => setTitle(value.slice(0, import.meta.env.VITE_MAX_COLLECTION_TITLE_LENGTH))}
                   className="w-full"
                   classNames={{
                     input: 'text-lg font-semibold text-center',

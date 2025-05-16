@@ -1,4 +1,4 @@
-import { Button } from '@nextui-org/react'
+import { Button } from "@heroui/react"
 import React, { useRef } from 'react'
 import exifr from 'exifr'
 import { toast } from 'sonner'

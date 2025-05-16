@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Link } from '@nextui-org/react'
+import { Button, Card, CardBody, CardFooter, CardHeader, Divider, Input, Link } from '@heroui/react'
 import { toast } from 'sonner'
 import { AuthService } from '../../services'
 import { useAuthed } from '../../hooks/useAuthed'
@@ -50,14 +50,14 @@ const Signup = ({ onLogin }) => {
   const isInvalidDn = React.useMemo(() => {
     if (displayName === '') return false
     if (displayName.length < 5) return 'Too short'
-    if (displayName.length > process.env.REACT_APP_MAX_DISPLAY_NAME_LENGTH) return 'Too long'
+    if (displayName.length > import.meta.env.VITE_MAX_DISPLAY_NAME_LENGTH) return 'Too long'
     if (error.field === 'displayName') return error.message
   }, [displayName, error.field])
 
   const isInvalidMention = React.useMemo(() => {
     if (mention === '') return false
     if (mention.length < 4) return 'Too short'
-    if (mention.length > process.env.REACT_APP_MAX_MENTION_LENGTH) return 'Too long'
+    if (mention.length > import.meta.env.VITE_MAX_MENTION_LENGTH) return 'Too long'
     if (mention.match(/\s/)) return 'No spaces in mention names allowed'
     if (mention.match(/\@/)) return 'No @ symbol in mention names allowed'
     const match = mention.match(/[A-Za-z0-9_](?:(?:[A-Za-z0-9_]|(?:\.(?!\.))){0,28}(?:[A-Za-z0-9_]))?/)
@@ -68,8 +68,8 @@ const Signup = ({ onLogin }) => {
   const isInvalidPassword = React.useMemo(() => {
     if (password === '' && password2 === '') return false
     if (password === '' || password2 === '') return true
-    if (password.length > process.env.REACT_APP_MAX_PASSWORD_LENGTH)
-      return `Password must be less than ${process.env.REACT_APP_MAX_PASSWORD_LENGTH} characters`
+    if (password.length > import.meta.env.VITE_MAX_PASSWORD_LENGTH)
+      return `Password must be less than ${import.meta.env.VITE_MAX_PASSWORD_LENGTH} characters`
     if (error.field === 'password') return error.message
 
     return password !== password2

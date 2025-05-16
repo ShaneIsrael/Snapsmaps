@@ -6,6 +6,8 @@ function MapComponent({ markers, defaultZoom, streetViewControl }) {
   const map = useMap()
   const [mapOptions, setMapOptions] = useState()
 
+  const validMarkers = markers.filter((marker) => marker.lat !== null && marker.lng !== null)
+
   const getMapOptions = (maps) => {
     return {
       streetViewControl: true,
@@ -44,7 +46,7 @@ function MapComponent({ markers, defaultZoom, streetViewControl }) {
     if (map) {
       if (!defaultZoom) {
         const bounds = new google.maps.LatLngBounds()
-        markers.forEach((position) => {
+        validMarkers.forEach((position) => {
           bounds.extend({ lat: parseFloat(position.lat), lng: parseFloat(position.lng) })
         })
         map.fitBounds(bounds)
@@ -81,7 +83,7 @@ function MapComponent({ markers, defaultZoom, streetViewControl }) {
         },
       ]}
     >
-      {markers.map((marker, index) => (
+      {validMarkers.map((marker, index) => (
         <Marker
           key={index}
           animation={marker.highlight ? google?.maps?.Animation.BOUNCE : ''}

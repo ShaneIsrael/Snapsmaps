@@ -1,4 +1,4 @@
-import { Tabs, Tab } from '@nextui-org/react'
+import { Tabs, Tab } from "@heroui/react"
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { getSessionUser } from '../common/utils'

@@ -26,13 +26,15 @@
       "form_factor": "narrow"
     }
   ],
-  "start_url": "https://snapsmaps.com",
-  "launch_handler": ["focus-existing", "auto"],
+  "start_url": "https://localhost:3000",
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
   "display": "fullscreen",
   "theme_color": "#000000",
   "background_color": "#ffffff",
   "dir": "auto",
-  "scope": "https://snapsmaps.com",
+  "scope": "https://localhost:3000",
   "orientation": "portrait-primary",
   "lang": "en",
   "categories": ["photo", "social", "travel"],

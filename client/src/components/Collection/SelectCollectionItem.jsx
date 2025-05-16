@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, CardFooter, CardHeader, Image, Modal, ModalContent, select } from '@nextui-org/react'
+import { Button, Card, CardBody, CardFooter, CardHeader, Image, Modal, ModalContent, select } from "@heroui/react"
 import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 

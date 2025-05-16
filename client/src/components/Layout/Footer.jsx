@@ -13,7 +13,7 @@ import {
   ModalContent,
   Tooltip,
   useDisclosure,
-} from '@nextui-org/react'
+} from '@heroui/react'
 import { FaGithub } from 'react-icons/fa'
 
 import { useNavigate } from 'react-router-dom'
@@ -29,10 +29,10 @@ import {
   PlusIcon,
 } from '@heroicons/react/24/outline'
 import { toast } from 'sonner'
-import { ReactComponent as Logo } from '../../assets/logo/dark/logo.svg'
 import { useNotifications } from '../../hooks/useNotifications'
 import NotificationMenu from '../Notification/NotificationMenu'
 import CreateCollection from '../Collection/CreateCollection'
+import Logo from '../../assets/logo/dark/Logo'
 
 function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, user, isAuthenticated }) {
   const [uploadedImageData, setUploadedImageData] = useState()
@@ -212,7 +212,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
                   <DropdownItem
                     key="profile"
                     onClick={() => navigate('/profile')}
-                    startContent={<UserIcon className="w-5 h-5 text-default-500 pointer-events-none flex-shrink-0" />}
+                    startContent={<UserIcon className="w-5 h-5 pointer-events-none flex-shrink-0" />}
                   >
                     My Profile
                   </DropdownItem>

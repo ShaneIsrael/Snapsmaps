@@ -1,4 +1,4 @@
-import { Divider, Skeleton } from '@nextui-org/react'
+import { Divider, Skeleton } from "@heroui/react"
 import React from 'react'
 
 function ProfilePageSkeleton({ appbar, footer }) {

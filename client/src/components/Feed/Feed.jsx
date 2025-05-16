@@ -1,6 +1,6 @@
 import React from 'react'
 import Post from '../Post/Post'
-import { Spinner } from '@nextui-org/react'
+import { Spinner } from "@heroui/react"
 
 function Feed({ loading, posts, onOpenPostImage, user, isAuthenticated, ...rest }) {
   if (loading)

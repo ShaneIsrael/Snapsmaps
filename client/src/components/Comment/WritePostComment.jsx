@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useRef } from 'react'
-import { Textarea } from '@nextui-org/react'
+import { Textarea } from '@heroui/react'
 import { CommentService } from '../../services'
 import { useAuthed } from '../../hooks/useAuthed'
 
@@ -34,7 +34,7 @@ function WritePostComment({ postId, onSubmit }) {
       labelPlacement="outside"
       placeholder="Write..."
       value={comment}
-      onChange={(event) => setComment(event.target.value.slice(0, process.env.REACT_APP_MAX_POST_COMMENT_LENGTH))}
+      onChange={(event) => setComment(event.target.value.slice(0, import.meta.env.VITE_MAX_POST_COMMENT_LENGTH))}
       maxRows={2}
       onKeyDown={handleCommentKeydown}
       className="max-w mt-2"

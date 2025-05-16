@@ -13,7 +13,7 @@ import {
   Progress,
   Switch,
   Tooltip,
-} from '@nextui-org/react'
+} from '@heroui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { PhotoIcon } from '../../assets/icons/PhotoIcon'
@@ -119,7 +119,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                 variant="bordered"
                 placeholder="Write something interesting..."
                 value={description}
-                onValueChange={(value) => setDescription(value.slice(0, process.env.REACT_APP_MAX_POST_TITLE_LENGTH))}
+                onValueChange={(value) => setDescription(value.slice(0, import.meta.env.VITE_MAX_POST_TITLE_LENGTH))}
                 maxRows={2}
                 className="w-full"
                 classNames={{

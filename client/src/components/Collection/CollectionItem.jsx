@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { canBrowserShareData, getAssetUrl } from '../../common/utils'
 import clsx from 'clsx'
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react"
 import { EllipsisVerticalIcon, ShareIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { toast } from 'sonner'
 import ConfirmationDialog from '../Dialog/ConfirmationDialog'

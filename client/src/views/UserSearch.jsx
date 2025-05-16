@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Input, Spinner } from '@nextui-org/react'
+import { Input, Spinner } from "@heroui/react"
 import { toast } from 'sonner'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import useDebounce from '../hooks/useDebounce'
