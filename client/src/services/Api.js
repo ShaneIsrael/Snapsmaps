@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { getUrl } from '../common/utils'
-import { toast } from 'sonner'
 
 const URL = getUrl()
 

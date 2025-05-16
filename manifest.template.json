@@ -31,5 +31,12 @@
       "type": "image/png",
       "form_factor": "narrow"
     }
-  ]
+  ],
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "display": "fullscreen",
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "categories": ["photo", "social", "travel"]
 }

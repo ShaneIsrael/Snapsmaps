@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import AuthService from '../services/AuthService'
-import { toast } from 'sonner'
 
 const useAuthed = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null)

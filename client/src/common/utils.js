@@ -1,6 +1,4 @@
-import FileSaver from 'file-saver'
 import Cookies from 'js-cookie'
-import _ from 'lodash'
 
 export const getUrl = () => {
   const { protocol, hostname, port } = window.location

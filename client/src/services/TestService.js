@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie'
 import Api from './Api'
 
 class TestService {

@@ -2,15 +2,14 @@
 FROM node:20.12-alpine3.18 as build
 WORKDIR .
 
-ENV PATH node_modules/.bin:$PATH
+ENV PATH=node_modules/.bin:$PATH
 COPY client/package.json ./
 COPY client/package-lock.json ./
 COPY client/public ./
 RUN npm i -g --silent npm@9.1.3
 RUN npm i --silent
-RUN npm install react-scripts@5.0.1 -g --silent
 COPY client/ ./
-ENV REACT_APP_ENVIRONMENT=production
+ENV VITE_ENVIRONMENT=production
 RUN npm run build
 
 # production environment
