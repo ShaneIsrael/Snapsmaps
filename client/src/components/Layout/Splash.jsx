@@ -2,20 +2,20 @@ import React from 'react'
 
 import { useAuthed } from '../../hooks/useAuthed'
 
-import splash1 from '../../assets/splash/splash-1.webp'
-import splash2 from '../../assets/splash/splash-2.webp'
-import splash3 from '../../assets/splash/splash-3.webp'
-import splash4 from '../../assets/splash/splash-4.webp'
-import splash5 from '../../assets/splash/splash-5.webp'
-import splash6 from '../../assets/splash/splash-6.webp'
-import splash7 from '../../assets/splash/splash-7.webp'
-import splash8 from '../../assets/splash/splash-8.webp'
-import splash9 from '../../assets/splash/splash-9.webp'
-import splash10 from '../../assets/splash/splash-10.webp'
-import splash11 from '../../assets/splash/splash-11.webp'
-import splash12 from '../../assets/splash/splash-12.webp'
-import splash13 from '../../assets/splash/splash-13.webp'
-import splash14 from '../../assets/splash/splash-14.webp'
+const splash1 = new URL('../../assets/splash/splash-1.webp', import.meta.url).href
+const splash2 = new URL('../../assets/splash/splash-2.webp', import.meta.url).href
+const splash3 = new URL('../../assets/splash/splash-3.webp', import.meta.url).href
+const splash4 = new URL('../../assets/splash/splash-4.webp', import.meta.url).href
+const splash5 = new URL('../../assets/splash/splash-5.webp', import.meta.url).href
+const splash6 = new URL('../../assets/splash/splash-6.webp', import.meta.url).href
+const splash7 = new URL('../../assets/splash/splash-7.webp', import.meta.url).href
+const splash8 = new URL('../../assets/splash/splash-8.webp', import.meta.url).href
+const splash9 = new URL('../../assets/splash/splash-9.webp', import.meta.url).href
+const splash10 = new URL('../../assets/splash/splash-10.webp', import.meta.url).href
+const splash11 = new URL('../../assets/splash/splash-11.webp', import.meta.url).href
+const splash12 = new URL('../../assets/splash/splash-12.webp', import.meta.url).href
+const splash13 = new URL('../../assets/splash/splash-13.webp', import.meta.url).href
+const splash14 = new URL('../../assets/splash/splash-14.webp', import.meta.url).href
 import Logo from '../../assets/logo/dark/Logo'
 import WordmarkNoSlogan from '../../assets/logo/dark/WordmarkNoSlogan'
 import LogoWithWordmark from '../../assets/logo/dark/LogoWithWordmark'
