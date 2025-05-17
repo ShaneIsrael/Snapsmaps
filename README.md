@@ -12,7 +12,7 @@
     <br />
     <br />
     <a href="https://github.com/shaneisrael/Snapsmaps/actions">
-      <img alt="Docker Build" src="https://github.com/shaneisrael/Snapsmaps/actions/workflows/docker-publish-main.yml/badge.svg" />
+      <img alt="Docker Build" src="https://github.com/ShaneIsrael/Snapsmaps/actions/workflows/docker-publish-production.yml/badge.svg" />
     </a>
     <a href="https://hub.docker.com/r/shaneisrael/snapsmaps">
       <img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/shaneisrael/snapsmaps?label=docker%20pulls">
