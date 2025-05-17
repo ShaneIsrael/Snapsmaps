@@ -6,3 +6,4 @@ server/images
 client/node_modules/
 db-data/
 snapsmaps/content/
+node_modules/
