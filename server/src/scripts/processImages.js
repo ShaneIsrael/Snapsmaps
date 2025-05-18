@@ -36,7 +36,7 @@ async function processImages() {
 
       if (['.webp', '.png', '.jpg', '.jpeg'].includes(ext)) {
         try {
-          if (fs.existsSync(compressedFilePath) || file.includes('.lowq.')) {
+          if (file.includes('.lowq.')) {
             continue
           }
 
@@ -56,7 +56,9 @@ async function processImages() {
             logger.info(`Updated image metadata for: ${file}`)
           }
 
-          // Verify the file is an actual image
+          if (fs.existsSync(compressedFilePath)) {
+            continue
+          }
           const shouldResize = metadata.width > resizeWidth
 
           logger.info(`Compressing: ${file} -> ${compressedFileName}`)
@@ -67,11 +69,7 @@ async function processImages() {
           }
 
           await sharpInstance.webp({ quality }).toFile(compressedFilePath)
-        } catch (err) {
-          logger.error(`Skipping invalid image file: ${file} - ${err.message}`)
-        }
-      } else {
-        logger.info(`Skipping non-image file: ${file}`)
+        } catch (err) {}
       }
     }
   }
