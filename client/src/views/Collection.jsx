@@ -175,6 +175,8 @@ function Collection({ isSelfProfile }) {
                             placeholderSrc={image.lowqSrc}
                             effect="blur"
                             src={image.src}
+                            width={image.width}
+                            height={image.height}
                             onClick={() => {
                               setIndex(index)
                               setLightboxOpen(true)

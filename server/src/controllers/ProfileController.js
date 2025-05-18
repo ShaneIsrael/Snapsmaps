@@ -108,7 +108,10 @@ controller.update = async (req, res, next) => {
         const reference = `/profile/${uuidv4().replace(/-/gi, '')}.webp`
 
         const fileContent = Buffer.from(image.data)
-        await sharp(fileContent)
+        const sharpInstance = sharp(fileContent)
+        const metadata = await sharpInstance.metadata()
+        sharpInstance
+          .clone()
           .rotate()
           .webp({ quality: 70 })
           .withMetadata()
@@ -117,6 +120,8 @@ controller.update = async (req, res, next) => {
         const imageRow = await Image.create({
           userId: req.session.user.id,
           reference,
+          width: metadata.width,
+          height: metadata.height,
         })
 
         userRow.imageId = imageRow.id

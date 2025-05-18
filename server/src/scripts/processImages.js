@@ -1,7 +1,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { Op } from 'sequelize'
 import sharp from 'sharp'
+import Models from '../database/models'
 import logger from '../utils/logger'
+
+const { Image } = Models
 
 const directories = ['/content/images/post', '/content/images/collection']
 
@@ -23,6 +27,24 @@ async function processImages() {
       const compressedFileName = `${baseName}.lowq.webp`
       const compressedFilePath = path.join(dir, compressedFileName)
 
+      // Lookup image in database based on the reference file name
+      if (file.includes('.lowq.')) {
+        continue
+      }
+
+      const metadata = await sharp(filePath).metadata()
+      const referencePath = path.join('/', path.basename(dir), file)
+      const image = await Image.findOne({
+        where: { reference: referencePath, [Op.or]: [{ width: null }, { height: null }, { width: 0 }, { height: 0 }] },
+      })
+
+      if (image) {
+        image.width = metadata.width
+        image.height = metadata.height
+        await image.save()
+        logger.info(`Updated image metadata for: ${file}`)
+      }
+
       if (fs.existsSync(compressedFilePath) || file.includes('.lowq.')) {
         continue
       }
@@ -30,7 +52,6 @@ async function processImages() {
       if (['.webp', '.png', '.jpg', '.jpeg'].includes(ext)) {
         try {
           // Verify the file is an actual image
-          const metadata = await sharp(filePath).metadata()
           const shouldResize = metadata.width > resizeWidth
 
           logger.info(`Compressing: ${file} -> ${compressedFileName}`)

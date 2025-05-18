@@ -384,6 +384,8 @@ const Post = React.memo(
                     placeholderSrc={postImageLowq}
                     effect="blur"
                     src={postImage}
+                    width={intPost?.image?.width}
+                    height={intPost?.image?.height}
                     className={clsx({ 'blur-lg': intPost.nsfw && !revealed })}
                     onClick={revealed ? () => onOpenModal(postImage) : () => setRevealed(true)}
                     wrapperProps={{

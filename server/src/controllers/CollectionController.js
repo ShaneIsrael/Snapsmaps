@@ -99,6 +99,8 @@ controller.create = async (req, res, next) => {
       {
         userId: req.session.user.id,
         reference,
+        width: metadata.width,
+        height: metadata.height,
       },
       { transaction: t },
     )
