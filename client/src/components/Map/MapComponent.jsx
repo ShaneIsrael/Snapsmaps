@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
 
+import L from 'leaflet'
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 
 function MapComponent({ markers, maxZoom = 20, minZoom = 0, defaultZoom, mapClassName = "w-full h-full" }) {
   const validMarkers = markers.filter((marker) => marker.lat !== null && marker.lng !== null)
-
+  const icon = L.icon({ iconUrl: "/assets/map/marker-icon.png" });
   const mapRef = useRef(null)
   const bounds = validMarkers.map((marker) => [marker.lat, marker.lng])
 
@@ -24,7 +25,7 @@ function MapComponent({ markers, maxZoom = 20, minZoom = 0, defaultZoom, mapClas
                 marker.onClick()
               }
             },
-          }} />
+          }} icon={icon} />
         ))
       }
     </MapContainer >
