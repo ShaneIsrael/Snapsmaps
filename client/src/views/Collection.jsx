@@ -127,7 +127,11 @@ function Collection({ isSelfProfile }) {
                 className="py-0"
               >
                 <div className="h-[calc(100vh-155px)] overflow-y-auto pt-2">
-                  <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={1}>
+                  <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={1} sx={{
+                    '& > img': {
+                      display: 'inline',
+                    },
+                  }}>
                     {mappedImages?.map((image, index) => (
                       <div key={image.src} className="group relative">
                         <div
@@ -160,7 +164,7 @@ function Collection({ isSelfProfile }) {
                           {image.title && (
                             <div
                               className={clsx(
-                                'absolute bottom-0 flex w-full items-end rounded-b-xl bg-black/75 pt-1 pr-1 pb-1 pl-1 text-xs leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100',
+                                'absolute bottom-0 z-10 flex w-full items-end rounded-b-xl bg-black/75 pt-1 pr-1 pb-1 pl-1 text-xs leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100',
                               )}
                             >
                               {image.title}
@@ -194,9 +198,11 @@ function Collection({ isSelfProfile }) {
               >
                 <div
                   ref={tabContainerRef}
-                  style={{
-                    // height: `calc(100vh - ${tabContainerOffset}px) overflow-y-hidden`,
-                  }}
+                  style={
+                    {
+                      // height: `calc(100vh - ${tabContainerOffset}px) overflow-y-hidden`,
+                    }
+                  }
                   className="pt-2"
                 >
                   <SnapMap markers={mapMarkers} streetViewControl mapClassName="h-[calc(100vh-160px)]" />
