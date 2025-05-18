@@ -75,6 +75,8 @@ function Collection({ isSelfProfile }) {
     src: getAssetUrl() + item.post.image.reference,
     lowqSrc: `${getAssetUrl() + item.post.image.reference.split('.')[0]}.lowq.webp`,
     title: item.post.title,
+    width: item.post.image.width,
+    height: item.post.image.height,
   }))
 
   const mapMarkers = viewableItems?.map((item, index) => ({
@@ -127,16 +129,15 @@ function Collection({ isSelfProfile }) {
                 className="py-0"
               >
                 <div className="h-[calc(100vh-155px)] overflow-y-auto pt-2">
-                  <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={1} sx={{
-                    '& > img': {
-                      display: 'inline',
-                    },
-                  }}>
+                  <Masonry columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 5 }} spacing={1}>
                     {mappedImages?.map((image, index) => (
-                      <div key={image.src} className="group relative">
+                      <div
+                        key={image.src}
+                        className="group relative"
+                      >
                         <div
                           key={`collection-photo-${image.src}`}
-                          className="relative cursor-pointer overflow-hidden rounded-lg border-neutral-300 border-small border-solid"
+                          className='relative cursor-pointer overflow-hidden rounded-lg border-neutral-300 border-small border-solid'
                         >
                           {isAuthenticated && isSelfProfile && (
                             <div className="opacity-0 transition-opacity group-hover:opacity-100">
@@ -175,8 +176,6 @@ function Collection({ isSelfProfile }) {
                             placeholderSrc={image.lowqSrc}
                             effect="blur"
                             src={image.src}
-                            width={image.width}
-                            height={image.height}
                             onClick={() => {
                               setIndex(index)
                               setLightboxOpen(true)
