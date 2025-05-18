@@ -2,7 +2,7 @@ import { readdirSync } from 'node:fs'
 import { basename, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { DataTypes, Sequelize } from 'sequelize'
-import configFile from '../config/database.js'
+import configFile from '../config/database'
 const env = process.env.NODE_ENV || 'development'
 const config = configFile[env]
 

@@ -1,97 +1,34 @@
-import React, { useEffect, useState } from 'react'
-import { GoogleMapDarkMode } from '../../common/themes'
-import { Map, Marker, useMap } from '@vis.gl/react-google-maps'
+import React, { useEffect, useState, useRef } from 'react'
 
-function MapComponent({ markers, defaultZoom, streetViewControl }) {
-  const map = useMap()
-  const [mapOptions, setMapOptions] = useState()
+import L from 'leaflet'
+import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 
+function MapComponent({ markers, maxZoom = 20, minZoom = 0, defaultZoom, mapClassName = "w-full h-full" }) {
   const validMarkers = markers.filter((marker) => marker.lat !== null && marker.lng !== null)
-
-  const getMapOptions = (maps) => {
-    return {
-      streetViewControl: true,
-      scaleControl: true,
-      fullscreenControl: true,
-      styles: [
-        ...GoogleMapDarkMode,
-        {
-          featureType: 'poi.business',
-          elementType: 'labels',
-          stylers: [
-            {
-              visibility: 'off',
-            },
-          ],
-        },
-      ],
-      gestureHandling: 'greedy',
-      disableDoubleClickZoom: true,
-      minZoom: 0,
-      maxZoom: 25,
-
-      mapTypeControl: true,
-      mapTypeId: maps.MapTypeId.ROADMAP,
-      mapTypeControlOptions: {
-        style: maps.MapTypeControlStyle.DROPDOWN_MENU,
-        position: maps.ControlPosition.TOP_LEFT,
-        mapTypeIds: [maps.MapTypeId.ROADMAP, maps.MapTypeId.SATELLITE],
-      },
-      zoomControl: false,
-      clickableIcons: false,
-    }
-  }
-
-  useEffect(() => {
-    if (map) {
-      if (!defaultZoom) {
-        const bounds = new google.maps.LatLngBounds()
-        validMarkers.forEach((position) => {
-          bounds.extend({ lat: parseFloat(position.lat), lng: parseFloat(position.lng) })
-        })
-        map.fitBounds(bounds)
-      }
-
-      setMapOptions({
-        mapControlOptions: {
-          mapTypeIds: [google.maps.MapTypeId.ROADMAP, google.maps.MapTypeId.SATELLITE],
-          style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
-        },
-      })
-    }
-  }, [map])
+  const icon = L.icon({ iconUrl: "/images/map/marker-icon.png" })
+  const mapRef = useRef(null)
+  const bounds = validMarkers.map((marker) => [marker.lat, marker.lng])
 
   return (
-    <Map
-      gestureHandling={'greedy'}
-      disableDefaultUI={true}
-      defaultZoom={defaultZoom}
-      streetViewControl={streetViewControl}
-      {...(defaultZoom ? { defaultCenter: markers[0] } : {})}
-      mapTypeControl
-      mapTypeControlOptions={mapOptions?.mapControlOptions}
-      styles={[
-        ...GoogleMapDarkMode,
-        {
-          featureType: 'poi.business',
-          elementType: 'labels',
-          stylers: [
-            {
-              visibility: 'off',
+    // Make sure you set the height and width of the map container otherwise the map won't show
+    <MapContainer center={bounds[0]} maxZoom={maxZoom} minZoom={minZoom} zoom={defaultZoom} ref={mapRef} className={mapClassName} bounds={bounds} markerZoomAnimation={true} touchZoom={true} style={{
+      zIndex: 0
+    }}>
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {
+        validMarkers.map((marker) => (
+          <Marker key={`marker-${marker.lat}-${marker.lng}`} position={[marker.lat, marker.lng]} eventHandlers={{
+            click: () => {
+              if (marker.onClick) {
+                marker.onClick()
+              }
             },
-          ],
-        },
-      ]}
-    >
-      {validMarkers.map((marker, index) => (
-        <Marker
-          key={index}
-          animation={marker.highlight ? google?.maps?.Animation.BOUNCE : ''}
-          position={marker}
-          onClick={marker.onClick}
-        />
-      ))}
-    </Map>
+          }} icon={icon} />
+        ))
+      }
+    </MapContainer >
   )
 }
 

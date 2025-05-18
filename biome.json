@@ -42,6 +42,9 @@
       "a11y": {
         "noNoninteractiveTabindex": {
           "level": "off"
+        },
+        "useKeyWithClickEvents": {
+          "level": "off"
         }
       }
     }

@@ -1,40 +1,39 @@
+import { ArrowDownIcon, ArrowPathIcon, MapIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import {
-  Button,
-  Image,
   Avatar,
+  Button,
   Divider,
-  useDisclosure,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Input,
   Modal,
   ModalContent,
-  Input,
-  Textarea,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
   Skeleton,
+  Textarea,
+  useDisclosure,
 } from '@heroui/react'
-import { Collapse } from 'react-collapse'
-import React, { useState, useCallback, useEffect } from 'react'
-import Appbar from '../components/Layout/Appbar'
-import Post from '../components/Post/Post'
-import { useNavigate, useParams } from 'react-router-dom'
-import { getAssetUrl, getSessionUser } from '../common/utils'
-import { PostService, ProfileService } from '../services'
-import ImageCropProvider from '../providers/ImageCropProvider'
-import ImageCrop from '../components/Cropper/ImageCrop'
-import { ArrowPathIcon, XMarkIcon, MapIcon, ArrowDownIcon } from '@heroicons/react/24/solid'
-import SnapMap from '../components/Map/SnapMap'
-import Footer from '../components/Layout/Footer'
-import { toast } from 'sonner'
-import ProfilePageSkeleton from '../components/Skeletons/ProfilePageSkeleton'
-import PageLayout from '../components/Layout/PageLayout'
 import clsx from 'clsx'
-import Nsfw2 from '../assets/icons/Nsfw2'
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
-import { useAuthed } from '../hooks/useAuthed'
-import CollectionItem from '../components/Collection/CollectionItem'
+import React, { useState, useCallback, useEffect } from 'react'
+import { Collapse } from 'react-collapse'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
+import { useNavigate, useParams } from 'react-router-dom'
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
+import { toast } from 'sonner'
+import Nsfw2 from '../assets/icons/Nsfw2'
+import { getAssetUrl, getSessionUser } from '../common/utils'
+import CollectionItem from '../components/Collection/CollectionItem'
+import ImageCrop from '../components/Cropper/ImageCrop'
+import Appbar from '../components/Layout/Appbar'
+import Footer from '../components/Layout/Footer'
+import PageLayout from '../components/Layout/PageLayout'
+import SnapMap from '../components/Map/SnapMap'
+import Post from '../components/Post/Post'
+import ProfilePageSkeleton from '../components/Skeletons/ProfilePageSkeleton'
+import { useAuthed } from '../hooks/useAuthed'
+import ImageCropProvider from '../providers/ImageCropProvider'
+import { PostService, ProfileService } from '../services'
 
 const Profile = React.memo(({ isSelfProfile, isMention }) => {
   const postModal = useDisclosure()
@@ -199,7 +198,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
           <Appbar
             noProfile
             backButton={() => navigate('/feed')}
-            pageName={<Skeleton className="rounded-md w-28 h-6" />}
+            pageName={<Skeleton className="h-6 w-28 rounded-md" />}
           />
         }
         footer={
@@ -236,13 +235,13 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 <>
                   <div className="relevant absolute top-2 right-2 z-10">
                     <Button size="md" variant="flat" isIconOnly onClick={onClose}>
-                      <XMarkIcon className="text-neutral-50/90  h-7 w-7" />
+                      <XMarkIcon className="h-7 w-7 text-neutral-50/90" />
                     </Button>
                   </div>
                   <TransformWrapper defaultScale={1}>
                     <TransformComponent>
-                      <div className="w-screen h-screen flex justify-center">
-                        <img className="object-contain" src={modalImage} alt="a post image" />
+                      <div className="flex h-screen w-screen justify-center">
+                        <img className="object-contain" src={modalImage} alt="post media" />
                       </div>
                     </TransformComponent>
                   </TransformWrapper>
@@ -274,14 +273,14 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
             </ModalContent>
             <Button
               isIconOnly
-              className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-50"
+              className="-translate-x-1/2 pointer-events-none absolute bottom-4 left-1/2 z-50 opacity-50"
             >
               <XMarkIcon />
             </Button>
           </Modal>
 
-          <div className="flex-grow mx-0 pb-[50px] pt-20 overflow-y-auto">
-            <div className="flex px-4 gap-5 max-w-[500px] justify-start items-start">
+          <div className="mx-0 flex-grow overflow-y-auto pt-20 pb-[50px]">
+            <div className="flex max-w-[500px] items-start justify-start gap-5 px-4">
               <div className="flex flex-col gap-4">
                 {editMode ? (
                   <ImageCropProvider>
@@ -293,7 +292,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                   <Avatar
                     src={profile?.image ? getAssetUrl() + profile?.image : ''}
                     isBordered
-                    className="w-20 h-20 text-large"
+                    className="h-20 w-20 text-large"
                     color={isSelf ? 'primary' : 'default'}
                   />
                 )}
@@ -301,7 +300,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                 {!isSelf &&
                   isAuthenticated &&
                   (isFollowed ? (
-                    <Dropdown className="dark min-w-0 p-[1px] w-[100px]">
+                    <Dropdown className="dark w-[100px] min-w-0 p-[1px]">
                       <DropdownTrigger>
                         <Button size="sm" color="default" className="font-bold" variant="bordered">
                           following
@@ -310,7 +309,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                       <DropdownMenu aria-label="following dropdown" color="default" variant="flat">
                         <DropdownItem
                           key="unfollow"
-                          className="text-danger text-center"
+                          className="text-center text-danger"
                           color="danger"
                           onClick={handleUnfollow}
                         >
@@ -332,7 +331,7 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                   ))}
                 {isSelf && (
                   <Button
-                    className={isFollowed ? 'bg-transparent text-foreground border-default-200 w-[80px]' : 'w-[80px]'}
+                    className={isFollowed ? 'w-[80px] border-default-200 bg-transparent text-foreground' : 'w-[80px]'}
                     color={editMode ? 'primary' : 'default'}
                     radius="sm"
                     size="sm"
@@ -340,18 +339,18 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                     onClick={editMode ? handleUpdateProfile : () => setEditMode(true)}
                     disabled={saving}
                   >
-                    {saving && <ArrowPathIcon className="animate-spin w-4 h-4" />}
+                    {saving && <ArrowPathIcon className="h-4 w-4 animate-spin" />}
                     {editMode ? (saving ? 'Saving...' : 'Save') : 'Edit'}
                   </Button>
                 )}
               </div>
-              <div className="w-full flex flex-col gap-4 items-start justify-center">
+              <div className="flex w-full flex-col items-start justify-center gap-4">
                 <div className="h-[125px] w-full">
                   {!editMode ? (
                     <>
-                      <h4 className="text-2xl font-semibold leading-none text-default-600">{profile?.displayName}</h4>
-                      <h5 className="text-md tracking-tight text-blue-400">@{profile?.mention}</h5>
-                      <p className="text-small tracking-normal text-default-600 mt-2 whitespace-pre-line">
+                      <h4 className="font-semibold text-2xl text-default-600 leading-none">{profile?.displayName}</h4>
+                      <h5 className="text-blue-400 text-md tracking-tight">@{profile?.mention}</h5>
+                      <p className="mt-2 whitespace-pre-line text-default-600 text-small tracking-normal">
                         {profile?.bio}
                       </p>
                     </>
@@ -403,29 +402,29 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                     </div>
                   )}
                 </div>
-                <div className="flex gap-5 items-end">
-                  <div className="flex gap-5 justify-center">
+                <div className="flex items-end gap-5">
+                  <div className="flex justify-center gap-5">
                     <div className="flex flex-col items-center">
-                      <h2 className="text-xl font-extrabold text-default-600">{postHistory.length}</h2>
-                      <span className="text-md font-semibold text-default-600">posts</span>
+                      <h2 className="font-extrabold text-default-600 text-xl">{postHistory.length}</h2>
+                      <span className="font-semibold text-default-600 text-md">posts</span>
                     </div>
                     <div
-                      className="flex flex-col items-center cursor-pointer [&>*]:hover:text-blue-500"
+                      className="flex cursor-pointer flex-col items-center [&>*]:hover:text-blue-500"
                       onClick={() =>
                         navigate(mention ? `/user/${mention}/follows#followers` : '/profile/follows#followers')
                       }
                     >
-                      <h2 className="text-xl font-extrabold text-default-600">{profile?.followersCount}</h2>
-                      <span className="text-md font-semibold text-default-600">followers</span>
+                      <h2 className="font-extrabold text-default-600 text-xl">{profile?.followersCount}</h2>
+                      <span className="font-semibold text-default-600 text-md">followers</span>
                     </div>
                     <div
-                      className="flex flex-col items-center cursor-pointer [&>*]:hover:text-blue-500"
+                      className="flex cursor-pointer flex-col items-center [&>*]:hover:text-blue-500"
                       onClick={() =>
                         navigate(mention ? `/user/${mention}/follows#following` : '/profile/follows#following')
                       }
                     >
-                      <h2 className="text-xl font-extrabold text-default-600">{profile?.followingCount}</h2>
-                      <span className="text-md font-semibold  text-default-600">following</span>
+                      <h2 className="font-extrabold text-default-600 text-xl">{profile?.followingCount}</h2>
+                      <span className="font-semibold text-default-600 text-md">following</span>
                     </div>
                   </div>
                 </div>
@@ -458,17 +457,17 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                   onMouseLeave={() => setPostHistoryHoverId(null)}
                 >
                   {post.nsfw && (
-                    <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div className="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-1/2 left-1/2 z-20 flex transform flex-col items-center gap-2">
                       <Button size="md" isIconOnly variant="flat" className="">
-                        <Nsfw2 className="stroke-neutral-100/10 w-6 h-6 opacity-70" />
+                        <Nsfw2 className="h-6 w-6 stroke-neutral-100/10 opacity-70" />
                       </Button>
                     </div>
                   )}
                   <LazyLoadImage
                     alt="a history image"
                     effect="blur"
-                    src={getAssetUrl() + '/thumb/120x120/' + post.image.reference.split('/')[2]}
-                    className={clsx('w-[120px] h-[120px] object-cover rounded-none', { 'blur-sm': post.nsfw })}
+                    src={`${getAssetUrl()}/thumb/120x120/${post.image.reference.split('/')[2]}`}
+                    className={clsx('h-[120px] w-[120px] rounded-none object-cover', { 'blur-sm': post.nsfw })}
                     onClick={() => handleOpenModal(post.id)}
                   />
                 </div>
@@ -485,14 +484,15 @@ const Profile = React.memo(({ isSelfProfile, isMention }) => {
                     size="md"
                     aria-label="Open Map"
                     onClick={() => setMapOpened((prev) => !prev)}
-                    className={clsx('rotate-180 -mb-5 z-10', { 'rotate-0 ': mapOpened })}
+                    className={clsx('-mb-5 z-10 rotate-180', { 'rotate-0 ': mapOpened })}
                   >
                     <ArrowDownIcon className="h-7 w-7" />
                   </Button>
                 </div>
                 <Collapse isOpened={mapOpened}>
-                  <div className="flex flex-row h-[500px]">
+                  <div className="flex h-[500px] flex-row">
                     <SnapMap
+                      mapClassName="h-[500px] w-full"
                       markers={postHistory
                         .filter((post) => post.image.latitude && post.image.longitude)
                         .map((post) => ({

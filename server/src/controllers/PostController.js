@@ -117,6 +117,8 @@ controller.create = async (req, res, next) => {
         reference,
         latitude,
         longitude,
+        width: metadata.width,
+        height: metadata.height,
       },
       { transaction: t },
     )
