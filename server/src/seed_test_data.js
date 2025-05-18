@@ -1,12 +1,12 @@
-import * as fs from 'node:fs'
-import * as path from 'node:path'
-import * as axios from 'axios'
-import * as Models from './database/models'
+import fs from 'node:fs'
+import path from 'node:path'
+import axios from 'axios'
+import Models from './database/models'
 
 const { User, Image, Post, PostComment, PostLike, Follow } = Models
 import { exit } from 'node:process'
 import { v4 as uuidv4 } from 'uuid'
-import * as logger from './utils/logger'
+import logger from './utils/logger'
 
 const USER_COUNT = 10
 const MAX_POSTS_PER_USER = 5

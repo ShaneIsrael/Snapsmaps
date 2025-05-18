@@ -245,7 +245,7 @@ controller.getMentionCollections = async (req, res, next) => {
       return res.status(400).send('No user by that mention exists.')
     }
 
-    const isFollowing = await isFollowingUser(req.session.user, userRow.id)
+    const isFollowing = await followService.isFollowingUser(req.session.user, userRow.id)
 
     let whereStatement = { userId: userRow.id, public: true }
     if (isFollowing) {

@@ -8,6 +8,7 @@ import UserState from '../constants/UserState'
 import emailService from '../services/EmailService'
 import utils from '../utils'
 import logger from '../utils/logger'
+
 const { isValidEmail } = utils
 const { admins } = config
 const { maxDisplayNameLength, maxMentionLength, maxPasswordLength } = config.app

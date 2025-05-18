@@ -1,30 +1,9 @@
-import React, { useEffect, useCallback, useState } from 'react'
-import clsx from 'clsx'
 import {
-  Avatar,
-  Button,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  Tab,
-  Tabs,
-  Textarea,
-  Chip,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Divider,
-  Tooltip,
-} from "@heroui/react"
-import { PhotoIcon } from '../../assets/icons/PhotoIcon'
-import { MapPinIcon } from '../../assets/icons/MapPinIcon'
-import Comment from '../Comment/Comment'
-import { canBrowserShareData, downloadFile, getAssetUrl } from '../../common/utils'
-import { AdminService, CommentService, LikeService, PostService } from '../../services'
-import { formatDistanceStrict } from 'date-fns'
-import { useNavigate } from 'react-router-dom'
+  ArrowsPointingOutIcon,
+  ChatBubbleLeftRightIcon,
+  HeartIcon as HeartIconOutlined,
+  XMarkIcon,
+} from '@heroicons/react/24/outline'
 import {
   ChatBubbleLeftRightIcon as ChatBubbleLeftRightIconSolid,
   EllipsisVerticalIcon,
@@ -32,20 +11,41 @@ import {
   EyeSlashIcon,
   HeartIcon as HeartIconSolid,
 } from '@heroicons/react/24/solid'
-import {
-  ArrowsPointingOutIcon,
-  ChatBubbleLeftRightIcon,
-  XMarkIcon,
-  HeartIcon as HeartIconOutlined,
-} from '@heroicons/react/24/outline'
-import { GiThorHammer } from 'react-icons/gi'
 import { ArrowDownTrayIcon, ShareIcon } from '@heroicons/react/24/solid'
-import SnapMap from '../Map/SnapMap'
-import { toast } from 'sonner'
-import Nsfw2 from '../../assets/icons/Nsfw2'
-import ConfirmationDialog from '../Dialog/ConfirmationDialog'
-import WritePostComment from '../Comment/WritePostComment'
+import {
+  Avatar,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Chip,
+  Divider,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Tab,
+  Tabs,
+  Textarea,
+  Tooltip,
+} from '@heroui/react'
+import clsx from 'clsx'
+import { formatDistanceStrict } from 'date-fns'
+import React, { useEffect, useCallback, useState } from 'react'
+import { GiThorHammer } from 'react-icons/gi'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import { MapPinIcon } from '../../assets/icons/MapPinIcon'
+import Nsfw2 from '../../assets/icons/Nsfw2'
+import { PhotoIcon } from '../../assets/icons/PhotoIcon'
+import { canBrowserShareData, downloadFile, getAssetUrl } from '../../common/utils'
+import { AdminService, CommentService, LikeService, PostService } from '../../services'
+import Comment from '../Comment/Comment'
+import WritePostComment from '../Comment/WritePostComment'
+import ConfirmationDialog from '../Dialog/ConfirmationDialog'
+import SnapMap from '../Map/SnapMap'
 
 const Post = React.memo(
   ({
@@ -75,7 +75,7 @@ const Post = React.memo(
     const navigate = useNavigate()
 
     const postImage = getAssetUrl() + intPost?.image?.reference
-    const postImageLowq = getAssetUrl() + intPost?.image?.reference.split('.')[0] + '.lowq.webp'
+    const postImageLowq = `${getAssetUrl() + intPost?.image?.reference.split('.')[0]}.lowq.webp`
 
     const reload = async () => {
       try {
@@ -191,12 +191,12 @@ const Post = React.memo(
         />
 
         <Card
-          className={clsx('sm:w-full rounded-none bg-background border-none sm:min-w-[450px]', {
+          className={clsx('rounded-none border-none bg-background sm:w-full sm:min-w-[450px]', {
             'w-screen': !isSingle,
           })}
         >
           <CardHeader className="justify-between p-0">
-            <div className="flex m-4 gap-3 cursor-pointer">
+            <div className='m-4 flex cursor-pointer gap-3'>
               <Avatar
                 isBordered
                 color={isSelf ? 'primary' : 'default'}
@@ -211,9 +211,9 @@ const Post = React.memo(
                 }}
                 src={hasProfileImage ? getAssetUrl() + intPost?.user?.image?.reference : ''}
               />
-              <div className="flex flex-col gap-1 items-start justify-center">
+              <div className='flex flex-col items-start justify-center gap-1'>
                 <h4
-                  className={clsx('text-md font-semibold leading-none text-default-600 hover:text-neutral-50', {
+                  className={clsx('font-semibold text-default-600 text-md leading-none hover:text-neutral-50', {
                     'text-primary-500': isSelf,
                   })}
                   onClick={() => navigate(`/user/${intPost?.user?.mention}`)}
@@ -221,14 +221,14 @@ const Post = React.memo(
                   {intPost?.user?.displayName}
                 </h4>
 
-                <h5 className="text-small font-semibold tracking-normal text-slate-400">@{intPost?.user?.mention}</h5>
+                <h5 className='font-semibold text-slate-400 text-small tracking-normal'>@{intPost?.user?.mention}</h5>
               </div>
             </div>
             {isAuthenticated && (
-              <Dropdown className="dark min-w-0 p-[1px] w-fit bg-black">
+              <Dropdown className='dark w-fit min-w-0 bg-black p-[1px]'>
                 <DropdownTrigger>
-                  <Button variant="light" size="sm" className="mr-2 mt-[-24px]" isIconOnly>
-                    <EllipsisVerticalIcon className="w-5 h-5" />
+                  <Button variant="light" size="sm" className='mt-[-24px] mr-2' isIconOnly>
+                    <EllipsisVerticalIcon className='h-5 w-5' />
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="post actions">
@@ -269,7 +269,7 @@ const Post = React.memo(
                       onClick={() =>
                         setConfirmAdminAction({
                           open: true,
-                          title: `Set post as NSFW`,
+                          title: 'Set post as NSFW',
                           action: handleAdminSetPostNsfw,
                         })
                       }
@@ -317,10 +317,10 @@ const Post = React.memo(
               </Dropdown>
             )}
           </CardHeader>
-          <CardBody className="py-0 text-small text-default-500 overflow-hidden px-0">
+          <CardBody className='overflow-hidden px-0 py-0 text-default-500 text-small'>
             {intPost?.title && (
-              <div className="mb-3 mx-3">
-                <p className="text-default-600 font-semibold leading-4 max-h-[65px] min-h-[20px] overflow-y-auto">
+              <div className='mx-3 mb-3'>
+                <p className='max-h-[65px] min-h-[20px] overflow-y-auto font-semibold text-default-600 leading-4'>
                   {intPost?.title}
                 </p>
               </div>
@@ -341,42 +341,41 @@ const Post = React.memo(
               }}
             >
               <Tab
-                key={`photo`}
+                key={'photo'}
                 title={
                   <div className="flex items-center">
-                    <PhotoIcon className={clsx({ 'fill-green-500': selectedTab !== `photo` })} />
-                    <span></span>
+                    <PhotoIcon className={clsx({ 'fill-green-500': selectedTab !== 'photo' })} />
                   </div>
                 }
               >
                 <div
-                  className={clsx('relative w-full h-full cursor-pointer [&>div]:hover:flex  overflow-y-hidden', {
+                  className={clsx('relative h-full w-full cursor-pointer overflow-y-hidden [&>div]:hover:flex', {
                     'max-h-[598px]': !isSingle,
                     'max-h-[400px] overflow-y-scroll': isSingle,
                   })}
                 >
                   {revealed && (
                     <>
-                      <div className="absolute hidden right-2 top-2 pointer-events-none z-10">
+                      <div className='pointer-events-none absolute top-2 right-2 z-10 hidden'>
                         <Button size="sm" isIconOnly variant="light">
-                          <ArrowsPointingOutIcon className="stroke-neutral-100/90 w-8 h-8" />
+                          <ArrowsPointingOutIcon className='h-8 w-8 stroke-neutral-100/90' />
                         </Button>
                       </div>
                       {intPost.nsfw && (
-                        <div className="absolute hidden right-2 top-12 z-10">
+                        <div className='absolute top-12 right-2 z-10 hidden'>
                           <Button size="sm" isIconOnly variant="flat" onClick={() => setRevealed(false)}>
-                            <EyeSlashIcon className="text-neutral-100/80 opacity-80 w-6 h-6" />
+                            <EyeSlashIcon className='h-6 w-6 text-neutral-100/80 opacity-80' />
                           </Button>
                         </div>
                       )}
                     </>
                   )}
                   {!revealed && (
-                    <div className="absolute flex flex-col items-center gap-2 pointer-events-none z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                    <div className='-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-1/2 left-1/2 z-10 flex transform flex-col items-center gap-2'>
                       <Button size="lg" isIconOnly variant="flat" className="">
-                        <Nsfw2 className="stroke-neutral-100/10 w-8 h-8 opacity-70" />
+                        <Nsfw2 className='h-8 w-8 stroke-neutral-100/10 opacity-70' />
                       </Button>
-                      <div className="text-md font-bold text-neutral-100/70 bg-default/40 p-1 px-3 rounded-2xl ">
+                      <div className='rounded-2xl bg-default/40 p-1 px-3 font-bold text-md text-neutral-100/70 '>
                         View NSFW Content
                       </div>
                     </div>
@@ -395,33 +394,30 @@ const Post = React.memo(
               </Tab>
               {hasLocationData && (
                 <Tab
-                  key={`map`}
+                  key={'map'}
                   title={
                     <div className="flex items-center space-x-2">
-                      <MapPinIcon className={clsx({ 'fill-red-500': selectedTab !== `map` })} />
-                      <span></span>
+                      <MapPinIcon className={clsx({ 'fill-red-500': selectedTab !== 'map' })} />
                     </div>
                   }
                 >
-                  <div className="overflow-hidden h-[365px] min-w-[284px]">
+                  <div className='h-[365px] min-w-[284px] overflow-hidden'>
                     <SnapMap
                       markers={[{ lat: intPost?.image?.latitude, lng: intPost?.image?.longitude }]}
-                      defaultZoom={14}
-                      streetViewControl
+                      maxZoom={20} minZoom={3} defaultZoom={17}
                     />
                   </div>
                 </Tab>
               )}
               <Tab
-                key={`comments`}
+                key={'comments'}
                 title={
                   <div className="flex items-center space-x-2">
-                    {selectedTab !== `comments` ? (
-                      <ChatBubbleLeftRightIcon className="w-6 h-6 stroke-neutral-200" />
+                    {selectedTab !== 'comments' ? (
+                      <ChatBubbleLeftRightIcon className='h-6 w-6 stroke-neutral-200' />
                     ) : (
-                      <ChatBubbleLeftRightIconSolid className="w-6 h-6" />
+                      <ChatBubbleLeftRightIconSolid className='h-6 w-6' />
                     )}
-                    <span></span>
                     {intPost.commentCount > 0 && (
                       <Chip size="sm" variant="faded">
                         {intPost.commentCount}
@@ -430,7 +426,7 @@ const Post = React.memo(
                   </div>
                 }
               >
-                <div className="h-[365px] min-w-[284px] flex flex-col  px-2">
+                <div className='flex h-[365px] min-w-[284px] flex-col px-2'>
                   {intPost.postComments.length > 0 && (
                     <div ref={commentsWrapperRef} className="h-full overflow-y-auto">
                       <div className="flex flex-col gap-2">
@@ -441,8 +437,8 @@ const Post = React.memo(
                     </div>
                   )}
                   {intPost.postComments.length === 0 && (
-                    <div className="flex flex-col h-full justify-center align-middle">
-                      <h2 className="text-center text-lg font-bold text-blue-600">
+                    <div className='flex h-full flex-col justify-center align-middle'>
+                      <h2 className='text-center font-bold text-blue-600 text-lg'>
                         {isAuthenticated ? 'Be the first to comment' : 'no comments'}
                       </h2>
                     </div>
@@ -453,18 +449,18 @@ const Post = React.memo(
             </Tabs>
           </CardBody>
           <CardFooter className="gap-3 pt-0">
-            <div className="flex w-full flex-row justify-center items-center gap-4 px-2">
+            <div className='flex w-full flex-row items-center justify-center gap-4 px-2'>
               <div className="flex gap-1 ">
-                <p className=" text-default-500 text-small cursor-pointer" onClick={handleLike}>
+                <p className=' cursor-pointer text-default-500 text-small' onClick={handleLike}>
                   {liked ? (
-                    <HeartIconSolid className="w-5 h-5 fill-red-500" />
+                    <HeartIconSolid className='h-5 w-5 fill-red-500' />
                   ) : (
-                    <HeartIconOutlined className="w-5 h-5 stroke-default-600" />
+                    <HeartIconOutlined className='h-5 w-5 stroke-default-600' />
                   )}
                 </p>
                 {intPost?.likeCount > 0 && (
                   <p
-                    className="font-semibold text-default-700 text-small cursor-pointer hover:text-blue-500"
+                    className='cursor-pointer font-semibold text-default-700 text-small hover:text-blue-500'
                     onClick={() => navigate(`/post/${intPost.id}/likes`)}
                   >
                     {intPost?.likeCount}
@@ -474,7 +470,7 @@ const Post = React.memo(
               </div>
               <div className="flex-grow" />
               <div className="flex gap-2">
-                <p className="text-small font-semibold leading-none text-default-600 cursor-default">{timeAgo}</p>
+                <p className='cursor-default font-semibold text-default-600 text-small leading-none'>{timeAgo}</p>
                 <Tooltip
                   classNames={{
                     content: 'dark text-neutral-400',

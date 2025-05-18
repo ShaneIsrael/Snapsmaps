@@ -1,6 +1,3 @@
-import React, { useState } from 'react'
-import UploadImage from '../Post/UploadImage'
-import CreatePost from '../Post/CreatePost'
 import {
   Avatar,
   Badge,
@@ -14,25 +11,28 @@ import {
   Tooltip,
   useDisclosure,
 } from '@heroui/react'
+import React, { useState } from 'react'
 import { FaGithub } from 'react-icons/fa'
+import CreatePost from '../Post/CreatePost'
+import UploadImage from '../Post/UploadImage'
 
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../hooks/useAuth'
-import { getAssetUrl } from '../../common/utils'
 import { BellIcon, HomeIcon } from '@heroicons/react/24/outline'
 import {
   ArrowLeftEndOnRectangleIcon,
   ArrowRightEndOnRectangleIcon,
   MagnifyingGlassIcon,
-  UserIcon,
-  SquaresPlusIcon,
   PlusIcon,
+  SquaresPlusIcon,
+  UserIcon,
 } from '@heroicons/react/24/outline'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { useNotifications } from '../../hooks/useNotifications'
-import NotificationMenu from '../Notification/NotificationMenu'
-import CreateCollection from '../Collection/CreateCollection'
 import Logo from '../../assets/logo/dark/Logo'
+import { getAssetUrl } from '../../common/utils'
+import { useAuth } from '../../hooks/useAuth'
+import { useNotifications } from '../../hooks/useNotifications'
+import CreateCollection from '../Collection/CreateCollection'
+import NotificationMenu from '../Notification/NotificationMenu'
 
 function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, user, isAuthenticated }) {
   const [uploadedImageData, setUploadedImageData] = useState()
@@ -68,28 +68,28 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
   return (
     <>
       <Modal
-        className="dark p-0 m-0 rounded-b-none  bg-transparent/90"
+        className='dark m-0 rounded-b-none bg-transparent/90 p-0'
         isOpen={captureDeviceSelect.isOpen}
         onClose={captureDeviceSelect.onClose}
         placement="bottom"
         backdrop="transparent"
         hideCloseButton
       >
-        <ModalContent className="flex flex-row justify-center items-center pt-8 pb-8 gap-4 sm:m-0">
+        <ModalContent className='flex flex-row items-center justify-center gap-4 pt-8 pb-8 sm:m-0'>
           <UploadImage onImageUploaded={setUploadedImageData} mode="camera" exifOnly={exifOnly} />
           <UploadImage onImageUploaded={setUploadedImageData} exifOnly={exifOnly} />
         </ModalContent>
       </Modal>
 
       <Modal
-        className="p-0 m-0 rounded-b-none bg-transparent/90"
+        className='m-0 rounded-b-none bg-transparent/90 p-0'
         isOpen={postChoiceOpen}
         onClose={() => setPostChoiceOpen(false)}
         placement="bottom"
         backdrop="transparent"
         hideCloseButton
       >
-        <ModalContent className="flex flex-collumn justify-center items-center pt-8 pb-8 gap-4 sm:m-0 ">
+        <ModalContent className='flex flex-collumn items-center justify-center gap-4 pt-8 pb-8 sm:m-0 '>
           <Button
             color="primary"
             variant="shadow"
@@ -135,9 +135,9 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
 
       <footer
         onClick={(e) => e.stopPropagation()}
-        className="sticky bottom-0 py-1.5 z-10 flex mt-auto w-full h-auto items-center justify-center inset-x-0 border-t border-divider bg-background"
+        className='sticky inset-x-0 bottom-0 z-10 mt-auto flex h-auto w-full items-center justify-center border-divider border-t bg-background py-1.5'
       >
-        <div className="flex max-w-[1024px] w-full px-6 items-center justify-between">
+        <div className='flex w-full max-w-[1024px] items-center justify-between px-6'>
           <Button isIconOnly size="sm" color="default" variant="light" aria-label="new post" onClick={handleOnHome}>
             <HomeIcon className="h-8 w-8" />
           </Button>
@@ -188,12 +188,12 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
           </Badge>
 
           {!noProfile ? (
-            <Dropdown backdrop="blur" placement="bottom-end" className="dark text-foreground bg-black">
+            <Dropdown backdrop="blur" placement="bottom-end" className='dark bg-black text-foreground'>
               <DropdownTrigger>
                 <Avatar
                   isBordered
                   as="button"
-                  className="transition-transform w-7 h-7"
+                  className='h-7 w-7 transition-transform'
                   color={user?.image ? 'primary' : 'default'}
                   src={user?.image ? getAssetUrl() + user.image.reference : ''}
                 />
@@ -212,7 +212,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
                   <DropdownItem
                     key="profile"
                     onClick={() => navigate('/profile')}
-                    startContent={<UserIcon className="w-5 h-5 pointer-events-none flex-shrink-0" />}
+                    startContent={<UserIcon className='pointer-events-none h-5 w-5 flex-shrink-0' />}
                   >
                     My Profile
                   </DropdownItem>
@@ -220,7 +220,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
                 <DropdownItem
                   key="feedback"
                   href="https://github.com/ShaneIsrael/Snapsmaps"
-                  startContent={<FaGithub className="w-5 h-5" />}
+                  startContent={<FaGithub className='h-5 w-5' />}
                 >
                   Project Home
                 </DropdownItem>
@@ -228,7 +228,7 @@ function Footer({ handleOnHome, handleOnSubmit, noProfile, hideProfileSelect, us
                   key="logout"
                   color="danger"
                   onClick={logout}
-                  startContent={<ArrowLeftEndOnRectangleIcon className="w-5 h-5 pointer-events-none flex-shrink-0" />}
+                  startContent={<ArrowLeftEndOnRectangleIcon className='pointer-events-none h-5 w-5 flex-shrink-0' />}
                 >
                   Log Out
                 </DropdownItem>

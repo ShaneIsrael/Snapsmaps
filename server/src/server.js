@@ -14,10 +14,10 @@ import SequelizeStoreInit from 'connect-session-sequelize'
 const SequelizeStore = SequelizeStoreInit(session.Store)
 
 import dotenv from 'dotenv'
-import db from './database/models/index'
-import logger from './utils/logger.js'
+import db from './database/models'
+import logger from './utils/logger'
 
-import Routes from './routes/index.js'
+import Routes from './routes'
 
 dotenv.config()
 
@@ -105,18 +105,6 @@ app.use(
     logger: logger,
   }),
 )
-
-app.use((req, res, next) => {
-  const googleMapsApiKey = process.env.GOOGLE_MAPS_API_KEY
-  if (googleMapsApiKey) {
-    res.cookie('GoogleMapsApiKey', googleMapsApiKey, {
-      httpOnly: false,
-      secure: isProduction,
-      sameSite: 'Lax',
-    })
-  }
-  next()
-})
 
 new Routes(app)
 

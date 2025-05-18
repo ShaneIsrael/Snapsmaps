@@ -1,3 +1,4 @@
+import { EyeIcon, EyeSlashIcon, NoSymbolIcon } from '@heroicons/react/24/solid'
 import {
   Button,
   Card,
@@ -6,27 +7,26 @@ import {
   CardHeader,
   Modal,
   ModalContent,
+  Progress,
+  Switch,
   Tab,
   Tabs,
   Textarea,
-  useDisclosure,
-  Progress,
-  Switch,
   Tooltip,
+  useDisclosure,
 } from '@heroui/react'
+import clsx from 'clsx'
 import React, { useEffect, useRef, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { PhotoIcon } from '../../assets/icons/PhotoIcon'
-import { MapPinIcon } from '../../assets/icons/MapPinIcon'
-import clsx from 'clsx'
-import CloseIcon from '../../assets/icons/CloseIcon'
-import SendIcon from '../../assets/icons/SendIcon'
-import { PostService } from '../../services'
 import { toast } from 'sonner'
-import SnapMap from '../Map/SnapMap'
-import { EyeIcon, EyeSlashIcon, NoSymbolIcon } from '@heroicons/react/24/solid'
-import Sfw from '../../assets/icons/Sfw'
+import CloseIcon from '../../assets/icons/CloseIcon'
+import { MapPinIcon } from '../../assets/icons/MapPinIcon'
 import Nsfw2 from '../../assets/icons/Nsfw2'
+import { PhotoIcon } from '../../assets/icons/PhotoIcon'
+import SendIcon from '../../assets/icons/SendIcon'
+import Sfw from '../../assets/icons/Sfw'
+import { PostService } from '../../services'
+import SnapMap from '../Map/SnapMap'
 
 function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
   const abortControllerRef = useRef(new AbortController())
@@ -104,7 +104,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
 
   return (
     <Modal
-      className="dark transform-gpu rounded-none m-0 p-0"
+      className='dark m-0 transform-gpu rounded-none p-0'
       isOpen={newPostModal.isOpen}
       onClose={newPostModal.onClose}
       placement="top"
@@ -127,11 +127,11 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                 }}
                 isDisabled={submitting}
               />
-              <div className="flex w-full mt-1">
-                <div className="flex flex-row-reverse mr-2 w-full items-center">
-                  <div className=" text-sm font-bold ">{publicPost ? 'PUBLIC' : 'PRIVATE'}</div>
+              <div className='mt-1 flex w-full'>
+                <div className='mr-2 flex w-full flex-row-reverse items-center'>
+                  <div className=' font-bold text-sm '>{publicPost ? 'PUBLIC' : 'PRIVATE'}</div>
                 </div>
-                <div className="flex gap-0 items-center">
+                <div className='flex items-center gap-0'>
                   <Tooltip content={publicPost ? 'public post' : 'private post'} color="primary">
                     <div>
                       <Switch
@@ -144,7 +144,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                       />
                     </div>
                   </Tooltip>
-                  <div className="h-[31px] w-[3px] bg-neutral-700 mr-2 rounded-2xl" />
+                  <div className='mr-2 h-[31px] w-[3px] rounded-2xl bg-neutral-700' />
 
                   <Tooltip content={!locationEnabled ? 'location disabled' : 'location enabled'} color="primary">
                     <div>
@@ -158,7 +158,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                       />
                     </div>
                   </Tooltip>
-                  <div className="h-[31px] w-[3px] bg-neutral-700 mr-2 rounded-2xl" />
+                  <div className='mr-2 h-[31px] w-[3px] rounded-2xl bg-neutral-700' />
                   <Tooltip content={!nsfw ? 'safe for work' : 'not safe for work'} color="danger">
                     <div>
                       <Switch
@@ -172,12 +172,12 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                     </div>
                   </Tooltip>
                 </div>
-                <div className="flex items-center w-full">
-                  <div className="text-sm font-bold ">{nsfw ? 'NSFW' : 'SFW'}</div>
+                <div className='flex w-full items-center'>
+                  <div className='font-bold text-sm '>{nsfw ? 'NSFW' : 'SFW'}</div>
                 </div>
               </div>
             </CardHeader>
-            <CardBody className="py-0 px-0 relative w-full h-full">
+            <CardBody className='relative h-full w-full px-0 py-0'>
               <Tabs
                 aria-label="post tabs"
                 size="md"
@@ -196,15 +196,14 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                   title={
                     <div className="flex items-center space-x-2">
                       <PhotoIcon className={clsx({ 'fill-green-500': selectedTab !== 'photo' })} />
-                      <span></span>
                     </div>
                   }
                   className="overflow-y-auto"
                 >
                   <img
-                    alt="preview image upload"
+                    alt="preview upload"
                     src={`data:image/png;base64,${imageData?.base64}`}
-                    className={clsx('object-cover w-full h-full', { 'blur-md': nsfw })}
+                    className={clsx('h-full w-full object-cover', { 'blur-md': nsfw })}
                   />
                 </Tab>
                 {locationEnabled && (
@@ -213,25 +212,26 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                     title={
                       <div className="flex items-center space-x-2">
                         <MapPinIcon className={clsx({ 'fill-red-500': selectedTab !== 'map' })} />
-                        <span></span>
                       </div>
                     }
                     className="h-full"
                   >
-                    <div className="overflow-hidden h-full sm:h-[680px] ">
+                    <div className='h-full overflow-hidden sm:h-[680px] '>
                       <SnapMap
                         markers={[{ lat: imageData?.gps.latitude, lng: imageData?.gps.longitude }]}
-                        defaultZoom={16}
+                        maxZoom={20}
+                        minZoom={3}
+                        defaultZoom={17}
                       />
                     </div>
                   </Tab>
                 )}
               </Tabs>
             </CardBody>
-            <CardFooter className="flex flex-col px-4 pt-2 pb-5 gap-2">
+            <CardFooter className='flex flex-col gap-2 px-4 pt-2 pb-5'>
               {submitting && (
-                <div className="relative align-middle justify-center w-full">
-                  <p className="absolute bottom-0 text-center text-sm font-extrabold tracking-widest w-full z-10">
+                <div className='relative w-full justify-center align-middle'>
+                  <p className='absolute bottom-0 z-10 w-full text-center font-extrabold text-sm tracking-widest'>
                     {uploadProgress}%...
                   </p>
                   <Progress
@@ -244,7 +244,7 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                   />
                 </div>
               )}
-              <div className="w-full flex flex-row align-middle items-center justify-center gap-4">
+              <div className='flex w-full flex-row items-center justify-center gap-4 align-middle'>
                 <Button size="md" color="danger" variant="flat" fullWidth onClick={handleCancel}>
                   <CloseIcon />
                 </Button>
