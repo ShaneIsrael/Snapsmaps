@@ -128,12 +128,6 @@ function Collection({ isSelfProfile }) {
                         className="group relative"
                       >
                         <div className="relative h-full w-full cursor-pointer overflow-hidden rounded-lg">
-                          <Skeleton
-                            className={clsx('absolute top-0 left-0 z-20 h-full w-full rounded-lg', {
-                              hidden:
-                                loadedImages.indexOf(image.src) !== -1 || loadedImages.indexOf(image.lowqSrc) !== -1,
-                            })}
-                          />
                           <>
                             {isAuthenticated && isSelfProfile && (
                               <div className="opacity-0 transition-opacity group-hover:opacity-100">
