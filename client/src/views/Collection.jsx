@@ -128,53 +128,51 @@ function Collection({ isSelfProfile }) {
                         className="group relative"
                       >
                         <div className="relative h-full w-full cursor-pointer overflow-hidden rounded-lg">
-                          <>
-                            {isAuthenticated && isSelfProfile && (
-                              <div className="opacity-0 transition-opacity group-hover:opacity-100">
-                                <Dropdown className="dark -left-32 absolute w-fit min-w-0 bg-black p-[1px] ">
-                                  <DropdownTrigger>
-                                    <Button variant="light" size="sm" className="absolute top-0 right-0" isIconOnly>
-                                      <EllipsisVerticalIcon className="h-5 w-5" />
-                                    </Button>
-                                  </DropdownTrigger>
-                                  <DropdownMenu aria-label="collection item actions">
-                                    <DropdownItem
-                                      key="delete"
-                                      className="text-danger"
-                                      color="danger"
-                                      onClick={() => setRemoveItem(image.id)}
-                                      startContent={<XMarkIcon className="h-4 w-4" />}
-                                    >
-                                      Remove Item
-                                    </DropdownItem>
-                                  </DropdownMenu>
-                                </Dropdown>
-                              </div>
-                            )}
+                          {isAuthenticated && isSelfProfile && (
+                            <div className="opacity-0 transition-opacity group-hover:opacity-100">
+                              <Dropdown className="dark -left-32 absolute w-fit min-w-0 bg-black p-[1px] ">
+                                <DropdownTrigger>
+                                  <Button variant="light" size="sm" className="absolute top-0 right-0" isIconOnly>
+                                    <EllipsisVerticalIcon className="h-5 w-5" />
+                                  </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu aria-label="collection item actions">
+                                  <DropdownItem
+                                    key="delete"
+                                    className="text-danger"
+                                    color="danger"
+                                    onClick={() => setRemoveItem(image.id)}
+                                    startContent={<XMarkIcon className="h-4 w-4" />}
+                                  >
+                                    Remove Item
+                                  </DropdownItem>
+                                </DropdownMenu>
+                              </Dropdown>
+                            </div>
+                          )}
 
-                            {image.title && (
-                              <div
-                                className={clsx(
-                                  'absolute bottom-0 z-10 flex w-full items-end rounded-b-xl bg-black/75 pt-1 pr-1 pb-1 pl-1 text-xs leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100',
-                                )}
-                              >
-                                {image.title}
-                              </div>
-                            )}
-                            <LazyLoadImage
-                              effect='blur'
-                              src={image.lowqSrc}
-                              onClick={() => {
-                                setIndex(index)
-                                setLightboxOpen(true)
-                              }}
-                              onLoad={() => {
-                                setLoadedImages((prev) => [...prev, image.lowqSrc])
-                              }}
-                              className={clsx('z-10 object-cover', {
-                                hidden: loadedImages.indexOf(image.src) !== -1,
-                              })}
-                            />
+                          {image.title && (
+                            <div
+                              className={clsx(
+                                'absolute bottom-0 z-30 flex w-full items-end rounded-b-xl bg-black/75 pt-1 pr-1 pb-1 pl-1 text-xs leading-tight opacity-0 transition-opacity duration-300 group-hover:opacity-100',
+                              )}
+                            >
+                              {image.title}
+                            </div>
+                          )}
+                          <LazyLoadImage
+                            effect="blur"
+                            src={image.lowqSrc}
+                            onClick={() => {
+                              setIndex(index)
+                              setLightboxOpen(true)
+                            }}
+                            onLoad={() => {
+                              setLoadedImages((prev) => [...prev, image.lowqSrc])
+                            }}
+                            className="absolute top-0 left-0 h-full w-full object-cover"
+                          />
+                          {loadedImages.indexOf(image.lowqSrc) >= 0 && (
                             <LazyLoadImage
                               effect="opacity"
                               placeholderSrc={image.src}
@@ -183,11 +181,9 @@ function Collection({ isSelfProfile }) {
                                 setIndex(index)
                                 setLightboxOpen(true)
                               }}
-                              onLoad={() => {
-                                setLoadedImages((prev) => [...prev, image.src])
-                              }}
+                              className='absolute top-0 left-0 h-full w-full object-cover'
                             />
-                          </>
+                          )}
                         </div>
                       </AspectRatioPlaceholder>
                     ))}
@@ -204,9 +200,7 @@ function Collection({ isSelfProfile }) {
                 }
                 className="py-0"
               >
-                <div
-                  className="pt-2"
-                >
+                <div className="pt-2">
                   <SnapMap markers={mapMarkers} streetViewControl mapClassName="h-[calc(100vh-160px)]" />
                 </div>
               </Tab>
