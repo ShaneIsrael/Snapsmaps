@@ -168,7 +168,7 @@ function Collection({ isSelfProfile }) {
                               </div>
                             )}
                             <LazyLoadImage
-                              placeholderSrc={image.lowqSrc}
+                              effect='blur'
                               src={image.lowqSrc}
                               onClick={() => {
                                 setIndex(index)
@@ -182,7 +182,7 @@ function Collection({ isSelfProfile }) {
                               })}
                             />
                             <LazyLoadImage
-                              effect="blur"
+                              effect="opacity"
                               placeholderSrc={image.src}
                               src={image.src}
                               onClick={() => {
