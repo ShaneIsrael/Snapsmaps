@@ -175,13 +175,17 @@ function Collection({ isSelfProfile }) {
                           {loadedImages.indexOf(image.lowqSrc) >= 0 && (
                             <LazyLoadImage
                               effect="opacity"
-                              placeholderSrc={image.src}
                               src={image.src}
                               onClick={() => {
                                 setIndex(index)
                                 setLightboxOpen(true)
                               }}
-                              className='absolute top-0 left-0 h-full w-full object-cover'
+                              onLoad={() => {
+                                setLoadedImages((prev) => [...prev, image.src])
+                              }}
+                              className={clsx('absolute top-0 left-0 h-full w-full object-cover', {
+                                'hidden': loadedImages.indexOf(image.src) < 0,
+                              })}
                             />
                           )}
                         </div>
