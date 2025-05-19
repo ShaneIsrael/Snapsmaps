@@ -183,7 +183,8 @@ function Collection({ isSelfProfile }) {
                               onLoad={() => {
                                 setLoadedImages((prev) => [...prev, image.src])
                               }}
-                              className={clsx('absolute top-0 left-0 h-full w-full object-cover', {
+                              className='absolute top-0 left-0 h-full w-full object-cover'
+                              wrapperClassName={clsx({
                                 'hidden': loadedImages.indexOf(image.src) < 0,
                               })}
                             />
