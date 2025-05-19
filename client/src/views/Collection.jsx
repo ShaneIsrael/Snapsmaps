@@ -178,7 +178,7 @@ function Collection({ isSelfProfile }) {
                                 setLoadedImages((prev) => [...prev, image.lowqSrc])
                               }}
                               className={clsx('z-10 object-cover', {
-                                hidden: loadedImages.indexOf(image.lowqSrc) !== -1,
+                                hidden: loadedImages.indexOf(image.src) !== -1,
                               })}
                             />
                             <LazyLoadImage
