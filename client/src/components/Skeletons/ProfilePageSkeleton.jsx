@@ -1,42 +1,42 @@
-import { Divider, Skeleton } from "@heroui/react"
+import { Divider, Skeleton } from '@heroui/react'
 import React from 'react'
 
 function ProfilePageSkeleton({ appbar, footer }) {
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col w-full sm:max-w-[1024px] h-screen">
+      <div className='flex h-screen w-full flex-col sm:max-w-[1024px]'>
         {appbar}
-        <div className="flex-grow mx-0 pb-[50px] pt-20 overflow-y-auto">
-          <div className="flex px-4 gap-5 max-w-[500px] justify-start items-start">
+        <div className='mx-0 flex-grow overflow-y-auto pt-20 pb-[50px]'>
+          <div className='flex max-w-[500px] items-start justify-start gap-5 px-4'>
             <div className="flex flex-col gap-4">
-              <Skeleton className="rounded-full w-20 h-20" />
-              <Skeleton className="rounded-md w-20 h-8" />
+              <Skeleton className='h-20 w-20 rounded-full' />
+              <Skeleton className='h-8 w-20 rounded-md' />
             </div>
-            <div className="w-full flex flex-col gap-4 items-start justify-center">
+            <div className='flex w-full flex-col items-start justify-center gap-4'>
               <div className="h-[125px] w-full">
-                <Skeleton className="rounded-md w-44 h-8" />
-                <Skeleton className="rounded-md w-28 h-5 mt-2" />
-                <Skeleton className="rounded-md w-72 h-3 mt-3" />
-                <Skeleton className="rounded-md w-72 h-3 mt-1" />
-                <Skeleton className="rounded-md w-72 h-3 mt-1" />
-                <Skeleton className="rounded-md w-72 h-3 mt-1" />
+                <Skeleton className='h-8 w-44 rounded-md' />
+                <Skeleton className='mt-2 h-5 w-28 rounded-md' />
+                <Skeleton className='mt-3 h-3 w-72 rounded-md' />
+                <Skeleton className='mt-1 h-3 w-72 rounded-md' />
+                <Skeleton className='mt-1 h-3 w-72 rounded-md' />
+                <Skeleton className='mt-1 h-3 w-72 rounded-md' />
               </div>
-              <div className="flex gap-5 items-end">
-                <div className="flex gap-5 justify-center">
+              <div className='flex items-end gap-5'>
+                <div className='flex justify-center gap-5'>
                   <div className="flex flex-col items-center">
-                    <Skeleton className="rounded-md w-16 h-12 mt-1" />
+                    <Skeleton className='mt-1 h-12 w-16 rounded-md' />
                   </div>
                   <div
-                    className="flex flex-col items-center cursor-pointer"
+                    className='flex cursor-pointer flex-col items-center'
                     onClick={() => navigate('follows#followers')}
                   >
-                    <Skeleton className="rounded-md w-16 h-12 mt-1" />
+                    <Skeleton className='mt-1 h-12 w-16 rounded-md' />
                   </div>
                   <div
-                    className="flex flex-col items-center cursor-pointer"
+                    className='flex cursor-pointer flex-col items-center'
                     onClick={() => navigate('follows#following')}
                   >
-                    <Skeleton className="rounded-md w-16 h-12 mt-1" />
+                    <Skeleton className='mt-1 h-12 w-16 rounded-md' />
                   </div>
                 </div>
               </div>
@@ -44,20 +44,20 @@ function ProfilePageSkeleton({ appbar, footer }) {
           </div>
           <Divider className="my-5" />
           <div className="flex flex-wrap justify-center gap-2">
-            <Skeleton className="h-40 max-w-[478px] w-full" />
-            <Skeleton className="h-40 max-w-[478px] w-full" />
-            <Skeleton className="h-40 max-w-[478px] w-full" />
+            <Skeleton className='h-40 w-full max-w-[478px]' />
+            <Skeleton className='h-40 w-full max-w-[478px]' />
+            <Skeleton className='h-40 w-full max-w-[478px]' />
           </div>
           <Divider className="my-5" />
           <div className="grid grid-cols-[repeat(auto-fill,120px)] justify-center">
-            <Skeleton className="w-[120px] h-[120px] border-1 border-black" />
-            <Skeleton className="w-[120px] h-[120px] border-1 border-black" />
-            <Skeleton className="w-[120px] h-[120px] border-1 border-black" />
-            <Skeleton className="w-[120px] h-[120px] border-1 border-black" />
+            <Skeleton className='h-[120px] w-[120px] border-1 border-black' />
+            <Skeleton className='h-[120px] w-[120px] border-1 border-black' />
+            <Skeleton className='h-[120px] w-[120px] border-1 border-black' />
+            <Skeleton className='h-[120px] w-[120px] border-1 border-black' />
           </div>
           <Divider className="my-5" />
-          <div className="flex flex-row h-64">
-            <Skeleton className="w-full h-full" />
+          <div className='flex h-64 flex-row'>
+            <Skeleton className='h-full w-full' />
           </div>
         </div>
         {appbar}
