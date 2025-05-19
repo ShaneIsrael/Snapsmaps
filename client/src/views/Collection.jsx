@@ -11,7 +11,6 @@ import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Skeleton
 import { Masonry } from '@mui/lab'
 import clsx from 'clsx'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
-import LazyLoad from 'react-lazyload'
 import { MapPinIcon } from '../assets/icons/MapPinIcon'
 import { PhotoIcon } from '../assets/icons/PhotoIcon'
 import { getAssetUrl } from '../common/utils'
@@ -32,7 +31,6 @@ function Collection({ isSelfProfile }) {
   const [allRemovedItems, setAllRemovedItems] = useState([])
 
   const [selectedTab, setSelectedTab] = useState('gallery')
-  const tabContainerRef = React.useRef()
 
   const handleRemoveItem = async () => {
     try {
@@ -213,12 +211,6 @@ function Collection({ isSelfProfile }) {
                 className="py-0"
               >
                 <div
-                  ref={tabContainerRef}
-                  style={
-                    {
-                      // height: `calc(100vh - ${tabContainerOffset}px) overflow-y-hidden`,
-                    }
-                  }
                   className="pt-2"
                 >
                   <SnapMap markers={mapMarkers} streetViewControl mapClassName="h-[calc(100vh-160px)]" />
