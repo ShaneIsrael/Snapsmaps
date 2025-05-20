@@ -98,6 +98,7 @@ controller.register = async (req, res, next) => {
             : 'Account created successfully, you can now login.',
         )
     } catch (err) {
+      console.error(err)
       await t.rollback()
       throw new Error('Unable to create account, please try again later.')
     }
