@@ -161,7 +161,7 @@ function Collection({ isSelfProfile }) {
                             </div>
                           )}
                           <LazyLoadImage
-                            effect="blur"
+                            effect='blur'
                             src={image.lowqSrc}
                             onClick={() => {
                               setIndex(index)
@@ -170,7 +170,7 @@ function Collection({ isSelfProfile }) {
                             onLoad={() => {
                               setLoadedImages((prev) => [...prev, image.lowqSrc])
                             }}
-                            className="absolute top-0 left-0 h-full w-full object-cover"
+                            wrapperClassName="absolute top-0 left-0 h-full w-full object-cover"
                           />
                           {loadedImages.indexOf(image.lowqSrc) >= 0 && (
                             <LazyLoadImage
@@ -183,8 +183,7 @@ function Collection({ isSelfProfile }) {
                               onLoad={() => {
                                 setLoadedImages((prev) => [...prev, image.src])
                               }}
-                              className='absolute top-0 left-0 h-full w-full object-cover'
-                              wrapperClassName={clsx({
+                              wrapperClassName={clsx('absolute top-0 left-0 h-full w-full object-cover', {
                                 'hidden': loadedImages.indexOf(image.src) < 0,
                               })}
                             />
