@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import { Model } from 'sequelize'
 import UserState from '../../constants/UserState'
 export default (sequelize, DataTypes) => {
