@@ -1,16 +1,18 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useRef } from 'react'
 
 import L from 'leaflet'
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 
 function MapComponent({ markers, maxZoom = 20, minZoom = 2, defaultZoom, mapClassName = "w-full h-full" }) {
-  const validMarkers = markers.filter((marker) => marker.lat !== null && marker.lng !== null)
+  const validMarkers = markers.filter(
+    (marker) => Number.isFinite(marker.lat) && Number.isFinite(marker.lng)
+  )
   const icon = L.icon({ iconUrl: "/images/map/marker-icon.png" })
   const mapRef = useRef(null)
-  const bounds = validMarkers.map((marker) => [marker.lat, marker.lng])
+  const bounds = validMarkers.length > 0 ? validMarkers.map((marker) => [marker.lat, marker.lng]) : null
 
   return (
-    <MapContainer center={bounds[0]} maxZoom={maxZoom} minZoom={minZoom} zoom={defaultZoom} ref={mapRef} className={mapClassName} bounds={bounds} markerZoomAnimation={true} touchZoom={true} style={{
+    <MapContainer center={bounds ? undefined : bounds[0]} maxZoom={maxZoom} minZoom={minZoom} zoom={bounds ? undefined : defaultZoom} ref={mapRef} className={mapClassName} bounds={bounds || undefined} markerZoomAnimation={true} touchZoom={true} style={{
       zIndex: 0
     }}>
       <TileLayer
@@ -18,13 +20,18 @@ function MapComponent({ markers, maxZoom = 20, minZoom = 2, defaultZoom, mapClas
       />
       {
         validMarkers.map((marker) => (
-          <Marker key={`marker-${marker.lat}-${marker.lng}`} position={[marker.lat, marker.lng]} eventHandlers={{
-            click: () => {
-              if (marker.onClick) {
-                marker.onClick()
-              }
-            },
-          }} icon={icon} />
+          <Marker
+            key={`marker-${marker.lat}-${marker.lng}`}
+            position={[marker.lat, marker.lng]}
+            eventHandlers={{
+              click: () => {
+                if (marker.onClick) {
+                  marker.onClick()
+                }
+              },
+            }}
+            icon={icon}
+          />
         ))
       }
     </MapContainer >
