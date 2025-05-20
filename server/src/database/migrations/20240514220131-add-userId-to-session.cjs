@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addColumn('Sessions', 'userId', {
       type: Sequelize.INTEGER,

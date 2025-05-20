@@ -1,42 +1,33 @@
-export default {
+module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('collections', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      imageId: {
+      userId: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
-      displayName: {
+      imageId: {
+        allowNulL: false,
+        type: Sequelize.INTEGER,
+      },
+      title: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      mention: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      password: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      bio: {
-        type: Sequelize.STRING,
-      },
-      verified: {
+      public: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        allowNull: false,
+        defaultValue: true,
       },
-      token: {
-        type: Sequelize.STRING,
+      likeCount: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
@@ -49,6 +40,6 @@ export default {
     })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('users')
+    await queryInterface.dropTable('collections')
   },
 }

@@ -1,6 +1,6 @@
-export default {
+module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('posts', {
+    await queryInterface.createTable('postLikes', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -8,26 +8,12 @@ export default {
         type: Sequelize.INTEGER,
       },
       userId: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      imageId: {
-        allowNulL: false,
-        type: Sequelize.INTEGER,
-      },
-      title: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      likeCount: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 0,
       },
-      commentCount: {
+      postId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 0,
       },
       createdAt: {
         allowNull: false,
@@ -40,6 +26,6 @@ export default {
     })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('posts')
+    await queryInterface.dropTable('postLikes')
   },
 }

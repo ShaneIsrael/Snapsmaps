@@ -1,13 +1,13 @@
-export default {
+module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn('posts', 'public', {
+    await queryInterface.addColumn('posts', 'nsfw', {
       type: Sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: true,
+      defaultValue: false,
     })
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn('posts', 'public')
+    await queryInterface.removeColumn('posts', 'nsfw')
   },
 }

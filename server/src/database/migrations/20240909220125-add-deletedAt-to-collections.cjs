@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addColumn('collections', 'deletedAt', { allowNull: true, type: Sequelize.DATE })
   },

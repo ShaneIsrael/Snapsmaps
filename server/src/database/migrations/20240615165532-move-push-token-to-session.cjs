@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn('users', 'pushToken')
     await queryInterface.addColumn('Sessions', 'fcmToken', {

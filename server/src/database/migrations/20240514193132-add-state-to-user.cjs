@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.addColumn('users', 'state', {
       type: Sequelize.ENUM,

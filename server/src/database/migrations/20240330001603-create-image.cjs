@@ -1,6 +1,6 @@
-export default {
+module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('collections', {
+    await queryInterface.createTable('images', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,23 +11,21 @@ export default {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      imageId: {
-        allowNulL: false,
-        type: Sequelize.INTEGER,
-      },
-      title: {
+      reference: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      public: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: true,
-      },
-      likeCount: {
+      width: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
+      },
+      height: {
+        type: Sequelize.INTEGER,
+      },
+      latitude: {
+        type: Sequelize.FLOAT,
+      },
+      longitude: {
+        type: Sequelize.FLOAT,
       },
       createdAt: {
         allowNull: false,
@@ -40,6 +38,6 @@ export default {
     })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('collections')
+    await queryInterface.dropTable('images')
   },
 }
