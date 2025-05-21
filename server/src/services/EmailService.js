@@ -15,11 +15,12 @@ const isProduction = process.env.NODE_ENV !== 'development'
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
   port: process.env.SMTP_PORT,
-  secure: true,
+  secure: process.env.SMTP_SECURITY === 'ssl',
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASSWORD,
   },
+  tls: process.env.SMTP_SECURITY === 'starttls' ? { rejectUnauthorized: false } : undefined,
 })
 
 const service = {}
