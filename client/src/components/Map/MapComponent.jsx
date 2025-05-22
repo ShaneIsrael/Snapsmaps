@@ -3,7 +3,7 @@ import React, { useRef } from 'react'
 import L from 'leaflet'
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 
-function MapComponent({ markers, maxZoom = 20, minZoom = 2, defaultZoom = 10, mapClassName = "w-full h-full" }) {
+function MapComponent({ markers, maxZoom = 15, minZoom = 2, defaultZoom = 10, mapClassName = "w-full h-full" }) {
   const validMarkers = markers.filter(
     (marker) => Number.isFinite(marker.lat) && Number.isFinite(marker.lng)
   )

@@ -406,7 +406,7 @@ const Post = React.memo(
                   <div className='h-[365px] min-w-[284px] overflow-hidden'>
                     <SnapMap
                       markers={[{ lat: intPost?.image?.latitude, lng: intPost?.image?.longitude }]}
-                      maxZoom={20} minZoom={3} defaultZoom={17}
+                      maxZoom={17} minZoom={3} defaultZoom={16}
                     />
                   </div>
                 </Tab>
