@@ -198,13 +198,14 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                       <PhotoIcon className={clsx({ 'fill-green-500': selectedTab !== 'photo' })} />
                     </div>
                   }
-                  className="overflow-y-auto"
                 >
-                  <img
-                    alt="preview upload"
-                    src={`data:image/png;base64,${imageData?.base64}`}
-                    className={clsx('h-full w-full object-cover', { 'blur-md': nsfw })}
-                  />
+                  <div className='h-[400px] overflow-y-scroll'>
+                    <img
+                      alt="preview upload"
+                      src={`data:image/png;base64,${imageData?.base64}`}
+                      className={clsx('w-full object-cover', { 'blur-md': nsfw })}
+                    />
+                  </div>
                 </Tab>
                 {locationEnabled && (
                   <Tab
@@ -216,12 +217,10 @@ function CreatePost({ imageData, onOpen, onSubmitted, onCancel }) {
                     }
                     className="h-full"
                   >
-                    <div className='h-full overflow-hidden sm:h-[680px] '>
+                    <div className='h-[400px]'>
                       <SnapMap
                         markers={[{ lat: imageData?.gps.latitude, lng: imageData?.gps.longitude }]}
-                        maxZoom={20}
-                        minZoom={3}
-                        defaultZoom={17}
+                        maxZoom={17} minZoom={3} defaultZoom={16}
                       />
                     </div>
                   </Tab>

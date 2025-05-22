@@ -36,7 +36,8 @@ services:
       # REQUIRED FOR USER CREATION
       SMTP_USER: ""
       SMTP_HOST: ""
-      SMTP_PORT: "465"
+      SMTP_PORT: "587"
+      SMTP_SECURITY: "ssl" # ssl | starttls | none 
       SMTP_EMAIL: ""
       SMTP_PASSWORD: ""
       # SITE MANIFEST / METADATA SETTINGS

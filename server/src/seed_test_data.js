@@ -1,16 +1,20 @@
 import fs from 'node:fs'
-import path from 'node:path'
+import path, { dirname } from 'node:path'
 import axios from 'axios'
 import Models from './database/models'
 
 const { User, Image, Post, PostComment, PostLike, Follow } = Models
 import { exit } from 'node:process'
+import { fileURLToPath } from 'node:url'
 import { v4 as uuidv4 } from 'uuid'
 import logger from './utils/logger'
 
 const USER_COUNT = 10
 const MAX_POSTS_PER_USER = 5
 const MAX_COMMENTS_PER_USER = 20
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const IMAGES_ROOT = path.join(__dirname, '../images')
 
@@ -270,24 +274,27 @@ const downloadImage = (url, savePath) =>
   )
 
 async function seedProfiles() {
-  const adminRow = await User.create({
-    displayName: 'Admin User',
-    email: 'admin@example.com',
-    mention: 'admin',
-    bio: 'Admin account for local development',
-    password: 'password',
-    verified: true,
-  })
-  adminUser = (await (await fetch('https://randomuser.me/api/')).json()).results[0]
-  const adminProfileImageRef = `/profile/seeded_${uuidv4().replace(/-/gi, '')}.jpg`
-  downloadImage(adminUser.picture.medium, path.join(IMAGES_ROOT, adminProfileImageRef))
-  const adminImageRow = await Image.create({
-    userId: adminRow.id,
-    reference: adminProfileImageRef,
-  })
-  adminRow.imageId = adminImageRow.id
-  adminRow.save()
-  await sleep(100)
+  let adminRow = await User.findOne({ where: { mention: 'admin' } })
+  if (!adminRow) {
+    adminRow = await User.create({
+      displayName: 'Admin User',
+      email: 'admin@example.com',
+      mention: 'admin',
+      bio: 'Admin account for local development',
+      password: 'password',
+      verified: true,
+    })
+    const adminUser = (await (await fetch('https://randomuser.me/api/')).json()).results[0]
+    const adminProfileImageRef = `/profile/seeded_${uuidv4().replace(/-/gi, '')}.jpg`
+    downloadImage(adminUser.picture.medium, path.join(IMAGES_ROOT, adminProfileImageRef))
+    const adminImageRow = await Image.create({
+      userId: adminRow.id,
+      reference: adminProfileImageRef,
+    })
+    adminRow.imageId = adminImageRow.id
+    adminRow.save()
+    await sleep(100)
+  }
 
   for (let i = 0; i < USER_COUNT; i++) {
     const user = (await (await fetch('https://randomuser.me/api/')).json()).results[0]
